@@ -91,9 +91,23 @@ export class StageRenderer {
         const nEnter = n.enter().append('g').attr('cursor', 'pointer')
             .on('click', (e, d) => { e.stopPropagation(); onClick(d); });
         
+        // --- ADDITIVE LAYER (INHERITANCE) ---
         nEnter.filter(d => (d.baseClasses?.length || 0) > 0).append('circle')
-            .attr('r', d => d.radius + 12).attr('fill', 'none')
-            .attr('stroke', '#BF00FF').attr('stroke-width', 1.5).attr('stroke-dasharray', '3,6').attr('opacity', 0.5);
+            .attr('r', d => d.radius + 8).attr('fill', 'none')
+            .attr('stroke', '#BF00FF').attr('stroke-width', 1.5).attr('stroke-dasharray', '3,6').attr('opacity', 0.4);
+
+        // --- GUARDIAN HALO (AUTHORITY) ---
+        // Solid Halo for 'guarded'
+        nEnter.filter(d => d.guardState === 'guarded').append('circle')
+            .attr('r', d => d.radius + 14).attr('fill', 'none')
+            .attr('stroke', '#ffd700').attr('stroke-width', 2.5).attr('opacity', 0.8)
+            .attr('class', 'guardian-halo');
+            
+        // Dashed Halo for 'restricted'
+        nEnter.filter(d => d.guardState === 'restricted').append('circle')
+            .attr('r', d => d.radius + 14).attr('fill', 'none')
+            .attr('stroke', '#ffd700').attr('stroke-width', 1.5).attr('stroke-dasharray', '4,4').attr('opacity', 0.5)
+            .attr('class', 'guardian-halo');
 
         nEnter.append('circle')
             .attr('r', d => d.radius)

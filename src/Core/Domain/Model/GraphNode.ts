@@ -1,4 +1,4 @@
-import { NodeType, NodeStatus, VerificationStatus, IMethodDefinition, IEventDefinition, IFieldDefinition } from '../../../Shared/Protocol';
+import { NodeType, NodeStatus, GuardState, VerificationStatus, IMethodDefinition, IEventDefinition, IFieldDefinition } from '../../../Shared/Protocol';
 
 export interface GraphNode {
     id: string;
@@ -24,6 +24,8 @@ export interface GraphNode {
     
     // Auditing & Drift
     verificationStatus: VerificationStatus;
+    authorityId?: string;
+    guardState?: GuardState;
     verifiedHash?: string;
     contractHash?: string;
     verifiedBy?: string;

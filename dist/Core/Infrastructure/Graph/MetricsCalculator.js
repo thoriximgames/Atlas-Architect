@@ -1,4 +1,7 @@
-export class MetricsCalculator {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MetricsCalculator = void 0;
+class MetricsCalculator {
     static calculateDescendants(nodes, edges) {
         const memo = new Map();
         // We assume 'edges' only contains hierarchy/gravity edges when calculating descendant count 
@@ -22,3 +25,4 @@ export class MetricsCalculator {
         roots.forEach(r => count(r.id));
     }
 }
+exports.MetricsCalculator = MetricsCalculator;

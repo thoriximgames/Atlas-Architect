@@ -1,23 +1,24 @@
-import glob from 'fast-glob';
-import path from 'path';
-import { ParserFactory } from './Parsers/ParserFactory.js';
-export class FileScanner {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FileScanner = void 0;
+const fast_glob_1 = __importDefault(require("fast-glob"));
+const path_1 = __importDefault(require("path"));
+const ParserFactory_1 = require("./Parsers/ParserFactory");
+class FileScanner {
     exclude = [
         '**/bin/**', '**/obj/**', '**/*.meta', '**/*.asmdef', '**/node_modules/**', '**/.git/**',
         '**/Vendor/**', '**/Generated/**', '**/build/**', '**/CMakeFiles/**', '**/_deps/**'
     ];
     parserFactory;
     constructor() {
-        this.parserFactory = new ParserFactory();
+        this.parserFactory = new ParserFactory_1.ParserFactory();
     }
-    async scan(root) {
-        // Adjust patterns to be relative to the root if needed, or absolute.
-        // The original scanner used path.join(root, 'MMO-Server/src/**/*.{cpp,h,cs}')
-        const patterns = [
-            path.join(root, 'MMO-Server/src/**/*.{cpp,h,cs}').replace(/\\/g, '/'),
-            path.join(root, 'MMO-Client/Assets/**/*.{cs}').replace(/\\/g, '/')
-        ];
-        const files = await glob(patterns, { ignore: this.exclude });
+    async scan(root, patterns) {
+        const globPatterns = patterns.map(p => path_1.default.join(root, p).replace(/\\/g, '/'));
+        const files = await (0, fast_glob_1.default)(globPatterns, { ignore: this.exclude });
         const results = [];
         for (const file of files) {
             const parser = this.parserFactory.getParser(file);
@@ -53,3 +54,4 @@ export class FileScanner {
         return Array.from(merged.values());
     }
 }
+exports.FileScanner = FileScanner;

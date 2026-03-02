@@ -1,5 +1,6 @@
 export type NodeType = 'System' | 'Service' | 'Component' | 'Interface' | 'DTO' | 'Logic' | 'Data' | 'Utility' | 'Unknown';
 export type NodeStatus = 'planned' | 'verified' | 'orphan';
+export type GuardState = 'none' | 'guarded' | 'restricted';
 export type VerificationStatus = 'auto' | 'verified' | 'dirty';
 
 export interface IMethodDefinition {
@@ -48,6 +49,8 @@ export interface IAtlasNode {
     
     // Auditing & Drift
     verificationStatus: VerificationStatus;
+    authorityId?: string;
+    guardState?: GuardState;
     verifiedHash?: string;
     contractHash?: string;
     verifiedBy?: string;
@@ -70,6 +73,8 @@ export interface IPlannedNode {
     type: NodeType;
     parentId: string;
     dependencies: string[];
+    authorityId?: string;
+    guardState?: GuardState;
 }
 
 export type EdgeType = 'dependency' | 'inheritance' | 'event';
