@@ -1,0 +1,16 @@
+{
+    "project": "MMO-SUITE",
+    "scanPatterns": [
+        "MMO-Server/src/**/*.{cpp,h,cs}",
+        "MMO-Client/Assets/**/*.{cs}",
+        "atlas/src/**/*.{ts,js}"
+    ],
+    "entryPoints": [
+        "MMO-Server/src/Main",
+        "atlas/src/index"
+    ],
+    "exclude": [
+        "**/bin/**", "**/obj/**", "**/*.meta", "**/*.asmdef", "**/node_modules/**", "**/.git/**"
+    ],
+    "port": 5000
+}

@@ -1,0 +1,4761 @@
+{
+  "project": "MMO-SUITE",
+  "lastUpdated": "2026-02-16T09:38:46.698Z",
+  "nodes": {
+    "MMO-Server/src/Main": {
+      "id": "MMO-Server/src/Main",
+      "name": "Main",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Main",
+      "depth": 0,
+      "islandId": "island_0",
+      "descendantCount": 86,
+      "dependencies": [
+        "iostream",
+        "csignal",
+        "thread",
+        "cstdlib",
+        "atomic",
+        "Version",
+        "NetworkHost",
+        "ServerContext",
+        "DatabaseManager",
+        "RedisManager",
+        "EntityManager",
+        "WorldContext",
+        "PersistenceWorker",
+        "WorldCommandQueue",
+        "DataRepository",
+        "ClassTemplate",
+        "AuthModule",
+        "CharacterModule",
+        "WorldModule",
+        "SystemModule",
+        "InventoryModule"
+      ],
+      "baseClasses": [],
+      "color": "#FFFFFF",
+      "status": "verified",
+      "initialX": 0,
+      "initialY": 0,
+      "sectorAngle": 0,
+      "sectorWidth": 6.283185307179586
+    },
+    "MMO-Server/src/Version": {
+      "id": "MMO-Server/src/Version",
+      "name": "Version",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Version",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [],
+      "baseClasses": [],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 799.4662786961915,
+      "initialY": 29.21761844612707,
+      "sectorAngle": 0.03653014713476504,
+      "sectorWidth": 0.07306029426953008
+    },
+    "MMO-Server/src/Host/NetworkHost": {
+      "id": "MMO-Server/src/Host/NetworkHost",
+      "name": "NetworkHost",
+      "type": "System",
+      "file": "MMO-Server/src/Host/NetworkHost",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 3,
+      "dependencies": [
+        "NetworkHost",
+        "Session",
+        "SessionManager",
+        "ServerContext",
+        "thread",
+        "chrono",
+        "co_spawn",
+        "detached",
+        "iostream",
+        "string",
+        "memory",
+        "vector",
+        "coroutine",
+        "optional",
+        "asio"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 780.8607020447417,
+      "initialY": 173.94414046524557,
+      "sectorAngle": 0.21918088280859022,
+      "sectorWidth": 0.2922411770781203
+    },
+    "MMO-Server/src/Engine/ServerContext": {
+      "id": "MMO-Server/src/Engine/ServerContext",
+      "name": "ServerContext",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/ServerContext",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 17,
+      "dependencies": [
+        "memory",
+        "DatabaseManager",
+        "RedisManager",
+        "PersistenceWorker",
+        "EventBus",
+        "DataRepository",
+        "WorldRules",
+        "TemplateManager",
+        "ClassTemplate",
+        "SpawnTemplate",
+        "InteractionTemplate",
+        "GossipTemplate",
+        "QuestTemplate",
+        "MerchantTemplate",
+        "ItemTemplate",
+        "PacketDispatcher",
+        "SessionManager",
+        "IInventoryRepository",
+        "InventoryRepository",
+        "WorldContext",
+        "unordered_map"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 416.7522723903442,
+      "initialY": 682.8744712298771,
+      "sectorAngle": 1.022844119773421,
+      "sectorWidth": 1.3150852968515414
+    },
+    "MMO-Server/src/Engine/DatabaseManager": {
+      "id": "MMO-Server/src/Engine/DatabaseManager",
+      "name": "DatabaseManager",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/DatabaseManager",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 1,
+      "dependencies": [
+        "pqxx",
+        "string",
+        "memory",
+        "iostream",
+        "optional",
+        "vector",
+        "mutex",
+        "TraceContext"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -145.30948078354908,
+      "initialY": 786.692541463573,
+      "sectorAngle": 1.7534470624687217,
+      "sectorWidth": 0.14612058853906015
+    },
+    "MMO-Server/src/Engine/RedisManager": {
+      "id": "MMO-Server/src/Engine/RedisManager",
+      "name": "RedisManager",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/RedisManager",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "hiredis",
+        "string",
+        "iostream",
+        "vector",
+        "memory",
+        "mutex"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -230.47927949219007,
+      "initialY": 766.0804799267248,
+      "sectorAngle": 1.863037503873017,
+      "sectorWidth": 0.07306029426953008
+    },
+    "MMO-Server/src/Engine/EntityManager": {
+      "id": "MMO-Server/src/Engine/EntityManager",
+      "name": "EntityManager",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/EntityManager",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 23,
+      "dependencies": [
+        "EntityManager",
+        "Entity",
+        "ServerContext",
+        "WorldContext",
+        "InterestManager",
+        "NavigationManager",
+        "NPCController",
+        "PlayerController",
+        "ObjectController",
+        "RedisManager",
+        "EventBus",
+        "GameEvents",
+        "SessionManager",
+        "Session",
+        "iostream",
+        "cmath",
+        "random",
+        "unordered_map",
+        "memory",
+        "mutex",
+        "vector",
+        "cstdint",
+        "Protocol_generated",
+        "OpCodes"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -747.2128869860384,
+      "initialY": 285.7847118409063,
+      "sectorAngle": 2.7762911822421428,
+      "sectorWidth": 1.7534470624687217
+    },
+    "MMO-Server/src/Engine/WorldContext": {
+      "id": "MMO-Server/src/Engine/WorldContext",
+      "name": "WorldContext",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/WorldContext",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 2,
+      "dependencies": [
+        "memory",
+        "string",
+        "EntityManager",
+        "SpatialHash",
+        "InterestManager",
+        "WorldCommandQueue",
+        "NavigationManager",
+        "SpawnerService"
+      ],
+      "baseClasses": [
+        "std"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -650.6317925884524,
+      "initialY": -465.4871324463621,
+      "sectorAngle": 3.7626051548807986,
+      "sectorWidth": 0.21918088280859022
+    },
+    "MMO-Server/src/Engine/PersistenceWorker": {
+      "id": "MMO-Server/src/Engine/PersistenceWorker",
+      "name": "PersistenceWorker",
+      "type": "Service",
+      "file": "MMO-Server/src/Engine/PersistenceWorker",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "thread",
+        "atomic",
+        "string",
+        "iostream",
+        "RedisManager",
+        "DatabaseManager"
+      ],
+      "baseClasses": [],
+      "color": "#00FF95",
+      "status": "verified",
+      "initialX": -575.9227790063967,
+      "initialY": -555.259356176507,
+      "sectorAngle": 3.908725743419859,
+      "sectorWidth": 0.07306029426953008
+    },
+    "MMO-Server/src/Engine/WorldCommandQueue": {
+      "id": "MMO-Server/src/Engine/WorldCommandQueue",
+      "name": "WorldCommandQueue",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/WorldCommandQueue",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "functional",
+        "deque",
+        "mutex",
+        "vector"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -533.8550489777915,
+      "initialY": -595.8177461950254,
+      "sectorAngle": 3.981786037689389,
+      "sectorWidth": 0.07306029426953008
+    },
+    "MMO-Server/src/Engine/Data/DataRepository": {
+      "id": "MMO-Server/src/Engine/Data/DataRepository",
+      "name": "DataRepository",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/DataRepository",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "unordered_map",
+        "iostream",
+        "fstream",
+        "filesystem",
+        "json"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -488.93897127827984,
+      "initialY": -633.197190743403,
+      "sectorAngle": 4.0548463319589185,
+      "sectorWidth": 0.07306029426953008
+    },
+    "MMO-Server/src/Engine/Data/Templates/ClassTemplate": {
+      "id": "MMO-Server/src/Engine/Data/Templates/ClassTemplate",
+      "name": "ClassTemplate",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/Templates/ClassTemplate",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "cstdint",
+        "json"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -441.41419261635696,
+      "initialY": -667.1982543119022,
+      "sectorAngle": 4.127906626228449,
+      "sectorWidth": 0.07306029426953008
+    },
+    "MMO-Server/src/Modules/Auth/AuthModule": {
+      "id": "MMO-Server/src/Modules/Auth/AuthModule",
+      "name": "AuthModule",
+      "type": "Component",
+      "file": "MMO-Server/src/Modules/Auth/AuthModule",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 5,
+      "dependencies": [
+        "AuthModule",
+        "AuthRepository",
+        "LoginHandler",
+        "RegisterHandler",
+        "ServerContext",
+        "PacketDispatcher",
+        "iostream",
+        "IModule",
+        "IAuthRepository",
+        "memory"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#00E0FF",
+      "status": "verified",
+      "initialX": -258.3043238171566,
+      "initialY": -757.1518185260876,
+      "sectorAngle": 4.383617656171805,
+      "sectorWidth": 0.43836176561718043
+    },
+    "MMO-Server/src/Modules/Character/CharacterModule": {
+      "id": "MMO-Server/src/Modules/Character/CharacterModule",
+      "name": "CharacterModule",
+      "type": "Component",
+      "file": "MMO-Server/src/Modules/Character/CharacterModule",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 6,
+      "dependencies": [
+        "CharacterModule",
+        "CharacterRepository",
+        "CharacterListHandler",
+        "CreateCharacterHandler",
+        "DeleteCharacterHandler",
+        "SelectCharacterHandler",
+        "ServerContext",
+        "PacketDispatcher",
+        "iostream",
+        "IModule",
+        "ICharacterRepository",
+        "memory"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#00E0FF",
+      "status": "verified",
+      "initialX": 116.48093418800431,
+      "initialY": -791.4746944600881,
+      "sectorAngle": 4.8585095689237505,
+      "sectorWidth": 0.5114220598867105
+    },
+    "MMO-Server/src/Modules/World/WorldModule": {
+      "id": "MMO-Server/src/Modules/World/WorldModule",
+      "name": "WorldModule",
+      "type": "Component",
+      "file": "MMO-Server/src/Modules/World/WorldModule",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 9,
+      "dependencies": [
+        "WorldModule",
+        "PacketDispatcher",
+        "WorldRepository",
+        "RealmListHandler",
+        "JoinRealmHandler",
+        "MovementHandler",
+        "InteractionHandler",
+        "ChatHandler",
+        "NavigationManager",
+        "RedisManager",
+        "EntityManager",
+        "ServerContext",
+        "GameEvents",
+        "DataRepository",
+        "TemplateManager",
+        "SpawnTemplate",
+        "InteractionTemplate",
+        "UnitTemplate",
+        "iostream",
+        "cstdlib",
+        "IModule",
+        "IWorldRepository",
+        "WorldContext",
+        "memory",
+        "thread",
+        "atomic",
+        "chrono"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#00E0FF",
+      "status": "verified",
+      "initialX": 555.2593561765074,
+      "initialY": -575.9227790063965,
+      "sectorAngle": 5.479522070214756,
+      "sectorWidth": 0.7306029426953007
+    },
+    "MMO-Server/src/Modules/System/SystemModule": {
+      "id": "MMO-Server/src/Modules/System/SystemModule",
+      "name": "SystemModule",
+      "type": "Component",
+      "file": "MMO-Server/src/Modules/System/SystemModule",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 4,
+      "dependencies": [
+        "SystemModule",
+        "PingHandler",
+        "AdminCommandHandler",
+        "WorldIngestHandler",
+        "ServerContext",
+        "PacketDispatcher",
+        "iostream",
+        "IModule"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#00E0FF",
+      "status": "verified",
+      "initialX": 773.9869576459404,
+      "initialY": -202.346705913344,
+      "sectorAngle": 6.027474277236232,
+      "sectorWidth": 0.36530147134765034
+    },
+    "MMO-Server/src/Modules/Inventory/InventoryModule": {
+      "id": "MMO-Server/src/Modules/Inventory/InventoryModule",
+      "name": "InventoryModule",
+      "type": "Component",
+      "file": "MMO-Server/src/Modules/Inventory/InventoryModule",
+      "depth": 1,
+      "parentId": "MMO-Server/src/Main",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "InventoryModule",
+        "OpCodes",
+        "iostream",
+        "IModule",
+        "ServerContext",
+        "IInventoryRepository",
+        "memory"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#00E0FF",
+      "status": "verified",
+      "initialX": 799.4662786961915,
+      "initialY": -29.217618446127048,
+      "sectorAngle": 6.2466551600448215,
+      "sectorWidth": 0.07306029426953008
+    },
+    "MMO-Server/src/Host/Session": {
+      "id": "MMO-Server/src/Host/Session",
+      "name": "Session",
+      "type": "System",
+      "file": "MMO-Server/src/Host/Session",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Host/NetworkHost",
+      "islandId": "island_0",
+      "descendantCount": 1,
+      "dependencies": [
+        "Session",
+        "SessionManager",
+        "EntityManager",
+        "WorldContext",
+        "ServerContext",
+        "DatabaseManager",
+        "Crypto",
+        "PacketDispatcher",
+        "iostream",
+        "fstream",
+        "co_spawn",
+        "detached",
+        "atomic",
+        "asio",
+        "memory",
+        "vector",
+        "deque",
+        "mutex",
+        "string",
+        "Protocol_generated",
+        "OpCodes",
+        "TraceContext",
+        "Entity"
+      ],
+      "baseClasses": [
+        "std"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 1576.8071365982444,
+      "initialY": 271.4392270340555,
+      "sectorAngle": 0.17047401996223682,
+      "sectorWidth": 0.19482745138541352
+    },
+    "MMO-Server/src/Host/SessionManager": {
+      "id": "MMO-Server/src/Host/SessionManager",
+      "name": "SessionManager",
+      "type": "System",
+      "file": "MMO-Server/src/Host/SessionManager",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Host/NetworkHost",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "SessionManager",
+        "Session",
+        "Entity",
+        "RedisManager",
+        "ServerContext",
+        "unordered_set",
+        "unordered_map",
+        "memory",
+        "mutex"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 1520.481814901732,
+      "initialY": 498.1315594831707,
+      "sectorAngle": 0.31659460850129695,
+      "sectorWidth": 0.09741372569270676
+    },
+    "MMO-Server/src/Engine/Events/EventBus": {
+      "id": "MMO-Server/src/Engine/Events/EventBus",
+      "name": "EventBus",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Events/EventBus",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/ServerContext",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "iostream",
+        "functional",
+        "map",
+        "typeindex",
+        "vector",
+        "memory",
+        "TraceContext"
+      ],
+      "baseClasses": [
+        "IEventHandler"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 833.5045447806884,
+      "initialY": 1365.7489424597543,
+      "sectorAngle": 1.022844119773421,
+      "sectorWidth": 0.07735795863832597
+    },
+    "MMO-Server/src/Engine/Data/WorldRules": {
+      "id": "MMO-Server/src/Engine/Data/WorldRules",
+      "name": "WorldRules",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/WorldRules",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/ServerContext",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "json",
+        "fstream",
+        "iostream"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 725.465629435985,
+      "initialY": 1426.0784061569161,
+      "sectorAngle": 1.100202078411747,
+      "sectorWidth": 0.07735795863832597
+    },
+    "MMO-Server/src/Engine/Data/TemplateManager": {
+      "id": "MMO-Server/src/Engine/Data/TemplateManager",
+      "name": "TemplateManager",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/TemplateManager",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/ServerContext",
+      "islandId": "island_0",
+      "descendantCount": 3,
+      "dependencies": [
+        "string",
+        "unordered_map",
+        "iostream",
+        "fstream",
+        "filesystem",
+        "json",
+        "UnitTemplate",
+        "ArchetypeTemplate",
+        "VisualProfileTemplate",
+        "FactionTemplate"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 1388.496863175058,
+      "initialY": 795.0323647204708,
+      "sectorAngle": 0.5200173886243022,
+      "sectorWidth": 0.30943183455330386
+    },
+    "MMO-Server/src/Engine/Data/Templates/SpawnTemplate": {
+      "id": "MMO-Server/src/Engine/Data/Templates/SpawnTemplate",
+      "name": "SpawnTemplate",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/Templates/SpawnTemplate",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/ServerContext",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "cstdint",
+        "json",
+        "Protocol_generated"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 613.087508223887,
+      "initialY": 1477.8781097437723,
+      "sectorAngle": 1.177560037050073,
+      "sectorWidth": 0.07735795863832597
+    },
+    "MMO-Server/src/Engine/Data/Templates/InteractionTemplate": {
+      "id": "MMO-Server/src/Engine/Data/Templates/InteractionTemplate",
+      "name": "InteractionTemplate",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/Templates/InteractionTemplate",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/ServerContext",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "vector",
+        "set",
+        "cstdint",
+        "json",
+        "Protocol_generated"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 497.04234503906355,
+      "initialY": 1520.8382252028218,
+      "sectorAngle": 1.254917995688399,
+      "sectorWidth": 0.07735795863832597
+    },
+    "MMO-Server/src/Engine/Data/Templates/GossipTemplate": {
+      "id": "MMO-Server/src/Engine/Data/Templates/GossipTemplate",
+      "name": "GossipTemplate",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/Templates/GossipTemplate",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/ServerContext",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "vector",
+        "cstdint",
+        "json",
+        "Protocol_generated"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 378.0242373446375,
+      "initialY": 1554.7017964806,
+      "sectorAngle": 1.3322759543267249,
+      "sectorWidth": 0.07735795863832597
+    },
+    "MMO-Server/src/Engine/Data/Templates/QuestTemplate": {
+      "id": "MMO-Server/src/Engine/Data/Templates/QuestTemplate",
+      "name": "QuestTemplate",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/Templates/QuestTemplate",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/ServerContext",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "vector",
+        "cstdint",
+        "json"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 256.7450645877929,
+      "initialY": 1579.2662764112358,
+      "sectorAngle": 1.4096339129650508,
+      "sectorWidth": 0.07735795863832597
+    },
+    "MMO-Server/src/Engine/Data/Templates/MerchantTemplate": {
+      "id": "MMO-Server/src/Engine/Data/Templates/MerchantTemplate",
+      "name": "MerchantTemplate",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/Templates/MerchantTemplate",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/ServerContext",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "vector",
+        "cstdint",
+        "json"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 133.93023025653292,
+      "initialY": 1594.3847382057545,
+      "sectorAngle": 1.4869918716033768,
+      "sectorWidth": 0.07735795863832597
+    },
+    "MMO-Server/src/Engine/Data/Templates/ItemTemplate": {
+      "id": "MMO-Server/src/Engine/Data/Templates/ItemTemplate",
+      "name": "ItemTemplate",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/Templates/ItemTemplate",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/ServerContext",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "cstdint",
+        "json",
+        "Protocol_generated"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 10.31432304549709,
+      "initialY": 1599.9667542608856,
+      "sectorAngle": 1.5643498302417027,
+      "sectorWidth": 0.07735795863832597
+    },
+    "MMO-Server/src/Shared/Architecture/PacketDispatcher": {
+      "id": "MMO-Server/src/Shared/Architecture/PacketDispatcher",
+      "name": "PacketDispatcher",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Shared/Architecture/PacketDispatcher",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/ServerContext",
+      "islandId": "island_0",
+      "descendantCount": 1,
+      "dependencies": [
+        "unordered_map",
+        "memory",
+        "IPacketHandler",
+        "iostream"
+      ],
+      "baseClasses": [],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 1168.4188527465158,
+      "initialY": 1093.0678773738232,
+      "sectorAngle": 0.7520912645392801,
+      "sectorWidth": 0.15471591727665193
+    },
+    "MMO-Server/src/Modules/Inventory/IInventoryRepository": {
+      "id": "MMO-Server/src/Modules/Inventory/IInventoryRepository",
+      "name": "IInventoryRepository",
+      "type": "DTO",
+      "file": "MMO-Server/src/Modules/Inventory/IInventoryRepository",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/ServerContext",
+      "islandId": "island_0",
+      "descendantCount": 1,
+      "dependencies": [
+        "TraceContext",
+        "InventoryComponent",
+        "vector",
+        "cstdint"
+      ],
+      "baseClasses": [],
+      "color": "#f59e0b",
+      "status": "verified",
+      "initialX": 986.0213741057423,
+      "initialY": 1260.0642244769208,
+      "sectorAngle": 0.906807181815932,
+      "sectorWidth": 0.15471591727665193
+    },
+    "MMO-Server/src/Modules/Inventory/InventoryRepository": {
+      "id": "MMO-Server/src/Modules/Inventory/InventoryRepository",
+      "name": "InventoryRepository",
+      "type": "DTO",
+      "file": "MMO-Server/src/Modules/Inventory/InventoryRepository",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/ServerContext",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "InventoryRepository",
+        "pqxx",
+        "iostream",
+        "IInventoryRepository",
+        "DatabaseManager"
+      ],
+      "baseClasses": [
+        "IInventoryRepository"
+      ],
+      "color": "#f59e0b",
+      "status": "verified",
+      "initialX": -113.36327691742282,
+      "initialY": 1595.978937030982,
+      "sectorAngle": 1.6417077888800287,
+      "sectorWidth": 0.07735795863832597
+    },
+    "MMO-Server/src/Shared/Architecture/TraceContext": {
+      "id": "MMO-Server/src/Shared/Architecture/TraceContext",
+      "name": "TraceContext",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Shared/Architecture/TraceContext",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/DatabaseManager",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "cstdint",
+        "string",
+        "chrono",
+        "vector"
+      ],
+      "baseClasses": [],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": -290.61896156709815,
+      "initialY": 1573.385082927146,
+      "sectorAngle": 1.7534470624687217,
+      "sectorWidth": 0.14612058853906015
+    },
+    "MMO-Server/src/Engine/Entity": {
+      "id": "MMO-Server/src/Engine/Entity",
+      "name": "Entity",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Entity",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/EntityManager",
+      "islandId": "island_0",
+      "descendantCount": 8,
+      "dependencies": [
+        "cstdint",
+        "string",
+        "vector",
+        "chrono",
+        "atomic",
+        "Protocol_generated",
+        "ComponentBits",
+        "StatsComponent",
+        "InteractableComponent",
+        "AggroComponent",
+        "WanderComponent",
+        "CastingComponent",
+        "AuraComponent",
+        "InventoryComponent",
+        "ArchetypeTemplate",
+        "IEntityController"
+      ],
+      "baseClasses": [
+        "Entity"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -995.87977756158,
+      "initialY": 1252.287294770612,
+      "sectorAngle": 2.2426333806212275,
+      "sectorWidth": 0.6861314592268911
+    },
+    "MMO-Server/src/Engine/InterestManager": {
+      "id": "MMO-Server/src/Engine/InterestManager",
+      "name": "InterestManager",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/InterestManager",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/EntityManager",
+      "islandId": "island_0",
+      "descendantCount": 1,
+      "dependencies": [
+        "InterestManager",
+        "mutex",
+        "unordered_set",
+        "unordered_map",
+        "functional",
+        "ISpatialIndex"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1586.449637810977,
+      "initialY": -207.7920756174788,
+      "sectorAngle": 3.271830569461564,
+      "sectorWidth": 0.1524736576059758
+    },
+    "MMO-Server/src/Engine/Navigation/NavigationManager": {
+      "id": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "name": "NavigationManager",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/EntityManager",
+      "islandId": "island_0",
+      "descendantCount": 2,
+      "dependencies": [
+        "NavigationManager",
+        "RecastNavMeshProvider",
+        "iostream",
+        "filesystem",
+        "INavigationProvider",
+        "memory",
+        "string"
+      ],
+      "baseClasses": [
+        "INavigationProvider"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1597.086785143038,
+      "initialY": 96.5080344918253,
+      "sectorAngle": 3.0812384974540943,
+      "sectorWidth": 0.2287104864089637
+    },
+    "MMO-Server/src/Engine/Controllers/NPCController": {
+      "id": "MMO-Server/src/Engine/Controllers/NPCController",
+      "name": "NPCController",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Controllers/NPCController",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/EntityManager",
+      "islandId": "island_0",
+      "descendantCount": 4,
+      "dependencies": [
+        "NPCController",
+        "Entity",
+        "ServerContext",
+        "WorldContext",
+        "EntityManager",
+        "NavigationManager",
+        "ISpatialIndex",
+        "Protocol_generated",
+        "cmath",
+        "random",
+        "iostream",
+        "IEntityController",
+        "PerceptionModule",
+        "CognitiveMemory",
+        "MotivationEngine",
+        "memory"
+      ],
+      "baseClasses": [
+        "IEntityController"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1494.4257739720767,
+      "initialY": 571.5694236818126,
+      "sectorAngle": 2.7762911822421428,
+      "sectorWidth": 0.3811841440149395
+    },
+    "MMO-Server/src/Engine/Controllers/PlayerController": {
+      "id": "MMO-Server/src/Engine/Controllers/PlayerController",
+      "name": "PlayerController",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Controllers/PlayerController",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/EntityManager",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "PlayerController",
+        "Entity",
+        "ServerContext",
+        "iostream",
+        "IEntityController"
+      ],
+      "baseClasses": [
+        "IEntityController"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1552.3774824332982,
+      "initialY": -387.45858105616304,
+      "sectorAngle": 3.3861858126660462,
+      "sectorWidth": 0.0762368288029879
+    },
+    "MMO-Server/src/Engine/Controllers/ObjectController": {
+      "id": "MMO-Server/src/Engine/Controllers/ObjectController",
+      "name": "ObjectController",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Controllers/ObjectController",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/EntityManager",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "ObjectController",
+        "Entity",
+        "ServerContext",
+        "IEntityController"
+      ],
+      "baseClasses": [
+        "IEntityController"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1518.3584075605115,
+      "initialY": -504.5668897086962,
+      "sectorAngle": 3.462422641469034,
+      "sectorWidth": 0.0762368288029879
+    },
+    "MMO-Server/src/Engine/Events/GameEvents": {
+      "id": "MMO-Server/src/Engine/Events/GameEvents",
+      "name": "GameEvents",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Events/GameEvents",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/EntityManager",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "EventBus",
+        "cstdint"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1475.518824878976,
+      "initialY": -618.7440483978539,
+      "sectorAngle": 3.5386594702720218,
+      "sectorWidth": 0.0762368288029879
+    },
+    "MMO-Server/src/Shared/Protocol/Extensions/OpCodes": {
+      "id": "MMO-Server/src/Shared/Protocol/Extensions/OpCodes",
+      "name": "OpCodes",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Shared/Protocol/Extensions/OpCodes",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/EntityManager",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "cstdint"
+      ],
+      "baseClasses": [],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": -1424.1075997894325,
+      "initialY": -729.3267746504181,
+      "sectorAngle": 3.6148962990750095,
+      "sectorWidth": 0.0762368288029879
+    },
+    "MMO-Server/src/Engine/Spatial/SpatialHash": {
+      "id": "MMO-Server/src/Engine/Spatial/SpatialHash",
+      "name": "SpatialHash",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Spatial/SpatialHash",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/WorldContext",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "SpatialHash",
+        "algorithm",
+        "mutex",
+        "ISpatialIndex",
+        "unordered_map",
+        "vector",
+        "shared_mutex",
+        "cmath",
+        "functional"
+      ],
+      "baseClasses": [
+        "ISpatialIndex"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1350.2979576971313,
+      "initialY": -858.3096326145687,
+      "sectorAngle": 3.707809934178651,
+      "sectorWidth": 0.10959044140429511
+    },
+    "MMO-Server/src/Engine/Data/SpawnerService": {
+      "id": "MMO-Server/src/Engine/Data/SpawnerService",
+      "name": "SpawnerService",
+      "type": "Service",
+      "file": "MMO-Server/src/Engine/Data/SpawnerService",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Engine/WorldContext",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "SpawnerService",
+        "WorldContext",
+        "ServerContext",
+        "Entity",
+        "EntityManager",
+        "SpawnTemplate",
+        "UnitTemplate",
+        "InteractionTemplate",
+        "TemplateManager",
+        "NavigationManager",
+        "iostream",
+        "vector",
+        "memory",
+        "chrono"
+      ],
+      "baseClasses": [],
+      "color": "#00FF95",
+      "status": "verified",
+      "initialX": -1248.3231251340308,
+      "initialY": -1000.8443311802322,
+      "sectorAngle": 3.817400375582946,
+      "sectorWidth": 0.10959044140429511
+    },
+    "MMO-Server/src/Modules/Auth/AuthRepository": {
+      "id": "MMO-Server/src/Modules/Auth/AuthRepository",
+      "name": "AuthRepository",
+      "type": "DTO",
+      "file": "MMO-Server/src/Modules/Auth/AuthRepository",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/Auth/AuthModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "AuthRepository",
+        "ServerContext",
+        "iomanip",
+        "sstream",
+        "random",
+        "IAuthRepository",
+        "DatabaseManager"
+      ],
+      "baseClasses": [
+        "IAuthRepository"
+      ],
+      "color": "#f59e0b",
+      "status": "verified",
+      "initialX": -772.8537981165563,
+      "initialY": -1400.9628855672136,
+      "sectorAngle": 4.2082729499249325,
+      "sectorWidth": 0.08767235312343609
+    },
+    "MMO-Server/src/Modules/Auth/Handlers/LoginHandler": {
+      "id": "MMO-Server/src/Modules/Auth/Handlers/LoginHandler",
+      "name": "LoginHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/Auth/Handlers/LoginHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/Auth/AuthModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "LoginHandler",
+        "Session",
+        "iostream",
+        "IPacketHandler",
+        "IAuthRepository"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": -647.2170279259101,
+      "initialY": -1463.2532654201566,
+      "sectorAngle": 4.295945303048368,
+      "sectorWidth": 0.08767235312343609
+    },
+    "MMO-Server/src/Modules/Auth/Handlers/RegisterHandler": {
+      "id": "MMO-Server/src/Modules/Auth/Handlers/RegisterHandler",
+      "name": "RegisterHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/Auth/Handlers/RegisterHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/Auth/AuthModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "RegisterHandler",
+        "Session",
+        "iostream",
+        "IPacketHandler",
+        "IAuthRepository"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": -516.6086476343146,
+      "initialY": -1514.3036370521747,
+      "sectorAngle": 4.383617656171804,
+      "sectorWidth": 0.08767235312343609
+    },
+    "MMO-Server/src/Shared/Architecture/IModule": {
+      "id": "MMO-Server/src/Shared/Architecture/IModule",
+      "name": "IModule",
+      "type": "Component",
+      "file": "MMO-Server/src/Shared/Architecture/IModule",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/Auth/AuthModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string"
+      ],
+      "baseClasses": [],
+      "color": "#00E0FF",
+      "status": "verified",
+      "initialX": -382.03192803766825,
+      "initialY": -1553.721856047543,
+      "sectorAngle": 4.47129000929524,
+      "sectorWidth": 0.08767235312343609
+    },
+    "MMO-Server/src/Modules/Auth/IAuthRepository": {
+      "id": "MMO-Server/src/Modules/Auth/IAuthRepository",
+      "name": "IAuthRepository",
+      "type": "DTO",
+      "file": "MMO-Server/src/Modules/Auth/IAuthRepository",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/Auth/AuthModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "optional",
+        "cstdint",
+        "TraceContext"
+      ],
+      "baseClasses": [],
+      "color": "#f59e0b",
+      "status": "verified",
+      "initialX": -244.52062280688952,
+      "initialY": -1581.2051305956893,
+      "sectorAngle": 4.558962362418676,
+      "sectorWidth": 0.08767235312343609
+    },
+    "MMO-Server/src/Modules/Character/CharacterRepository": {
+      "id": "MMO-Server/src/Modules/Character/CharacterRepository",
+      "name": "CharacterRepository",
+      "type": "DTO",
+      "file": "MMO-Server/src/Modules/Character/CharacterRepository",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/Character/CharacterModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "CharacterRepository",
+        "RedisManager",
+        "ServerContext",
+        "iostream",
+        "ICharacterRepository",
+        "DatabaseManager"
+      ],
+      "baseClasses": [
+        "ICharacterRepository"
+      ],
+      "color": "#f59e0b",
+      "status": "verified",
+      "initialX": -107.07501349713304,
+      "initialY": -1596.4131487445813,
+      "sectorAngle": 4.645417043970955,
+      "sectorWidth": 0.08523700998111841
+    },
+    "MMO-Server/src/Modules/Character/Handlers/CharacterListHandler": {
+      "id": "MMO-Server/src/Modules/Character/Handlers/CharacterListHandler",
+      "name": "CharacterListHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/Character/Handlers/CharacterListHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/Character/CharacterModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "CharacterListHandler",
+        "Session",
+        "Protocol_generated",
+        "vector",
+        "iostream",
+        "IPacketHandler",
+        "ICharacterRepository"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 29.222492811081302,
+      "initialY": -1599.7331170898183,
+      "sectorAngle": 4.730654053952073,
+      "sectorWidth": 0.08523700998111841
+    },
+    "MMO-Server/src/Modules/Character/Handlers/CreateCharacterHandler": {
+      "id": "MMO-Server/src/Modules/Character/Handlers/CreateCharacterHandler",
+      "name": "CreateCharacterHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/Character/Handlers/CreateCharacterHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/Character/CharacterModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "CreateCharacterHandler",
+        "Session",
+        "iostream",
+        "IPacketHandler",
+        "ICharacterRepository"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 165.30781605537436,
+      "initialY": -1591.4375029987834,
+      "sectorAngle": 4.815891063933192,
+      "sectorWidth": 0.08523700998111841
+    },
+    "MMO-Server/src/Modules/Character/Handlers/DeleteCharacterHandler": {
+      "id": "MMO-Server/src/Modules/Character/Handlers/DeleteCharacterHandler",
+      "name": "DeleteCharacterHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/Character/Handlers/DeleteCharacterHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/Character/CharacterModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "DeleteCharacterHandler",
+        "Session",
+        "iostream",
+        "IPacketHandler",
+        "ICharacterRepository"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 300.19284748584016,
+      "initialY": -1571.5865405119575,
+      "sectorAngle": 4.90112807391431,
+      "sectorWidth": 0.08523700998111841
+    },
+    "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler": {
+      "id": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "name": "SelectCharacterHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/Character/CharacterModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "SelectCharacterHandler",
+        "Session",
+        "SessionManager",
+        "ServerContext",
+        "RedisManager",
+        "EntityManager",
+        "WorldContext",
+        "NavigationManager",
+        "iostream",
+        "IPacketHandler",
+        "ICharacterRepository"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 432.8981936116132,
+      "initialY": -1540.324366478633,
+      "sectorAngle": 4.9863650838954285,
+      "sectorWidth": 0.08523700998111841
+    },
+    "MMO-Server/src/Modules/Character/ICharacterRepository": {
+      "id": "MMO-Server/src/Modules/Character/ICharacterRepository",
+      "name": "ICharacterRepository",
+      "type": "DTO",
+      "file": "MMO-Server/src/Modules/Character/ICharacterRepository",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/Character/CharacterModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "vector",
+        "string",
+        "optional",
+        "cstdint",
+        "TraceContext"
+      ],
+      "baseClasses": [],
+      "color": "#f59e0b",
+      "status": "verified",
+      "initialX": 562.4602875281951,
+      "initialY": -1497.8779739864326,
+      "sectorAngle": 5.071602093876547,
+      "sectorWidth": 0.08523700998111841
+    },
+    "MMO-Server/src/Modules/World/WorldRepository": {
+      "id": "MMO-Server/src/Modules/World/WorldRepository",
+      "name": "WorldRepository",
+      "type": "DTO",
+      "file": "MMO-Server/src/Modules/World/WorldRepository",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/World/WorldModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "WorldRepository",
+        "RedisManager",
+        "ServerContext",
+        "iostream",
+        "IWorldRepository",
+        "DatabaseManager"
+      ],
+      "baseClasses": [
+        "IWorldRepository"
+      ],
+      "color": "#f59e0b",
+      "status": "verified",
+      "initialX": 909.7256731467382,
+      "initialY": -1316.2063666529325,
+      "sectorAngle": 5.317165860726911,
+      "sectorWidth": 0.0811781047439223
+    },
+    "MMO-Server/src/Modules/World/Handlers/RealmListHandler": {
+      "id": "MMO-Server/src/Modules/World/Handlers/RealmListHandler",
+      "name": "RealmListHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/World/Handlers/RealmListHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/World/WorldModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "RealmListHandler",
+        "Session",
+        "vector",
+        "iostream",
+        "IPacketHandler",
+        "IWorldRepository"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 1013.4596504745655,
+      "initialY": -1238.1032012154606,
+      "sectorAngle": 5.398343965470834,
+      "sectorWidth": 0.0811781047439223
+    },
+    "MMO-Server/src/Modules/World/Handlers/JoinRealmHandler": {
+      "id": "MMO-Server/src/Modules/World/Handlers/JoinRealmHandler",
+      "name": "JoinRealmHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/World/Handlers/JoinRealmHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/World/WorldModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "JoinRealmHandler",
+        "Session",
+        "iostream",
+        "IPacketHandler",
+        "IWorldRepository",
+        "WorldContext"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 1110.5187123530147,
+      "initialY": -1151.845558012793,
+      "sectorAngle": 5.479522070214756,
+      "sectorWidth": 0.0811781047439223
+    },
+    "MMO-Server/src/Modules/World/Handlers/MovementHandler": {
+      "id": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "name": "MovementHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/World/WorldModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "MovementHandler",
+        "Session",
+        "SessionManager",
+        "Entity",
+        "EntityManager",
+        "ServerContext",
+        "WorldContext",
+        "WorldCommandQueue",
+        "NavigationManager",
+        "Protocol_generated",
+        "iostream",
+        "cmath",
+        "IPacketHandler",
+        "IWorldRepository"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 1200.2636019243196,
+      "initialY": -1058.0015528796062,
+      "sectorAngle": 5.560700174958678,
+      "sectorWidth": 0.0811781047439223
+    },
+    "MMO-Server/src/Modules/World/Handlers/InteractionHandler": {
+      "id": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "name": "InteractionHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/World/WorldModule",
+      "islandId": "island_0",
+      "descendantCount": 1,
+      "dependencies": [
+        "InteractionHandler",
+        "Session",
+        "EntityManager",
+        "WorldContext",
+        "ServerContext",
+        "CombatService",
+        "MerchantTemplate",
+        "QuestTemplate",
+        "iostream",
+        "cmath",
+        "IPacketHandler",
+        "IWorldRepository"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 743.1147027765031,
+      "initialY": -1416.9617279649403,
+      "sectorAngle": 5.195398703611028,
+      "sectorWidth": 0.1623562094878446
+    },
+    "MMO-Server/src/Modules/World/Handlers/ChatHandler": {
+      "id": "MMO-Server/src/Modules/World/Handlers/ChatHandler",
+      "name": "ChatHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/World/Handlers/ChatHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/World/WorldModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "ChatHandler",
+        "Session",
+        "Entity",
+        "EntityManager",
+        "WorldContext",
+        "iostream",
+        "sstream",
+        "vector",
+        "IPacketHandler",
+        "IWorldRepository"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 1282.1032354195102,
+      "initialY": -957.1892674527982,
+      "sectorAngle": 5.641878279702601,
+      "sectorWidth": 0.0811781047439223
+    },
+    "MMO-Server/src/Engine/Data/Templates/UnitTemplate": {
+      "id": "MMO-Server/src/Engine/Data/Templates/UnitTemplate",
+      "name": "UnitTemplate",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/Templates/UnitTemplate",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/World/WorldModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "cstdint",
+        "json",
+        "Protocol_generated"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 1355.498595193697,
+      "initialY": -850.0726783210442,
+      "sectorAngle": 5.723056384446523,
+      "sectorWidth": 0.0811781047439223
+    },
+    "MMO-Server/src/Modules/World/IWorldRepository": {
+      "id": "MMO-Server/src/Modules/World/IWorldRepository",
+      "name": "IWorldRepository",
+      "type": "DTO",
+      "file": "MMO-Server/src/Modules/World/IWorldRepository",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/World/WorldModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "vector",
+        "string",
+        "cstdint",
+        "TraceContext"
+      ],
+      "baseClasses": [],
+      "color": "#f59e0b",
+      "status": "verified",
+      "initialX": 1419.966279839987,
+      "initialY": -737.3572838979674,
+      "sectorAngle": 5.804234489190446,
+      "sectorWidth": 0.0811781047439223
+    },
+    "MMO-Server/src/Modules/System/Handlers/PingHandler": {
+      "id": "MMO-Server/src/Modules/System/Handlers/PingHandler",
+      "name": "PingHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/System/Handlers/PingHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/System/SystemModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "PingHandler",
+        "Session",
+        "Protocol_generated",
+        "chrono",
+        "IPacketHandler"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 1564.8333365978392,
+      "initialY": -333.61149361506415,
+      "sectorAngle": 6.073136961154688,
+      "sectorWidth": 0.09132536783691259
+    },
+    "MMO-Server/src/Modules/System/Handlers/AdminCommandHandler": {
+      "id": "MMO-Server/src/Modules/System/Handlers/AdminCommandHandler",
+      "name": "AdminCommandHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/System/Handlers/AdminCommandHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/System/SystemModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "AdminCommandHandler",
+        "Session",
+        "ServerContext",
+        "Protocol_generated",
+        "Version",
+        "iostream",
+        "IPacketHandler",
+        "memory"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 1588.7371222139627,
+      "initialY": -189.51083478074878,
+      "sectorAngle": 6.1644623289916005,
+      "sectorWidth": 0.09132536783691259
+    },
+    "MMO-Server/src/Modules/System/Handlers/WorldIngestHandler": {
+      "id": "MMO-Server/src/Modules/System/Handlers/WorldIngestHandler",
+      "name": "WorldIngestHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Modules/System/Handlers/WorldIngestHandler",
+      "depth": 2,
+      "parentId": "MMO-Server/src/Modules/System/SystemModule",
+      "islandId": "island_0",
+      "descendantCount": 1,
+      "dependencies": [
+        "WorldIngestHandler",
+        "Session",
+        "ServerContext",
+        "WorldIngestService",
+        "Protocol_generated",
+        "iostream",
+        "IPacketHandler"
+      ],
+      "baseClasses": [
+        "Shared"
+      ],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 1504.6156781439315,
+      "initialY": -544.1798058394645,
+      "sectorAngle": 5.93614890939932,
+      "sectorWidth": 0.18265073567382517
+    },
+    "MMO-Server/src/Shared/Cryptography/Crypto": {
+      "id": "MMO-Server/src/Shared/Cryptography/Crypto",
+      "name": "Crypto",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Shared/Cryptography/Crypto",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Host/Session",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "vector",
+        "string",
+        "rand",
+        "sha",
+        "evp",
+        "hmac",
+        "iomanip",
+        "sstream"
+      ],
+      "baseClasses": [],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 2365.2107048973667,
+      "initialY": 407.15884055108324,
+      "sectorAngle": 0.17047401996223682,
+      "sectorWidth": 0.19482745138541352
+    },
+    "MMO-Server/src/Engine/Data/Templates/ArchetypeTemplate": {
+      "id": "MMO-Server/src/Engine/Data/Templates/ArchetypeTemplate",
+      "name": "ArchetypeTemplate",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/Templates/ArchetypeTemplate",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Data/TemplateManager",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "cstdint",
+        "vector",
+        "map",
+        "json",
+        "Protocol_generated"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 2194.4624672128425,
+      "initialY": 971.7687379176813,
+      "sectorAngle": 0.416873443773201,
+      "sectorWidth": 0.10314394485110129
+    },
+    "MMO-Server/src/Engine/Data/Templates/VisualProfileTemplate": {
+      "id": "MMO-Server/src/Engine/Data/Templates/VisualProfileTemplate",
+      "name": "VisualProfileTemplate",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/Templates/VisualProfileTemplate",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Data/TemplateManager",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "cstdint",
+        "vector",
+        "json"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 2082.745294762587,
+      "initialY": 1192.5485470807064,
+      "sectorAngle": 0.5200173886243022,
+      "sectorWidth": 0.10314394485110129
+    },
+    "MMO-Server/src/Engine/Data/Templates/FactionTemplate": {
+      "id": "MMO-Server/src/Engine/Data/Templates/FactionTemplate",
+      "name": "FactionTemplate",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/Templates/FactionTemplate",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Data/TemplateManager",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "cstdint",
+        "vector",
+        "json"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 1948.8901124628476,
+      "initialY": 1400.6524656546856,
+      "sectorAngle": 0.6231613334754036,
+      "sectorWidth": 0.10314394485110129
+    },
+    "MMO-Server/src/Shared/Architecture/IPacketHandler": {
+      "id": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "name": "IPacketHandler",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Shared/Architecture/PacketDispatcher",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "asio",
+        "memory",
+        "Protocol_generated",
+        "OpCodes",
+        "TraceContext"
+      ],
+      "baseClasses": [],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 1752.6282791197739,
+      "initialY": 1639.601816060735,
+      "sectorAngle": 0.7520912645392801,
+      "sectorWidth": 0.15471591727665193
+    },
+    "MMO-Server/src/Engine/Components/InventoryComponent": {
+      "id": "MMO-Server/src/Engine/Components/InventoryComponent",
+      "name": "InventoryComponent",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Components/InventoryComponent",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Modules/Inventory/IInventoryRepository",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "InventoryComponent",
+        "Entity",
+        "ArchetypeTemplate",
+        "ItemTemplate",
+        "vector",
+        "optional",
+        "cstdint",
+        "mutex",
+        "Protocol_generated"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 1479.0320611586135,
+      "initialY": 1890.0963367153813,
+      "sectorAngle": 0.906807181815932,
+      "sectorWidth": 0.15471591727665193
+    },
+    "MMO-Server/src/Engine/Components/ComponentBits": {
+      "id": "MMO-Server/src/Engine/Components/ComponentBits",
+      "name": "ComponentBits",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Components/ComponentBits",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Entity",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "cstdint"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -871.5780229736218,
+      "initialY": 2236.1466297784214,
+      "sectorAngle": 1.9424508672094627,
+      "sectorWidth": 0.08576643240336139
+    },
+    "MMO-Server/src/Engine/Components/StatsComponent": {
+      "id": "MMO-Server/src/Engine/Components/StatsComponent",
+      "name": "StatsComponent",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Components/StatsComponent",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Entity",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "StatsComponent",
+        "Entity",
+        "ServerContext",
+        "DataRepository",
+        "ClassTemplate",
+        "iostream",
+        "cstdint",
+        "ComponentBits"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1059.9256544314449,
+      "initialY": 2153.2667291996304,
+      "sectorAngle": 2.028217299612824,
+      "sectorWidth": 0.08576643240336139
+    },
+    "MMO-Server/src/Engine/Components/InteractableComponent": {
+      "id": "MMO-Server/src/Engine/Components/InteractableComponent",
+      "name": "InteractableComponent",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Components/InteractableComponent",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Entity",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "cstdint",
+        "string",
+        "vector",
+        "set",
+        "Protocol_generated"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1240.4813771035851,
+      "initialY": 2054.557361832274,
+      "sectorAngle": 2.1139837320161856,
+      "sectorWidth": 0.08576643240336139
+    },
+    "MMO-Server/src/Engine/Components/AggroComponent": {
+      "id": "MMO-Server/src/Engine/Components/AggroComponent",
+      "name": "AggroComponent",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Components/AggroComponent",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Entity",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "cstdint",
+        "unordered_map",
+        "chrono"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1411.9178585343052,
+      "initialY": 1940.7441770495927,
+      "sectorAngle": 2.199750164419547,
+      "sectorWidth": 0.08576643240336139
+    },
+    "MMO-Server/src/Engine/Components/WanderComponent": {
+      "id": "MMO-Server/src/Engine/Components/WanderComponent",
+      "name": "WanderComponent",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Components/WanderComponent",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Entity",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "chrono",
+        "random",
+        "string",
+        "vector",
+        "Protocol_generated"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1572.9748052112623,
+      "initialY": 1812.6638580196252,
+      "sectorAngle": 2.2855165968229088,
+      "sectorWidth": 0.08576643240336139
+    },
+    "MMO-Server/src/Engine/Components/CastingComponent": {
+      "id": "MMO-Server/src/Engine/Components/CastingComponent",
+      "name": "CastingComponent",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Components/CastingComponent",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Entity",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "chrono",
+        "cstdint",
+        "string",
+        "Protocol_generated"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1722.468227453141,
+      "initialY": 1671.2579709351978,
+      "sectorAngle": 2.3712830292262703,
+      "sectorWidth": 0.08576643240336139
+    },
+    "MMO-Server/src/Engine/Components/AuraComponent": {
+      "id": "MMO-Server/src/Engine/Components/AuraComponent",
+      "name": "AuraComponent",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Components/AuraComponent",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Entity",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "vector",
+        "cstdint",
+        "algorithm"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1859.299143359373,
+      "initialY": 1517.5660432096856,
+      "sectorAngle": 2.457049461629632,
+      "sectorWidth": 0.08576643240336139
+    },
+    "MMO-Server/src/Engine/IEntityController": {
+      "id": "MMO-Server/src/Engine/IEntityController",
+      "name": "IEntityController",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/IEntityController",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Entity",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "cstdint"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1982.4616578359532,
+      "initialY": 1352.7179215233023,
+      "sectorAngle": 2.5428158940329935,
+      "sectorWidth": 0.08576643240336139
+    },
+    "MMO-Server/src/Engine/Spatial/ISpatialIndex": {
+      "id": "MMO-Server/src/Engine/Spatial/ISpatialIndex",
+      "name": "ISpatialIndex",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Spatial/ISpatialIndex",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/InterestManager",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "vector",
+        "functional",
+        "Entity"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -2379.6744567164656,
+      "initialY": -311.6881134262182,
+      "sectorAngle": 3.271830569461564,
+      "sectorWidth": 0.1524736576059758
+    },
+    "MMO-Server/src/Engine/Navigation/RecastNavMeshProvider": {
+      "id": "MMO-Server/src/Engine/Navigation/RecastNavMeshProvider",
+      "name": "RecastNavMeshProvider",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Navigation/RecastNavMeshProvider",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "RecastNavMeshProvider",
+        "DetourCommon",
+        "iostream",
+        "fstream",
+        "vector",
+        "cstring",
+        "filesystem",
+        "INavigationProvider",
+        "DetourNavMesh",
+        "DetourNavMeshQuery",
+        "string"
+      ],
+      "baseClasses": [
+        "INavigationProvider"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -2383.442610564535,
+      "initialY": 281.42729459900414,
+      "sectorAngle": 3.0240608758518537,
+      "sectorWidth": 0.11435524320448184
+    },
+    "MMO-Server/src/Engine/Navigation/INavigationProvider": {
+      "id": "MMO-Server/src/Engine/Navigation/INavigationProvider",
+      "name": "INavigationProvider",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Navigation/INavigationProvider",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "vector",
+        "string"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -2399.9878915642107,
+      "initialY": 7.623670059339859,
+      "sectorAngle": 3.1384161190563353,
+      "sectorWidth": 0.11435524320448184
+    },
+    "MMO-Server/src/Engine/AI/PerceptionModule": {
+      "id": "MMO-Server/src/Engine/AI/PerceptionModule",
+      "name": "PerceptionModule",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/AI/PerceptionModule",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Controllers/NPCController",
+      "islandId": "island_0",
+      "descendantCount": 1,
+      "dependencies": [
+        "PerceptionModule",
+        "Entity",
+        "ServerContext",
+        "WorldContext",
+        "EntityManager",
+        "ISpatialIndex",
+        "FactionManager",
+        "cmath",
+        "cstdint",
+        "CognitiveMemory"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -2149.888980795987,
+      "initialY": 1066.7602215362133,
+      "sectorAngle": 2.680995146238408,
+      "sectorWidth": 0.19059207200746975
+    },
+    "MMO-Server/src/Engine/AI/CognitiveMemory": {
+      "id": "MMO-Server/src/Engine/AI/CognitiveMemory",
+      "name": "CognitiveMemory",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/AI/CognitiveMemory",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Controllers/NPCController",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "cstdint",
+        "vector",
+        "optional"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -2279.9302779312193,
+      "initialY": 749.6118514087631,
+      "sectorAngle": 2.82393920024401,
+      "sectorWidth": 0.09529603600373487
+    },
+    "MMO-Server/src/Engine/AI/MotivationEngine": {
+      "id": "MMO-Server/src/Engine/AI/MotivationEngine",
+      "name": "MotivationEngine",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/AI/MotivationEngine",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Engine/Controllers/NPCController",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "algorithm",
+        "CognitiveMemory",
+        "ArchetypeTemplate"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -2340.912671462558,
+      "initialY": 529.2710690997844,
+      "sectorAngle": 2.919235236247745,
+      "sectorWidth": 0.09529603600373487
+    },
+    "MMO-Server/src/Engine/Combat/CombatService": {
+      "id": "MMO-Server/src/Engine/Combat/CombatService",
+      "name": "CombatService",
+      "type": "Service",
+      "file": "MMO-Server/src/Engine/Combat/CombatService",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "CombatService",
+        "Entity",
+        "EntityManager",
+        "WorldContext",
+        "ServerContext",
+        "iostream",
+        "cmath",
+        "random",
+        "cstdint",
+        "memory",
+        "string"
+      ],
+      "baseClasses": [],
+      "color": "#00FF95",
+      "status": "verified",
+      "initialX": 1114.6720541647546,
+      "initialY": -2125.4425919474106,
+      "sectorAngle": 5.195398703611028,
+      "sectorWidth": 0.1623562094878446
+    },
+    "MMO-Server/src/Engine/Data/WorldIngestService": {
+      "id": "MMO-Server/src/Engine/Data/WorldIngestService",
+      "name": "WorldIngestService",
+      "type": "Service",
+      "file": "MMO-Server/src/Engine/Data/WorldIngestService",
+      "depth": 3,
+      "parentId": "MMO-Server/src/Modules/System/Handlers/WorldIngestHandler",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "vector",
+        "string",
+        "fstream",
+        "filesystem",
+        "iostream",
+        "mutex"
+      ],
+      "baseClasses": [],
+      "color": "#00FF95",
+      "status": "verified",
+      "initialX": 2256.9235172158974,
+      "initialY": -816.2697087591968,
+      "sectorAngle": 5.93614890939932,
+      "sectorWidth": 0.18265073567382517
+    },
+    "MMO-Server/src/Engine/Data/FactionManager": {
+      "id": "MMO-Server/src/Engine/Data/FactionManager",
+      "name": "FactionManager",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/FactionManager",
+      "depth": 4,
+      "parentId": "MMO-Server/src/Engine/AI/PerceptionModule",
+      "islandId": "island_0",
+      "descendantCount": 0,
+      "dependencies": [
+        "cstdint",
+        "TemplateManager"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -2866.5186410613164,
+      "initialY": 1422.3469620482845,
+      "sectorAngle": 2.680995146238408,
+      "sectorWidth": 0.19059207200746975
+    },
+    "atlas/src/index": {
+      "id": "atlas/src/index",
+      "name": "index",
+      "type": "Unknown",
+      "file": "atlas/src/index",
+      "depth": 0,
+      "islandId": "island_1",
+      "descendantCount": 20,
+      "dependencies": [
+        "express",
+        "path",
+        "fs-extra",
+        "AtlasEngine",
+        "FileScanner",
+        "GraphBuilder",
+        "PolarLayoutStrategy",
+        "Config"
+      ],
+      "baseClasses": [],
+      "color": "#FFFFFF",
+      "status": "verified",
+      "initialX": 0,
+      "initialY": 0,
+      "sectorAngle": 0,
+      "sectorWidth": 6.283185307179586
+    },
+    "atlas/src/Core/Application/AtlasEngine": {
+      "id": "atlas/src/Core/Application/AtlasEngine",
+      "name": "AtlasEngine",
+      "type": "System",
+      "file": "atlas/src/Core/Application/AtlasEngine",
+      "depth": 1,
+      "parentId": "atlas/src/index",
+      "islandId": "island_1",
+      "descendantCount": 6,
+      "dependencies": [
+        "path",
+        "fs-extra",
+        "IScanner",
+        "IGraphBuilder",
+        "ILayoutStrategy",
+        "Protocol",
+        "ColorProvider",
+        "HeartbeatService",
+        "Config",
+        "Date"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 363.1923997916375,
+      "initialY": 712.8052193506942,
+      "sectorAngle": 1.0995574287564276,
+      "sectorWidth": 2.199114857512855
+    },
+    "atlas/src/Core/Infrastructure/FileSystem/FileScanner": {
+      "id": "atlas/src/Core/Infrastructure/FileSystem/FileScanner",
+      "name": "FileScanner",
+      "type": "System",
+      "file": "atlas/src/Core/Infrastructure/FileSystem/FileScanner",
+      "depth": 1,
+      "parentId": "atlas/src/index",
+      "islandId": "island_1",
+      "descendantCount": 7,
+      "dependencies": [
+        "fast-glob",
+        "path",
+        "IScanner",
+        "SourceFile",
+        "ParserFactory",
+        "Set"
+      ],
+      "baseClasses": [
+        "IScanner"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -760.8452130361229,
+      "initialY": -247.21359549995782,
+      "sectorAngle": 3.4557519189487724,
+      "sectorWidth": 2.5132741228718345
+    },
+    "atlas/src/Core/Infrastructure/Graph/GraphBuilder": {
+      "id": "atlas/src/Core/Infrastructure/Graph/GraphBuilder",
+      "name": "GraphBuilder",
+      "type": "System",
+      "file": "atlas/src/Core/Infrastructure/Graph/GraphBuilder",
+      "depth": 1,
+      "parentId": "atlas/src/index",
+      "islandId": "island_1",
+      "descendantCount": 2,
+      "dependencies": [
+        "IGraphBuilder",
+        "SourceFile",
+        "GraphNode",
+        "Protocol",
+        "MetricsCalculator",
+        "ColorProvider",
+        "Map"
+      ],
+      "baseClasses": [
+        "IGraphBuilder"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 363.1923997916373,
+      "initialY": -712.8052193506944,
+      "sectorAngle": 5.183627878423159,
+      "sectorWidth": 0.9424777960769379
+    },
+    "atlas/src/Core/Infrastructure/Layout/PolarLayoutStrategy": {
+      "id": "atlas/src/Core/Infrastructure/Layout/PolarLayoutStrategy",
+      "name": "PolarLayoutStrategy",
+      "type": "System",
+      "file": "atlas/src/Core/Infrastructure/Layout/PolarLayoutStrategy",
+      "depth": 1,
+      "parentId": "atlas/src/index",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [
+        "ILayoutStrategy",
+        "GraphNode"
+      ],
+      "baseClasses": [
+        "ILayoutStrategy"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 712.8052193506942,
+      "initialY": -363.19239979163757,
+      "sectorAngle": 5.811946409141117,
+      "sectorWidth": 0.3141592653589793
+    },
+    "atlas/src/Shared/Config": {
+      "id": "atlas/src/Shared/Config",
+      "name": "Config",
+      "type": "Unknown",
+      "file": "atlas/src/Shared/Config",
+      "depth": 1,
+      "parentId": "atlas/src/index",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [],
+      "baseClasses": [],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 790.1506724761101,
+      "initialY": -125.1475720321849,
+      "sectorAngle": 6.126105674500097,
+      "sectorWidth": 0.3141592653589793
+    },
+    "atlas/src/Core/Domain/Services/IScanner": {
+      "id": "atlas/src/Core/Domain/Services/IScanner",
+      "name": "IScanner",
+      "type": "Interface",
+      "file": "atlas/src/Core/Domain/Services/IScanner",
+      "depth": 2,
+      "parentId": "atlas/src/Core/Application/AtlasEngine",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [
+        "SourceFile"
+      ],
+      "baseClasses": [],
+      "color": "#8b5cf6",
+      "status": "verified",
+      "initialX": 1573.2078521023275,
+      "initialY": 291.5768407874359,
+      "sectorAngle": 0.18325957145940458,
+      "sectorWidth": 0.36651914291880916
+    },
+    "atlas/src/Core/Domain/Services/IGraphBuilder": {
+      "id": "atlas/src/Core/Domain/Services/IGraphBuilder",
+      "name": "IGraphBuilder",
+      "type": "Interface",
+      "file": "atlas/src/Core/Domain/Services/IGraphBuilder",
+      "depth": 2,
+      "parentId": "atlas/src/Core/Application/AtlasEngine",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [
+        "SourceFile",
+        "GraphNode",
+        "Protocol"
+      ],
+      "baseClasses": [],
+      "color": "#8b5cf6",
+      "status": "verified",
+      "initialX": 1364.2242629665477,
+      "initialY": 835.9977035455181,
+      "sectorAngle": 0.5497787143782138,
+      "sectorWidth": 0.36651914291880916
+    },
+    "atlas/src/Core/Domain/Services/ILayoutStrategy": {
+      "id": "atlas/src/Core/Domain/Services/ILayoutStrategy",
+      "name": "ILayoutStrategy",
+      "type": "Interface",
+      "file": "atlas/src/Core/Domain/Services/ILayoutStrategy",
+      "depth": 2,
+      "parentId": "atlas/src/Core/Application/AtlasEngine",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [
+        "GraphNode"
+      ],
+      "baseClasses": [],
+      "color": "#8b5cf6",
+      "status": "verified",
+      "initialX": 974.0182864139532,
+      "initialY": 1269.365344465976,
+      "sectorAngle": 0.9162978572970228,
+      "sectorWidth": 0.36651914291880916
+    },
+    "atlas/src/Shared/Protocol": {
+      "id": "atlas/src/Shared/Protocol",
+      "name": "Protocol",
+      "type": "Unknown",
+      "file": "atlas/src/Shared/Protocol",
+      "depth": 2,
+      "parentId": "atlas/src/Core/Application/AtlasEngine",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [],
+      "baseClasses": [],
+      "color": "#64748b",
+      "status": "verified",
+      "initialX": 454.4245515262764,
+      "initialY": 1534.1115757891089,
+      "sectorAngle": 1.2828170002158321,
+      "sectorWidth": 0.36651914291880916
+    },
+    "atlas/src/Core/Infrastructure/Visualization/ColorProvider": {
+      "id": "atlas/src/Core/Infrastructure/Visualization/ColorProvider",
+      "name": "ColorProvider",
+      "type": "System",
+      "file": "atlas/src/Core/Infrastructure/Visualization/ColorProvider",
+      "depth": 2,
+      "parentId": "atlas/src/Core/Application/AtlasEngine",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [
+        "Protocol"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -125.53455316455147,
+      "initialY": 1595.0677339730048,
+      "sectorAngle": 1.6493361431346412,
+      "sectorWidth": 0.36651914291880916
+    },
+    "atlas/src/Core/Application/HeartbeatService": {
+      "id": "atlas/src/Core/Application/HeartbeatService",
+      "name": "HeartbeatService",
+      "type": "Service",
+      "file": "atlas/src/Core/Application/HeartbeatService",
+      "depth": 2,
+      "parentId": "atlas/src/Core/Application/AtlasEngine",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [
+        "Date"
+      ],
+      "baseClasses": [],
+      "color": "#00FF95",
+      "status": "verified",
+      "initialX": -688.8177548932719,
+      "initialY": 1444.1364549597772,
+      "sectorAngle": 2.0158552860534504,
+      "sectorWidth": 0.36651914291880916
+    },
+    "atlas/src/Core/Domain/Model/SourceFile": {
+      "id": "atlas/src/Core/Domain/Model/SourceFile",
+      "name": "SourceFile",
+      "type": "Interface",
+      "file": "atlas/src/Core/Domain/Model/SourceFile",
+      "depth": 2,
+      "parentId": "atlas/src/Core/Infrastructure/FileSystem/FileScanner",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [
+        "Protocol"
+      ],
+      "baseClasses": [],
+      "color": "#8b5cf6",
+      "status": "verified",
+      "initialX": -285.6910316778189,
+      "initialY": -1574.2873417578076,
+      "sectorAngle": 4.532869400179559,
+      "sectorWidth": 0.35903916041026207
+    },
+    "atlas/src/Core/Infrastructure/FileSystem/Parsers/ParserFactory": {
+      "id": "atlas/src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "name": "ParserFactory",
+      "type": "System",
+      "file": "atlas/src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "depth": 2,
+      "parentId": "atlas/src/Core/Infrastructure/FileSystem/FileScanner",
+      "islandId": "island_1",
+      "descendantCount": 5,
+      "dependencies": [
+        "IParser",
+        "CSharpParser",
+        "CppParser",
+        "TsParser"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1585.5196188286957,
+      "initialY": -214.77322530824856,
+      "sectorAngle": 3.2762323387436414,
+      "sectorWidth": 2.1542349624615724
+    },
+    "atlas/src/Core/Domain/Model/GraphNode": {
+      "id": "atlas/src/Core/Domain/Model/GraphNode",
+      "name": "GraphNode",
+      "type": "Interface",
+      "file": "atlas/src/Core/Domain/Model/GraphNode",
+      "depth": 2,
+      "parentId": "atlas/src/Core/Infrastructure/Graph/GraphBuilder",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [
+        "Protocol"
+      ],
+      "baseClasses": [],
+      "color": "#8b5cf6",
+      "status": "verified",
+      "initialX": 373.5125821694476,
+      "initialY": -1555.7918726362827,
+      "sectorAngle": 4.948008429403924,
+      "sectorWidth": 0.47123889803846897
+    },
+    "atlas/src/Core/Infrastructure/Graph/MetricsCalculator": {
+      "id": "atlas/src/Core/Infrastructure/Graph/MetricsCalculator",
+      "name": "MetricsCalculator",
+      "type": "System",
+      "file": "atlas/src/Core/Infrastructure/Graph/MetricsCalculator",
+      "depth": 2,
+      "parentId": "atlas/src/Core/Infrastructure/Graph/GraphBuilder",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [
+        "GraphNode",
+        "Protocol"
+      ],
+      "baseClasses": [],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": 1039.1168773282943,
+      "initialY": -1216.6495449600493,
+      "sectorAngle": 5.419247327442394,
+      "sectorWidth": 0.47123889803846897
+    },
+    "atlas/src/Core/Domain/Services/IParser": {
+      "id": "atlas/src/Core/Domain/Services/IParser",
+      "name": "IParser",
+      "type": "Interface",
+      "file": "atlas/src/Core/Domain/Services/IParser",
+      "depth": 3,
+      "parentId": "atlas/src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [
+        "SourceFile"
+      ],
+      "baseClasses": [],
+      "color": "#8b5cf6",
+      "status": "verified",
+      "initialX": -2378.2794282430436,
+      "initialY": -322.1598379623728,
+      "sectorAngle": 3.2762323387436414,
+      "sectorWidth": 0.4308469924923145
+    },
+    "atlas/src/Core/Infrastructure/FileSystem/Parsers/CSharpParser": {
+      "id": "atlas/src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
+      "name": "CSharpParser",
+      "type": "System",
+      "file": "atlas/src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
+      "depth": 3,
+      "parentId": "atlas/src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "islandId": "island_1",
+      "descendantCount": 1,
+      "dependencies": [
+        "BaseParser",
+        "Protocol",
+        "path"
+      ],
+      "baseClasses": [
+        "BaseParser"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -2092.6733430092695,
+      "initialY": 1175.0396927161262,
+      "sectorAngle": 2.6299618500051696,
+      "sectorWidth": 0.861693984984629
+    },
+    "atlas/src/Core/Infrastructure/FileSystem/Parsers/CppParser": {
+      "id": "atlas/src/Core/Infrastructure/FileSystem/Parsers/CppParser",
+      "name": "CppParser",
+      "type": "System",
+      "file": "atlas/src/Core/Infrastructure/FileSystem/Parsers/CppParser",
+      "depth": 3,
+      "parentId": "atlas/src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [
+        "BaseParser",
+        "path"
+      ],
+      "baseClasses": [
+        "BaseParser"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -2026.3870212048364,
+      "initialY": -1285.9843079495915,
+      "sectorAngle": 3.707079331235956,
+      "sectorWidth": 0.4308469924923145
+    },
+    "atlas/src/Core/Infrastructure/FileSystem/Parsers/TsParser": {
+      "id": "atlas/src/Core/Infrastructure/FileSystem/Parsers/TsParser",
+      "name": "TsParser",
+      "type": "System",
+      "file": "atlas/src/Core/Infrastructure/FileSystem/Parsers/TsParser",
+      "depth": 3,
+      "parentId": "atlas/src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [
+        "BaseParser",
+        "Protocol",
+        "Y",
+        "Z",
+        "X"
+      ],
+      "baseClasses": [
+        "BaseParser"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -1304.1210667075343,
+      "initialY": -2014.762577419385,
+      "sectorAngle": 4.13792632372827,
+      "sectorWidth": 0.4308469924923145
+    },
+    "atlas/src/Core/Infrastructure/FileSystem/Parsers/BaseParser": {
+      "id": "atlas/src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "name": "BaseParser",
+      "type": "System",
+      "file": "atlas/src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "depth": 4,
+      "parentId": "atlas/src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
+      "islandId": "island_1",
+      "descendantCount": 0,
+      "dependencies": [
+        "fs-extra",
+        "path",
+        "crypto",
+        "IParser",
+        "SourceFile",
+        "Protocol"
+      ],
+      "baseClasses": [
+        "IParser"
+      ],
+      "color": "#FF1F5E",
+      "status": "verified",
+      "initialX": -2790.2311240123595,
+      "initialY": 1566.7195902881683,
+      "sectorAngle": 2.6299618500051696,
+      "sectorWidth": 0.861693984984629
+    },
+    "MMO-Server/src/Shared/Cryptography/BigNumber": {
+      "id": "MMO-Server/src/Shared/Cryptography/BigNumber",
+      "name": "BigNumber",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Shared/Cryptography/BigNumber",
+      "depth": 0,
+      "islandId": "island_2",
+      "descendantCount": 0,
+      "dependencies": [
+        "bn",
+        "vector",
+        "cstdint",
+        "memory",
+        "string"
+      ],
+      "baseClasses": [],
+      "color": "#FFFFFF",
+      "status": "verified",
+      "initialX": 0,
+      "initialY": 0,
+      "sectorAngle": 0,
+      "sectorWidth": 6.283185307179586
+    },
+    "MMO-Server/src/Shared/Networking/Packet": {
+      "id": "MMO-Server/src/Shared/Networking/Packet",
+      "name": "Packet",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Shared/Networking/Packet",
+      "depth": 0,
+      "islandId": "island_3",
+      "descendantCount": 0,
+      "dependencies": [
+        "vector",
+        "cstdint",
+        "OpCodes"
+      ],
+      "baseClasses": [],
+      "color": "#FFFFFF",
+      "status": "verified",
+      "initialX": 0,
+      "initialY": 0,
+      "sectorAngle": 0,
+      "sectorWidth": 6.283185307179586
+    },
+    "MMO-Server/src/Tools/NavMeshBaker/Main": {
+      "id": "MMO-Server/src/Tools/NavMeshBaker/Main",
+      "name": "Main",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Tools/NavMeshBaker/Main",
+      "depth": 0,
+      "islandId": "island_4",
+      "descendantCount": 0,
+      "dependencies": [
+        "iostream",
+        "string",
+        "vector",
+        "fstream",
+        "sstream",
+        "cmath",
+        "cstring",
+        "algorithm",
+        "cfloat",
+        "filesystem",
+        "json",
+        "Recast",
+        "DetourNavMesh",
+        "DetourNavMeshBuilder"
+      ],
+      "baseClasses": [
+        "rcContext"
+      ],
+      "color": "#FFFFFF",
+      "status": "verified",
+      "initialX": 0,
+      "initialY": 0,
+      "sectorAngle": 0,
+      "sectorWidth": 6.283185307179586
+    },
+    "MMO-Server/src/Engine/Data/Templates/ActionTemplate": {
+      "id": "MMO-Server/src/Engine/Data/Templates/ActionTemplate",
+      "name": "ActionTemplate",
+      "type": "System",
+      "file": "MMO-Server/src/Engine/Data/Templates/ActionTemplate",
+      "depth": 0,
+      "islandId": "island_5",
+      "descendantCount": 0,
+      "dependencies": [
+        "string",
+        "cstdint",
+        "json"
+      ],
+      "baseClasses": [],
+      "color": "#FFFFFF",
+      "status": "verified",
+      "initialX": 0,
+      "initialY": 0,
+      "sectorAngle": 0,
+      "sectorWidth": 6.283185307179586
+    },
+    "MMO-Server/src/Shared/Protocol/Extensions/PacketEnvelope": {
+      "id": "MMO-Server/src/Shared/Protocol/Extensions/PacketEnvelope",
+      "name": "PacketEnvelope",
+      "type": "Unknown",
+      "file": "MMO-Server/src/Shared/Protocol/Extensions/PacketEnvelope",
+      "depth": 0,
+      "islandId": "island_6",
+      "descendantCount": 0,
+      "dependencies": [
+        "Cryptography",
+        "FlatBuffers",
+        "bb",
+        "Buffer",
+        "hmac",
+        "BitConverter"
+      ],
+      "baseClasses": [],
+      "color": "#FFFFFF",
+      "status": "verified",
+      "initialX": 0,
+      "initialY": 0,
+      "sectorAngle": 0,
+      "sectorWidth": 6.283185307179586
+    }
+  },
+  "edges": [
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Version",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Host/NetworkHost",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Engine/DatabaseManager",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Engine/RedisManager",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Engine/EntityManager",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Engine/PersistenceWorker",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Engine/WorldCommandQueue",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Engine/Data/DataRepository",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Engine/Data/Templates/ClassTemplate",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Modules/Auth/AuthModule",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Modules/Character/CharacterModule",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Modules/World/WorldModule",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Modules/System/SystemModule",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Main",
+      "target": "MMO-Server/src/Modules/Inventory/InventoryModule",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Host/NetworkHost",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Host/NetworkHost",
+      "target": "MMO-Server/src/Host/SessionManager",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/Events/EventBus",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/Data/WorldRules",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/Data/TemplateManager",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/Data/Templates/SpawnTemplate",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/Data/Templates/InteractionTemplate",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/Data/Templates/GossipTemplate",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/Data/Templates/QuestTemplate",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/Data/Templates/MerchantTemplate",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/Data/Templates/ItemTemplate",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Shared/Architecture/PacketDispatcher",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Modules/Inventory/IInventoryRepository",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Modules/Inventory/InventoryRepository",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/DatabaseManager",
+      "target": "MMO-Server/src/Shared/Architecture/TraceContext",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Engine/InterestManager",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Engine/Controllers/NPCController",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Engine/Controllers/PlayerController",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Engine/Controllers/ObjectController",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Engine/Events/GameEvents",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Shared/Protocol/Extensions/OpCodes",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/WorldContext",
+      "target": "MMO-Server/src/Engine/Spatial/SpatialHash",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/WorldContext",
+      "target": "MMO-Server/src/Engine/Data/SpawnerService",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/AuthModule",
+      "target": "MMO-Server/src/Modules/Auth/AuthRepository",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/AuthModule",
+      "target": "MMO-Server/src/Modules/Auth/Handlers/LoginHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/AuthModule",
+      "target": "MMO-Server/src/Modules/Auth/Handlers/RegisterHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/AuthModule",
+      "target": "MMO-Server/src/Shared/Architecture/IModule",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/AuthModule",
+      "target": "MMO-Server/src/Modules/Auth/IAuthRepository",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterModule",
+      "target": "MMO-Server/src/Modules/Character/CharacterRepository",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterModule",
+      "target": "MMO-Server/src/Modules/Character/Handlers/CharacterListHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterModule",
+      "target": "MMO-Server/src/Modules/Character/Handlers/CreateCharacterHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterModule",
+      "target": "MMO-Server/src/Modules/Character/Handlers/DeleteCharacterHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterModule",
+      "target": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterModule",
+      "target": "MMO-Server/src/Modules/Character/ICharacterRepository",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Modules/World/WorldRepository",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Modules/World/Handlers/RealmListHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Modules/World/Handlers/JoinRealmHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Modules/World/Handlers/ChatHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Engine/Data/Templates/UnitTemplate",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Modules/World/IWorldRepository",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/SystemModule",
+      "target": "MMO-Server/src/Modules/System/Handlers/PingHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/SystemModule",
+      "target": "MMO-Server/src/Modules/System/Handlers/AdminCommandHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/SystemModule",
+      "target": "MMO-Server/src/Modules/System/Handlers/WorldIngestHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Host/Session",
+      "target": "MMO-Server/src/Shared/Cryptography/Crypto",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/TemplateManager",
+      "target": "MMO-Server/src/Engine/Data/Templates/ArchetypeTemplate",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/TemplateManager",
+      "target": "MMO-Server/src/Engine/Data/Templates/VisualProfileTemplate",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/TemplateManager",
+      "target": "MMO-Server/src/Engine/Data/Templates/FactionTemplate",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Shared/Architecture/PacketDispatcher",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/Inventory/IInventoryRepository",
+      "target": "MMO-Server/src/Engine/Components/InventoryComponent",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Entity",
+      "target": "MMO-Server/src/Engine/Components/ComponentBits",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Entity",
+      "target": "MMO-Server/src/Engine/Components/StatsComponent",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Entity",
+      "target": "MMO-Server/src/Engine/Components/InteractableComponent",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Entity",
+      "target": "MMO-Server/src/Engine/Components/AggroComponent",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Entity",
+      "target": "MMO-Server/src/Engine/Components/WanderComponent",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Entity",
+      "target": "MMO-Server/src/Engine/Components/CastingComponent",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Entity",
+      "target": "MMO-Server/src/Engine/Components/AuraComponent",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Entity",
+      "target": "MMO-Server/src/Engine/IEntityController",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/InterestManager",
+      "target": "MMO-Server/src/Engine/Spatial/ISpatialIndex",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "target": "MMO-Server/src/Engine/Navigation/RecastNavMeshProvider",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "target": "MMO-Server/src/Engine/Navigation/INavigationProvider",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/NPCController",
+      "target": "MMO-Server/src/Engine/AI/PerceptionModule",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/NPCController",
+      "target": "MMO-Server/src/Engine/AI/CognitiveMemory",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/NPCController",
+      "target": "MMO-Server/src/Engine/AI/MotivationEngine",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "target": "MMO-Server/src/Engine/Combat/CombatService",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/Handlers/WorldIngestHandler",
+      "target": "MMO-Server/src/Engine/Data/WorldIngestService",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Engine/AI/PerceptionModule",
+      "target": "MMO-Server/src/Engine/Data/FactionManager",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/index",
+      "target": "atlas/src/Core/Application/AtlasEngine",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/index",
+      "target": "atlas/src/Core/Infrastructure/FileSystem/FileScanner",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/index",
+      "target": "atlas/src/Core/Infrastructure/Graph/GraphBuilder",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/index",
+      "target": "atlas/src/Core/Infrastructure/Layout/PolarLayoutStrategy",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/index",
+      "target": "atlas/src/Shared/Config",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Application/AtlasEngine",
+      "target": "atlas/src/Core/Domain/Services/IScanner",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Application/AtlasEngine",
+      "target": "atlas/src/Core/Domain/Services/IGraphBuilder",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Application/AtlasEngine",
+      "target": "atlas/src/Core/Domain/Services/ILayoutStrategy",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Application/AtlasEngine",
+      "target": "atlas/src/Shared/Protocol",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Application/AtlasEngine",
+      "target": "atlas/src/Core/Infrastructure/Visualization/ColorProvider",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Application/AtlasEngine",
+      "target": "atlas/src/Core/Application/HeartbeatService",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/FileScanner",
+      "target": "atlas/src/Core/Domain/Model/SourceFile",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/FileScanner",
+      "target": "atlas/src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/Graph/GraphBuilder",
+      "target": "atlas/src/Core/Domain/Model/GraphNode",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/Graph/GraphBuilder",
+      "target": "atlas/src/Core/Infrastructure/Graph/MetricsCalculator",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "target": "atlas/src/Core/Domain/Services/IParser",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "target": "atlas/src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "target": "atlas/src/Core/Infrastructure/FileSystem/Parsers/CppParser",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "target": "atlas/src/Core/Infrastructure/FileSystem/Parsers/TsParser",
+      "isGravity": true
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
+      "target": "atlas/src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "isGravity": true
+    },
+    {
+      "source": "MMO-Server/src/Host/NetworkHost",
+      "target": "MMO-Server/src/Host/NetworkHost",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/NetworkHost",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/DatabaseManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/RedisManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/PersistenceWorker",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/Data/DataRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/Data/Templates/ClassTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Host/SessionManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/ServerContext",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Engine/EntityManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Engine/RedisManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Engine/Events/EventBus",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Host/SessionManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/EntityManager",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/WorldContext",
+      "target": "MMO-Server/src/Engine/EntityManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/WorldContext",
+      "target": "MMO-Server/src/Engine/InterestManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/WorldContext",
+      "target": "MMO-Server/src/Engine/WorldCommandQueue",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/WorldContext",
+      "target": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/PersistenceWorker",
+      "target": "MMO-Server/src/Engine/RedisManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/PersistenceWorker",
+      "target": "MMO-Server/src/Engine/DatabaseManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/AuthModule",
+      "target": "MMO-Server/src/Modules/Auth/AuthModule",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/AuthModule",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/AuthModule",
+      "target": "MMO-Server/src/Shared/Architecture/PacketDispatcher",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterModule",
+      "target": "MMO-Server/src/Modules/Character/CharacterModule",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterModule",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterModule",
+      "target": "MMO-Server/src/Shared/Architecture/PacketDispatcher",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterModule",
+      "target": "MMO-Server/src/Shared/Architecture/IModule",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Modules/World/WorldModule",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Shared/Architecture/PacketDispatcher",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Engine/RedisManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Engine/EntityManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Engine/Events/GameEvents",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Engine/Data/DataRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Engine/Data/TemplateManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Engine/Data/Templates/SpawnTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Engine/Data/Templates/InteractionTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Shared/Architecture/IModule",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldModule",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/SystemModule",
+      "target": "MMO-Server/src/Modules/System/SystemModule",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/SystemModule",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/SystemModule",
+      "target": "MMO-Server/src/Shared/Architecture/PacketDispatcher",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/SystemModule",
+      "target": "MMO-Server/src/Shared/Architecture/IModule",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Inventory/InventoryModule",
+      "target": "MMO-Server/src/Modules/Inventory/InventoryModule",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Inventory/InventoryModule",
+      "target": "MMO-Server/src/Shared/Protocol/Extensions/OpCodes",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Inventory/InventoryModule",
+      "target": "MMO-Server/src/Shared/Architecture/IModule",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Inventory/InventoryModule",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Inventory/InventoryModule",
+      "target": "MMO-Server/src/Modules/Inventory/IInventoryRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/Session",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/Session",
+      "target": "MMO-Server/src/Host/SessionManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/Session",
+      "target": "MMO-Server/src/Engine/EntityManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/Session",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/Session",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/Session",
+      "target": "MMO-Server/src/Engine/DatabaseManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/Session",
+      "target": "MMO-Server/src/Shared/Architecture/PacketDispatcher",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/Session",
+      "target": "MMO-Server/src/Shared/Protocol/Extensions/OpCodes",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/Session",
+      "target": "MMO-Server/src/Shared/Architecture/TraceContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/Session",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/SessionManager",
+      "target": "MMO-Server/src/Host/SessionManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/SessionManager",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/SessionManager",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/SessionManager",
+      "target": "MMO-Server/src/Engine/RedisManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Host/SessionManager",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Events/EventBus",
+      "target": "MMO-Server/src/Shared/Architecture/TraceContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/TemplateManager",
+      "target": "MMO-Server/src/Engine/Data/Templates/UnitTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Inventory/IInventoryRepository",
+      "target": "MMO-Server/src/Shared/Architecture/TraceContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Inventory/InventoryRepository",
+      "target": "MMO-Server/src/Modules/Inventory/InventoryRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Inventory/InventoryRepository",
+      "target": "MMO-Server/src/Modules/Inventory/IInventoryRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Inventory/InventoryRepository",
+      "target": "MMO-Server/src/Engine/DatabaseManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Entity",
+      "target": "MMO-Server/src/Engine/Components/InventoryComponent",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Entity",
+      "target": "MMO-Server/src/Engine/Data/Templates/ArchetypeTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/InterestManager",
+      "target": "MMO-Server/src/Engine/InterestManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "target": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/NPCController",
+      "target": "MMO-Server/src/Engine/Controllers/NPCController",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/NPCController",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/NPCController",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/NPCController",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/NPCController",
+      "target": "MMO-Server/src/Engine/EntityManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/NPCController",
+      "target": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/NPCController",
+      "target": "MMO-Server/src/Engine/Spatial/ISpatialIndex",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/NPCController",
+      "target": "MMO-Server/src/Engine/IEntityController",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/PlayerController",
+      "target": "MMO-Server/src/Engine/Controllers/PlayerController",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/PlayerController",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/PlayerController",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/PlayerController",
+      "target": "MMO-Server/src/Engine/IEntityController",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/ObjectController",
+      "target": "MMO-Server/src/Engine/Controllers/ObjectController",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/ObjectController",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/ObjectController",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Controllers/ObjectController",
+      "target": "MMO-Server/src/Engine/IEntityController",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Events/GameEvents",
+      "target": "MMO-Server/src/Engine/Events/EventBus",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Spatial/SpatialHash",
+      "target": "MMO-Server/src/Engine/Spatial/SpatialHash",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Spatial/SpatialHash",
+      "target": "MMO-Server/src/Engine/Spatial/ISpatialIndex",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/SpawnerService",
+      "target": "MMO-Server/src/Engine/Data/SpawnerService",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/SpawnerService",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/SpawnerService",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/SpawnerService",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/SpawnerService",
+      "target": "MMO-Server/src/Engine/EntityManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/SpawnerService",
+      "target": "MMO-Server/src/Engine/Data/Templates/SpawnTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/SpawnerService",
+      "target": "MMO-Server/src/Engine/Data/Templates/UnitTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/SpawnerService",
+      "target": "MMO-Server/src/Engine/Data/Templates/InteractionTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/SpawnerService",
+      "target": "MMO-Server/src/Engine/Data/TemplateManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/SpawnerService",
+      "target": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/AuthRepository",
+      "target": "MMO-Server/src/Modules/Auth/AuthRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/AuthRepository",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/AuthRepository",
+      "target": "MMO-Server/src/Modules/Auth/IAuthRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/AuthRepository",
+      "target": "MMO-Server/src/Engine/DatabaseManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/Handlers/LoginHandler",
+      "target": "MMO-Server/src/Modules/Auth/Handlers/LoginHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/Handlers/LoginHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/Handlers/LoginHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/Handlers/LoginHandler",
+      "target": "MMO-Server/src/Modules/Auth/IAuthRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/Handlers/RegisterHandler",
+      "target": "MMO-Server/src/Modules/Auth/Handlers/RegisterHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/Handlers/RegisterHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/Handlers/RegisterHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/Handlers/RegisterHandler",
+      "target": "MMO-Server/src/Modules/Auth/IAuthRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Auth/IAuthRepository",
+      "target": "MMO-Server/src/Shared/Architecture/TraceContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterRepository",
+      "target": "MMO-Server/src/Modules/Character/CharacterRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterRepository",
+      "target": "MMO-Server/src/Engine/RedisManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterRepository",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterRepository",
+      "target": "MMO-Server/src/Modules/Character/ICharacterRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/CharacterRepository",
+      "target": "MMO-Server/src/Engine/DatabaseManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/CharacterListHandler",
+      "target": "MMO-Server/src/Modules/Character/Handlers/CharacterListHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/CharacterListHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/CharacterListHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/CharacterListHandler",
+      "target": "MMO-Server/src/Modules/Character/ICharacterRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/CreateCharacterHandler",
+      "target": "MMO-Server/src/Modules/Character/Handlers/CreateCharacterHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/CreateCharacterHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/CreateCharacterHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/CreateCharacterHandler",
+      "target": "MMO-Server/src/Modules/Character/ICharacterRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/DeleteCharacterHandler",
+      "target": "MMO-Server/src/Modules/Character/Handlers/DeleteCharacterHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/DeleteCharacterHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/DeleteCharacterHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/DeleteCharacterHandler",
+      "target": "MMO-Server/src/Modules/Character/ICharacterRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "target": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "target": "MMO-Server/src/Host/SessionManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "target": "MMO-Server/src/Engine/RedisManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "target": "MMO-Server/src/Engine/EntityManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "target": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/Handlers/SelectCharacterHandler",
+      "target": "MMO-Server/src/Modules/Character/ICharacterRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/Character/ICharacterRepository",
+      "target": "MMO-Server/src/Shared/Architecture/TraceContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldRepository",
+      "target": "MMO-Server/src/Modules/World/WorldRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldRepository",
+      "target": "MMO-Server/src/Engine/RedisManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldRepository",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldRepository",
+      "target": "MMO-Server/src/Modules/World/IWorldRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/WorldRepository",
+      "target": "MMO-Server/src/Engine/DatabaseManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/RealmListHandler",
+      "target": "MMO-Server/src/Modules/World/Handlers/RealmListHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/RealmListHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/RealmListHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/RealmListHandler",
+      "target": "MMO-Server/src/Modules/World/IWorldRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/JoinRealmHandler",
+      "target": "MMO-Server/src/Modules/World/Handlers/JoinRealmHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/JoinRealmHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/JoinRealmHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/JoinRealmHandler",
+      "target": "MMO-Server/src/Modules/World/IWorldRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/JoinRealmHandler",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "target": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "target": "MMO-Server/src/Host/SessionManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "target": "MMO-Server/src/Engine/EntityManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "target": "MMO-Server/src/Engine/WorldCommandQueue",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "target": "MMO-Server/src/Engine/Navigation/NavigationManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/MovementHandler",
+      "target": "MMO-Server/src/Modules/World/IWorldRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "target": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "target": "MMO-Server/src/Engine/EntityManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "target": "MMO-Server/src/Engine/Data/Templates/MerchantTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "target": "MMO-Server/src/Engine/Data/Templates/QuestTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/InteractionHandler",
+      "target": "MMO-Server/src/Modules/World/IWorldRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/ChatHandler",
+      "target": "MMO-Server/src/Modules/World/Handlers/ChatHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/ChatHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/ChatHandler",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/ChatHandler",
+      "target": "MMO-Server/src/Engine/EntityManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/ChatHandler",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/ChatHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/Handlers/ChatHandler",
+      "target": "MMO-Server/src/Modules/World/IWorldRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/World/IWorldRepository",
+      "target": "MMO-Server/src/Shared/Architecture/TraceContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/Handlers/PingHandler",
+      "target": "MMO-Server/src/Modules/System/Handlers/PingHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/Handlers/PingHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/Handlers/PingHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/Handlers/AdminCommandHandler",
+      "target": "MMO-Server/src/Modules/System/Handlers/AdminCommandHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/Handlers/AdminCommandHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/Handlers/AdminCommandHandler",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/Handlers/AdminCommandHandler",
+      "target": "MMO-Server/src/Version",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/Handlers/AdminCommandHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/Handlers/WorldIngestHandler",
+      "target": "MMO-Server/src/Modules/System/Handlers/WorldIngestHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/Handlers/WorldIngestHandler",
+      "target": "MMO-Server/src/Host/Session",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/Handlers/WorldIngestHandler",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Modules/System/Handlers/WorldIngestHandler",
+      "target": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "target": "MMO-Server/src/Shared/Protocol/Extensions/OpCodes",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Shared/Architecture/IPacketHandler",
+      "target": "MMO-Server/src/Shared/Architecture/TraceContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Components/InventoryComponent",
+      "target": "MMO-Server/src/Engine/Components/InventoryComponent",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Components/InventoryComponent",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Components/InventoryComponent",
+      "target": "MMO-Server/src/Engine/Data/Templates/ArchetypeTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Components/InventoryComponent",
+      "target": "MMO-Server/src/Engine/Data/Templates/ItemTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Components/StatsComponent",
+      "target": "MMO-Server/src/Engine/Components/StatsComponent",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Components/StatsComponent",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Components/StatsComponent",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Components/StatsComponent",
+      "target": "MMO-Server/src/Engine/Data/DataRepository",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Components/StatsComponent",
+      "target": "MMO-Server/src/Engine/Data/Templates/ClassTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Components/StatsComponent",
+      "target": "MMO-Server/src/Engine/Components/ComponentBits",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Spatial/ISpatialIndex",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Navigation/RecastNavMeshProvider",
+      "target": "MMO-Server/src/Engine/Navigation/RecastNavMeshProvider",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Navigation/RecastNavMeshProvider",
+      "target": "MMO-Server/src/Engine/Navigation/INavigationProvider",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/AI/PerceptionModule",
+      "target": "MMO-Server/src/Engine/AI/PerceptionModule",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/AI/PerceptionModule",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/AI/PerceptionModule",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/AI/PerceptionModule",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/AI/PerceptionModule",
+      "target": "MMO-Server/src/Engine/EntityManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/AI/PerceptionModule",
+      "target": "MMO-Server/src/Engine/Spatial/ISpatialIndex",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/AI/PerceptionModule",
+      "target": "MMO-Server/src/Engine/AI/CognitiveMemory",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/AI/MotivationEngine",
+      "target": "MMO-Server/src/Engine/AI/CognitiveMemory",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/AI/MotivationEngine",
+      "target": "MMO-Server/src/Engine/Data/Templates/ArchetypeTemplate",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Combat/CombatService",
+      "target": "MMO-Server/src/Engine/Combat/CombatService",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Combat/CombatService",
+      "target": "MMO-Server/src/Engine/Entity",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Combat/CombatService",
+      "target": "MMO-Server/src/Engine/EntityManager",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Combat/CombatService",
+      "target": "MMO-Server/src/Engine/WorldContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Combat/CombatService",
+      "target": "MMO-Server/src/Engine/ServerContext",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Engine/Data/FactionManager",
+      "target": "MMO-Server/src/Engine/Data/TemplateManager",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Application/AtlasEngine",
+      "target": "atlas/src/Shared/Config",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/FileScanner",
+      "target": "atlas/src/Core/Domain/Services/IScanner",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/Graph/GraphBuilder",
+      "target": "atlas/src/Core/Domain/Services/IGraphBuilder",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/Graph/GraphBuilder",
+      "target": "atlas/src/Core/Domain/Model/SourceFile",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/Graph/GraphBuilder",
+      "target": "atlas/src/Shared/Protocol",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/Graph/GraphBuilder",
+      "target": "atlas/src/Core/Infrastructure/Visualization/ColorProvider",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/Layout/PolarLayoutStrategy",
+      "target": "atlas/src/Core/Domain/Services/ILayoutStrategy",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/Layout/PolarLayoutStrategy",
+      "target": "atlas/src/Core/Domain/Model/GraphNode",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Domain/Services/IScanner",
+      "target": "atlas/src/Core/Domain/Model/SourceFile",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Domain/Services/IGraphBuilder",
+      "target": "atlas/src/Core/Domain/Model/SourceFile",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Domain/Services/IGraphBuilder",
+      "target": "atlas/src/Core/Domain/Model/GraphNode",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Domain/Services/IGraphBuilder",
+      "target": "atlas/src/Shared/Protocol",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Domain/Services/ILayoutStrategy",
+      "target": "atlas/src/Core/Domain/Model/GraphNode",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/Visualization/ColorProvider",
+      "target": "atlas/src/Shared/Protocol",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Domain/Model/SourceFile",
+      "target": "atlas/src/Shared/Protocol",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Domain/Model/GraphNode",
+      "target": "atlas/src/Shared/Protocol",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/Graph/MetricsCalculator",
+      "target": "atlas/src/Core/Domain/Model/GraphNode",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/Graph/MetricsCalculator",
+      "target": "atlas/src/Shared/Protocol",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Domain/Services/IParser",
+      "target": "atlas/src/Core/Domain/Model/SourceFile",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
+      "target": "atlas/src/Shared/Protocol",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/Parsers/CppParser",
+      "target": "atlas/src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/Parsers/TsParser",
+      "target": "atlas/src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/Parsers/TsParser",
+      "target": "atlas/src/Shared/Protocol",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "target": "atlas/src/Core/Domain/Services/IParser",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "target": "atlas/src/Core/Domain/Model/SourceFile",
+      "isGravity": false
+    },
+    {
+      "source": "atlas/src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "target": "atlas/src/Shared/Protocol",
+      "isGravity": false
+    },
+    {
+      "source": "MMO-Server/src/Shared/Networking/Packet",
+      "target": "MMO-Server/src/Shared/Protocol/Extensions/OpCodes",
+      "isGravity": false
+    }
+  ]
+}
