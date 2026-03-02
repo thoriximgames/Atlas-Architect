@@ -61,8 +61,16 @@ export class GalaxyEngine {
                 const parent = this.activeNodes.find(an => an.id === node.parentId);
                 const px = parent ? (parent.x || (cx + node.initialX)) : (cx + node.initialX);
                 const py = parent ? (parent.y || (cy + node.initialY)) : (cy + node.initialY);
-                node.x = px;
-                node.y = py;
+                
+                // Use initialX/Y which now correctly propagates from the backend
+                if (node.x === undefined) node.x = cx + node.initialX;
+                if (node.y === undefined) node.y = cy + node.initialY;
+
+                // Rule: If initial coordinates are non-zero (manually saved), lock them.
+                if (node.initialX !== 0 || node.initialY !== 0) {
+                    node.fx = node.x;
+                    node.fy = node.y;
+                }
             });
 
             this.activeNodes.push(...newNodes);
@@ -78,6 +86,30 @@ export class GalaxyEngine {
             this.spawnTimer = setTimeout(spawn, 800);
         };
         spawn();
+    }
+
+    async savePositions() {
+        const updates: Record<string, { x: number, y: number }> = {};
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+
+        this.activeNodes.forEach(node => {
+            if (node.x !== undefined && node.y !== undefined) {
+                // Store relative to center so it survives resize
+                updates[node.id] = { x: node.x - cx, y: node.y - cy };
+            }
+        });
+
+        try {
+            const res = await fetch('../api/topology/positions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updates)
+            });
+            if (res.ok) console.log(`[Engine] Persisted ${Object.keys(updates).length} node positions.`);
+        } catch (e) {
+            console.error(`[Engine] Failed to save positions:`, e);
+        }
     }
 
     private syncLinks() {

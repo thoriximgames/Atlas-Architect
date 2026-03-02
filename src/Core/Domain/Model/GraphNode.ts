@@ -38,4 +38,8 @@ export interface GraphNode {
     initialY: number;
     sectorAngle: number;
     sectorWidth: number;
+
+    // Persistent coordinates (offset from center)
+    x?: number;
+    y?: number;
 }

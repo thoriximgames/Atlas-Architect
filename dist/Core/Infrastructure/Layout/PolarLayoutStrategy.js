@@ -45,11 +45,18 @@ class PolarLayoutStrategy {
         // If there's only one root, place it at center. 
         // If there are multiple, distribute them on an inner circle.
         if (roots.length === 1) {
-            roots[0].initialX = 0;
-            roots[0].initialY = 0;
-            roots[0].sectorAngle = 0;
-            roots[0].sectorWidth = Math.PI * 2;
-            this.distributeChildren(roots[0].id, 0, Math.PI * 2, childrenMap);
+            const root = roots[0];
+            if (root.x !== undefined && root.y !== undefined) {
+                root.initialX = root.x;
+                root.initialY = root.y;
+            }
+            else {
+                root.initialX = 0;
+                root.initialY = 0;
+            }
+            root.sectorAngle = 0;
+            root.sectorWidth = Math.PI * 2;
+            this.distributeChildren(root.id, 0, Math.PI * 2, childrenMap);
         }
         else {
             const totalWeight = roots.reduce((sum, r) => sum + (r.descendantCount + 1), 0);
@@ -61,8 +68,14 @@ class PolarLayoutStrategy {
                 const angle = currentAngle + (wedge / 2);
                 root.sectorAngle = angle;
                 root.sectorWidth = wedge;
-                root.initialX = Math.cos(angle) * innerRadius;
-                root.initialY = Math.sin(angle) * innerRadius;
+                if (root.x !== undefined && root.y !== undefined) {
+                    root.initialX = root.x;
+                    root.initialY = root.y;
+                }
+                else {
+                    root.initialX = Math.cos(angle) * innerRadius;
+                    root.initialY = Math.sin(angle) * innerRadius;
+                }
                 this.distributeChildren(root.id, angle, wedge, childrenMap);
                 currentAngle += wedge;
             });
@@ -85,9 +98,15 @@ class PolarLayoutStrategy {
             const radius = (child.depth + 0.5) * PolarLayoutStrategy.LAYER_RADIUS;
             child.sectorAngle = childAngle;
             child.sectorWidth = childWedge;
-            // PROJECT: Strictly away from center
-            child.initialX = Math.cos(childAngle) * radius;
-            child.initialY = Math.sin(childAngle) * radius;
+            // PROJECT: Strictly away from center UNLESS manually positioned
+            if (child.x !== undefined && child.y !== undefined) {
+                child.initialX = child.x;
+                child.initialY = child.y;
+            }
+            else {
+                child.initialX = Math.cos(childAngle) * radius;
+                child.initialY = Math.sin(childAngle) * radius;
+            }
             this.distributeChildren(child.id, childAngle, childWedge, childrenMap);
             currentAngle += childWedge;
         });

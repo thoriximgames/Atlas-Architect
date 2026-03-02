@@ -103,6 +103,17 @@ export class AtlasEngine {
                     scannedNode.status = 'verified';
                     scannedNode.color = ColorProvider.getFunctionalColor(planned.type, scannedNode.depth, scannedNode.name);
                     
+                    // Rule #1.2: Persistent Coordinates
+                    // If planned.json has coordinates, use them to lock the node in space.
+                    if (planned.x !== undefined) {
+                        scannedNode.x = planned.x;
+                        scannedNode.initialX = planned.x;
+                    }
+                    if (planned.y !== undefined) {
+                        scannedNode.y = planned.y;
+                        scannedNode.initialY = planned.y;
+                    }
+
                     // MERGE GUARDIAN PROTOCOL
                     if (planned.authorityId) scannedNode.authorityId = planned.authorityId;
                     if (planned.guardState) scannedNode.guardState = planned.guardState;

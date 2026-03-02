@@ -80,6 +80,40 @@ async function main() {
     const layoutStrategy = new PolarLayoutStrategy();
     const engine = new AtlasEngine(scanner, graphBuilder, layoutStrategy);
 
+    // --- MIDDLEWARE & LOGGING ---
+    app.use(express.json());
+    app.use((req, res, next) => {
+        console.log(`[Express] ${req.method} ${req.url}`);
+        next();
+    });
+
+    // --- API ROUTES ---
+    app.post('/api/topology/positions', async (req, res) => {
+        try {
+            const updates: Record<string, { x: number, y: number }> = req.body;
+            const plannedPath = path.join(projectRoot, '.atlas/data/planned.json');
+            
+            if (await fs.pathExists(plannedPath)) {
+                const data = await fs.readJson(plannedPath);
+                for (const id in updates) {
+                    const node = data.plannedNodes.find((n: any) => n.id === id);
+                    if (node) {
+                        node.x = updates[id].x;
+                        node.y = updates[id].y;
+                    }
+                }
+                await fs.outputJson(plannedPath, data, { spaces: 2 });
+                console.log(`[Atlas] Saved ${Object.keys(updates).length} node positions to planned.json`);
+                res.json({ success: true });
+            } else {
+                res.status(404).json({ error: "planned.json not found" });
+            }
+        } catch (e: any) {
+            console.error(`[API Error] ${e.message}`);
+            res.status(500).json({ error: e.message });
+        }
+    });
+
     let isScanning = false;
     const scanAndResolve = async () => {
         if (isScanning) return;

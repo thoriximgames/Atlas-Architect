@@ -1,3 +1,4 @@
+import * as d3 from 'd3';
 import { GalaxyEngine } from './Engine/GalaxyEngine';
 import { StageRenderer } from './Renderer/StageRenderer';
 import { Inspector } from './UI/Inspector';
@@ -21,10 +22,20 @@ async function bootstrap() {
     const centerY = window.innerHeight / 2;
 
     nodes.forEach((n) => {
-        n.x = centerX + n.initialX;
-        n.y = centerY + n.initialY;
+        // Rule: If engine provided initialX/Y from planned.json, it's already the offset.
+        // If not, it defaults to a polar projection.
+        n.x = centerX + (n.initialX || 0);
+        n.y = centerY + (n.initialY || 0);
+        
+        // If the backend actually returned non-zero initial coordinates (manual placement),
+        // we lock it immediately so physics doesn't touch it.
+        if (n.initialX !== 0 || n.initialY !== 0) {
+            n.fx = n.x;
+            n.fy = n.y;
+        }
+
         n.radius = 12 + Math.sqrt(n.descendantCount || 0) * 6;
-        if (n.depth === 0) { n.fx = n.x; n.fy = n.y; }
+        if (n.depth === 0 && n.fx === undefined) { n.fx = n.x; n.fy = n.y; }
     });
 
     const inspector = new Inspector();
@@ -40,8 +51,44 @@ async function bootstrap() {
         nodes, 
         data.edges, 
         () => renderer.ticking(),
-        () => renderer.draw(engine.state.nodes, engine.state.links, engine.state.weightMap, onNodeClick)
+        () => {
+            renderer.draw(engine.state.nodes, engine.state.links, engine.state.weightMap, onNodeClick);
+            renderer.enableDrag(drag(d3));
+        }
     );
+
+    // --- Drag and Drop Logic ---
+    const drag = (d3: any) => {
+        function dragstarted(event: any, d: any) {
+            console.log(`[Drag] Start: ${d.id}`);
+            if (!event.active) engine.simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event: any, d: any) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event: any, d: any) {
+            console.log(`[Drag] End: ${d.id}. Saving position...`);
+            if (!event.active) engine.simulation.alphaTarget(0);
+            // PERSIST position on end
+            engine.savePositions();
+        }
+
+        return d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended);
+    };
+
+    // Expose simulation for drag behavior
+    (engine as any).simulation.nodes().forEach((n: any) => {
+        // Find the node element in the renderer and apply drag
+        // Note: StageRenderer needs to expose the node selection
+    });
 
     const onNodeClick = (node: VisualNode) => {
         const path = new Set<string>([node.id]);

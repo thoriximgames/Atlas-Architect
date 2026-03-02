@@ -78,7 +78,7 @@ export class StageRenderer {
         this.renderCanvas();
     }
 
-    draw(nodes: VisualNode[], links: VisualLink[], weightMap: Map<string, number>, onClick: (n: VisualNode) => void) {
+    draw(nodes: VisualNode[], links: VisualLink[], weightMap: Map<string, number>, onClick: (n: VisualNode) => void, dragBehavior?: any) {
         this.currentLinks = links;
         this.currentNodes = nodes;
         this.weightMap = weightMap;
@@ -104,6 +104,8 @@ export class StageRenderer {
         
         const nEnter = n.enter().append('g').attr('cursor', 'pointer')
             .on('click', (e, d) => { e.stopPropagation(); onClick(d); });
+
+        if (dragBehavior) nEnter.call(dragBehavior);
         
         // --- ADDITIVE LAYER (INHERITANCE) ---
         nEnter.filter(d => (d.baseClasses?.length || 0) > 0).append('circle')
@@ -286,6 +288,12 @@ export class StageRenderer {
             this.linkSelection.transition().duration(250).style('opacity', (d: any) => ids.has(d.source.id) && ids.has(d.target.id) ? 1 : 0.02);
         }
         this.renderCanvas();
+    }
+
+    enableDrag(dragBehavior: any) {
+        if (this.nodeSelection) {
+            this.nodeSelection.call(dragBehavior);
+        }
     }
 
     reset() {

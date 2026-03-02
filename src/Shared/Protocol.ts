@@ -79,6 +79,8 @@ export interface IPlannedNode {
     authorityId?: string;
     guardState?: GuardState;
     isAuthority?: boolean;
+    x?: number;
+    y?: number;
 }
 
 export type EdgeType = 'dependency' | 'inheritance' | 'event';
