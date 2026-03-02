@@ -48,13 +48,30 @@ node .atlas/dist/index.js --scan-only
 2. **Reload**: Wait for domain/compilation.
 3. **Scan**: Refresh Atlas and verify Convergence.
 
-## 📜 The Iron Laws
-1. **The Orphan Rule**: Unconnected nodes are debt. Integrate or purge.
-2. **The Ripple Rule**: If a dependency's `contractHash` changes, re-verify all dependent nodes.
-3. **The Contract Rule**: Define the Interface/Protocol BEFORE the Implementation.
+## 🚀 Complete CLI Tooling
 
-## 🚀 Tooling Summary
-- **Scan**: `node .atlas/dist/index.js --scan-only`
-- **View**: `http://localhost:[Port]/viewer/` (Check Registry for Port)
-- **Slice**: `node .atlas/dist/index.js slice <id> <depth>`
-- **Sync**: `node .atlas/dist/pipeline.js sync`
+### **1. Core & Scanning (`index.js`)**
+Manages topology and visualization:
+- **`atlas scan`**: Complete project pre-scan and `atlas.json` update.
+- **`atlas slice <nodeId> [depth]`**: Isolates a sub-graph of the selected node for detailed audit.
+- **`atlas --scan-only`**: Runs analysis without starting the web server.
+
+### **2. Planning & Topology (`pipeline.js`)**
+Commands for architectural definition:
+- **`atlas plan:node <id>`**: Registers a new "Ghost Node" (planned) in `planned.json`.
+- **`atlas plan:find <pattern>`**: Regex search for nodes across the entire graph.
+- **`atlas plan:list [filterType]`**: List of nodes filtered by status (`ghost`, `verified`, `dirty`).
+- **`atlas sync`**: Automatically synchronizes reality with documentation in `docs/pipeline/`.
+
+### **3. Task Management (Pipeline)**
+Controls the development lifecycle:
+- **`atlas start <taskId>`**: Moves a task from `01_todo` to `02_in_progress`.
+- **`atlas review <taskId>`**: Moves a task to `03_review` and triggers Oracle validation.
+- **`atlas complete <taskId>`**: Archives a completed task into `04_completed`.
+
+---
+
+## 📜 The Iron Laws
+1. **The Orphan Rule**: Unconnected nodes are debt. They must be either integrated or purged.
+2. **The Ripple Rule**: If a dependency's `contractHash` changes, all downstream dependent nodes must be re-verified.
+3. **The Contract Rule**: Always define the Interface/Protocol BEFORE the Implementation.

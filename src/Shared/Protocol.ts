@@ -51,6 +51,7 @@ export interface IAtlasNode {
     verificationStatus: VerificationStatus;
     authorityId?: string;
     guardState?: GuardState;
+    isAuthority?: boolean;
     verifiedHash?: string;
     contractHash?: string;
     verifiedBy?: string;
@@ -75,6 +76,7 @@ export interface IPlannedNode {
     dependencies: string[];
     authorityId?: string;
     guardState?: GuardState;
+    isAuthority?: boolean;
 }
 
 export type EdgeType = 'dependency' | 'inheritance' | 'event';

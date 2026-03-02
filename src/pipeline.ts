@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
+import { NodeType, GuardState } from './Shared/Protocol';
 
 // Context Detection
 const cwd = process.cwd();
@@ -9,7 +10,101 @@ if (path.basename(cwd) === '.atlas') {
 }
 
 const PIPELINE_ROOT = path.join(projectRoot, 'docs/pipeline');
+const PLANNED_PATH = path.join(projectRoot, '.atlas/data/planned.json');
 const STAGES = ['00_backlog', '01_todo', '02_in_progress', '03_review', '04_completed'];
+
+export class TopologyPlanner {
+    static async loadPlanned() {
+        if (!await fs.pathExists(PLANNED_PATH)) {
+            return { plannedNodes: [] };
+        }
+        return await fs.readJson(PLANNED_PATH);
+    }
+
+    static async savePlanned(data: any) {
+        await fs.writeJson(PLANNED_PATH, data, { spaces: 2 });
+        console.log(`[PLANNER] Updated ${PLANNED_PATH}`);
+    }
+
+    static async upsertNode(id: string, name: string, type: NodeType, purpose: string) {
+        const data = await this.loadPlanned();
+        let node = data.plannedNodes.find((n: any) => n.id === id);
+        
+        if (node) {
+            node.name = name;
+            node.type = type;
+            node.purpose = purpose;
+            console.log(`[PLANNER] Updated node: ${id}`);
+        } else {
+            data.plannedNodes.push({
+                id, name, type, purpose,
+                parentId: "",
+                dependencies: [],
+                description: ""
+            });
+            console.log(`[PLANNER] Added new node: ${id}`);
+        }
+        await this.savePlanned(data);
+    }
+
+    static async setGuard(id: string, authorityId: string, state: GuardState) {
+        const data = await this.loadPlanned();
+        let node = data.plannedNodes.find((n: any) => n.id === id);
+        if (!node) throw new Error(`Node ${id} not found in planned.json`);
+
+        node.authorityId = authorityId;
+        node.guardState = state;
+        await this.savePlanned(data);
+        console.log(`[PLANNER] Set Guard: ${id} is now ${state} by ${authorityId}`);
+    }
+
+    static async setAuthority(id: string, isAuthority: boolean) {
+        const data = await this.loadPlanned();
+        let node = data.plannedNodes.find((n: any) => n.id === id);
+        if (!node) throw new Error(`Node ${id} not found in planned.json`);
+
+        node.isAuthority = isAuthority;
+        await this.savePlanned(data);
+        console.log(`[PLANNER] Set Authority: ${id} isAuthority = ${isAuthority}`);
+    }
+
+    // --- QUERY COMMANDS ---
+
+    static async getNode(id: string) {
+        const data = await this.loadPlanned();
+        const node = data.plannedNodes.find((n: any) => n.id === id);
+        if (node) {
+            console.log(JSON.stringify(node, null, 2));
+        } else {
+            console.log(`[QUERY] Node '${id}' not found.`);
+        }
+    }
+
+    static async listNodes(filterType?: string) {
+        const data = await this.loadPlanned();
+        const filtered = filterType 
+            ? data.plannedNodes.filter((n: any) => n.type === filterType)
+            : data.plannedNodes;
+        
+        console.log(`\n--- PLANNED NODES (${filtered.length}) ---`);
+        filtered.forEach((n: any) => {
+            console.log(`[${n.type.padEnd(10)}] ${n.id}`);
+        });
+    }
+
+    static async findNodes(pattern: string) {
+        const data = await this.loadPlanned();
+        const regex = new RegExp(pattern, 'i');
+        const results = data.plannedNodes.filter((n: any) => 
+            regex.test(n.id) || regex.test(n.name) || regex.test(n.purpose || "")
+        );
+
+        console.log(`\n--- SEARCH RESULTS FOR '${pattern}' (${results.length}) ---`);
+        results.forEach((n: any) => {
+            console.log(`[${n.type.padEnd(10)}] ${n.id} (${n.name})`);
+        });
+    }
+}
 
 export class PipelineManager {
     static async list() {
@@ -27,7 +122,6 @@ export class PipelineManager {
     }
 
     static async move(taskId: string, targetStage: string) {
-        // Find current location
         let sourceStage = '';
         for (const stage of STAGES) {
             if (await fs.pathExists(path.join(PIPELINE_ROOT, stage, taskId))) {
@@ -41,7 +135,6 @@ export class PipelineManager {
         const sourcePath = path.join(PIPELINE_ROOT, sourceStage, taskId);
         const targetPath = path.join(PIPELINE_ROOT, targetStage, taskId);
 
-        // ENFORCEMENT: 1 Active Task Limit
         if (targetStage === '02_in_progress') {
             const inProgressDir = path.join(PIPELINE_ROOT, '02_in_progress');
             const activeTasks = await fs.readdir(inProgressDir);
@@ -72,17 +165,14 @@ Created: ${new Date().toISOString()}
     }
 
     static async sync() {
-        const plannedPath = path.join(projectRoot, '.atlas/data/planned.json');
         const atlasPath = path.join(projectRoot, '.atlas/data/atlas.json');
 
-        if (!await fs.pathExists(plannedPath)) {
+        if (!await fs.pathExists(PLANNED_PATH)) {
             console.log("planned.json missing. Run 'atlas scan' first.");
             return;
         }
 
-        const plannedData = await fs.readJson(plannedPath);
-        
-        // Load atlas data if it exists to check verification status
+        const plannedData = await fs.readJson(PLANNED_PATH);
         let verifiedIds = new Set<string>();
         let atlasData: any = {};
         if (await fs.pathExists(atlasPath)) {
@@ -95,17 +185,13 @@ Created: ${new Date().toISOString()}
         }
 
         const ghostNodes = (plannedData.plannedNodes || []).filter((n: any) => !verifiedIds.has(n.id));
-        
-        // Find nodes needing architectural audit
         const nodesToAudit = Object.values(atlasData.nodes || {})
             .filter((n: any) => n.status === 'verified' && n.verificationStatus !== 'verified');
 
         console.log(`[SYNC] Found ${ghostNodes.length} Ghost Nodes and ${nodesToAudit.length} nodes needing audit.`);
 
-        // Generate Audit Tasks
         for (const node of nodesToAudit as any[]) {
             const taskId = 'audit_' + node.id.replace(/[\/\\]/g, '_').replace(/\./g, '_') + '.md';
-            
             let exists = false;
             for (const stage of STAGES) {
                 if (await fs.pathExists(path.join(PIPELINE_ROOT, stage, taskId))) {
@@ -145,11 +231,8 @@ This node was automatically scanned or has changed since its last verification.
             }
         }
 
-        // Generate Implementation Tasks
         for (const node of ghostNodes) {
             const taskId = node.id.replace(/[\/\\]/g, '_').replace(/\./g, '_') + '.md';
-            
-            // Check if task exists in any stage
             let exists = false;
             for (const stage of STAGES) {
                 if (await fs.pathExists(path.join(PIPELINE_ROOT, stage, taskId))) {
@@ -193,22 +276,52 @@ Generated: ${new Date().toISOString()}
 }
 
 // Simple CLI Interface
-const [,, cmd, arg1, arg2] = process.argv;
+const [,, cmd, ...args] = process.argv;
 
 async function run() {
     try {
         switch (cmd) {
             case 'list': await PipelineManager.list(); break;
-            case 'create': await PipelineManager.create(arg1); break;
+            case 'create': await PipelineManager.create(args[0]); break;
             case 'sync': await PipelineManager.sync(); break;
-            case 'start': await PipelineManager.move(arg1, '02_in_progress'); break;
-            case 'review': await PipelineManager.move(arg1, '03_review'); break;
-            case 'complete': await PipelineManager.move(arg1, '04_completed'); break;
-            case 'todo': await PipelineManager.move(arg1, '01_todo'); break;
-            default: console.log('Usage: pipeline [list|create|sync|todo|start|review|complete]');
+            case 'start': await PipelineManager.move(args[0], '02_in_progress'); break;
+            case 'review': await PipelineManager.move(args[0], '03_review'); break;
+            case 'complete': await PipelineManager.move(args[0], '04_completed'); break;
+            case 'todo': await PipelineManager.move(args[0], '01_todo'); break;
+            
+            // --- TOPOLOGY PLANNING (WRITE) ---
+            case 'plan:node': 
+                await TopologyPlanner.upsertNode(args[0], args[1], args[2] as NodeType, args[3]); 
+                break;
+            case 'plan:guard': 
+                await TopologyPlanner.setGuard(args[0], args[1], args[2] as GuardState); 
+                break;
+            case 'plan:authority': 
+                await TopologyPlanner.setAuthority(args[0], args[1] === 'true'); 
+                break;
+
+            // --- TOPOLOGY QUERY (READ) ---
+            case 'plan:get':
+                await TopologyPlanner.getNode(args[0]);
+                break;
+            case 'plan:list':
+                await TopologyPlanner.listNodes(args[0]);
+                break;
+            case 'plan:find':
+                await TopologyPlanner.findNodes(args[0]);
+                break;
+
+            default: 
+                console.log('Usage: pipeline [list|create|sync|todo|start|review|complete]');
+                console.log('       pipeline plan:node <id> <name> <type> <purpose>');
+                console.log('       pipeline plan:guard <id> <authorityId> <guarded|restricted|none>');
+                console.log('       pipeline plan:authority <id> <true|false>');
+                console.log('       pipeline plan:get <id>');
+                console.log('       pipeline plan:list [filterType]');
+                console.log('       pipeline plan:find <pattern>');
         }
     } catch (e: any) {
-        console.error(e.message);
+        console.error(`[ERROR] ${e.message}`);
         process.exit(1);
     }
 }

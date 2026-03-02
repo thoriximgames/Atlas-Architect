@@ -56,6 +56,20 @@ export class StageRenderer {
             .attr('id', 'arrow').attr('viewBox', '0 -5 10 10').attr('refX', 10).attr('refY', 0)
             .attr('markerWidth', 6).attr('markerHeight', 6).attr('orient', 'auto')
             .append('path').attr('d', 'M0,-5L10,0L0,5').attr('fill', '#ffffff').attr('opacity', 0.8);
+
+        // --- SVG DEFS (Hatching Pattern) ---
+        const defs = this.svg.select('defs');
+        defs.append('pattern')
+            .attr('id', 'hatch-authority')
+            .attr('width', 8)
+            .attr('height', 8)
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('patternTransform', 'rotate(45)')
+            .append('rect')
+            .attr('width', 4)
+            .attr('height', 8)
+            .attr('fill', '#ffd700')
+            .attr('opacity', 0.6);
     }
 
     private onResize() {
@@ -111,9 +125,9 @@ export class StageRenderer {
 
         nEnter.append('circle')
             .attr('r', d => d.radius)
-            .attr('fill', d => d.color)
-            .attr('stroke', d => d.status === 'planned' ? '#ffffff' : '#000')
-            .attr('stroke-width', d => d.status === 'planned' ? 2 : 1.5)
+            .attr('fill', d => d.isAuthority ? 'url(#hatch-authority)' : d.color)
+            .attr('stroke', d => d.isAuthority ? '#ffd700' : (d.status === 'planned' ? '#ffffff' : '#000'))
+            .attr('stroke-width', d => d.isAuthority ? 2.5 : (d.status === 'planned' ? 2 : 1.5))
             .attr('stroke-dasharray', d => d.status === 'planned' ? '4,4' : 'none')
             .attr('opacity', d => d.status === 'planned' ? 0.6 : 1);
         

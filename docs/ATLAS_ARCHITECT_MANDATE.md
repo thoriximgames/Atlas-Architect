@@ -12,25 +12,21 @@ Transform the Atlas tool from a passive visualizer into an **Active Architectura
 
 ### 3. Implementation Roadmap
 
-#### Step 1: Planning Layer (`docs/topology/planned.json`)
-- Create a registry for "Intent."
-- Define `IPlannedNode` interface: `name`, `type`, `targetParent`, `expectedDependencies`.
-- Update Atlas Engine to merge `planned.json` with `scanned.json`.
+#### Step 1: Planning Layer (`docs/topology/planned.json`) - [COMPLETE]
+- Registry for "Intent" is established.
+- `planned.json` is merged into the master `atlas.json` during every scan.
 
-#### Step 2: Visualizer Upgrades (Ghost Nodes)
-- Render planned nodes with dashed borders and partial opacity.
-- Show "Planned Gravity" to see how new features will affect system complexity before coding.
+#### Step 2: Visualizer Upgrades (Ghost Nodes) - [COMPLETE]
+- Planned nodes are rendered with dashed borders.
+- "Planned Gravity" analysis is integrated into the Layout Engine.
 
-#### Step 3: The `atlas-architect` Skill
-- Define a new agent skill that enforces:
-  1. `READ` Atlas graph before planning.
-  2. `WRITE` to planned topology.
-  3. `IMPLEMENT` code.
-  4. `VERIFY` convergence between Plan and Scan.
+#### Step 3: The `atlas-architect` Skill - [ACTIVE]
+- Skill provides CLI wrappers for `atlas scan`, `atlas plan`, and `atlas slice`.
+- Automated `atlas sync` ensures parity between Toplogy and Pipeline documentation.
 
-#### Step 4: Context Injection
-- Tool to export a specific node's "Context Package" (Node info + Parents + Dependencies + Child summaries) directly into the AI's prompt.
+#### Step 4: Context Injection - [IN PROGRESS]
+- Ongoing work to automate "Context Package" extraction for AI prompts based on topological neighbors.
 
 ---
-*Last Updated: 2026-02-16*
-*Status: Initializing Phase 1*
+*Last Updated: 2026-03-02*
+*Status: Transitioning to Phase 3 & 4*

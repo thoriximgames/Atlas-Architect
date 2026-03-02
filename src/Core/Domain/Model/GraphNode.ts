@@ -26,6 +26,7 @@ export interface GraphNode {
     verificationStatus: VerificationStatus;
     authorityId?: string;
     guardState?: GuardState;
+    isAuthority?: boolean;
     verifiedHash?: string;
     contractHash?: string;
     verifiedBy?: string;

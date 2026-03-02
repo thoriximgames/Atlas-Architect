@@ -99,6 +99,7 @@ export class AtlasEngine {
                     // MERGE GUARDIAN PROTOCOL
                     if (planned.authorityId) scannedNode.authorityId = planned.authorityId;
                     if (planned.guardState) scannedNode.guardState = planned.guardState;
+                    if (planned.isAuthority) scannedNode.isAuthority = planned.isAuthority;
                 } else {
                     // Ghost node (planned but not yet implemented/scanned)
                     // If parent doesn't exist, default to depth 1
@@ -126,6 +127,7 @@ export class AtlasEngine {
                         verificationStatus: 'auto',
                         authorityId: planned.authorityId,
                         guardState: planned.guardState,
+                        isAuthority: planned.isAuthority,
                         initialX: 0, initialY: 0, sectorAngle: 0, sectorWidth: 0
                     };
 

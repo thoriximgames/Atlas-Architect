@@ -85,6 +85,13 @@ class AtlasEngine {
                 if (scannedNode) {
                     // It exists in code! Mark as verified.
                     scannedNode.status = 'verified';
+                    // MERGE GUARDIAN PROTOCOL
+                    if (planned.authorityId)
+                        scannedNode.authorityId = planned.authorityId;
+                    if (planned.guardState)
+                        scannedNode.guardState = planned.guardState;
+                    if (planned.isAuthority)
+                        scannedNode.isAuthority = planned.isAuthority;
                 }
                 else {
                     // Ghost node (planned but not yet implemented/scanned)
@@ -110,6 +117,9 @@ class AtlasEngine {
                         color: ColorProvider_1.ColorProvider.getFunctionalColor(planned.type, depth),
                         status: 'planned',
                         verificationStatus: 'auto',
+                        authorityId: planned.authorityId,
+                        guardState: planned.guardState,
+                        isAuthority: planned.isAuthority,
                         initialX: 0, initialY: 0, sectorAngle: 0, sectorWidth: 0
                     };
                     if (planned.parentId) {
