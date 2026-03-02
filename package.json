@@ -1,7 +1,7 @@
 {
   "name": "atlas",
-  "version": "2.1.1",
-  "description": "Architectural Atlas for MMO-Suite",
+  "version": "8.0.0",
+  "description": "vUniversal: The Architectural Conservator",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

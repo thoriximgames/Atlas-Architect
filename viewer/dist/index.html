@@ -4,28 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Atlas Enterprise v5.3</title>
-  <script type="module" crossorigin src="/viewer/assets/index-BMowoOCf.js"></script>
-  <link rel="stylesheet" crossorigin href="/viewer/assets/index-BtBk94r2.css">
+  <script type="module" crossorigin src="/viewer/assets/index-DxornEWi.js"></script>
+  <link rel="stylesheet" crossorigin href="/viewer/assets/index-CAOmdZ-4.css">
 </head>
 <body>
     <div id="app-container">
         <div id="visualizer-canvas"></div>
         
-        <div class="hud-info" style="position: fixed; left: 40px; top: 40px; pointer-events: none;">
-            <div style="font-size: 14px; font-weight: 900; letter-spacing: 5px; opacity: 0.3;">MMO-SUITE ARCHITECTURE</div>
-            <div style="font-size: 9px; opacity: 0.2; margin-top: 5px;">LOCAL GRAVITY LINK [CONNECTED]</div>
-        </div>
+        <!-- Left Side: Nav Toggle -->
+        <button id="btn-toggle-layers" class="icon-btn" style="position: fixed; left: 25px; top: 25px; z-index: 1001;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
 
-        <aside id="sidebar">
+        <!-- Navigation Sidebar (Left) -->
+        <nav id="layer-sidebar" class="sidebar left hidden">
+            <header class="sidebar-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
+                <h1 id="nav-title">Registry Layers</h1>
+                <button id="btn-switch-nav" class="icon-btn" style="width: 24px; height: 24px; margin-bottom: -5px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                </button>
+            </header>
+            
+            <!-- Layer Selector Content -->
+            <div id="nav-content-layers" class="sidebar-content">
+                <div id="view-selector" style="display: flex; flex-direction: column; gap: 8px;">
+                    <button id="btn-architecture" class="view-btn active" data-view="architecture">ARCHITECTURE</button>
+                    <button id="btn-orphans" class="view-btn" data-view="orphans">ORPHANS</button>
+                </div>
+            </div>
+
+            <!-- Legend Content (Hidden by default) -->
+            <div id="nav-content-info" class="sidebar-content hidden">
+                <div id="legend-container"></div>
+            </div>
+        </nav>
+
+        <!-- Node Information Sidebar (Right) -->
+        <aside id="sidebar" class="sidebar right hidden">
             <header class="sidebar-header">
-                <h1>Technical Analysis</h1>
+                <h1>Node Information</h1>
             </header>
             <div id="inspector-content">
                 <div style="color: var(--text-mid); font-size: 11px; text-align: center; margin-top: 100px; text-transform: uppercase; letter-spacing: 2px;">
                     Select Node to Interrogate
                 </div>
             </div>
-            <div id="legend-container"></div>
         </aside>
     </div>
 </body>
