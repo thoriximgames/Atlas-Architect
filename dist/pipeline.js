@@ -26,25 +26,58 @@ class TopologyPlanner {
         await fs_extra_1.default.writeJson(PLANNED_PATH, data, { spaces: 2 });
         console.log(`[PLANNER] Updated ${PLANNED_PATH}`);
     }
-    static async upsertNode(id, name, type, purpose) {
+    static async upsertNode(id, name, type, purpose, parentId) {
         const data = await this.loadPlanned();
         let node = data.plannedNodes.find((n) => n.id === id);
         if (node) {
             node.name = name;
             node.type = type;
             node.purpose = purpose;
+            if (parentId)
+                node.parentId = parentId;
             console.log(`[PLANNER] Updated node: ${id}`);
         }
         else {
             data.plannedNodes.push({
                 id, name, type, purpose,
-                parentId: "",
+                parentId: parentId || "",
                 dependencies: [],
                 description: ""
             });
             console.log(`[PLANNER] Added new node: ${id}`);
         }
         await this.savePlanned(data);
+    }
+    static async branch(parentId, children) {
+        const data = await this.loadPlanned();
+        for (const def of children) {
+            const parts = def.split('|');
+            const id = parts[0];
+            const name = parts[1];
+            const type = parts[2];
+            const purpose = parts[3];
+            if (!id || !name || !type) {
+                console.error(`[ERROR] Invalid child definition: ${def}.`);
+                continue;
+            }
+            let node = data.plannedNodes.find((n) => n.id === id);
+            if (node) {
+                node.name = name;
+                node.type = type;
+                node.purpose = purpose;
+                node.parentId = parentId;
+            }
+            else {
+                data.plannedNodes.push({
+                    id, name, type, purpose: purpose || "",
+                    parentId: parentId,
+                    dependencies: [],
+                    description: ""
+                });
+            }
+        }
+        await this.savePlanned(data);
+        console.log(`[PLANNER] Branch created under ${parentId} (${children.length} nodes).`);
     }
     static async setGuard(id, authorityId, state) {
         const data = await this.loadPlanned();
@@ -275,7 +308,10 @@ async function run() {
                 break;
             // --- TOPOLOGY PLANNING (WRITE) ---
             case 'plan:node':
-                await TopologyPlanner.upsertNode(args[0], args[1], args[2], args[3]);
+                await TopologyPlanner.upsertNode(args[0], args[1], args[2], args[3], args[4]);
+                break;
+            case 'plan:branch':
+                await TopologyPlanner.branch(args[0], args.slice(1));
                 break;
             case 'plan:guard':
                 await TopologyPlanner.setGuard(args[0], args[1], args[2]);

@@ -1,5 +1,5 @@
 export type NodeType = 'System' | 'Service' | 'Component' | 'Interface' | 'DTO' | 'Logic' | 'Data' | 'Utility' | 'Unknown';
-export type NodeStatus = 'planned' | 'verified' | 'orphan';
+export type NodeStatus = 'planned' | 'verified' | 'orphan' | 'discovered';
 export type GuardState = 'none' | 'guarded' | 'restricted';
 export type VerificationStatus = 'auto' | 'verified' | 'dirty';
 
@@ -41,6 +41,7 @@ export interface IAtlasNode {
     events: IEventDefinition[];
     complexity: number;
     description?: string;
+    purpose?: string;
     lastModifiedBy?: string;
     implementationNotes?: string;
     violations: string[];
@@ -74,6 +75,7 @@ export interface IPlannedNode {
     type: NodeType;
     parentId: string;
     dependencies: string[];
+    purpose?: string;
     authorityId?: string;
     guardState?: GuardState;
     isAuthority?: boolean;

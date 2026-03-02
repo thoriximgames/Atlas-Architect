@@ -9,6 +9,10 @@ async function bootstrap() {
     const res = await fetch('/data/atlas.json');
     const data = await res.json();
 
+    if (data.project) {
+        document.title = `Atlas | ${data.project}`;
+    }
+
     const nodes = Object.values(data.nodes) as VisualNode[];
     const nodeMap = new Map<string, VisualNode>();
     nodes.forEach(n => nodeMap.set(n.id, n));

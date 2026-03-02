@@ -108,23 +108,25 @@ export class StageRenderer {
         // --- ADDITIVE LAYER (INHERITANCE) ---
         nEnter.filter(d => (d.baseClasses?.length || 0) > 0).append('circle')
             .attr('r', d => d.radius + 8).attr('fill', 'none')
-            .attr('stroke', '#BF00FF').attr('stroke-width', 1.5).attr('stroke-dasharray', '3,6').attr('opacity', 0.4);
+            .attr('stroke', '#BF00FF').attr('stroke-width', 2.5).attr('stroke-dasharray', '3,6').attr('opacity', 0.6);
 
         // --- GUARDIAN HALO (AUTHORITY) ---
         // Solid Halo for 'guarded'
         nEnter.filter(d => d.guardState === 'guarded').append('circle')
             .attr('r', d => d.radius + 14).attr('fill', 'none')
-            .attr('stroke', '#ffd700').attr('stroke-width', 2.5).attr('opacity', 0.8)
+            .attr('stroke', '#ffd700').attr('stroke-width', 4.5).attr('opacity', 0.9)
+            .style('filter', 'drop-shadow(0px 0px 4px rgba(255, 215, 0, 0.5))')
             .attr('class', 'guardian-halo');
             
         // Dashed Halo for 'restricted'
         nEnter.filter(d => d.guardState === 'restricted').append('circle')
             .attr('r', d => d.radius + 14).attr('fill', 'none')
-            .attr('stroke', '#ffd700').attr('stroke-width', 1.5).attr('stroke-dasharray', '4,4').attr('opacity', 0.5)
+            .attr('stroke', '#ffd700').attr('stroke-width', 3).attr('stroke-dasharray', '4,4').attr('opacity', 0.7)
             .attr('class', 'guardian-halo');
 
-        nEnter.append('circle')
-            .attr('r', d => d.radius)
+        // --- DYNAMIC GEOMETRY ---
+        nEnter.append('path')
+            .attr('d', d => this.getPathForType(d.type, d.radius))
             .attr('fill', d => d.isAuthority ? 'url(#hatch-authority)' : d.color)
             .attr('stroke', d => d.isAuthority ? '#ffd700' : (d.status === 'planned' ? '#ffffff' : '#000'))
             .attr('stroke-width', d => d.isAuthority ? 2.5 : (d.status === 'planned' ? 2 : 1.5))
@@ -134,6 +136,16 @@ export class StageRenderer {
         nEnter.append('text').text(d => d.name).attr('text-anchor', 'middle').attr('dy', '0.35em')
             .attr('fill', '#fff')
             .attr('font-size', d => d.radius > 40 ? '14px' : '9px').attr('font-weight', '700').style('pointer-events', 'none');
+        
+        // --- MISSING DATA WARNING ---
+        nEnter.filter(d => !d.purpose || !d.description)
+            .append('text')
+            .text('⚠️')
+            .attr('text-anchor', 'middle')
+            .attr('dy', d => `-${d.radius + 8}px`)
+            .attr('font-size', '16px')
+            .style('pointer-events', 'none')
+            .style('filter', 'drop-shadow(0px 2px 2px rgba(0,0,0,0.8))');
         
         this.nodeSelection = nEnter.merge(n as any) as any;
         this.renderCanvas();
@@ -198,6 +210,69 @@ export class StageRenderer {
         });
 
         this.ctx.restore();
+    }
+
+    private getPathForType(type: string, r: number): string {
+        switch (type) {
+            case 'System':
+                // Rounded Square
+                const sr = 10; // STRONGER corner radius
+                return `M ${-r+sr},${-r} 
+                        L ${r-sr},${-r} Q ${r},${-r} ${r},${-r+sr} 
+                        L ${r},${r-sr} Q ${r},${r} ${r-sr},${r} 
+                        L ${-r+sr},${r} Q ${-r},${r} ${-r},${r-sr} 
+                        L ${-r},${-r+sr} Q ${-r},${-r} ${-r+sr},${-r} Z`;
+            
+            case 'Service':
+                return this.getRoundedPolygonPath(6, r, 12);
+            
+            case 'Component':
+                return this.getRoundedPolygonPath(4, r * 1.2, 15, Math.PI / 2);
+            
+            case 'Interface':
+                return this.getRoundedPolygonPath(8, r, 10);
+            
+            case 'Data':
+            case 'DTO':
+            default:
+                return `M 0,0 m ${-r},0 a ${r},${r} 0 1,0 ${r * 2},0 a ${r},${r} 0 1,0 ${-(r * 2)},0`;
+        }
+    }
+
+    private getRoundedPolygonPath(sides: number, radius: number, cornerRadius: number, rotation: number = 0): string {
+        const points = [];
+        for (let i = 0; i < sides; i++) {
+            const angle = (i * (360 / sides)) * (Math.PI / 180) + rotation;
+            points.push({
+                x: radius * Math.cos(angle),
+                y: radius * Math.sin(angle)
+            });
+        }
+
+        let path = "";
+        for (let i = 0; i < points.length; i++) {
+            const p1 = points[i];
+            const p2 = points[(i + 1) % points.length];
+            const p0 = points[(i - 1 + points.length) % points.length];
+
+            // Vector math for rounding
+            const d1x = p1.x - p0.x; const d1y = p1.y - p0.y;
+            const d2x = p2.x - p1.x; const d2y = p2.y - p1.y;
+            const l1 = Math.sqrt(d1x * d1x + d1y * d1y);
+            const l2 = Math.sqrt(d2x * d2x + d2y * d2y);
+            const c = Math.min(cornerRadius, l1 / 2, l2 / 2);
+
+            const startX = p1.x - (d1x / l1) * c;
+            const startY = p1.y - (d1y / l1) * c;
+            const endX = p1.x + (d2x / l2) * c;
+            const endY = p1.y + (d2y / l2) * c;
+
+            if (i === 0) path += `M ${startX},${startY}`;
+            else path += ` L ${startX},${startY}`;
+            
+            path += ` Q ${p1.x},${p1.y} ${endX},${endY}`;
+        }
+        return path + " Z";
     }
 
     focus(selectedId: string, ids: Set<string>) {

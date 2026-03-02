@@ -55,12 +55,13 @@ class BaseParser {
         // 1. Protocols / Interfaces
         if (lowName.startsWith('i') && /^[A-Z]/.test(name.substring(1)))
             return 'Interface';
-        if (content.includes('class I') || content.includes('struct I'))
+        if (content.includes('class I') || content.includes('struct I') || low.includes('/protocol/'))
             return 'Interface';
         // 2. Systems / Core Logic
         const hasLifecycle = /void\s+(?:Awake|Start|Update|Init|Main|Execute|Tick|OnEnable)/i.test(content);
         const isContextOrRegistry = lowName.endsWith('context') || lowName.endsWith('registry');
-        if (hasLifecycle || lowName.endsWith('manager') || lowName.endsWith('controller') || lowName.endsWith('system') || isContextOrRegistry) {
+        const isModuleOrRepo = lowName.endsWith('module') || lowName.endsWith('repository');
+        if (hasLifecycle || lowName.endsWith('manager') || lowName.endsWith('controller') || lowName.endsWith('system') || isContextOrRegistry || isModuleOrRepo) {
             return 'System';
         }
         // 3. Data / DTOs

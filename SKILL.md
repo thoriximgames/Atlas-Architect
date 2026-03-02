@@ -19,7 +19,7 @@ Every project MUST contain:
 - `atlas.config.json`: Project-specific scan rules.
 - `data/atlas.json`: The current SSoT (Source of Truth) for the topology.
 - `dist/`: Compiled copy of the v8.0.0 engine.
-- `viewer/dist/`: The latest compiled UI with Sidebar, Pagination, and Inspector.
+- `viewer/dist/`: The latest compiled UI with Sidebar, Pagination, Inspector, and **Dynamic Page Titles** (Project Name).
 
 ## 🛠️ The Precision Workflow
 

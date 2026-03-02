@@ -108,6 +108,16 @@ async function main() {
     const viewerDist = path.join(projectRoot, '.atlas/viewer/dist');
     const dataFile = path.join(projectRoot, '.atlas/data/atlas.json');
 
+    // CSP and Basic Headers
+    app.use((req, res, next) => {
+        res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'");
+        next();
+    });
+
+    app.get('/', (req, res) => {
+        console.log(`[Atlas] Root hit! Redirecting to /viewer/...`);
+        res.redirect('/viewer/');
+    });
     app.use('/viewer', express.static(viewerDist));
     app.get('/data/atlas.json', (req, res) => res.sendFile(dataFile));
     app.get(/\/viewer.*/, (req, res) => res.sendFile(path.join(viewerDist, 'index.html')));

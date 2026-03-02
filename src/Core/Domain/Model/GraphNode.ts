@@ -16,6 +16,7 @@ export interface GraphNode {
     events: IEventDefinition[];
     complexity: number;
     description?: string;
+    purpose?: string;
     lastModifiedBy?: string;
     implementationNotes?: string;
     violations: string[];

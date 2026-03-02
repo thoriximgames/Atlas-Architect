@@ -7,22 +7,21 @@ export class Legend {
 
     render() {
         const items = [
-            { label: 'ROOT / SYSTEM', color: '#1e293b', desc: 'Entry Point / Master Logic' },
-            { label: 'SERVICE', color: '#00FF95', desc: 'Global Singletons' },
-            { label: 'LOGIC / WORKER', color: '#FF1F5E', desc: 'Active Logic Unit' },
-            { label: 'COMPONENT', color: '#00E0FF', desc: 'UI / visual element' },
-            { label: 'INTERFACE', color: '#8b5cf6', desc: 'Contract definitions' },
-            { label: 'DATA / ASSET', color: '#f59e0b', desc: 'ScriptableObject / DTO' },
-            { label: 'UTILITY / EDITOR', color: '#94a3b8', desc: 'Tools and Helpers' },
-            { label: 'UNCONNECTED', color: '#450a0a', desc: 'Dead Code / Debris' }
+            { label: 'SYSTEM', color: '#FF1F5E', desc: 'Core infrastructure / Foundations', shape: 'square' },
+            { label: 'SERVICE', color: '#00FF95', desc: 'Global utility managers', shape: 'hexagon' },
+            { label: 'COMPONENT', color: '#00E0FF', desc: 'Modular logic plugins', shape: 'diamond' },
+            { label: 'INTERFACE', color: '#8b5cf6', desc: 'Protocol / Portal contract', shape: 'octagon' },
+            { label: 'DATA / DTO', color: '#f59e0b', desc: 'Atomic units / Templates', shape: 'circle' },
+            { label: 'UTILITY', color: '#94a3b8', desc: 'Tools and Helpers', shape: 'circle' },
+            { label: 'DEBRIS', color: '#450a0a', desc: 'Unconnected / Dead code', shape: 'circle' }
         ];
 
         this.el.innerHTML = `
-            <div class="info-map-header">NODE CLASSIFICATIONS</div>
+            <div class="info-map-header">FUNCTIONAL GEOMETRY</div>
             <div class="info-map-grid">
                 ${items.map(item => `
                     <div class="info-map-item">
-                        <div class="info-map-color" style="background: ${item.color}"></div>
+                        ${this.renderLegendShape(item.color, item.shape)}
                         <div class="info-map-text">
                             <div class="info-map-label">${item.label}</div>
                             <div class="info-map-desc">${item.desc}</div>
@@ -56,6 +55,55 @@ export class Legend {
                         <div class="info-map-desc">Planned (Not yet implemented)</div>
                     </div>
                 </div>
+                <div class="info-map-item">
+                    <div class="info-map-color" style="background: #71717a; width: 20px; height: 2px; margin-right: 10px;"></div>
+                    <div class="info-map-text">
+                        <div class="info-map-label">DISCOVERED NODE</div>
+                        <div class="info-map-desc">Found in code (Unplaced)</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    private renderLegendShape(color: string, shape: string): string {
+        const size = 16;
+        const center = size / 2;
+        const r = size / 2 - 2;
+        let path = '';
+
+        switch (shape) {
+            case 'square':
+                path = `M 2,2 L ${size-2},2 L ${size-2},${size-2} L 2,${size-2} Z`;
+                break;
+            case 'hexagon':
+                const hPoints = [];
+                for (let i = 0; i < 6; i++) {
+                    const angle = (i * 60) * (Math.PI / 180);
+                    hPoints.push(`${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`);
+                }
+                path = `M ${hPoints.join(' L ')} Z`;
+                break;
+            case 'diamond':
+                path = `M ${center},2 L ${size-2},${center} L ${center},${size-2} L 2,${center} Z`;
+                break;
+            case 'octagon':
+                const oPoints = [];
+                for (let i = 0; i < 8; i++) {
+                    const angle = (i * 45 + 22.5) * (Math.PI / 180);
+                    oPoints.push(`${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`);
+                }
+                path = `M ${oPoints.join(' L ')} Z`;
+                break;
+            default: // circle
+                return `<div class="info-map-color" style="background: ${color}; border-radius: 50%;"></div>`;
+        }
+
+        return `
+            <div class="info-map-color" style="background: none; border: none; display: flex; align-items: center; justify-content: center;">
+                <svg width="${size}" height="${size}">
+                    <path d="${path}" fill="${color}" stroke="rgba(0,0,0,0.3)" stroke-width="1" />
+                </svg>
             </div>
         `;
     }

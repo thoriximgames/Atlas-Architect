@@ -3,7 +3,8 @@ import { NodeType } from '../../../Shared/Protocol';
 export class ColorProvider {
     static getFunctionalColor(type: NodeType, depth: number, name?: string): string {
         if (name === '⚠️ UNCONNECTED') return '#450a0a'; // Deep Blood Red for Debris Root
-        if (depth === 0) return '#1e293b'; // Dark Slate Blue for Roots
+        
+        // Priority 1: Functional Colors
         switch (type) {
             case 'Service': return '#00FF95';
             case 'System': return '#FF1F5E';
@@ -13,7 +14,11 @@ export class ColorProvider {
             case 'Data': return '#f59e0b'; // Gold for Data/ScriptableObjects
             case 'Utility': return '#94a3b8'; // Muted blue for Editors
             case 'Logic': return '#64748b';
-            default: return '#64748b';
         }
+
+        // Priority 2: Depth-based Root color if no functional type is matched
+        if (depth === 0) return '#1e293b'; 
+        
+        return '#64748b';
     }
 }

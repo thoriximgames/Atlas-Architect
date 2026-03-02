@@ -7,6 +7,7 @@ import { IAtlasRegistry, IPlannedNode } from '../../Shared/Protocol';
 import { ColorProvider } from '../Infrastructure/Visualization/ColorProvider';
 import { HeartbeatService } from './HeartbeatService';
 import { IAtlasConfig } from '../../Shared/Config';
+import { MetricsCalculator } from '../Infrastructure/Graph/MetricsCalculator';
 
 export class AtlasEngine {
     private heartbeat = new HeartbeatService();
@@ -93,13 +94,31 @@ export class AtlasEngine {
                 });
 
                 if (scannedNode) {
-                    // It exists in code! Mark as verified.
+                    // Rule #1: Topology (Design Layer) is the Sovereignty of Truth.
+                    // DO NOT allow scanner heuristics to overwrite planned properties.
+                    scannedNode.name = planned.name;
+                    scannedNode.type = planned.type;
+                    scannedNode.purpose = planned.purpose;
+                    scannedNode.parentId = planned.parentId || scannedNode.parentId;
                     scannedNode.status = 'verified';
+                    scannedNode.color = ColorProvider.getFunctionalColor(planned.type, scannedNode.depth, scannedNode.name);
                     
                     // MERGE GUARDIAN PROTOCOL
                     if (planned.authorityId) scannedNode.authorityId = planned.authorityId;
                     if (planned.guardState) scannedNode.guardState = planned.guardState;
                     if (planned.isAuthority) scannedNode.isAuthority = planned.isAuthority;
+                    
+                    // Rule #1.1: Hierarchy Promotion
+                    // If a planned parent exists, the edge from that parent MUST be a Gravity edge.
+                    if (planned.parentId) {
+                        const existingEdge = graph.edges.find(e => e.source === planned.parentId && e.target === scannedNode.id);
+                        if (existingEdge) {
+                            existingEdge.isGravity = true;
+                            existingEdge.type = 'inheritance';
+                        } else {
+                            graph.edges.push({ source: planned.parentId, target: scannedNode.id, isGravity: true, type: 'inheritance' });
+                        }
+                    }
                 } else {
                     // Ghost node (planned but not yet implemented/scanned)
                     // If parent doesn't exist, default to depth 1
@@ -137,12 +156,23 @@ export class AtlasEngine {
 
                     const deps = planned.dependencies || [];
                     for (const dep of deps) {
-                        // Note: dependencies in planned nodes might be names or IDs
                         graph.edges.push({ source: planned.id, target: dep, isGravity: false, type: 'dependency' });
                     }
                 }
             }
         }
+
+        // Mark all remaining nodes that weren't in planned.json as 'discovered'
+        for (const id in graph.nodes) {
+            const node = graph.nodes[id];
+            if (!node.status) {
+                node.status = 'discovered';
+                node.color = '#71717a'; // Zinc-500 for discovered but unplaced nodes
+            }
+        }
+
+        // Recalculate metrics (mass) after planned nodes/hierarchy are merged
+        MetricsCalculator.calculateDescendants(graph.nodes, graph.edges);
         
         console.log(`[AtlasEngine] Applying layout strategy...`);
         this.layoutStrategy.applyLayout(graph.nodes);
