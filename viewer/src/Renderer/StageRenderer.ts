@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { VisualNode, VisualLink } from '../Protocol/VisualTypes';
+import { ThemeManager } from '../Theme/ThemeManager';
 
 export class StageRenderer {
     private svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
@@ -114,8 +115,12 @@ export class StageRenderer {
     highlightGroup(ids: Set<string>) {
         if (this.nodeSelection) {
             this.nodeSelection.select('path')
-                .attr('stroke', (d: any) => ids.has(d.id) ? '#00ffff' : (d.isAuthority ? '#ffd700' : (d.status === 'planned' ? '#ffffff' : '#000')))
-                .attr('stroke-width', (d: any) => ids.has(d.id) ? 3 : (d.isAuthority ? 2.5 : (d.status === 'planned' ? 2 : 1.5)))
+                .attr('stroke', (d: any) => {
+                    if (ids.has(d.id)) return '#00ffff';
+                    const style = ThemeManager.getStyle(d.type);
+                    return d.isAuthority ? '#ffd700' : (d.status === 'planned' ? '#ffffff' : style.stroke);
+                })
+                .attr('stroke-width', (d: any) => ids.has(d.id) ? 3 : (d.isAuthority ? 2.5 : (d.status === 'planned' ? 2 : 1)))
                 .style('filter', (d: any) => ids.has(d.id) ? 'drop-shadow(0px 0px 6px rgba(0, 255, 255, 0.8))' : 'none');
         }
     }
@@ -160,7 +165,7 @@ export class StageRenderer {
         l.exit().remove();
         const lEnter = l.enter().append('line')
             .attr('stroke', '#ffffff')
-            .attr('stroke-opacity', 0.6)
+            .attr('stroke-opacity', 0.8)
             .attr('stroke-width', (d: any) => {
                 const targetNode = nodes.find(n => n.id === (d.target.id || d.target));
                 const mass = targetNode?.descendantCount || 0;
@@ -198,17 +203,24 @@ export class StageRenderer {
             .attr('stroke', '#ffd700').attr('stroke-width', 3).attr('stroke-dasharray', '4,4').attr('opacity', 0.7)
             .attr('class', 'guardian-halo');
 
-        // --- DYNAMIC GEOMETRY ---
         nEnter.append('path')
             .attr('d', d => this.getPathForType(d.type, d.radius))
-            .attr('fill', d => d.isAuthority ? 'url(#hatch-authority)' : d.color)
-            .attr('stroke', d => d.isAuthority ? '#ffd700' : (d.status === 'planned' ? '#ffffff' : '#000'))
-            .attr('stroke-width', d => d.isAuthority ? 2.5 : (d.status === 'planned' ? 2 : 1.5))
+            .attr('fill', d => {
+                if (d.isAuthority) return 'url(#hatch-authority)';
+                return ThemeManager.getStyle(d.type).fill;
+            })
+            .attr('stroke', d => {
+                if (d.isAuthority) return '#ffd700';
+                if (d.status === 'planned') return '#ffffff';
+                return ThemeManager.getStyle(d.type).stroke;
+            })
+            .attr('stroke-width', d => d.isAuthority ? 2.5 : (d.status === 'planned' ? 2 : 1))
             .attr('stroke-dasharray', d => d.status === 'planned' ? '4,4' : 'none')
             .attr('opacity', d => d.status === 'planned' ? 0.6 : 1);
         
         nEnter.append('text').text(d => d.name).attr('text-anchor', 'middle').attr('dy', '0.35em')
-            .attr('fill', '#fff')
+            .attr('fill', d => ThemeManager.getStyle(d.type).text)
+            .attr('opacity', 0.8)
             .attr('font-size', d => d.radius > 40 ? '14px' : '9px').attr('font-weight', '700').style('pointer-events', 'none');
         
         // --- MISSING DATA WARNING ---
@@ -271,14 +283,14 @@ export class StageRenderer {
             this.ctx.lineTo(t.x, t.y);
             
             if (isHighlighted) {
-                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
-                this.ctx.lineWidth = 2;
-                this.ctx.setLineDash([]); // Solid highlight for clarity or keep dotted
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 1.0)';
+                this.ctx.lineWidth = 2.5;
+                this.ctx.setLineDash([]); 
                 this.ctx.stroke();
             } else {
-                this.ctx.strokeStyle = 'rgba(100, 116, 139, 0.1)';
-                this.ctx.lineWidth = 1;
-                this.ctx.setLineDash([8, 4]);
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+                this.ctx.lineWidth = 1.2;
+                this.ctx.setLineDash([8, 6]);
                 this.ctx.stroke();
             }
         });

@@ -1,13 +1,15 @@
 import { VisualNode } from '../Protocol/VisualTypes';
+import { ThemeManager } from '../Theme/ThemeManager';
 
 export class Inspector {
     private el: HTMLElement;
     constructor() { this.el = document.getElementById('inspector-content')!; }
     render(node: VisualNode) {
+        const style = ThemeManager.getStyle(node.type);
         let html = `
             <h2 class="node-title">${node.name}</h2>
             <div class="node-type-chip" style="display: flex; align-items: center; margin-bottom: 8px;">
-                <div class="type-color-dot" style="width: 12px; height: 12px; border-radius: 50%; background: ${node.color}; margin-right: 8px;"></div>
+                <div class="type-color-dot" style="width: 12px; height: 12px; border-radius: 50%; background: ${style.fill}; margin-right: 8px;"></div>
                 <div class="type-label" style="text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; opacity: 0.8; font-weight: 600;">${node.type}</div>
             </div>
             <div class="file-path" style="font-family: monospace; font-size: 11px; opacity: 0.6; margin-bottom: 16px;">${node.id}</div>

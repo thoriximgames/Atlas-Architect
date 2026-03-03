@@ -1,3 +1,5 @@
+import { ThemeManager } from '../Theme/ThemeManager';
+
 export class Legend {
     private el: HTMLElement;
     
@@ -7,13 +9,13 @@ export class Legend {
 
     render() {
         const items = [
-            { label: 'SYSTEM', color: '#FF1F5E', desc: 'Core infrastructure / Foundations', shape: 'square' },
-            { label: 'SERVICE', color: '#00FF95', desc: 'Global utility managers', shape: 'hexagon' },
-            { label: 'COMPONENT', color: '#00E0FF', desc: 'Modular logic plugins', shape: 'diamond' },
-            { label: 'INTERFACE', color: '#8b5cf6', desc: 'Protocol / Portal contract', shape: 'octagon' },
-            { label: 'DATA / DTO', color: '#f59e0b', desc: 'Atomic units / Templates', shape: 'circle' },
-            { label: 'UTILITY', color: '#94a3b8', desc: 'Tools and Helpers', shape: 'circle' },
-            { label: 'DEBRIS', color: '#450a0a', desc: 'Unconnected / Dead code', shape: 'circle' }
+            { label: 'SYSTEM', type: 'System', desc: 'Core infrastructure / Foundations', shape: 'square' },
+            { label: 'SERVICE', type: 'Service', desc: 'Global utility managers', shape: 'hexagon' },
+            { label: 'COMPONENT', type: 'Component', desc: 'Modular logic plugins', shape: 'diamond' },
+            { label: 'INTERFACE', type: 'Interface', desc: 'Protocol / Portal contract', shape: 'octagon' },
+            { label: 'DATA / DTO', type: 'Data', desc: 'Atomic units / Templates', shape: 'circle' },
+            { label: 'UTILITY', type: 'Utility', desc: 'Tools and Helpers', shape: 'circle' },
+            { label: 'DEBRIS', type: 'Unknown', desc: 'Unconnected / Dead code', shape: 'circle' }
         ];
 
         this.el.innerHTML = `
@@ -21,7 +23,7 @@ export class Legend {
             <div class="info-map-grid">
                 ${items.map(item => `
                     <div class="info-map-item">
-                        ${this.renderLegendShape(item.color, item.shape)}
+                        ${this.renderLegendShape(ThemeManager.getStyle(item.type).fill, item.shape)}
                         <div class="info-map-text">
                             <div class="info-map-label">${item.label}</div>
                             <div class="info-map-desc">${item.desc}</div>

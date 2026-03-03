@@ -45,7 +45,6 @@ export interface IAtlasNode {
     lastModifiedBy?: string;
     implementationNotes?: string;
     violations: string[];
-    color: string;
     status: NodeStatus;
     
     // Auditing & Drift

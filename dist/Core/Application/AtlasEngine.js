@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AtlasEngine = void 0;
 const path_1 = __importDefault(require("path"));
 const fs_extra_1 = __importDefault(require("fs-extra"));
-const ColorProvider_1 = require("../Infrastructure/Visualization/ColorProvider");
 const HeartbeatService_1 = require("./HeartbeatService");
 const MetricsCalculator_1 = require("../Infrastructure/Graph/MetricsCalculator");
 class AtlasEngine {
@@ -91,7 +90,6 @@ class AtlasEngine {
                     scannedNode.purpose = planned.purpose;
                     scannedNode.parentId = planned.parentId || scannedNode.parentId;
                     scannedNode.status = 'verified';
-                    scannedNode.color = ColorProvider_1.ColorProvider.getFunctionalColor(planned.type, scannedNode.depth, scannedNode.name);
                     // Rule #1.2: Persistent Coordinates
                     // If planned.json has coordinates, use them to lock the node in space.
                     if (planned.x !== undefined) {
@@ -143,7 +141,6 @@ class AtlasEngine {
                         events: [],
                         complexity: 0,
                         violations: [],
-                        color: ColorProvider_1.ColorProvider.getFunctionalColor(planned.type, depth),
                         status: 'planned',
                         verificationStatus: 'auto',
                         authorityId: planned.authorityId,
@@ -166,7 +163,6 @@ class AtlasEngine {
             const node = graph.nodes[id];
             if (!node.status) {
                 node.status = 'discovered';
-                node.color = '#71717a'; // Zinc-500 for discovered but unplaced nodes
             }
         }
         // Recalculate metrics (mass) after planned nodes/hierarchy are merged

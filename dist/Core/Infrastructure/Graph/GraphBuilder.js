@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GraphBuilder = void 0;
 const MetricsCalculator_1 = require("./MetricsCalculator");
-const ColorProvider_1 = require("../Visualization/ColorProvider");
 class GraphBuilder {
     nodes = {};
     edges = [];
@@ -57,7 +56,6 @@ class GraphBuilder {
                     implementationNotes: '',
                     lastModifiedBy: '',
                     violations: [],
-                    color: ColorProvider_1.ColorProvider.getFunctionalColor(raw.type, depth, raw.name),
                     status: 'verified',
                     verificationStatus: 'auto',
                     verifiedHash: raw.hash,
@@ -112,7 +110,6 @@ class GraphBuilder {
                 events: [],
                 complexity: 0,
                 violations: [],
-                color: '#450a0a', // Deep Blood Red for Debris Root
                 status: 'orphan',
                 verificationStatus: 'auto',
                 initialX: 0, initialY: 0, sectorAngle: 0, sectorWidth: Math.PI * 2,
@@ -186,7 +183,6 @@ class GraphBuilder {
                 implementationNotes: '',
                 lastModifiedBy: '',
                 violations: [],
-                color: '#555555', // Grey for dead code
                 status: 'orphan',
                 verificationStatus: 'auto',
                 verifiedHash: raw.hash,

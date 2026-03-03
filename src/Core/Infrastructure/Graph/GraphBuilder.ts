@@ -3,7 +3,6 @@ import { SourceFile } from '../../Domain/Model/SourceFile';
 import { GraphNode } from '../../Domain/Model/GraphNode';
 import { IAtlasEdge } from '../../../Shared/Protocol';
 import { MetricsCalculator } from './MetricsCalculator';
-import { ColorProvider } from '../Visualization/ColorProvider';
 
 export class GraphBuilder implements IGraphBuilder {
     private nodes: Record<string, GraphNode> = {};
@@ -69,7 +68,6 @@ export class GraphBuilder implements IGraphBuilder {
                     implementationNotes: '',
                     lastModifiedBy: '',
                     violations: [],
-                    color: ColorProvider.getFunctionalColor(raw.type, depth, raw.name),
                     status: 'verified',
                     verificationStatus: 'auto',
                     verifiedHash: raw.hash,
@@ -129,7 +127,6 @@ export class GraphBuilder implements IGraphBuilder {
                 events: [],
                 complexity: 0,
                 violations: [],
-                color: '#450a0a', // Deep Blood Red for Debris Root
                 status: 'orphan',
                 verificationStatus: 'auto',
                 initialX: 0, initialY: 0, sectorAngle: 0, sectorWidth: Math.PI * 2,
@@ -210,7 +207,6 @@ export class GraphBuilder implements IGraphBuilder {
                 implementationNotes: '',
                 lastModifiedBy: '',
                 violations: [],
-                color: '#555555', // Grey for dead code
                 status: 'orphan',
                 verificationStatus: 'auto',
                 verifiedHash: raw.hash,

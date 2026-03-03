@@ -4,7 +4,6 @@ import { IScanner } from '../Domain/Services/IScanner';
 import { IGraphBuilder } from '../Domain/Services/IGraphBuilder';
 import { ILayoutStrategy } from '../Domain/Services/ILayoutStrategy';
 import { IAtlasRegistry, IPlannedNode } from '../../Shared/Protocol';
-import { ColorProvider } from '../Infrastructure/Visualization/ColorProvider';
 import { HeartbeatService } from './HeartbeatService';
 import { IAtlasConfig } from '../../Shared/Config';
 import { MetricsCalculator } from '../Infrastructure/Graph/MetricsCalculator';
@@ -101,7 +100,6 @@ export class AtlasEngine {
                     scannedNode.purpose = planned.purpose;
                     scannedNode.parentId = planned.parentId || scannedNode.parentId;
                     scannedNode.status = 'verified';
-                    scannedNode.color = ColorProvider.getFunctionalColor(planned.type, scannedNode.depth, scannedNode.name);
                     
                     // Rule #1.2: Persistent Coordinates
                     // If planned.json has coordinates, use them to lock the node in space.
@@ -152,7 +150,6 @@ export class AtlasEngine {
                         events: [],
                         complexity: 0,
                         violations: [],
-                        color: ColorProvider.getFunctionalColor(planned.type, depth),
                         status: 'planned',
                         verificationStatus: 'auto',
                         authorityId: planned.authorityId,
@@ -178,7 +175,6 @@ export class AtlasEngine {
             const node = graph.nodes[id];
             if (!node.status) {
                 node.status = 'discovered';
-                node.color = '#71717a'; // Zinc-500 for discovered but unplaced nodes
             }
         }
 
