@@ -20,9 +20,6 @@ export class GalaxyEngine {
 
         for (const n of nodes) this.weightMap.set(n.id, n.descendantCount);
 
-        const cx = window.innerWidth / 2;
-        const cy = window.innerHeight / 2;
-
         this.simulation = d3.forceSimulation<VisualNode>(this.activeNodes)
             .alphaDecay(0.02)
             .velocityDecay(0.3)
@@ -33,8 +30,8 @@ export class GalaxyEngine {
             .distance(d => d.isGravity ? 450 : 300)
             .strength(d => d.isGravity ? 2.0 : 0.05));
             
-        this.simulation.force('x', d3.forceX<VisualNode>(d => cx + d.initialX).strength(0.15));
-        this.simulation.force('y', d3.forceY<VisualNode>(d => cy + d.initialY).strength(0.15));
+        this.simulation.force('x', d3.forceX<VisualNode>(d => d.initialX).strength(0.15));
+        this.simulation.force('y', d3.forceY<VisualNode>(d => d.initialY).strength(0.15));
         
         this.simulation.force('collision', d3.forceCollide<VisualNode>().radius(d => d.radius + 20).strength(0.5));
     }
@@ -46,8 +43,6 @@ export class GalaxyEngine {
 
         let depth = 0;
         const max = d3.max(this.allNodes, d => d.depth) || 0;
-        const cx = window.innerWidth / 2;
-        const cy = window.innerHeight / 2;
 
         const spawn = () => {
             if (depth > max) {
@@ -59,12 +54,12 @@ export class GalaxyEngine {
             
             newNodes.forEach(node => {
                 const parent = this.activeNodes.find(an => an.id === node.parentId);
-                const px = parent ? (parent.x || (cx + node.initialX)) : (cx + node.initialX);
-                const py = parent ? (parent.y || (cy + node.initialY)) : (cy + node.initialY);
+                const px = parent ? (parent.x || node.initialX) : node.initialX;
+                const py = parent ? (parent.y || node.initialY) : node.initialY;
                 
                 // Use initialX/Y which now correctly propagates from the backend
-                if (node.x === undefined) node.x = cx + node.initialX;
-                if (node.y === undefined) node.y = cy + node.initialY;
+                if (node.x === undefined) node.x = node.initialX;
+                if (node.y === undefined) node.y = node.initialY;
 
                 // Rule: If initial coordinates are non-zero (manually saved), lock them.
                 if (node.initialX !== 0 || node.initialY !== 0) {
@@ -90,13 +85,11 @@ export class GalaxyEngine {
 
     async savePositions() {
         const updates: Record<string, { x: number, y: number }> = {};
-        const cx = window.innerWidth / 2;
-        const cy = window.innerHeight / 2;
 
         this.activeNodes.forEach(node => {
             if (node.x !== undefined && node.y !== undefined) {
-                // Store relative to center so it survives resize
-                updates[node.id] = { x: node.x - cx, y: node.y - cy };
+                // Store absolute world coordinates
+                updates[node.id] = { x: node.x, y: node.y };
             }
         });
 

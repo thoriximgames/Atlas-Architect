@@ -44,6 +44,10 @@ export class StageRenderer {
             this.renderCanvas();
         });
         this.svg.call(zoom);
+        
+        // Initial Camera Position: Center (0,0) in the viewport
+        const initialTransform = d3.zoomIdentity.translate(window.innerWidth / 2, window.innerHeight / 2);
+        this.svg.call(zoom.transform, initialTransform);
 
         this.linkLayer = this.g.append('g');
         this.nodeLayer = this.g.append('g');

@@ -91,23 +91,55 @@ async function main() {
     app.post('/api/topology/positions', async (req, res) => {
         try {
             const updates: Record<string, { x: number, y: number }> = req.body;
-            const plannedPath = path.join(projectRoot, '.atlas/data/planned.json');
+            const dataDir = path.join(projectRoot, '.atlas/data');
+            await fs.ensureDir(dataDir);
             
+            // 1. Save to planned.json if applicable (for backward compatibility)
+            const plannedPath = path.join(dataDir, 'planned.json');
             if (await fs.pathExists(plannedPath)) {
                 const data = await fs.readJson(plannedPath);
-                for (const id in updates) {
-                    const node = data.plannedNodes.find((n: any) => n.id === id);
-                    if (node) {
-                        node.x = updates[id].x;
-                        node.y = updates[id].y;
+                if (data.plannedNodes) {
+                    for (const id in updates) {
+                        const node = data.plannedNodes.find((n: any) => n.id === id);
+                        if (node) {
+                            node.x = updates[id].x;
+                            node.y = updates[id].y;
+                        }
                     }
+                    await fs.outputJson(plannedPath, data, { spaces: 2 });
                 }
-                await fs.outputJson(plannedPath, data, { spaces: 2 });
-                console.log(`[Atlas] Saved ${Object.keys(updates).length} node positions to planned.json`);
-                res.json({ success: true });
-            } else {
-                res.status(404).json({ error: "planned.json not found" });
             }
+            
+            // 2. Save to a global positions.json for all nodes
+            const positionsPath = path.join(dataDir, 'positions.json');
+            let positions: Record<string, { x: number, y: number }> = {};
+            if (await fs.pathExists(positionsPath)) {
+                positions = await fs.readJson(positionsPath);
+            }
+            for (const id in updates) {
+                positions[id] = updates[id];
+            }
+            await fs.outputJson(positionsPath, positions, { spaces: 2 });
+            console.log(`[Atlas] Saved ${Object.keys(updates).length} node positions to positions.json`);
+            
+            // 3. Patch atlas.json so the viewer doesn't need a full rescan immediately
+            const atlasPath = path.join(dataDir, 'atlas.json');
+            if (await fs.pathExists(atlasPath)) {
+                const atlasData = await fs.readJson(atlasPath);
+                if (atlasData.nodes) {
+                    for (const id in updates) {
+                        if (atlasData.nodes[id]) {
+                            atlasData.nodes[id].x = updates[id].x;
+                            atlasData.nodes[id].y = updates[id].y;
+                            atlasData.nodes[id].initialX = updates[id].x;
+                            atlasData.nodes[id].initialY = updates[id].y;
+                        }
+                    }
+                    await fs.outputJson(atlasPath, atlasData, { spaces: 2 });
+                }
+            }
+
+            res.json({ success: true });
         } catch (e: any) {
             console.error(`[API Error] ${e.message}`);
             res.status(500).json({ error: e.message });
@@ -125,6 +157,20 @@ async function main() {
             // Ensure data directory exists
             const dataDir = path.join(projectRoot, '.atlas/data');
             await fs.ensureDir(dataDir);
+            
+            // Inject positions from positions.json into the scanned registry
+            const positionsPath = path.join(dataDir, 'positions.json');
+            if (await fs.pathExists(positionsPath)) {
+                const positions = await fs.readJson(positionsPath);
+                for (const id in registry.nodes) {
+                    if (positions[id]) {
+                        registry.nodes[id].x = positions[id].x;
+                        registry.nodes[id].y = positions[id].y;
+                        registry.nodes[id].initialX = positions[id].x;
+                        registry.nodes[id].initialY = positions[id].y;
+                    }
+                }
+            }
             
             await fs.outputJson(path.join(dataDir, 'atlas.json'), registry, { spaces: 2 });
             console.log(`[Atlas] Scan complete and atlas.json updated.`);
@@ -152,9 +198,9 @@ async function main() {
         console.log(`[Atlas] Root hit! Redirecting to /viewer/...`);
         res.redirect('/viewer/');
     });
-    app.use('/viewer', express.static(viewerDist));
-    app.get('/data/atlas.json', (req, res) => res.sendFile(dataFile));
-    app.get(/\/viewer.*/, (req, res) => res.sendFile(path.join(viewerDist, 'index.html')));
+    app.use('/viewer', express.static(viewerDist, { dotfiles: 'allow' }));
+    app.get('/data/atlas.json', (req, res) => res.sendFile(dataFile, { dotfiles: 'allow' }));
+    app.get(/\/viewer.*/, (req, res) => res.sendFile(path.join(viewerDist, 'index.html'), { dotfiles: 'allow' }));
 
     await scanAndResolve();
     
