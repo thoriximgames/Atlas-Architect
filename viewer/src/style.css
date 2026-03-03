@@ -148,3 +148,47 @@ body, html {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* Floating Toolbox */
+.floating-toolbox {
+    position: fixed;
+    background: #2C2C2C;
+    border: 1.5px solid #444;
+    border-radius: 10px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 2000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    pointer-events: all;
+    transition: opacity 0.2s ease;
+}
+
+.floating-toolbox.hidden { opacity: 0; pointer-events: none; }
+
+.toolbox-btn {
+    background: transparent;
+    border: none;
+    color: #B3B3B3;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.toolbox-btn:hover {
+    background: #444;
+    color: #fff;
+}
+
+.toolbox-divider {
+    width: 1.5px;
+    height: 20px;
+    background: #444;
+    margin: 0 4px;
+}

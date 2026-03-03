@@ -252,6 +252,7 @@ export class StageRenderer {
                 });
         }
         this.renderCanvas();
+        this.updateToolbox(); // Dynamic follow
     }
 
     private getPathForType(type: string, r: number): string {
@@ -307,6 +308,7 @@ export class StageRenderer {
     focus(selectedId: string, ids: Set<string>) {
         this.selectedNodeId = selectedId;
         this.focusedNodeIds = ids;
+
         if (this.nodeSelection) {
             this.nodeSelection.transition().duration(250).style('opacity', (d: any) => ids.has(d.id) ? 1 : 0.05);
         }
@@ -314,6 +316,32 @@ export class StageRenderer {
             this.linkSelection.transition().duration(250).style('opacity', (d: any) => ids.has(d.source.id) && ids.has(d.target.id) ? 1 : 0);
         }
         this.renderCanvas();
+        this.updateToolbox();
+    }
+
+    private updateToolbox() {
+        const toolbox = document.getElementById('node-toolbox');
+        if (!toolbox || !this.selectedNodeId) {
+            toolbox?.classList.add('hidden');
+            return;
+        }
+
+        const node = this.currentNodes.find(n => n.id === this.selectedNodeId);
+        if (node && node.x !== undefined && node.y !== undefined) {
+            // Convert SVG coordinates to Screen coordinates
+            const screenX = this.transform.x + node.x * this.transform.k;
+            const screenY = this.transform.y + node.y * this.transform.k;
+
+            toolbox.classList.remove('hidden');
+
+            // Position above the node
+            const offset = (node.radius + 20) * this.transform.k;
+            toolbox.style.left = `${screenX}px`;
+            toolbox.style.top = `${screenY - offset}px`;
+            toolbox.style.transform = 'translateX(-50%)';
+        } else {
+            toolbox.classList.add('hidden');
+        }
     }
 
     enableDrag(dragBehavior: any) {
@@ -323,6 +351,10 @@ export class StageRenderer {
     reset() {
         this.selectedNodeId = null;
         this.focusedNodeIds.clear();
+
+        const toolbox = document.getElementById('node-toolbox');
+        toolbox?.classList.add('hidden');
+
         if (this.nodeSelection) {
             this.nodeSelection.transition().duration(250).style('opacity', 1);
         }
@@ -332,4 +364,4 @@ export class StageRenderer {
         }
         this.renderCanvas();
     }
-}
+    }
