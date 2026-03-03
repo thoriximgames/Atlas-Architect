@@ -44,12 +44,86 @@ async function bootstrap() {
     legend.render();
 
     let selectedGroup = new Set<string>();
+    let revealedIds = new Set<string>();
+
+    // Initial State: Only reveal Verified nodes (the ones we've decided are correct)
+    nodes.forEach(n => {
+        if (n.status === 'verified') revealedIds.add(n.id);
+    });
+
+    const updateDisplay = (allNodes: VisualNode[], allEdges: any[]) => {
+        const filteredNodes = allNodes.filter(n => revealedIds.has(n.id));
+        const activeIds = new Set(filteredNodes.map(n => n.id));
+        const filteredEdges = allEdges.filter(l => {
+            const s = (l.source as any).id || l.source;
+            const t = (l.target as any).id || l.target;
+            return activeIds.has(s) && activeIds.has(t);
+        });
+        engine.resetData(filteredNodes, filteredEdges);
+    };
 
     const renderer = new StageRenderer(() => { 
         renderer.reset(); 
         inspector.clear(); 
         document.getElementById('sidebar')?.classList.add('hidden');
+        document.getElementById('node-toolbox')?.classList.add('hidden');
         selectedGroup.clear();
+    });
+
+    // --- Toolbox Button Listeners ---
+    const probeNode = async () => {
+        const targetId = renderer.selectedId;
+        if (!targetId) return;
+
+        console.log(`[Discovery] Probing neighborhood for: ${targetId}`);
+        
+        const res = await fetch('/api/topology/probe', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nodeId: targetId })
+        });
+        
+        if (!res.ok) return;
+        
+        const data = await res.json();
+        const updatedRegistry = data.registry;
+        const updatedNodes = Object.values(updatedRegistry.nodes) as VisualNode[];
+        
+        // 1. Reveal dependencies found in the probe
+        if (data.dependencies) {
+            data.dependencies.forEach((depId: string) => {
+                revealedIds.add(depId);
+            });
+        }
+
+        // 2. Update master node list and map
+        updatedNodes.forEach(un => {
+            const existing = nodeMap.get(un.id);
+            if (existing) {
+                un.x = existing.x; un.y = existing.y;
+                un.fx = existing.fx; un.fy = existing.fy;
+            } else {
+                un.x = 0; un.y = 0;
+            }
+            un.radius = 12 + Math.sqrt(un.descendantCount || 0) * 6;
+            nodeMap.set(un.id, un);
+        });
+
+        // 3. Update view with ONLY the revealed set
+        updateDisplay(updatedNodes, updatedRegistry.edges);
+        
+        const freshNode = updatedNodes.find(n => n.id === targetId);
+        if (freshNode) inspector.render(freshNode);
+    };
+
+    document.getElementById('btn-probe')?.addEventListener('click', () => {
+        probeNode();
+    });
+
+    document.getElementById('btn-audit')?.addEventListener('click', () => {
+        if (renderer.selectedId) {
+            console.log(`[Toolbox] Auditing source for: ${renderer.selectedId}`);
+        }
     });
     
     renderer.onGroupSelect((ids) => {

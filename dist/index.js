@@ -234,6 +234,16 @@ async function main() {
         console.log(`[Watcher] ${event} detected at ${path}`);
         scanAndResolve();
     });
+    app.post('/api/topology/probe', async (req, res) => {
+        try {
+            console.log(`[Atlas] Manual Probe Triggered...`);
+            const registry = await scanAndResolve();
+            res.json(registry);
+        }
+        catch (e) {
+            res.status(500).json({ error: e.message });
+        }
+    });
     app.listen(port, () => {
         console.log(`\n================================================================`);
         console.log(`Atlas v8.0 [${config.project}]`);

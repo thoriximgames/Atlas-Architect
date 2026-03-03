@@ -59,19 +59,19 @@ body, html {
     border-radius: 12px;
     display: flex;
     flex-direction: column;
-    z-index: 1000;
+    z-index: 2500; /* Higher than toolbox */
     box-shadow: var(--shadow-ui);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
 
 .sidebar.left { 
     left: 25px; 
-    top: 80px; /* Shifted down to sit under hamburger */
+    top: 80px; 
 }
 
 .sidebar.right { 
     right: 25px; 
-    top: 25px; /* Node info stays at top */
+    top: 25px; 
     width: 340px; 
 }
 
@@ -159,7 +159,7 @@ body, html {
     display: flex;
     align-items: center;
     gap: 4px;
-    z-index: 2000;
+    z-index: 2000; /* Lower than sidebars */
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     pointer-events: all;
     transition: opacity 0.2s ease;

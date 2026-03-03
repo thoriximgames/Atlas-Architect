@@ -90,6 +90,8 @@ export class StageRenderer {
         this.onSelectionChange = callback;
     }
 
+    get selectedId(): string | null { return this.selectedNodeId; }
+
     private setupMarkers() {
         this.svg.append('defs').append('marker')
             .attr('id', 'arrow').attr('viewBox', '0 -5 10 10').attr('refX', 8).attr('refY', 0)
@@ -128,44 +130,65 @@ export class StageRenderer {
     private renderCanvas() {
         if (!this.ctx) return;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawGrid();
+        
+        // 1. Draw Optimized Tiled Grid
+        this.drawTiledGrid();
+
         this.ctx.save();
         this.ctx.translate(this.transform.x, this.transform.y);
         this.ctx.scale(this.transform.k, this.transform.k);
+
+        // 2. Draw Non-Gravity Links
         const nonGravityLinks = this.currentLinks.filter(l => !l.isGravity);
         const hasSelection = this.selectedNodeId !== null || this.focusedNodeIds.size > 0;
+
         nonGravityLinks.forEach(l => {
             const s = l.source as any;
             const t = l.target as any;
             if (!s || !t || s.x === undefined || t.x === undefined) return;
+
             const isHighlighted = (s.id === this.selectedNodeId || t.id === this.selectedNodeId) && this.focusedNodeIds.has(s.id) && this.focusedNodeIds.has(t.id);
             if (hasSelection && !isHighlighted) return;
+
             this.ctx.beginPath();
             this.ctx.moveTo(s.x, s.y);
             this.ctx.lineTo(t.x, t.y);
+            
             this.ctx.strokeStyle = isHighlighted ? ThemeManager.connectorSelected : ThemeManager.connectorNormal;
             this.ctx.lineWidth = isHighlighted ? 3 : 1.5;
             this.ctx.setLineDash(isHighlighted ? [] : [8, 6]);
             this.ctx.stroke();
         });
+
         this.ctx.restore();
     }
 
-    private drawGrid() {
+    private drawTiledGrid() {
         const k = this.transform.k;
         const tx = this.transform.x;
         const ty = this.transform.y;
         const spacing = 20 * k;
-        const startX = tx % spacing;
-        const startY = ty % spacing;
-        this.ctx.fillStyle = ThemeManager.gridColor;
+        
+        if (spacing < 2) return; // Performance guard
+
+        const patternCanvas = document.createElement('canvas');
+        patternCanvas.width = spacing;
+        patternCanvas.height = spacing;
+        const pctx = patternCanvas.getContext('2d')!;
+        
+        pctx.fillStyle = ThemeManager.gridColor;
         const dotSize = Math.max(0.5, 1 * k);
-        for (let x = startX; x < this.canvas.width; x += spacing) {
-            for (let y = startY; y < this.canvas.height; y += spacing) {
-                this.ctx.beginPath();
-                this.ctx.arc(x, y, dotSize, 0, Math.PI * 2);
-                this.ctx.fill();
-            }
+        pctx.beginPath();
+        pctx.arc(spacing/2, spacing/2, dotSize, 0, Math.PI * 2);
+        pctx.fill();
+
+        const pattern = this.ctx.createPattern(patternCanvas, 'repeat');
+        if (pattern) {
+            this.ctx.save();
+            this.ctx.translate(tx % spacing, ty % spacing);
+            this.ctx.fillStyle = pattern;
+            this.ctx.fillRect(-spacing, -spacing, this.canvas.width + spacing * 2, this.canvas.height + spacing * 2);
+            this.ctx.restore();
         }
     }
 
@@ -193,7 +216,6 @@ export class StageRenderer {
 
         if (dragBehavior) nEnter.call(dragBehavior);
         
-        // 1. INHERITANCE LAYER (Purple Dotted Outline hugging the shape)
         nEnter.filter(d => (d.baseClasses?.length || 0) > 0).append('path')
             .attr('d', d => this.getPathForType(d.type, d.radius + 6))
             .attr('fill', 'none')
@@ -201,28 +223,24 @@ export class StageRenderer {
             .attr('stroke-width', 2)
             .attr('stroke-dasharray', '4,4');
 
-        // 2. GUARDIAN HALO
         nEnter.filter(d => d.guardState === 'guarded').append('circle')
             .attr('r', d => d.radius + 14).attr('fill', 'none')
             .attr('stroke', '#FFCD29').attr('stroke-width', 3)
             .attr('class', 'guardian-halo');
 
-        // 3. MAIN GEOMETRY
         nEnter.append('path')
             .attr('class', 'main-shape')
             .attr('d', d => this.getPathForType(d.type, d.radius))
             .attr('fill', d => d.isAuthority ? 'url(#hatch-authority)' : ThemeManager.getStyle(d.type).fill)
             .attr('stroke', d => {
-                // Only show stroke if Authority, Planned, or Selected
                 if (d.isAuthority) return '#FFCD29';
                 if (d.status === 'planned') return '#808080';
-                return 'none'; // Flat by default
+                return 'none'; 
             })
             .attr('stroke-width', 2)
             .attr('stroke-dasharray', d => d.status === 'planned' ? '4,4' : 'none')
             .style('filter', 'url(#node-shadow)');
         
-        // 4. LABELS
         nEnter.append('text').text(d => d.name).attr('text-anchor', 'middle').attr('dy', '0.35em')
             .attr('fill', d => ThemeManager.getStyle(d.type).text)
             .attr('font-size', d => d.radius > 40 ? '13px' : '10px').attr('font-weight', '700').style('pointer-events', 'none');
@@ -252,7 +270,7 @@ export class StageRenderer {
                 });
         }
         this.renderCanvas();
-        this.updateToolbox(); // Dynamic follow
+        this.updateToolbox();
     }
 
     private getPathForType(type: string, r: number): string {
@@ -328,13 +346,9 @@ export class StageRenderer {
 
         const node = this.currentNodes.find(n => n.id === this.selectedNodeId);
         if (node && node.x !== undefined && node.y !== undefined) {
-            // Convert SVG coordinates to Screen coordinates
             const screenX = this.transform.x + node.x * this.transform.k;
             const screenY = this.transform.y + node.y * this.transform.k;
-
             toolbox.classList.remove('hidden');
-
-            // Position above the node
             const offset = (node.radius + 20) * this.transform.k;
             toolbox.style.left = `${screenX}px`;
             toolbox.style.top = `${screenY - offset}px`;
@@ -351,10 +365,8 @@ export class StageRenderer {
     reset() {
         this.selectedNodeId = null;
         this.focusedNodeIds.clear();
-
         const toolbox = document.getElementById('node-toolbox');
         toolbox?.classList.add('hidden');
-
         if (this.nodeSelection) {
             this.nodeSelection.transition().duration(250).style('opacity', 1);
         }
@@ -364,4 +376,4 @@ export class StageRenderer {
         }
         this.renderCanvas();
     }
-    }
+}

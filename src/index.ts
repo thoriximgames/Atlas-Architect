@@ -259,6 +259,24 @@ async function main() {
         scanAndResolve();
     });
 
+    app.post('/api/topology/probe', async (req, res) => {
+        try {
+            const { nodeId } = req.body;
+            console.log(`[Atlas] Manual Probe Triggered for: ${nodeId}`);
+            
+            const registry = await scanAndResolve();
+            
+            // Return everything, but also flag the specific neighborhood for the frontend
+            res.json({
+                registry,
+                targetId: nodeId,
+                dependencies: nodeId ? registry.nodes[nodeId]?.dependencies || [] : []
+            });
+        } catch (e: any) {
+            res.status(500).json({ error: e.message });
+        }
+    });
+
     app.listen(port, () => {
         console.log(`\n================================================================`);
         console.log(`Atlas v8.0 [${config.project}]`);
