@@ -3,6 +3,7 @@ import { VisualNode, VisualLink } from '../Protocol/VisualTypes';
 
 export class StageRenderer {
     private svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
+    private brushLayer: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
     private g: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
@@ -16,6 +17,8 @@ export class StageRenderer {
     private transform: d3.ZoomTransform = d3.zoomIdentity;
     private focusedNodeIds: Set<string> = new Set();
     private selectedNodeId: string | null = null;
+    private brush: d3.BrushBehavior<unknown>;
+    private onSelectionChange?: (ids: Set<string>) => void;
 
     constructor(onBgClick: () => void) {
         const container = d3.select('#visualizer-canvas');
@@ -35,14 +38,63 @@ export class StageRenderer {
             .style('top', '0').style('left', '0')
             .attr('width', '100%').attr('height', '100%');
             
-        this.svg.on('click', (e) => { if (e.target === this.svg.node()) onBgClick(); });
-        
-        this.g = this.svg.append('g');
-        const zoom = d3.zoom<SVGSVGElement, any>().on('zoom', (e) => {
-            this.transform = e.transform;
-            this.g.attr('transform', e.transform.toString());
-            this.renderCanvas();
+        this.svg.on('click', (e) => { 
+            // Clear selection on background click
+            if (e.target === this.svg.node() || d3.select(e.target).classed('overlay')) {
+                onBgClick(); 
+                if (this.onSelectionChange) this.onSelectionChange(new Set());
+                this.highlightGroup(new Set());
+            }
         });
+        
+        // Prevent default context menu to allow Right-Click panning
+        this.svg.on('contextmenu', (e) => e.preventDefault());
+        
+        // Add Brush Layer behind nodes
+        this.brushLayer = this.svg.append('g').attr('class', 'brush');
+        this.brush = d3.brush()
+            .filter(event => !event.ctrlKey && event.button === 0) // Explicit Left click only
+            .extent([[0, 0], [window.innerWidth, window.innerHeight]])
+            .on('start brush end', (e) => {
+                if (!e.selection) {
+                    if (e.type === 'end' && this.onSelectionChange) {
+                        // Don't clear on end if there's no selection, click handles bg clear
+                    }
+                    return;
+                }
+                const [[x0, y0], [x1, y1]] = e.selection;
+                const p0 = this.transform.invert([x0, y0]);
+                const p1 = this.transform.invert([x1, y1]);
+                
+                const selected = new Set<string>();
+                this.currentNodes.forEach(n => {
+                    if (n.x !== undefined && n.y !== undefined && 
+                        n.x >= p0[0] && n.x <= p1[0] && n.y >= p0[1] && n.y <= p1[1]) {
+                        selected.add(n.id);
+                    }
+                });
+                
+                this.highlightGroup(selected);
+                if (this.onSelectionChange) this.onSelectionChange(selected);
+                
+                // Clear brush visual on end
+                if (e.type === 'end') {
+                    this.brushLayer.call(this.brush.move, null);
+                }
+            });
+        this.brushLayer.call(this.brush);
+
+        this.g = this.svg.append('g');
+        const zoom = d3.zoom<SVGSVGElement, any>()
+            .filter((event) => {
+                // Allow wheel and right-click (button 2) for zoom/pan
+                return event.type === 'wheel' || event.button === 2;
+            })
+            .on('zoom', (e) => {
+                this.transform = e.transform;
+                this.g.attr('transform', e.transform.toString());
+                this.renderCanvas();
+            });
         this.svg.call(zoom);
         
         // Initial Camera Position: Center (0,0) in the viewport
@@ -53,6 +105,19 @@ export class StageRenderer {
         this.nodeLayer = this.g.append('g');
         this.setupMarkers();
         window.addEventListener('resize', () => this.onResize());
+    }
+
+    onGroupSelect(callback: (ids: Set<string>) => void) {
+        this.onSelectionChange = callback;
+    }
+
+    highlightGroup(ids: Set<string>) {
+        if (this.nodeSelection) {
+            this.nodeSelection.select('path')
+                .attr('stroke', (d: any) => ids.has(d.id) ? '#00ffff' : (d.isAuthority ? '#ffd700' : (d.status === 'planned' ? '#ffffff' : '#000')))
+                .attr('stroke-width', (d: any) => ids.has(d.id) ? 3 : (d.isAuthority ? 2.5 : (d.status === 'planned' ? 2 : 1.5)))
+                .style('filter', (d: any) => ids.has(d.id) ? 'drop-shadow(0px 0px 6px rgba(0, 255, 255, 0.8))' : 'none');
+        }
     }
 
     private setupMarkers() {
@@ -79,6 +144,8 @@ export class StageRenderer {
     private onResize() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
+        this.brush.extent([[0, 0], [window.innerWidth, window.innerHeight]]);
+        this.brushLayer.call(this.brush);
         this.renderCanvas();
     }
 
@@ -107,6 +174,7 @@ export class StageRenderer {
         n.exit().remove();
         
         const nEnter = n.enter().append('g').attr('cursor', 'pointer')
+            .on('mousedown', (e) => { e.stopPropagation(); }) // Prevent brush from stealing node drags
             .on('click', (e, d) => { e.stopPropagation(); onClick(d); });
 
         if (dragBehavior) nEnter.call(dragBehavior);
@@ -221,23 +289,15 @@ export class StageRenderer {
     private getPathForType(type: string, r: number): string {
         switch (type) {
             case 'System':
-                // Rounded Square
-                const sr = 10; // STRONGER corner radius
+                const sr = 10;
                 return `M ${-r+sr},${-r} 
                         L ${r-sr},${-r} Q ${r},${-r} ${r},${-r+sr} 
                         L ${r},${r-sr} Q ${r},${r} ${r-sr},${r} 
                         L ${-r+sr},${r} Q ${-r},${r} ${-r},${r-sr} 
                         L ${-r},${-r+sr} Q ${-r},${-r} ${-r+sr},${-r} Z`;
-            
-            case 'Service':
-                return this.getRoundedPolygonPath(6, r, 12);
-            
-            case 'Component':
-                return this.getRoundedPolygonPath(4, r * 1.2, 15, Math.PI / 2);
-            
-            case 'Interface':
-                return this.getRoundedPolygonPath(8, r, 10);
-            
+            case 'Service': return this.getRoundedPolygonPath(6, r, 12);
+            case 'Component': return this.getRoundedPolygonPath(4, r * 1.2, 15, Math.PI / 2);
+            case 'Interface': return this.getRoundedPolygonPath(8, r, 10);
             case 'Data':
             case 'DTO':
             default:
@@ -249,33 +309,24 @@ export class StageRenderer {
         const points = [];
         for (let i = 0; i < sides; i++) {
             const angle = (i * (360 / sides)) * (Math.PI / 180) + rotation;
-            points.push({
-                x: radius * Math.cos(angle),
-                y: radius * Math.sin(angle)
-            });
+            points.push({ x: radius * Math.cos(angle), y: radius * Math.sin(angle) });
         }
-
         let path = "";
         for (let i = 0; i < points.length; i++) {
             const p1 = points[i];
             const p2 = points[(i + 1) % points.length];
             const p0 = points[(i - 1 + points.length) % points.length];
-
-            // Vector math for rounding
             const d1x = p1.x - p0.x; const d1y = p1.y - p0.y;
             const d2x = p2.x - p1.x; const d2y = p2.y - p1.y;
             const l1 = Math.sqrt(d1x * d1x + d1y * d1y);
             const l2 = Math.sqrt(d2x * d2x + d2y * d2y);
             const c = Math.min(cornerRadius, l1 / 2, l2 / 2);
-
             const startX = p1.x - (d1x / l1) * c;
             const startY = p1.y - (d1y / l1) * c;
             const endX = p1.x + (d2x / l2) * c;
             const endY = p1.y + (d2y / l2) * c;
-
             if (i === 0) path += `M ${startX},${startY}`;
             else path += ` L ${startX},${startY}`;
-            
             path += ` Q ${p1.x},${p1.y} ${endX},${endY}`;
         }
         return path + " Z";

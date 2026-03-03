@@ -18,14 +18,11 @@ async function bootstrap() {
     const nodeMap = new Map<string, VisualNode>();
     nodes.forEach(n => nodeMap.set(n.id, n));
 
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-
     nodes.forEach((n) => {
         // Rule: If engine provided initialX/Y from planned.json, it's already the offset.
         // If not, it defaults to a polar projection.
-        n.x = centerX + (n.initialX || 0);
-        n.y = centerY + (n.initialY || 0);
+        n.x = n.initialX || 0;
+        n.y = n.initialY || 0;
         
         // If the backend actually returned non-zero initial coordinates (manual placement),
         // we lock it immediately so physics doesn't touch it.
@@ -42,11 +39,19 @@ async function bootstrap() {
     const legend = new Legend();
     legend.render();
 
+    let selectedGroup = new Set<string>();
+
     const renderer = new StageRenderer(() => { 
         renderer.reset(); 
         inspector.clear(); 
         document.getElementById('sidebar')?.classList.add('hidden');
+        selectedGroup.clear();
     });
+    
+    renderer.onGroupSelect((ids) => {
+        selectedGroup = ids;
+    });
+
     const engine = new GalaxyEngine(
         nodes, 
         data.edges, 
@@ -62,19 +67,46 @@ async function bootstrap() {
         function dragstarted(event: any, d: any) {
             console.log(`[Drag] Start: ${d.id}`);
             if (!event.active) engine.simulation.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
+            
+            // If the dragged node is not in the active selection, select only it
+            if (!selectedGroup.has(d.id)) {
+                selectedGroup.clear();
+                selectedGroup.add(d.id);
+                renderer.highlightGroup(selectedGroup);
+            }
+
+            d.dragNodes = [];
+            selectedGroup.forEach(id => {
+                const n = nodeMap.get(id);
+                if (n) {
+                    n.fx = n.x;
+                    n.fy = n.y;
+                    d.dragNodes.push({
+                        node: n,
+                        offsetX: n.x - d.x,
+                        offsetY: n.y - d.y
+                    });
+                }
+            });
         }
 
         function dragged(event: any, d: any) {
-            d.fx = event.x;
-            d.fy = event.y;
+            if (d.dragNodes) {
+                d.dragNodes.forEach((item: any) => {
+                    item.node.fx = event.x + item.offsetX;
+                    item.node.fy = event.y + item.offsetY;
+                });
+            } else {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
         }
 
         function dragended(event: any, d: any) {
-            console.log(`[Drag] End: ${d.id}. Saving position...`);
+            console.log(`[Drag] End: ${d.id}. Saving positions...`);
             if (!event.active) engine.simulation.alphaTarget(0);
-            // PERSIST position on end
+            
+            // Optionally clear selection after drag? No, keep it so they can drag again.
             engine.savePositions();
         }
 
@@ -84,13 +116,14 @@ async function bootstrap() {
             .on("end", dragended);
     };
 
-    // Expose simulation for drag behavior
-    (engine as any).simulation.nodes().forEach((n: any) => {
-        // Find the node element in the renderer and apply drag
-        // Note: StageRenderer needs to expose the node selection
-    });
-
     const onNodeClick = (node: VisualNode) => {
+        // If they click a node without dragging, select just it (and focus path)
+        if (!selectedGroup.has(node.id)) {
+            selectedGroup.clear();
+            selectedGroup.add(node.id);
+            renderer.highlightGroup(selectedGroup);
+        }
+
         const path = new Set<string>([node.id]);
         let curr: any = node;
         while(curr?.parentId) { path.add(curr.parentId); curr = nodeMap.get(curr.parentId); }
@@ -137,6 +170,9 @@ async function bootstrap() {
         engine.stopBootstrap();
         renderer.reset();
         inspector.clear();
+        selectedGroup.clear();
+        renderer.highlightGroup(selectedGroup);
+        
         const filteredNodes = page === 'architecture' ? nodes.filter(n => n.status !== 'orphan') : nodes.filter(n => n.status === 'orphan');
         const ids = new Set(filteredNodes.map(n => n.id));
         const filteredLinks = (data.edges as VisualLink[]).filter(l => {

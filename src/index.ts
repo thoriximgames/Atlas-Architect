@@ -50,11 +50,20 @@ async function main() {
         ? await fs.readJson(registryPath) 
         : {};
 
-    // Prune dead sessions
+    // Prune dead sessions and kill existing ghost for THIS project
     for (const key in sessions) {
         try {
-            process.kill(sessions[key].pid, 0); // Check if PID exists
+            // Check if PID exists
+            process.kill(sessions[key].pid, 0); 
+            
+            // If the process exists AND belongs to the same project, kill it!
+            if (sessions[key].project === config.project || key === config.project) {
+                console.log(`[Atlas] Killing existing ghost instance for project: ${config.project} (PID: ${sessions[key].pid}, Port: ${sessions[key].port})`);
+                process.kill(sessions[key].pid); // Send SIGTERM
+                delete sessions[key];
+            }
         } catch (e) {
+            // Process doesn't exist
             delete sessions[key];
         }
     }
@@ -184,8 +193,12 @@ async function main() {
         }
     };
 
-    // Serve from .atlas/viewer/dist
-    const viewerDist = path.join(projectRoot, '.atlas/viewer/dist');
+    // The engine and viewer are served from the central repository
+    // while the data is read/written to the local project's .atlas/data directory.
+    const engineRoot = path.resolve(__dirname, '..');
+    const viewerDist = path.join(engineRoot, 'viewer/dist');
+    
+    // The data file is in the target project
     const dataFile = path.join(projectRoot, '.atlas/data/atlas.json');
 
     // CSP and Basic Headers

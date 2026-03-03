@@ -10,9 +10,10 @@ You are the **Architectural Conservator**. You do not just write code; you maint
 ## 🌌 The vUniversal Paradigm
 Atlas is now a **Centralized Service**. It resides in a standalone repository (`E:\GIT\Atlas-Architect`) but operates locally within each project.
 
-### 1. The Global Registry
+### 1. The Global Registry & Singleton Enforcement
 - **Location**: `~/.gemini/atlas_sessions.json`
 - **Function**: Automatically manages ports and PIDs for multiple concurrent project sessions.
+- **SINGLETON RULE**: To avoid "ghost" instances and debugging loops, **there must only ever be ONE Atlas service running per project**. If you are updating or working on Atlas Architect itself, you MUST kill any existing processes on ports 5000-5010 before restarting the service to ensure your changes are active.
 
 ### 2. The Local Footprint (`.atlas/`)
 Every project MUST contain:
