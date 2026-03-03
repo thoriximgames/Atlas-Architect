@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Atlas v8.0</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%232C2C2C%22/><circle cx=%2250%22 cy=%2250%22 r=%2220%22 fill=%22%230D99FF%22/></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%230D99FF%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><circle cx=%2212%22 cy=%2212%22 r=%2210%22/><line x1=%222%22 y1=%2212%22 x2=%2222%22 y2=%2212%22/><path d=%22M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z%22/></svg>">
 </head>
 <body>
     <div id="app-container">
         <div id="visualizer-canvas"></div>
         
         <!-- Left Side: Nav Toggle & Project Name -->
-        <div style="position: fixed; left: 25px; top: 25px; z-index: 1001; display: flex; align-items: center; gap: 12px;">
+        <div style="position: fixed; left: 25px; top: 25px; z-index: 1001; display: flex; align-items: center; gap: 15px;">
             <button id="btn-toggle-layers" class="icon-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             </button>
-            <div id="project-label" style="background: var(--bg-ui); color: var(--text-mid); padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border-ui); font-size: 10px; font-weight: 800; letter-spacing: 1px; box-shadow: var(--shadow-ui); pointer-events: none; white-space: nowrap;">
+            <div id="project-label" style="color: #888888; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; pointer-events: none; white-space: nowrap; font-family: 'Inter', sans-serif;">
                 ATLAS | LOADING...
             </div>
         </div>
