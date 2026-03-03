@@ -12,6 +12,10 @@ async function bootstrap() {
 
     if (data.project) {
         document.title = `Atlas | ${data.project}`;
+        const projectLabel = document.getElementById('project-label');
+        if (projectLabel) {
+            projectLabel.innerText = `ATLAS | ${data.project.toUpperCase()}`;
+        }
     }
 
     const nodes = Object.values(data.nodes) as VisualNode[];
