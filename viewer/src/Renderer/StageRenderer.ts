@@ -24,7 +24,6 @@ export class StageRenderer {
     constructor(onBgClick: () => void) {
         const container = d3.select('#visualizer-canvas');
         
-        // Canvas Layer (Background Links / Distant)
         this.canvas = container.append('canvas')
             .style('position', 'absolute')
             .style('top', '0').style('left', '0')
@@ -33,14 +32,12 @@ export class StageRenderer {
             .node() as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d')!;
 
-        // SVG Layer (Nodes & Essential Links)
         this.svg = container.append('svg')
             .style('position', 'absolute')
             .style('top', '0').style('left', '0')
             .attr('width', '100%').attr('height', '100%');
             
         this.svg.on('click', (e) => { 
-            // Clear selection on background click
             if (e.target === this.svg.node() || d3.select(e.target).classed('overlay')) {
                 onBgClick(); 
                 if (this.onSelectionChange) this.onSelectionChange(new Set());
@@ -48,25 +45,16 @@ export class StageRenderer {
             }
         });
         
-        // Prevent default context menu to allow Right-Click panning
         this.svg.on('contextmenu', (e) => e.preventDefault());
-        
-        // Add Brush Layer behind nodes
         this.brushLayer = this.svg.append('g').attr('class', 'brush');
         this.brush = d3.brush()
-            .filter(event => !event.ctrlKey && event.button === 0) // Explicit Left click only
+            .filter(event => !event.ctrlKey && event.button === 0)
             .extent([[0, 0], [window.innerWidth, window.innerHeight]])
             .on('start brush end', (e) => {
-                if (!e.selection) {
-                    if (e.type === 'end' && this.onSelectionChange) {
-                        // Don't clear on end if there's no selection, click handles bg clear
-                    }
-                    return;
-                }
+                if (!e.selection) return;
                 const [[x0, y0], [x1, y1]] = e.selection;
                 const p0 = this.transform.invert([x0, y0]);
                 const p1 = this.transform.invert([x1, y1]);
-                
                 const selected = new Set<string>();
                 this.currentNodes.forEach(n => {
                     if (n.x !== undefined && n.y !== undefined && 
@@ -74,31 +62,21 @@ export class StageRenderer {
                         selected.add(n.id);
                     }
                 });
-                
                 this.highlightGroup(selected);
                 if (this.onSelectionChange) this.onSelectionChange(selected);
-                
-                // Clear brush visual on end
-                if (e.type === 'end') {
-                    this.brushLayer.call(this.brush.move, null);
-                }
+                if (e.type === 'end') this.brushLayer.call(this.brush.move, null);
             });
         this.brushLayer.call(this.brush);
 
         this.g = this.svg.append('g');
         const zoom = d3.zoom<SVGSVGElement, any>()
-            .filter((event) => {
-                // Allow wheel and right-click (button 2) for zoom/pan
-                return event.type === 'wheel' || event.button === 2;
-            })
+            .filter((event) => event.type === 'wheel' || event.button === 2)
             .on('zoom', (e) => {
                 this.transform = e.transform;
                 this.g.attr('transform', e.transform.toString());
                 this.renderCanvas();
             });
         this.svg.call(zoom);
-        
-        // Initial Camera Position: Center (0,0) in the viewport
         const initialTransform = d3.zoomIdentity.translate(window.innerWidth / 2, window.innerHeight / 2);
         this.svg.call(zoom.transform, initialTransform);
 
@@ -112,38 +90,31 @@ export class StageRenderer {
         this.onSelectionChange = callback;
     }
 
-    highlightGroup(ids: Set<string>) {
-        if (this.nodeSelection) {
-            this.nodeSelection.select('path')
-                .attr('stroke', (d: any) => {
-                    if (ids.has(d.id)) return '#00ffff';
-                    const style = ThemeManager.getStyle(d.type);
-                    return d.isAuthority ? '#ffd700' : (d.status === 'planned' ? '#ffffff' : style.stroke);
-                })
-                .attr('stroke-width', (d: any) => ids.has(d.id) ? 3 : (d.isAuthority ? 2.5 : (d.status === 'planned' ? 2 : 1)))
-                .style('filter', (d: any) => ids.has(d.id) ? 'drop-shadow(0px 0px 6px rgba(0, 255, 255, 0.8))' : 'none');
-        }
-    }
-
     private setupMarkers() {
         this.svg.append('defs').append('marker')
-            .attr('id', 'arrow').attr('viewBox', '0 -5 10 10').attr('refX', 10).attr('refY', 0)
+            .attr('id', 'arrow').attr('viewBox', '0 -5 10 10').attr('refX', 8).attr('refY', 0)
             .attr('markerWidth', 6).attr('markerHeight', 6).attr('orient', 'auto')
-            .append('path').attr('d', 'M0,-5L10,0L0,5').attr('fill', '#ffffff').attr('opacity', 0.8);
+            .append('path').attr('d', 'M0,-5L10,0L0,5')
+            .attr('fill', ThemeManager.connectorNormal)
+            .attr('opacity', 1);
 
-        // --- SVG DEFS (Hatching Pattern) ---
         const defs = this.svg.select('defs');
+        const filter = defs.append('filter')
+            .attr('id', 'node-shadow')
+            .attr('x', '-20%').attr('y', '-20%').attr('width', '140%').attr('height', '140%');
+        filter.append('feDropShadow')
+            .attr('dx', '0').attr('dy', '2')
+            .attr('stdDeviation', '2')
+            .attr('flood-color', 'rgba(0,0,0,0.15)');
+
         defs.append('pattern')
             .attr('id', 'hatch-authority')
-            .attr('width', 8)
-            .attr('height', 8)
+            .attr('width', 8).attr('height', 8)
             .attr('patternUnits', 'userSpaceOnUse')
             .attr('patternTransform', 'rotate(45)')
             .append('rect')
-            .attr('width', 4)
-            .attr('height', 8)
-            .attr('fill', '#ffd700')
-            .attr('opacity', 0.6);
+            .attr('width', 4).attr('height', 8)
+            .attr('fill', '#FFCD29').attr('opacity', 1);
     }
 
     private onResize() {
@@ -154,84 +125,107 @@ export class StageRenderer {
         this.renderCanvas();
     }
 
+    private renderCanvas() {
+        if (!this.ctx) return;
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawGrid();
+        this.ctx.save();
+        this.ctx.translate(this.transform.x, this.transform.y);
+        this.ctx.scale(this.transform.k, this.transform.k);
+        const nonGravityLinks = this.currentLinks.filter(l => !l.isGravity);
+        const hasSelection = this.selectedNodeId !== null || this.focusedNodeIds.size > 0;
+        nonGravityLinks.forEach(l => {
+            const s = l.source as any;
+            const t = l.target as any;
+            if (!s || !t || s.x === undefined || t.x === undefined) return;
+            const isHighlighted = (s.id === this.selectedNodeId || t.id === this.selectedNodeId) && this.focusedNodeIds.has(s.id) && this.focusedNodeIds.has(t.id);
+            if (hasSelection && !isHighlighted) return;
+            this.ctx.beginPath();
+            this.ctx.moveTo(s.x, s.y);
+            this.ctx.lineTo(t.x, t.y);
+            this.ctx.strokeStyle = isHighlighted ? ThemeManager.connectorSelected : ThemeManager.connectorNormal;
+            this.ctx.lineWidth = isHighlighted ? 3 : 1.5;
+            this.ctx.setLineDash(isHighlighted ? [] : [8, 6]);
+            this.ctx.stroke();
+        });
+        this.ctx.restore();
+    }
+
+    private drawGrid() {
+        const k = this.transform.k;
+        const tx = this.transform.x;
+        const ty = this.transform.y;
+        const spacing = 20 * k;
+        const startX = tx % spacing;
+        const startY = ty % spacing;
+        this.ctx.fillStyle = ThemeManager.gridColor;
+        const dotSize = Math.max(0.5, 1 * k);
+        for (let x = startX; x < this.canvas.width; x += spacing) {
+            for (let y = startY; y < this.canvas.height; y += spacing) {
+                this.ctx.beginPath();
+                this.ctx.arc(x, y, dotSize, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
+        }
+    }
+
     draw(nodes: VisualNode[], links: VisualLink[], weightMap: Map<string, number>, onClick: (e: MouseEvent, n: VisualNode) => void, dragBehavior?: any) {
         this.currentLinks = links;
         this.currentNodes = nodes;
         this.weightMap = weightMap;
 
-        // Render Essential Links (Gravity) in SVG for arrows
         const gravityLinks = links.filter(l => l.isGravity);
         const l = this.linkLayer.selectAll('line').data(gravityLinks, (d: any) => `${d.source.id || d.source}-${d.target.id || d.target}`);
         l.exit().remove();
         const lEnter = l.enter().append('line')
-            .attr('stroke', '#ffffff')
-            .attr('stroke-opacity', 0.8)
-            .attr('stroke-width', (d: any) => {
-                const targetNode = nodes.find(n => n.id === (d.target.id || d.target));
-                const mass = targetNode?.descendantCount || 0;
-                return 1 + Math.log10(mass + 1) * 2;
-            })
+            .attr('stroke', ThemeManager.connectorNormal)
+            .attr('stroke-opacity', 1)
+            .attr('stroke-width', 2.5)
             .attr('marker-end', 'url(#arrow)');
         this.linkSelection = lEnter.merge(l as any) as any;
 
-        // Render Nodes (SVG)
         const n = this.nodeLayer.selectAll('g').data(nodes, (d: any) => d.id);
         n.exit().remove();
         
         const nEnter = n.enter().append('g').attr('cursor', 'pointer')
-            .on('mousedown', (e) => { e.stopPropagation(); }) // Prevent brush from stealing node drags
+            .on('mousedown', (e) => { e.stopPropagation(); }) 
             .on('click', (e, d) => { e.stopPropagation(); onClick(e, d); });
 
         if (dragBehavior) nEnter.call(dragBehavior);
         
-        // --- ADDITIVE LAYER (INHERITANCE) ---
-        nEnter.filter(d => (d.baseClasses?.length || 0) > 0).append('circle')
-            .attr('r', d => d.radius + 8).attr('fill', 'none')
-            .attr('stroke', '#BF00FF').attr('stroke-width', 2.5).attr('stroke-dasharray', '3,6').attr('opacity', 0.6);
+        // 1. INHERITANCE LAYER (Purple Dotted Outline hugging the shape)
+        nEnter.filter(d => (d.baseClasses?.length || 0) > 0).append('path')
+            .attr('d', d => this.getPathForType(d.type, d.radius + 6))
+            .attr('fill', 'none')
+            .attr('stroke', '#A259FF')
+            .attr('stroke-width', 2)
+            .attr('stroke-dasharray', '4,4');
 
-        // --- GUARDIAN HALO (AUTHORITY) ---
-        // Solid Halo for 'guarded'
+        // 2. GUARDIAN HALO
         nEnter.filter(d => d.guardState === 'guarded').append('circle')
             .attr('r', d => d.radius + 14).attr('fill', 'none')
-            .attr('stroke', '#ffd700').attr('stroke-width', 4.5).attr('opacity', 0.9)
-            .style('filter', 'drop-shadow(0px 0px 4px rgba(255, 215, 0, 0.5))')
-            .attr('class', 'guardian-halo');
-            
-        // Dashed Halo for 'restricted'
-        nEnter.filter(d => d.guardState === 'restricted').append('circle')
-            .attr('r', d => d.radius + 14).attr('fill', 'none')
-            .attr('stroke', '#ffd700').attr('stroke-width', 3).attr('stroke-dasharray', '4,4').attr('opacity', 0.7)
+            .attr('stroke', '#FFCD29').attr('stroke-width', 3)
             .attr('class', 'guardian-halo');
 
+        // 3. MAIN GEOMETRY
         nEnter.append('path')
+            .attr('class', 'main-shape')
             .attr('d', d => this.getPathForType(d.type, d.radius))
-            .attr('fill', d => {
-                if (d.isAuthority) return 'url(#hatch-authority)';
-                return ThemeManager.getStyle(d.type).fill;
-            })
+            .attr('fill', d => d.isAuthority ? 'url(#hatch-authority)' : ThemeManager.getStyle(d.type).fill)
             .attr('stroke', d => {
-                if (d.isAuthority) return '#ffd700';
-                if (d.status === 'planned') return '#ffffff';
-                return ThemeManager.getStyle(d.type).stroke;
+                // Only show stroke if Authority, Planned, or Selected
+                if (d.isAuthority) return '#FFCD29';
+                if (d.status === 'planned') return '#808080';
+                return 'none'; // Flat by default
             })
-            .attr('stroke-width', d => d.isAuthority ? 2.5 : (d.status === 'planned' ? 2 : 1))
+            .attr('stroke-width', 2)
             .attr('stroke-dasharray', d => d.status === 'planned' ? '4,4' : 'none')
-            .attr('opacity', d => d.status === 'planned' ? 0.6 : 1);
+            .style('filter', 'url(#node-shadow)');
         
+        // 4. LABELS
         nEnter.append('text').text(d => d.name).attr('text-anchor', 'middle').attr('dy', '0.35em')
             .attr('fill', d => ThemeManager.getStyle(d.type).text)
-            .attr('opacity', 0.8)
-            .attr('font-size', d => d.radius > 40 ? '14px' : '9px').attr('font-weight', '700').style('pointer-events', 'none');
-        
-        // --- MISSING DATA WARNING ---
-        nEnter.filter(d => !d.purpose || !d.description)
-            .append('text')
-            .text('⚠️')
-            .attr('text-anchor', 'middle')
-            .attr('dy', d => `-${d.radius + 8}px`)
-            .attr('font-size', '16px')
-            .style('pointer-events', 'none')
-            .style('filter', 'drop-shadow(0px 2px 2px rgba(0,0,0,0.8))');
+            .attr('font-size', d => d.radius > 40 ? '13px' : '10px').attr('font-weight', '700').style('pointer-events', 'none');
         
         this.nodeSelection = nEnter.merge(n as any) as any;
         this.renderCanvas();
@@ -241,7 +235,6 @@ export class StageRenderer {
         if (this.nodeSelection) {
             this.nodeSelection.attr('transform', (d: any) => `translate(${d.x},${d.y})`);
         }
-        
         if (this.linkSelection) {
             this.linkSelection
                 .attr('x1', (d: any) => d.source.x).attr('y1', (d: any) => d.source.y)
@@ -249,71 +242,27 @@ export class StageRenderer {
                     const s = d.source; const t = d.target;
                     const dx = t.x - s.x; const dy = t.y - s.y;
                     const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-                    return t.x - (dx / dist) * (t.radius + 10);
+                    return t.x - (dx / dist) * (t.radius + 8);
                 })
                 .attr('y2', (d: any) => {
                     const s = d.source; const t = d.target;
                     const dx = t.x - s.x; const dy = t.y - s.y;
                     const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-                    return t.y - (dy / dist) * (t.radius + 10);
+                    return t.y - (dy / dist) * (t.radius + 8);
                 });
         }
         this.renderCanvas();
-    }
-
-    private renderCanvas() {
-        if (!this.ctx) return;
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.save();
-        this.ctx.translate(this.transform.x, this.transform.y);
-        this.ctx.scale(this.transform.k, this.transform.k);
-
-        const nonGravityLinks = this.currentLinks.filter(l => !l.isGravity);
-        nonGravityLinks.forEach(l => {
-            const s = l.source as any;
-            const t = l.target as any;
-            if (!s || !t || s.x === undefined || t.x === undefined) return;
-
-            // Highlight if either end is the selected node AND the other end is in focus path
-            const isRelevant = (s.id === this.selectedNodeId || t.id === this.selectedNodeId);
-            const isHighlighted = isRelevant && this.focusedNodeIds.has(s.id) && this.focusedNodeIds.has(t.id);
-
-            this.ctx.beginPath();
-            this.ctx.moveTo(s.x, s.y);
-            this.ctx.lineTo(t.x, t.y);
-            
-            if (isHighlighted) {
-                this.ctx.strokeStyle = 'rgba(255, 255, 255, 1.0)';
-                this.ctx.lineWidth = 2.5;
-                this.ctx.setLineDash([]); 
-                this.ctx.stroke();
-            } else {
-                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
-                this.ctx.lineWidth = 1.2;
-                this.ctx.setLineDash([8, 6]);
-                this.ctx.stroke();
-            }
-        });
-
-        this.ctx.restore();
     }
 
     private getPathForType(type: string, r: number): string {
         switch (type) {
             case 'System':
                 const sr = 10;
-                return `M ${-r+sr},${-r} 
-                        L ${r-sr},${-r} Q ${r},${-r} ${r},${-r+sr} 
-                        L ${r},${r-sr} Q ${r},${r} ${r-sr},${r} 
-                        L ${-r+sr},${r} Q ${-r},${r} ${-r},${r-sr} 
-                        L ${-r},${-r+sr} Q ${-r},${-r} ${-r+sr},${-r} Z`;
+                return `M ${-r+sr},${-r} L ${r-sr},${-r} Q ${r},${-r} ${r},${-r+sr} L ${r},${r-sr} Q ${r},${r} ${r-sr},${r} L ${-r+sr},${r} Q ${-r},${r} ${-r},${r-sr} L ${-r},${-r+sr} Q ${-r},${-r} ${-r+sr},${-r} Z`;
             case 'Service': return this.getRoundedPolygonPath(6, r, 12);
             case 'Component': return this.getRoundedPolygonPath(4, r * 1.2, 15, Math.PI / 2);
             case 'Interface': return this.getRoundedPolygonPath(8, r, 10);
-            case 'Data':
-            case 'DTO':
-            default:
-                return `M 0,0 m ${-r},0 a ${r},${r} 0 1,0 ${r * 2},0 a ${r},${r} 0 1,0 ${-(r * 2)},0`;
+            default: return `M 0,0 m ${-r},0 a ${r},${r} 0 1,0 ${r * 2},0 a ${r},${r} 0 1,0 ${-(r * 2)},0`;
         }
     }
 
@@ -325,53 +274,61 @@ export class StageRenderer {
         }
         let path = "";
         for (let i = 0; i < points.length; i++) {
-            const p1 = points[i];
-            const p2 = points[(i + 1) % points.length];
-            const p0 = points[(i - 1 + points.length) % points.length];
-            const d1x = p1.x - p0.x; const d1y = p1.y - p0.y;
-            const d2x = p2.x - p1.x; const d2y = p2.y - p1.y;
-            const l1 = Math.sqrt(d1x * d1x + d1y * d1y);
-            const l2 = Math.sqrt(d2x * d2x + d2y * d2y);
+            const p1 = points[i]; const p2 = points[(i + 1) % points.length]; const p0 = points[(i - 1 + points.length) % points.length];
+            const d1x = p1.x - p0.x; const d1y = p1.y - p0.y; const d2x = p2.x - p1.x; const d2y = p2.y - p1.y;
+            const l1 = Math.sqrt(d1x * d1x + d1y * d1y); const l2 = Math.sqrt(d2x * d2x + d2y * d2y);
             const c = Math.min(cornerRadius, l1 / 2, l2 / 2);
-            const startX = p1.x - (d1x / l1) * c;
-            const startY = p1.y - (d1y / l1) * c;
-            const endX = p1.x + (d2x / l2) * c;
-            const endY = p1.y + (d2y / l2) * c;
-            if (i === 0) path += `M ${startX},${startY}`;
-            else path += ` L ${startX},${startY}`;
+            const startX = p1.x - (d1x / l1) * c; const startY = p1.y - (d1y / l1) * c;
+            const endX = p1.x + (d2x / l2) * c; const endY = p1.y + (d2y / l2) * c;
+            if (i === 0) path += `M ${startX},${startY}`; else path += ` L ${startX},${startY}`;
             path += ` Q ${p1.x},${p1.y} ${endX},${endY}`;
         }
         return path + " Z";
     }
 
+    highlightGroup(ids: Set<string>) {
+        if (this.nodeSelection) {
+            this.nodeSelection.select('.main-shape')
+                .attr('stroke', (d: any) => {
+                    if (ids.has(d.id)) return ThemeManager.selectionBlue;
+                    if (d.isAuthority) return '#FFCD29';
+                    if (d.status === 'planned') return '#808080';
+                    return 'none';
+                })
+                .attr('stroke-width', (d: any) => ids.has(d.id) ? 5 : 2);
+        }
+        if (this.linkSelection) {
+            this.linkSelection
+                .attr('stroke', (d: any) => ids.has(d.source.id || d.source) && ids.has(d.target.id || d.target) ? ThemeManager.connectorSelected : ThemeManager.connectorNormal)
+                .attr('stroke-width', (d: any) => ids.has(d.source.id || d.source) && ids.has(d.target.id || d.target) ? 3.5 : 2.5);
+        }
+    }
+
     focus(selectedId: string, ids: Set<string>) {
         this.selectedNodeId = selectedId;
         this.focusedNodeIds = ids;
-
         if (this.nodeSelection) {
             this.nodeSelection.transition().duration(250).style('opacity', (d: any) => ids.has(d.id) ? 1 : 0.05);
         }
         if (this.linkSelection) {
-            this.linkSelection.transition().duration(250).style('opacity', (d: any) => ids.has(d.source.id) && ids.has(d.target.id) ? 1 : 0.02);
+            this.linkSelection.transition().duration(250).style('opacity', (d: any) => ids.has(d.source.id) && ids.has(d.target.id) ? 1 : 0);
         }
         this.renderCanvas();
     }
 
     enableDrag(dragBehavior: any) {
-        if (this.nodeSelection) {
-            this.nodeSelection.call(dragBehavior);
-        }
+        if (this.nodeSelection) this.nodeSelection.call(dragBehavior);
     }
 
     reset() {
         this.selectedNodeId = null;
         this.focusedNodeIds.clear();
-
         if (this.nodeSelection) {
             this.nodeSelection.transition().duration(250).style('opacity', 1);
         }
         if (this.linkSelection) {
-            this.linkSelection.transition().duration(250).style('opacity', 0.2);
+            this.linkSelection.transition().duration(250).style('opacity', 1);
+            this.linkSelection.attr('stroke', ThemeManager.connectorNormal).attr('stroke-width', 2.5);
         }
         this.renderCanvas();
     }

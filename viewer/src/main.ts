@@ -152,6 +152,8 @@ async function bootstrap() {
 
         renderer.focus(node.id, path);
         inspector.render(node);
+        
+        // Fix: Explicitly show the RIGHT sidebar
         document.getElementById('sidebar')?.classList.remove('hidden');
     };
 
@@ -180,6 +182,7 @@ async function bootstrap() {
             navTitle!.innerText = 'Atlas Legend';
             contentLayers?.classList.add('hidden');
             contentInfo?.classList.remove('hidden');
+            legend.render(); // Ensure legend is rendered when switching
         }
     });
 

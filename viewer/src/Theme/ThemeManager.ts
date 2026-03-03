@@ -7,22 +7,27 @@ export interface NodeStyle {
 }
 
 export class ThemeManager {
+    // AUTHENTIC FIGJAM PALETTE - 100% ALPHA
     private static styles: Record<string, NodeStyle> = {
-        'System': { fill: '#FFD5D2', stroke: 'rgba(0,0,0,0.15)', text: '#000000' },
-        'Service': { fill: '#D3F5E3', stroke: 'rgba(0,0,0,0.15)', text: '#000000' },
-        'Component': { fill: '#D3E5FF', stroke: 'rgba(0,0,0,0.15)', text: '#000000' },
-        'Interface': { fill: '#EBDDFF', stroke: 'rgba(0,0,0,0.15)', text: '#000000' },
-        'DTO': { fill: '#FFF1CC', stroke: 'rgba(0,0,0,0.15)', text: '#000000' },
-        'Data': { fill: '#FFF1CC', stroke: 'rgba(0,0,0,0.15)', text: '#000000' },
-        'Utility': { fill: '#F1F3F5', stroke: 'rgba(0,0,0,0.15)', text: '#000000' },
-        'Logic': { fill: '#F1F3F5', stroke: 'rgba(0,0,0,0.15)', text: '#000000' },
-        'Unknown': { fill: '#450a0a', stroke: 'rgba(255,255,255,0.1)', text: '#ffffff' } // Debris/Orphans
+        'System': { fill: '#FFB8A8', stroke: '#F24822', text: '#444444' }, // Softened from #2C2C2C
+        'Service': { fill: '#B3EFBD', stroke: '#14AE5C', text: '#444444' },
+        'Component': { fill: '#A8DAFF', stroke: '#0D99FF', text: '#444444' },
+        'Interface': { fill: '#D3BDFF', stroke: '#9747FF', text: '#444444' },
+        'DTO': { fill: '#FFE299', stroke: '#FFCD29', text: '#444444' },
+        'Data': { fill: '#FFE299', stroke: '#FFCD29', text: '#444444' },
+        'Utility': { fill: '#E6E6E6', stroke: '#B3B3B3', text: '#444444' },
+        'Logic': { fill: '#E6E6E6', stroke: '#B3B3B3', text: '#444444' },
+        'Unknown': { fill: '#FFB8A8', stroke: '#F24822', text: '#444444' }
     };
 
     static getStyle(type: NodeType | string): NodeStyle {
         return this.styles[type] || this.styles['Logic'];
     }
 
-    static get backgroundColor(): string { return '#F8F9FA'; }
-    static get gridColor(): string { return 'rgba(0, 0, 0, 0.08)'; }
+    static get backgroundColor(): string { return '#EBEBEB'; }
+    static get gridColor(): string { return '#BBBBBB'; }
+    
+    static get connectorNormal(): string { return '#999999'; }
+    static get connectorSelected(): string { return '#444444'; }
+    static get selectionBlue(): string { return '#0D99FF'; } // FigJam Selection Blue
 }

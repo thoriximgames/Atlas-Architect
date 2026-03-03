@@ -93,21 +93,21 @@ export class Inspector {
         let layersHtml = '';
         
         if (node.isAuthority) {
-            layersHtml += this.createLayerChip('#ffd700', 'AUTHORITATIVE SOURCE');
+            layersHtml += this.createLayerChip('#FFCD29', 'AUTHORITATIVE SOURCE');
         }
         
         if (node.guardState === 'guarded') {
-            layersHtml += this.createLayerChip('#ffd700', 'GUARDIAN (STRICT)');
+            layersHtml += this.createLayerChip('#FFCD29', 'GUARDIAN (STRICT)');
         } else if (node.guardState === 'restricted') {
-            layersHtml += this.createLayerChip('#ffd700', 'GUARDIAN (PERMISSIVE)');
+            layersHtml += this.createLayerChip('#FFCD29', 'GUARDIAN (PERMISSIVE)');
         }
         
         if (node.type === 'Interface') {
-            layersHtml += this.createLayerChip('#8b5cf6', 'PROTOCOL INTERFACE');
+            layersHtml += this.createLayerChip('#9747FF', 'PROTOCOL INTERFACE');
         }
         
         if (node.baseClasses && node.baseClasses.length > 0) {
-            layersHtml += this.createLayerChip('#BF00FF', `INHERITANCE (${node.baseClasses.join(', ')})`);
+            layersHtml += this.createLayerChip('#A259FF', `INHERITANCE (${node.baseClasses.join(', ')})`);
         }
 
         if (!layersHtml) return '';
@@ -124,12 +124,12 @@ export class Inspector {
 
     private createLayerChip(color: string, label: string): string {
         return `
-            <div style="display: flex; align-items: center; background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 4px; border-left: 3px solid ${color};">
-                <div style="width: 8px; height: 8px; border-radius: 50%; background: ${color}; margin-right: 8px;"></div>
-                <div style="font-size: 10px; font-weight: 600; letter-spacing: 0.02em; opacity: 0.9;">${label}</div>
+            <div style="display: flex; align-items: center; background: #3d3d3d; padding: 6px 10px; border-radius: 6px; border-left: 3px solid ${color};">
+                <div style="width: 8px; height: 8px; border-radius: 50%; background: ${color}; margin-right: 10px;"></div>
+                <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.02em; color: #fff;">${label}</div>
             </div>
         `;
     }
 
-    clear() { this.el.innerHTML = '<div style="text-align:center;padding-top:100px;opacity:0.5">Select a node</div>'; }
+    clear() { this.el.innerHTML = '<div style="text-align:center;padding-top:100px;opacity:0.5;color:var(--text-mid);font-size:10px;text-transform:uppercase;letter-spacing:1px;">Select a node</div>'; }
 }
