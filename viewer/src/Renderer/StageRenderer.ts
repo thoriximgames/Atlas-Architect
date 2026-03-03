@@ -149,7 +149,7 @@ export class StageRenderer {
         this.renderCanvas();
     }
 
-    draw(nodes: VisualNode[], links: VisualLink[], weightMap: Map<string, number>, onClick: (n: VisualNode) => void, dragBehavior?: any) {
+    draw(nodes: VisualNode[], links: VisualLink[], weightMap: Map<string, number>, onClick: (e: MouseEvent, n: VisualNode) => void, dragBehavior?: any) {
         this.currentLinks = links;
         this.currentNodes = nodes;
         this.weightMap = weightMap;
@@ -175,7 +175,7 @@ export class StageRenderer {
         
         const nEnter = n.enter().append('g').attr('cursor', 'pointer')
             .on('mousedown', (e) => { e.stopPropagation(); }) // Prevent brush from stealing node drags
-            .on('click', (e, d) => { e.stopPropagation(); onClick(d); });
+            .on('click', (e, d) => { e.stopPropagation(); onClick(e, d); });
 
         if (dragBehavior) nEnter.call(dragBehavior);
         

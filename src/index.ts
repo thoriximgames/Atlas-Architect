@@ -15,13 +15,17 @@ async function main() {
 
     // Context Detection
     let projectRoot = cwd;
-    let configPath = path.join(cwd, 'atlas.config.json');
-
-    // If running from inside .atlas, go up
-    if (path.basename(cwd) === '.atlas') {
+    
+    // Parse explicit target flag if provided
+    const targetIndex = process.argv.indexOf('--target');
+    if (targetIndex !== -1 && process.argv.length > targetIndex + 1) {
+        projectRoot = path.resolve(process.argv[targetIndex + 1]);
+    } else if (path.basename(cwd) === '.atlas') {
+        // If running from inside .atlas without flag, go up
         projectRoot = path.resolve(cwd, '..');
-        configPath = path.join(projectRoot, 'atlas.config.json');
     }
+
+    let configPath = path.join(projectRoot, 'atlas.config.json');
 
     // Load Config
     let config: IAtlasConfig;
@@ -46,7 +50,7 @@ async function main() {
     await fs.ensureDir(registryDir);
     
     let port = process.env.ATLAS_PORT ? parseInt(process.env.ATLAS_PORT, 10) : (config.port || 5055);
-    const sessions: Record<string, { port: number, pid: number, project: string }> = (await fs.pathExists(registryPath)) 
+    const sessions: Record<string, { port: number, pid: number, project: string, path?: string }> = (await fs.pathExists(registryPath)) 
         ? await fs.readJson(registryPath) 
         : {};
 
@@ -78,7 +82,8 @@ async function main() {
     sessions[config.project] = {
         port: port,
         pid: process.pid,
-        project: config.project
+        project: config.project,
+        path: projectRoot
     };
     await fs.outputJson(registryPath, sessions, { spaces: 2 });
     // --- END REGISTRY LOGIC ---

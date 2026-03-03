@@ -17,12 +17,16 @@ async function main() {
     const app = (0, express_1.default)();
     // Context Detection
     let projectRoot = cwd;
-    let configPath = path_1.default.join(cwd, 'atlas.config.json');
-    // If running from inside .atlas, go up
-    if (path_1.default.basename(cwd) === '.atlas') {
-        projectRoot = path_1.default.resolve(cwd, '..');
-        configPath = path_1.default.join(projectRoot, 'atlas.config.json');
+    // Parse explicit target flag if provided
+    const targetIndex = process.argv.indexOf('--target');
+    if (targetIndex !== -1 && process.argv.length > targetIndex + 1) {
+        projectRoot = path_1.default.resolve(process.argv[targetIndex + 1]);
     }
+    else if (path_1.default.basename(cwd) === '.atlas') {
+        // If running from inside .atlas without flag, go up
+        projectRoot = path_1.default.resolve(cwd, '..');
+    }
+    let configPath = path_1.default.join(projectRoot, 'atlas.config.json');
     // Load Config
     let config;
     if (await fs_extra_1.default.pathExists(configPath)) {
@@ -74,7 +78,8 @@ async function main() {
     sessions[config.project] = {
         port: port,
         pid: process.pid,
-        project: config.project
+        project: config.project,
+        path: projectRoot
     };
     await fs_extra_1.default.outputJson(registryPath, sessions, { spaces: 2 });
     // --- END REGISTRY LOGIC ---

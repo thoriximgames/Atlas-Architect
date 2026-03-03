@@ -62,10 +62,11 @@ async function bootstrap() {
         }
     );
 
+    const GRID_SIZE = 25;
+
     // --- Drag and Drop Logic ---
     const drag = (d3: any) => {
         function dragstarted(event: any, d: any) {
-            console.log(`[Drag] Start: ${d.id}`);
             if (!event.active) engine.simulation.alphaTarget(0.3).restart();
             
             // If the dragged node is not in the active selection, select only it
@@ -93,19 +94,30 @@ async function bootstrap() {
         function dragged(event: any, d: any) {
             if (d.dragNodes) {
                 d.dragNodes.forEach((item: any) => {
-                    item.node.fx = event.x + item.offsetX;
-                    item.node.fy = event.y + item.offsetY;
+                    const targetX = event.x + item.offsetX;
+                    const targetY = event.y + item.offsetY;
+                    
+                    // Live snap to grid for feedback
+                    item.node.fx = Math.round(targetX / GRID_SIZE) * GRID_SIZE;
+                    item.node.fy = Math.round(targetY / GRID_SIZE) * GRID_SIZE;
                 });
             } else {
-                d.fx = event.x;
-                d.fy = event.y;
+                d.fx = Math.round(event.x / GRID_SIZE) * GRID_SIZE;
+                d.fy = Math.round(event.y / GRID_SIZE) * GRID_SIZE;
             }
         }
 
         function dragended(event: any, d: any) {
-            console.log(`[Drag] End: ${d.id}. Saving positions...`);
             if (!event.active) engine.simulation.alphaTarget(0);
             
+            // Final snap verification
+            if (d.dragNodes) {
+                d.dragNodes.forEach((item: any) => {
+                    item.node.fx = Math.round(item.node.fx / GRID_SIZE) * GRID_SIZE;
+                    item.node.fy = Math.round(item.node.fy / GRID_SIZE) * GRID_SIZE;
+                });
+            }
+
             // Optionally clear selection after drag? No, keep it so they can drag again.
             engine.savePositions();
         }
@@ -116,13 +128,22 @@ async function bootstrap() {
             .on("end", dragended);
     };
 
-    const onNodeClick = (node: VisualNode) => {
-        // If they click a node without dragging, select just it (and focus path)
-        if (!selectedGroup.has(node.id)) {
-            selectedGroup.clear();
+    const onNodeClick = (event: MouseEvent, node: VisualNode) => {
+        if (event.shiftKey) {
+            // Add to selection
             selectedGroup.add(node.id);
-            renderer.highlightGroup(selectedGroup);
+        } else if (event.altKey) {
+            // Remove from selection
+            selectedGroup.delete(node.id);
+        } else {
+            // Standard single selection
+            if (!selectedGroup.has(node.id)) {
+                selectedGroup.clear();
+                selectedGroup.add(node.id);
+            }
         }
+        
+        renderer.highlightGroup(selectedGroup);
 
         const path = new Set<string>([node.id]);
         let curr: any = node;

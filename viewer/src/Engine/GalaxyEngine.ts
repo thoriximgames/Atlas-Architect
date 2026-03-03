@@ -99,7 +99,9 @@ export class GalaxyEngine {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
             });
-            if (res.ok) console.log(`[Engine] Persisted ${Object.keys(updates).length} node positions.`);
+            if (res.ok) {
+                // Persisted updates
+            }
         } catch (e) {
             console.error(`[Engine] Failed to save positions:`, e);
         }
@@ -124,7 +126,6 @@ export class GalaxyEngine {
     }
 
     resetData(nodes: VisualNode[], links: VisualLink[]) {
-        console.log(`[Engine] Resetting data. Nodes: ${nodes.length}, Links: ${links.length}`);
         this.stopBootstrap();
         
         this.activeNodes.length = 0;
