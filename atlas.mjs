@@ -1,0 +1,169 @@
+#!/usr/bin/env node
+
+/**
+ * Atlas Unified Toolbox (v8.1.0)
+ * The authoritative CLI for Atlas Architect operations.
+ * Usage: node atlas.mjs <command> [args] [--target <path>]
+ */
+
+import { spawn, execSync } from 'child_process';
+import path from 'path';
+import fs from 'fs-extra';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const REGISTRY_PATH = path.join(process.env.USERPROFILE || process.env.HOME || "", '.gemini', 'atlas_sessions.json');
+
+async function getProjectConfig(target) {
+    const configPath = path.join(target, 'atlas.config.json');
+    const altConfigPath = path.join(target, '.atlas', 'atlas.config.json');
+    
+    if (await fs.pathExists(configPath)) return await fs.readJson(configPath);
+    if (await fs.pathExists(altConfigPath)) return await fs.readJson(altConfigPath);
+    return null;
+}
+
+async function killProjectSession(projectName) {
+    if (!await fs.pathExists(REGISTRY_PATH)) return;
+    const sessions = await fs.readJson(REGISTRY_PATH);
+    
+    if (sessions[projectName]) {
+        const { pid, port } = sessions[projectName];
+        console.log(`[Atlas] Killing existing session for '${projectName}' (PID: ${pid}, Port: ${port})...`);
+        try {
+            process.kill(pid, 'SIGTERM');
+            // Give it a moment to release the port
+            await new Promise(resolve => setTimeout(resolve, 500));
+        } catch (e) {
+            // Already dead
+        }
+        delete sessions[projectName];
+        await fs.outputJson(REGISTRY_PATH, sessions, { spaces: 2 });
+    }
+}
+
+async function runCommand(cmd, args, options = {}) {
+    return new Promise((resolve, reject) => {
+        const proc = spawn(cmd, args, { stdio: 'inherit', shell: true, ...options });
+        proc.on('close', (code) => code === 0 ? resolve() : reject(new Error(`Command failed with code ${code}`)));
+    });
+}
+
+async function main() {
+    const args = process.argv.slice(2);
+    const command = args[0];
+    
+    // Parse --target flag
+    const targetIdx = args.indexOf('--target');
+    const target = targetIdx !== -1 ? path.resolve(args[targetIdx + 1]) : process.cwd();
+    const config = await getProjectConfig(target);
+
+    if (!config && command !== 'help') {
+        console.error(`[Atlas] Error: Not an Atlas project (missing atlas.config.json in ${target})`);
+        process.exit(1);
+    }
+
+    const enginePath = path.join(__dirname, 'src', 'index.ts');
+    const distPath = path.join(__dirname, 'dist', 'index.js');
+    const pipelinePath = path.join(__dirname, 'src', 'pipeline.ts');
+    const pipelineDistPath = path.join(__dirname, 'dist', 'pipeline.js');
+
+    // Prefer compiled dist if it exists and is newer, or if we are in a "production" context
+    const useTsNode = !(await fs.pathExists(distPath)); 
+    const runner = useTsNode ? 'node' : 'node';
+    const loaderArgs = useTsNode ? ['--loader', 'ts-node/esm'] : [];
+    const mainScript = useTsNode ? enginePath : distPath;
+    const pipeScript = useTsNode ? pipelinePath : pipelineDistPath;
+
+    switch (command) {
+        case 'init':
+            const projectName = args[1] || path.basename(target);
+            const defaultPort = 5055;
+            
+            console.log(`[Atlas] Initializing footprint for '${projectName}' in ${target}...`);
+            
+            const configContent = {
+                project: projectName,
+                port: defaultPort,
+                scanPatterns: ["src/**/*.ts", "src/**/*.js", "src/**/*.tsx", "src/**/*.jsx"],
+                entryPoints: [],
+                exclude: []
+            };
+
+            const atlasDir = path.join(target, '.atlas');
+            const dataDir = path.join(atlasDir, 'data');
+            
+            await fs.ensureDir(dataDir);
+            await fs.outputJson(path.join(atlasDir, 'atlas.config.json'), configContent, { spaces: 2 });
+            await fs.outputJson(path.join(dataDir, 'planned.json'), { plannedNodes: [] }, { spaces: 2 });
+            
+            console.log(`[Atlas] SUCCESS: Footprint created. You can now run 'atlas.mjs scan'.`);
+            break;
+
+        case 'scan':
+            console.log(`[Atlas] Performing Fresh Scan for '${config.project}'...`);
+            await runCommand(runner, [...loaderArgs, mainScript, '--scan-only', '--target', target]);
+            break;
+
+        case 'serve':
+        case 'start':
+            await killProjectSession(config.project);
+            
+            // 1. Scan first to ensure data is fresh
+            console.log(`[Atlas] Pre-start scan...`);
+            await runCommand(runner, [...loaderArgs, mainScript, '--scan-only', '--target', target]);
+
+            // 2. Build viewer if dist is missing
+            const viewerDist = path.join(__dirname, 'viewer', 'dist');
+            if (!await fs.pathExists(viewerDist)) {
+                console.log(`[Atlas] Building Visualizer...`);
+                await runCommand('npm', ['run', 'build'], { cwd: path.join(__dirname, 'viewer') });
+            }
+
+            // 3. Launch Engine
+            console.log(`[Atlas] Launching Engine for '${config.project}'...`);
+            // Run in background-ish mode by not waiting, or just run normally if the agent expects to wait
+            await runCommand(runner, [...loaderArgs, mainScript, '--target', target]);
+            break;
+
+        case 'slice':
+            const nodeId = args[1];
+            const depth = args[2] || '1';
+            await runCommand(runner, [...loaderArgs, mainScript, 'slice', nodeId, depth, '--target', target]);
+            break;
+
+        case 'plan':
+            const planCmd = args.slice(1).filter(a => a !== '--target' && a !== args[targetIdx + 1]);
+            await runCommand(runner, [...loaderArgs, pipeScript, ...planCmd, '--target', target]);
+            break;
+
+        case 'kill':
+            await killProjectSession(config.project);
+            break;
+
+        case 'help':
+        default:
+            console.log(`
+Atlas Unified Toolbox (v8.1.0)
+Commands:
+  init [name]         Scaffold the minimal Atlas footprint in the target project
+  scan                Perform a topological scan and update atlas.json
+  serve | start       Kill old instance, scan, build viewer (if needed), and launch
+  slice <id> [depth]  Extract a neighborhood around a node
+  plan <cmd>          Manage the architectural pipeline (backlog, todo, etc.)
+  kill                Safely terminate the Atlas process for the current project
+  help                Show this help
+
+Flags:
+  --target <path>     Specify the target project directory (defaults to CWD)
+            `);
+            break;
+    }
+}
+
+main().catch(err => {
+    console.error(err);
+    process.exit(1);
+});

@@ -42,6 +42,11 @@ async function main() {
         }
     }
 
+    // Default missing fields for robustness
+    config.scanPatterns = config.scanPatterns || ["src/**/*.ts", "src/**/*.js", "src/**/*.tsx", "src/**/*.jsx"];
+    config.entryPoints = config.entryPoints || [];
+    config.exclude = config.exclude || [];
+
     // --- AUTO-PORT DISCOVERY & SESSION REGISTRY ---
     const homedir = process.env.USERPROFILE || process.env.HOME || "";
     const registryDir = path.join(homedir, '.gemini');
