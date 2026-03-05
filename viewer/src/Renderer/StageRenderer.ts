@@ -292,6 +292,16 @@ export class StageRenderer {
             .attr('fill', d => ThemeManager.getStyle(d.type).text)
             .attr('font-size', d => d.radius > 40 ? '13px' : '10px').attr('font-weight', '700').style('pointer-events', 'none');
         
+        // --- MISSING DATA WARNING ---
+        nEnter.filter((d: any) => !d.purpose || !d.description || d.purpose === 'Auto-discovered dependency')
+            .append('text')
+            .text('⚠️')
+            .attr('text-anchor', 'middle')
+            .attr('dy', (d: any) => `-${(d.radius || 20) + 8}px`)
+            .attr('font-size', '16px')
+            .style('pointer-events', 'none')
+            .style('filter', 'drop-shadow(0px 2px 2px rgba(0,0,0,0.8))');
+
         this.nodeSelection = nEnter.merge(n as any) as any;
         this.renderCanvas();
     }
