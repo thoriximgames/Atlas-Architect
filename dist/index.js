@@ -281,7 +281,11 @@ async function main() {
                 res.status(503).json({ error: "Scan in progress, try again later." });
                 return;
             }
-            const payload = nodesToAdd.map((id) => {
+            const plannedData = await blueprint_1.TopologyPlanner.loadPlanned();
+            const existingIds = new Set((plannedData.plannedNodes || []).map((n) => n.id));
+            const payload = nodesToAdd
+                .filter((id) => !existingIds.has(id))
+                .map((id) => {
                 const realityNode = registry.nodes[id];
                 return {
                     id,
@@ -291,7 +295,9 @@ async function main() {
                     parentId: nodeId
                 };
             }).filter((n) => !!n.id);
-            await blueprint_1.TopologyPlanner.upsertNodes(payload);
+            if (payload.length > 0) {
+                await blueprint_1.TopologyPlanner.upsertNodes(payload);
+            }
             const newPlannedData = await blueprint_1.TopologyPlanner.loadPlanned();
             res.json({ success: true, plannedData: newPlannedData });
         }

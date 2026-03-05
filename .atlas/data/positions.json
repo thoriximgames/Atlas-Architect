@@ -1,11 +1,11 @@
 {
   "src/Core/Application/AtlasEngine": {
-    "x": 375,
-    "y": -575
+    "x": -175,
+    "y": -375
   },
   "src/Core/Application/HeartbeatService": {
-    "x": -150,
-    "y": 75
+    "x": -250,
+    "y": 150
   },
   "src/Core/Infrastructure/Logging/TelemetryProvider": {
     "x": 950,
@@ -20,8 +20,8 @@
     "y": 300
   },
   "src/blueprint": {
-    "x": 300,
-    "y": -325
+    "x": 50,
+    "y": -375
   },
   "src/Shared/Protocol": {
     "x": 300,
@@ -29,31 +29,31 @@
   },
   "src/index": {
     "x": -250,
-    "y": -75
+    "y": 0
   },
   "src/Core/Infrastructure/FileSystem/FileScanner": {
+    "x": 0,
+    "y": 0
+  },
+  "src/Core/Infrastructure/Graph/GraphBuilder": {
     "x": -100,
     "y": -375
   },
-  "src/Core/Infrastructure/Graph/GraphBuilder": {
-    "x": 375,
-    "y": -475
-  },
   "src/Core/Infrastructure/Layout/PolarLayoutStrategy": {
-    "x": 350,
-    "y": -400
+    "x": -25,
+    "y": -375
   },
   "src/Shared/Config": {
-    "x": 250,
-    "y": -250
+    "x": 100,
+    "y": -375
   },
   "src/pipeline": {
-    "x": -125,
-    "y": -450
+    "x": -250,
+    "y": -375
   },
   "src/Core/Domain/Services/IScanner": {
-    "x": -69.91738096452583,
-    "y": 64.95539560906114
+    "x": 75,
+    "y": 125
   },
   "src/Core/Domain/Services/IGraphBuilder": {
     "x": 400,
@@ -68,12 +68,12 @@
     "y": -225
   },
   "src/Core/Domain/Model/SourceFile": {
-    "x": 9.472906214950056,
-    "y": 68.07401638220783
+    "x": 175,
+    "y": 100
   },
   "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory": {
-    "x": 75,
-    "y": 0
+    "x": 175,
+    "y": -50
   },
   "src/Core/Domain/Model/GraphNode": {
     "x": 725,

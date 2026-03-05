@@ -158,10 +158,31 @@ async function bootstrap() {
         selectedGroup.clear();
     });
 
+    const showFeedback = (el: HTMLElement, message: string, color: string = '#ef4444') => {
+        const feedback = document.createElement('div');
+        feedback.innerText = message;
+        feedback.style.position = 'absolute';
+        feedback.style.top = '-25px';
+        feedback.style.left = '50%';
+        feedback.style.transform = 'translateX(-50%)';
+        feedback.style.color = color;
+        feedback.style.fontSize = '10px';
+        feedback.style.fontWeight = '800';
+        feedback.style.whiteSpace = 'nowrap';
+        feedback.style.pointerEvents = 'none';
+        feedback.style.zIndex = '3000';
+        feedback.style.animation = 'fadeOut 1.5s forwards';
+        
+        el.style.position = 'relative';
+        el.appendChild(feedback);
+        setTimeout(() => feedback.remove(), 1500);
+    };
+
     // --- Toolbox Button Listeners ---
     const probeNode = async () => {
         const targetId = renderer.selectedId;
-        if (!targetId) return;
+        const btn = document.getElementById('btn-probe');
+        if (!targetId || !btn) return;
 
         console.log(`[Discovery] Probing neighborhood for: ${targetId}`);
         
@@ -180,6 +201,15 @@ async function bootstrap() {
             
             const hash = window.location.hash.replace('#', '');
             if (hash !== 'orphans') {
+                // Check if all dependencies are already in blueprint
+                const pSet = new Set(blueprintNodes.map(n => n.id));
+                const newNodes = data.dependencies.filter((id: string) => !pSet.has(id));
+
+                if (newNodes.length === 0) {
+                    showFeedback(btn, 'NOTHING NEW TO DISCOVER');
+                    return;
+                }
+
                 // We are in Blueprint view. Auto-add to Blueprint!
                 console.log(`[Discovery] Auto-adding dependencies to Blueprint...`);
                 const discRes = await fetch('/api/topology/blueprint/discover', {
@@ -199,10 +229,12 @@ async function bootstrap() {
                     // Update engine with ONLY blueprint nodes since we are on the blueprint tab
                     engine.resetData(blueprintNodes, blueprintEdges);
                     
-                    // Focus on the new cluster
+                    // Highlight the new cluster and re-center without hiding everything else
                     const cluster = new Set<string>([targetId, ...data.dependencies]);
-                    renderer.focus(targetId, cluster);
+                    selectedGroup = cluster;
+                    renderer.highlightGroup(selectedGroup);
                     renderer.centerView([...blueprintNodes].filter(n => cluster.has(n.id)));
+                    showFeedback(btn, `ADDED ${newNodes.length} NODES`, '#14AE5C');
                 }
             } else {
                 // Switch to Scan view behavior (already implemented)
@@ -217,6 +249,7 @@ async function bootstrap() {
             }
         } else {
              console.log(`[Discovery] No outgoing dependencies found in reality.`);
+             showFeedback(btn, 'NO CONNECTIONS FOUND');
         }
     };
 

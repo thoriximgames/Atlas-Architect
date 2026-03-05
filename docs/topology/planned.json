@@ -9,7 +9,7 @@
       "dependencies": [],
       "description": "",
       "x": -250,
-      "y": -75
+      "y": 0
     },
     {
       "id": "src/Core/Application/HeartbeatService",
@@ -19,8 +19,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": -150,
-      "y": 75
+      "x": -250,
+      "y": 150
     },
     {
       "id": "src/Core/Application/AtlasEngine",
@@ -30,8 +30,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": 375,
-      "y": -575
+      "x": -175,
+      "y": -375
     },
     {
       "id": "src/Core/Infrastructure/FileSystem/FileScanner",
@@ -41,8 +41,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": -100,
-      "y": -375
+      "x": 0,
+      "y": 0
     },
     {
       "id": "src/Core/Infrastructure/Graph/GraphBuilder",
@@ -52,8 +52,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": 375,
-      "y": -475
+      "x": -100,
+      "y": -375
     },
     {
       "id": "src/Core/Infrastructure/Layout/PolarLayoutStrategy",
@@ -63,8 +63,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": 350,
-      "y": -400
+      "x": -25,
+      "y": -375
     },
     {
       "id": "src/Shared/Config",
@@ -74,8 +74,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": 250,
-      "y": -250
+      "x": 100,
+      "y": -375
     },
     {
       "id": "src/pipeline",
@@ -85,8 +85,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": -125,
-      "y": -450
+      "x": -250,
+      "y": -375
     },
     {
       "id": "src/blueprint",
@@ -96,8 +96,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": 300,
-      "y": -325
+      "x": 50,
+      "y": -375
     },
     {
       "id": "src/Core/Domain/Model/SourceFile",
@@ -107,8 +107,8 @@
       "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
       "dependencies": [],
       "description": "",
-      "x": 9.472906214950056,
-      "y": 68.07401638220783
+      "x": 175,
+      "y": 100
     },
     {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
@@ -118,8 +118,8 @@
       "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
       "dependencies": [],
       "description": "",
-      "x": 75,
-      "y": 0
+      "x": 175,
+      "y": -50
     },
     {
       "id": "src/Core/Domain/Services/IScanner",
@@ -129,8 +129,8 @@
       "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
       "dependencies": [],
       "description": "",
-      "x": -69.91738096452583,
-      "y": 64.95539560906114
+      "x": 75,
+      "y": 125
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-05T13:29:04.542Z",
+  "lastUpdated": "2026-03-05T13:34:21.890Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -594,12 +594,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "2b4ca4cb20e55b1f757c6002a99b0a60",
       "contractHash": "b36fd11fa26b9c7a273a2e5d2ef5e3e5",
-      "initialX": 300,
-      "initialY": -325,
+      "initialX": 50,
+      "initialY": -375,
       "sectorAngle": 2.4023943821569005,
       "sectorWidth": 0.36959913571644626,
-      "x": 300,
-      "y": -325
+      "x": 50,
+      "y": -375
     },
     "src/Shared/Protocol": {
       "id": "src/Shared/Protocol",
@@ -1452,6 +1452,16 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "plannedData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "existingIds"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "payload"
         },
         {
@@ -1491,21 +1501,21 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 54,
+      "complexity": 56,
       "description": ".ts\", \"src",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "cf047f627f91624a1ddc0776dac3af1c",
-      "contractHash": "f1455f3c0739fdb8b43813f2f62165f8",
+      "verifiedHash": "68cba54661b2f7a54e57abe47b9a9d17",
+      "contractHash": "bb35b56ce2bf0401b2552282b5a2d7ea",
       "initialX": -250,
-      "initialY": -75,
+      "initialY": 0,
       "sectorAngle": -1.2011971910784502,
       "sectorWidth": 3.8807909250226857,
       "x": -250,
-      "y": -75
+      "y": 0
     },
     "src/Core/Application/AtlasEngine": {
       "id": "src/Core/Application/AtlasEngine",
@@ -1892,12 +1902,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "f03328dffe1e214e92e519fd1b2b36c9",
       "contractHash": "b85327a30bb69c3e97a5a4203892f449",
-      "initialX": 375,
-      "initialY": -575,
+      "initialX": -175,
+      "initialY": -375,
       "sectorAngle": -0.8131180985761816,
       "sectorWidth": 1.1642372775068057,
-      "x": 375,
-      "y": -575
+      "x": -175,
+      "y": -375
     },
     "src/Core/Infrastructure/FileSystem/FileScanner": {
       "id": "src/Core/Infrastructure/FileSystem/FileScanner",
@@ -2021,12 +2031,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "a46314fb4068f355f74d6c777e1baafc",
       "contractHash": "6f813758e9bd1546958801325bf870f8",
-      "initialX": -100,
-      "initialY": -375,
+      "initialX": 0,
+      "initialY": 0,
       "sectorAngle": -2.268414695459689,
       "sectorWidth": 1.7463559162602087,
-      "x": -100,
-      "y": -375
+      "x": 0,
+      "y": 0
     },
     "src/Core/Infrastructure/Graph/GraphBuilder": {
       "id": "src/Core/Infrastructure/Graph/GraphBuilder",
@@ -2387,12 +2397,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "c0e5ff164d55efc3ff45cd1509bab118",
       "contractHash": "4b8b93e9a6faa2c879ac4e3a43bd20a0",
-      "initialX": 375,
-      "initialY": -475,
+      "initialX": -100,
+      "initialY": -375,
       "sectorAngle": -0.03695991357164441,
       "sectorWidth": 0.3880790925022686,
-      "x": 375,
-      "y": -475
+      "x": -100,
+      "y": -375
     },
     "src/Core/Infrastructure/Layout/PolarLayoutStrategy": {
       "id": "src/Core/Infrastructure/Layout/PolarLayoutStrategy",
@@ -2932,12 +2942,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "e6fff98acd7148308cfe0bebe7001302",
       "contractHash": "236766084d1bee7e10f8bc4d29557ef8",
-      "initialX": 350,
-      "initialY": -400,
+      "initialX": -25,
+      "initialY": -375,
       "sectorAngle": 0.254099405805057,
       "sectorWidth": 0.1940395462511343,
-      "x": 350,
-      "y": -400
+      "x": -25,
+      "y": -375
     },
     "src/Shared/Config": {
       "id": "src/Shared/Config",
@@ -3002,12 +3012,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "6d4f60b619d11cbc4fad4d01ec44e109",
       "contractHash": "cdb326cfac64d6a8d30b9f37b96dd2e5",
-      "initialX": 250,
-      "initialY": -250,
+      "initialX": 100,
+      "initialY": -375,
       "sectorAngle": 0.4481389520561913,
       "sectorWidth": 0.1940395462511343,
-      "x": 250,
-      "y": -250
+      "x": 100,
+      "y": -375
     },
     "src/pipeline": {
       "id": "src/pipeline",
@@ -3355,12 +3365,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "457459d229dbd313e1d842bb05a59bed",
       "contractHash": "dc1a191c12c70ab18b8d61f9f0026441",
-      "initialX": -125,
-      "initialY": -450,
+      "initialX": -250,
+      "initialY": -375,
       "sectorAngle": 0.6421784983073255,
       "sectorWidth": 0.1940395462511343,
-      "x": -125,
-      "y": -450
+      "x": -250,
+      "y": -375
     },
     "src/Core/Domain/Services/IScanner": {
       "id": "src/Core/Domain/Services/IScanner",
@@ -3386,12 +3396,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "6babec4f9867c51a7bd49ad43d197325",
       "contractHash": "b9f8daff52e77ca850a0f4b2868aebad",
-      "initialX": -69.91738096452583,
-      "initialY": 64.95539560906114,
+      "initialX": 75,
+      "initialY": 125,
       "sectorAngle": -1.2788130095789039,
       "sectorWidth": 0.23284745550136116,
-      "x": -69.91738096452583,
-      "y": 64.95539560906114
+      "x": 75,
+      "y": 125
     },
     "src/Core/Domain/Services/IGraphBuilder": {
       "id": "src/Core/Domain/Services/IGraphBuilder",
@@ -3505,12 +3515,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "966c5b6b6ce494c1481898ff60da3783",
       "contractHash": "ad82594e0838cff20bc7475be2052b58",
-      "initialX": -150,
-      "initialY": 75,
+      "initialX": -250,
+      "initialY": 150,
       "sectorAngle": -0.5802706430748206,
       "sectorWidth": 0.23284745550136116,
-      "x": -150,
-      "y": 75
+      "x": -250,
+      "y": 150
     },
     "src/Core/Infrastructure/Graph/MetricsCalculator": {
       "id": "src/Core/Infrastructure/Graph/MetricsCalculator",
@@ -3726,12 +3736,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "d7822c7b8f12249f79c3c663623d4a3d",
       "contractHash": "7ac4159999f19666d5d4ff91d3e93035",
-      "initialX": 9.472906214950056,
-      "initialY": 68.07401638220783,
+      "initialX": 175,
+      "initialY": 100,
       "sectorAngle": -1.5043839820958473,
       "sectorWidth": 0.2182944895325261,
-      "x": 9.472906214950056,
-      "y": 68.07401638220783
+      "x": 175,
+      "y": 100
     },
     "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
@@ -3784,12 +3794,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "f73ba9264ac9435243259eca5812e3f7",
       "contractHash": "e082fb22b6810307ee98f7663df38dfe",
-      "initialX": 75,
-      "initialY": 0,
+      "initialX": 175,
+      "initialY": -50,
       "sectorAngle": -2.377561940225952,
       "sectorWidth": 1.5280614267276826,
-      "x": 75,
-      "y": 0
+      "x": 175,
+      "y": -50
     },
     "src/Core/Domain/Model/GraphNode": {
       "id": "src/Core/Domain/Model/GraphNode",
@@ -6023,6 +6033,96 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "showFeedback"
+        },
+        {
+          "visibility": "public",
+          "type": "string",
+          "name": "color"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "feedback"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "innerText"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "message"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "position"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "top"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "left"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "transform"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "color"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "color"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "fontSize"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "fontWeight"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "whiteSpace"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "pointerEvents"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "zIndex"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "animation"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "position"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "probeNode"
         },
         {
@@ -6034,6 +6134,11 @@
           "visibility": "public",
           "type": "any",
           "name": "selectedId"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "btn"
         },
         {
           "visibility": "public",
@@ -6063,12 +6168,47 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "pSet"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "n"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "newNodes"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "length"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "return"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "discRes"
         },
         {
           "visibility": "public",
           "type": "any",
           "name": "discData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "cluster"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "selectedGroup"
         },
         {
           "visibility": "public",
@@ -6445,14 +6585,14 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 109,
+      "complexity": 111,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "ff3e8503912502f1da2cbc32d9fac550",
-      "contractHash": "6f360101735be743dd56febae558bbb5",
+      "verifiedHash": "0ffb3c7ac2170eed5fe41386737b95fd",
+      "contractHash": "b769f5a72020ab76f933983ff531e498",
       "initialX": -350,
       "initialY": 650,
       "sectorAngle": 1.4783965428657853,

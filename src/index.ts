@@ -316,18 +316,25 @@ async function main() {
                 return;
             }
 
-            const payload = nodesToAdd.map((id: string) => {
-                const realityNode = registry.nodes[id];
-                return {
-                    id,
-                    name: realityNode?.name || id.split('/').pop() || id,
-                    type: (realityNode?.type as any) || 'Unknown',
-                    purpose: "", // Leave empty so the AI or Architect can explicitly define it later
-                    parentId: nodeId
-                };
-            }).filter((n: any) => !!n.id);
+            const plannedData = await TopologyPlanner.loadPlanned();
+            const existingIds = new Set((plannedData.plannedNodes || []).map((n: any) => n.id));
 
-            await TopologyPlanner.upsertNodes(payload);
+            const payload = nodesToAdd
+                .filter((id: string) => !existingIds.has(id))
+                .map((id: string) => {
+                    const realityNode = registry.nodes[id];
+                    return {
+                        id,
+                        name: realityNode?.name || id.split('/').pop() || id,
+                        type: (realityNode?.type as any) || 'Unknown',
+                        purpose: "", // Leave empty so the AI or Architect can explicitly define it later
+                        parentId: nodeId
+                    };
+                }).filter((n: any) => !!n.id);
+
+            if (payload.length > 0) {
+                await TopologyPlanner.upsertNodes(payload);
+            }
             
             const newPlannedData = await TopologyPlanner.loadPlanned();
             res.json({ success: true, plannedData: newPlannedData });
