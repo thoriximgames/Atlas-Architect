@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-05T12:48:14.161Z",
+  "lastUpdated": "2026-03-05T12:54:52.906Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -7652,6 +7652,11 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "purpose"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "nodeSelection"
         },
         {
@@ -8081,14 +8086,14 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 93,
+      "complexity": 96,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "3f1d8c063a3b047988b856d74602d4fc",
-      "contractHash": "7088ffeff13057bee05b77f880fde47f",
+      "verifiedHash": "a97925ea59f3eedb603a31b3fd5a389c",
+      "contractHash": "9d020a1f98b9a4c400551870cbdcb816",
       "initialX": 125,
       "initialY": 675,
       "sectorAngle": 1.0789308103237674,
