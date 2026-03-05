@@ -322,7 +322,7 @@ async function main() {
                     id,
                     name: realityNode?.name || id.split('/').pop() || id,
                     type: (realityNode?.type as any) || 'Unknown',
-                    purpose: "Auto-discovered dependency",
+                    purpose: "", // Leave empty so the AI or Architect can explicitly define it later
                     parentId: nodeId
                 };
             }).filter((n: any) => !!n.id);

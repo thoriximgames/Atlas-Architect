@@ -8,8 +8,19 @@
       "parentId": "",
       "dependencies": [],
       "description": "",
-      "x": 0,
-      "y": 0
+      "x": -250,
+      "y": -75
+    },
+    {
+      "id": "src/Core/Application/HeartbeatService",
+      "name": "HeartbeatService",
+      "type": "Service",
+      "purpose": "Auto-discovered dependency",
+      "parentId": "src/index",
+      "dependencies": [],
+      "description": "",
+      "x": -150,
+      "y": 75
     },
     {
       "id": "src/Core/Application/AtlasEngine",
@@ -19,8 +30,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": 325,
-      "y": -75
+      "x": 375,
+      "y": -575
     },
     {
       "id": "src/Core/Infrastructure/FileSystem/FileScanner",
@@ -30,8 +41,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": 75,
-      "y": 100
+      "x": -100,
+      "y": -375
     },
     {
       "id": "src/Core/Infrastructure/Graph/GraphBuilder",
@@ -41,8 +52,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": -50,
-      "y": -200
+      "x": 375,
+      "y": -475
     },
     {
       "id": "src/Core/Infrastructure/Layout/PolarLayoutStrategy",
@@ -52,19 +63,19 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": 150,
-      "y": 25
+      "x": 350,
+      "y": -400
     },
     {
       "id": "src/Shared/Config",
       "name": "Config",
       "type": "Unknown",
       "purpose": "Auto-discovered dependency",
-      "parentId": "src/Core/Application/AtlasEngine",
+      "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": 350,
-      "y": 25
+      "x": 250,
+      "y": -250
     },
     {
       "id": "src/pipeline",
@@ -75,7 +86,7 @@
       "dependencies": [],
       "description": "",
       "x": -125,
-      "y": -75
+      "y": -450
     },
     {
       "id": "src/blueprint",
@@ -85,74 +96,41 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": 0,
-      "y": 250
+      "x": 300,
+      "y": -325
+    },
+    {
+      "id": "src/Core/Domain/Model/SourceFile",
+      "name": "SourceFile",
+      "type": "Interface",
+      "purpose": "",
+      "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
+      "dependencies": [],
+      "description": "",
+      "x": 9.472906214950056,
+      "y": 68.07401638220783
+    },
+    {
+      "id": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "name": "ParserFactory",
+      "type": "Unknown",
+      "purpose": "",
+      "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
+      "dependencies": [],
+      "description": "",
+      "x": 75,
+      "y": 0
     },
     {
       "id": "src/Core/Domain/Services/IScanner",
       "name": "IScanner",
       "type": "Interface",
-      "purpose": "Auto-discovered dependency",
-      "parentId": "src/Core/Application/AtlasEngine",
+      "purpose": "",
+      "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
       "dependencies": [],
       "description": "",
-      "x": 500,
-      "y": -175
-    },
-    {
-      "id": "src/Core/Domain/Services/IGraphBuilder",
-      "name": "IGraphBuilder",
-      "type": "Interface",
-      "purpose": "Auto-discovered dependency",
-      "parentId": "src/Core/Application/AtlasEngine",
-      "dependencies": [],
-      "description": "",
-      "x": 400,
-      "y": -250
-    },
-    {
-      "id": "src/Core/Domain/Services/ILayoutStrategy",
-      "name": "ILayoutStrategy",
-      "type": "Interface",
-      "purpose": "Auto-discovered dependency",
-      "parentId": "src/Core/Application/AtlasEngine",
-      "dependencies": [],
-      "description": "",
-      "x": 175,
-      "y": -150
-    },
-    {
-      "id": "src/Core/Application/HeartbeatService",
-      "name": "HeartbeatService",
-      "type": "Service",
-      "purpose": "Auto-discovered dependency",
-      "parentId": "src/Core/Application/AtlasEngine",
-      "dependencies": [],
-      "description": "",
-      "x": 475,
-      "y": -75
-    },
-    {
-      "id": "src/Core/Infrastructure/Graph/MetricsCalculator",
-      "name": "MetricsCalculator",
-      "type": "Unknown",
-      "purpose": "Auto-discovered dependency",
-      "parentId": "src/Core/Application/AtlasEngine",
-      "dependencies": [],
-      "description": "",
-      "x": 225,
-      "y": -225
-    },
-    {
-      "id": "src/Shared/Protocol",
-      "name": "Protocol",
-      "type": "Unknown",
-      "purpose": "Auto-discovered dependency",
-      "parentId": "src/Core/Application/AtlasEngine",
-      "dependencies": [],
-      "description": "",
-      "x": 300,
-      "y": -250
+      "x": -69.91738096452583,
+      "y": 64.95539560906114
     }
   ]
 }

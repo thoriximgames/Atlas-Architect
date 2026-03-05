@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-05T13:16:08.102Z",
+  "lastUpdated": "2026-03-05T13:29:04.542Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -594,12 +594,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "2b4ca4cb20e55b1f757c6002a99b0a60",
       "contractHash": "b36fd11fa26b9c7a273a2e5d2ef5e3e5",
-      "initialX": 0,
-      "initialY": 250,
+      "initialX": 300,
+      "initialY": -325,
       "sectorAngle": 2.4023943821569005,
       "sectorWidth": 0.36959913571644626,
-      "x": 0,
-      "y": 250
+      "x": 300,
+      "y": -325
     },
     "src/Shared/Protocol": {
       "id": "src/Shared/Protocol",
@@ -1498,14 +1498,14 @@
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "61e978dbb80c36343096f361a8024a2e",
+      "verifiedHash": "cf047f627f91624a1ddc0776dac3af1c",
       "contractHash": "f1455f3c0739fdb8b43813f2f62165f8",
-      "initialX": 0,
-      "initialY": 0,
+      "initialX": -250,
+      "initialY": -75,
       "sectorAngle": -1.2011971910784502,
       "sectorWidth": 3.8807909250226857,
-      "x": 0,
-      "y": 0
+      "x": -250,
+      "y": -75
     },
     "src/Core/Application/AtlasEngine": {
       "id": "src/Core/Application/AtlasEngine",
@@ -1892,12 +1892,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "f03328dffe1e214e92e519fd1b2b36c9",
       "contractHash": "b85327a30bb69c3e97a5a4203892f449",
-      "initialX": 325,
-      "initialY": -75,
+      "initialX": 375,
+      "initialY": -575,
       "sectorAngle": -0.8131180985761816,
       "sectorWidth": 1.1642372775068057,
-      "x": 325,
-      "y": -75
+      "x": 375,
+      "y": -575
     },
     "src/Core/Infrastructure/FileSystem/FileScanner": {
       "id": "src/Core/Infrastructure/FileSystem/FileScanner",
@@ -2021,12 +2021,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "a46314fb4068f355f74d6c777e1baafc",
       "contractHash": "6f813758e9bd1546958801325bf870f8",
-      "initialX": 75,
-      "initialY": 100,
+      "initialX": -100,
+      "initialY": -375,
       "sectorAngle": -2.268414695459689,
       "sectorWidth": 1.7463559162602087,
-      "x": 75,
-      "y": 100
+      "x": -100,
+      "y": -375
     },
     "src/Core/Infrastructure/Graph/GraphBuilder": {
       "id": "src/Core/Infrastructure/Graph/GraphBuilder",
@@ -2387,12 +2387,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "c0e5ff164d55efc3ff45cd1509bab118",
       "contractHash": "4b8b93e9a6faa2c879ac4e3a43bd20a0",
-      "initialX": -50,
-      "initialY": -200,
+      "initialX": 375,
+      "initialY": -475,
       "sectorAngle": -0.03695991357164441,
       "sectorWidth": 0.3880790925022686,
-      "x": -50,
-      "y": -200
+      "x": 375,
+      "y": -475
     },
     "src/Core/Infrastructure/Layout/PolarLayoutStrategy": {
       "id": "src/Core/Infrastructure/Layout/PolarLayoutStrategy",
@@ -2932,12 +2932,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "e6fff98acd7148308cfe0bebe7001302",
       "contractHash": "236766084d1bee7e10f8bc4d29557ef8",
-      "initialX": 150,
-      "initialY": 25,
+      "initialX": 350,
+      "initialY": -400,
       "sectorAngle": 0.254099405805057,
       "sectorWidth": 0.1940395462511343,
-      "x": 150,
-      "y": 25
+      "x": 350,
+      "y": -400
     },
     "src/Shared/Config": {
       "id": "src/Shared/Config",
@@ -3002,12 +3002,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "6d4f60b619d11cbc4fad4d01ec44e109",
       "contractHash": "cdb326cfac64d6a8d30b9f37b96dd2e5",
-      "initialX": 350,
-      "initialY": 25,
+      "initialX": 250,
+      "initialY": -250,
       "sectorAngle": 0.4481389520561913,
       "sectorWidth": 0.1940395462511343,
-      "x": 350,
-      "y": 25
+      "x": 250,
+      "y": -250
     },
     "src/pipeline": {
       "id": "src/pipeline",
@@ -3356,11 +3356,11 @@
       "verifiedHash": "457459d229dbd313e1d842bb05a59bed",
       "contractHash": "dc1a191c12c70ab18b8d61f9f0026441",
       "initialX": -125,
-      "initialY": -75,
+      "initialY": -450,
       "sectorAngle": 0.6421784983073255,
       "sectorWidth": 0.1940395462511343,
       "x": -125,
-      "y": -75
+      "y": -450
     },
     "src/Core/Domain/Services/IScanner": {
       "id": "src/Core/Domain/Services/IScanner",
@@ -3386,12 +3386,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "6babec4f9867c51a7bd49ad43d197325",
       "contractHash": "b9f8daff52e77ca850a0f4b2868aebad",
-      "initialX": 500,
-      "initialY": -175,
+      "initialX": -69.91738096452583,
+      "initialY": 64.95539560906114,
       "sectorAngle": -1.2788130095789039,
       "sectorWidth": 0.23284745550136116,
-      "x": 500,
-      "y": -175
+      "x": -69.91738096452583,
+      "y": 64.95539560906114
     },
     "src/Core/Domain/Services/IGraphBuilder": {
       "id": "src/Core/Domain/Services/IGraphBuilder",
@@ -3505,12 +3505,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "966c5b6b6ce494c1481898ff60da3783",
       "contractHash": "ad82594e0838cff20bc7475be2052b58",
-      "initialX": 475,
-      "initialY": -75,
+      "initialX": -150,
+      "initialY": 75,
       "sectorAngle": -0.5802706430748206,
       "sectorWidth": 0.23284745550136116,
-      "x": 475,
-      "y": -75
+      "x": -150,
+      "y": 75
     },
     "src/Core/Infrastructure/Graph/MetricsCalculator": {
       "id": "src/Core/Infrastructure/Graph/MetricsCalculator",
@@ -3726,12 +3726,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "d7822c7b8f12249f79c3c663623d4a3d",
       "contractHash": "7ac4159999f19666d5d4ff91d3e93035",
-      "initialX": -200,
-      "initialY": -1000,
+      "initialX": 9.472906214950056,
+      "initialY": 68.07401638220783,
       "sectorAngle": -1.5043839820958473,
       "sectorWidth": 0.2182944895325261,
-      "x": -200,
-      "y": -1000
+      "x": 9.472906214950056,
+      "y": 68.07401638220783
     },
     "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
@@ -3784,12 +3784,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "f73ba9264ac9435243259eca5812e3f7",
       "contractHash": "e082fb22b6810307ee98f7663df38dfe",
-      "initialX": -950,
-      "initialY": -675,
+      "initialX": 75,
+      "initialY": 0,
       "sectorAngle": -2.377561940225952,
       "sectorWidth": 1.5280614267276826,
-      "x": -950,
-      "y": -675
+      "x": 75,
+      "y": 0
     },
     "src/Core/Domain/Model/GraphNode": {
       "id": "src/Core/Domain/Model/GraphNode",
