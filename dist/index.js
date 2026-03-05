@@ -12,6 +12,7 @@ const FileScanner_1 = require("./Core/Infrastructure/FileSystem/FileScanner");
 const GraphBuilder_1 = require("./Core/Infrastructure/Graph/GraphBuilder");
 const PolarLayoutStrategy_1 = require("./Core/Infrastructure/Layout/PolarLayoutStrategy");
 const pipeline_1 = require("./pipeline");
+const blueprint_1 = require("./blueprint");
 async function main() {
     const cwd = process.cwd();
     const app = (0, express_1.default)();
@@ -104,24 +105,20 @@ async function main() {
             const updates = req.body;
             const dataDir = path_1.default.join(projectRoot, '.atlas/data');
             await fs_extra_1.default.ensureDir(dataDir);
-            // 1. Save to planned.json (The Blueprint)
-            const plannedPath = path_1.default.join(projectRoot, 'docs/topology/planned.json');
-            if (await fs_extra_1.default.pathExists(plannedPath)) {
-                const data = await fs_extra_1.default.readJson(plannedPath);
-                const plannedNodes = Array.isArray(data) ? data : (data.plannedNodes || []);
-                let modified = false;
-                for (const id in updates) {
-                    const node = plannedNodes.find((n) => n.id === id);
-                    if (node) {
-                        node.x = updates[id].x;
-                        node.y = updates[id].y;
-                        modified = true;
-                    }
+            // 1. Save to planned.json (The Blueprint) using TopologyPlanner for consistency
+            const plannedData = await blueprint_1.TopologyPlanner.loadPlanned();
+            let modified = false;
+            for (const id in updates) {
+                const node = plannedData.plannedNodes.find((n) => n.id === id);
+                if (node) {
+                    node.x = updates[id].x;
+                    node.y = updates[id].y;
+                    modified = true;
                 }
-                if (modified) {
-                    await fs_extra_1.default.outputJson(plannedPath, data, { spaces: 2 });
-                    console.log(`[Atlas] Updated ${Object.keys(updates).length} node positions in planned.json`);
-                }
+            }
+            if (modified) {
+                await blueprint_1.TopologyPlanner.savePlanned(plannedData);
+                console.log(`[Atlas] Updated ${Object.keys(updates).length} node positions in planned.json`);
             }
             // 2. Save to a global positions.json for all nodes
             const positionsPath = path_1.default.join(dataDir, 'positions.json');
@@ -246,7 +243,7 @@ async function main() {
     const watchPaths = [
         path_1.default.join(projectRoot, 'docs/pipeline'),
         path_1.default.join(projectRoot, 'docs/topology'),
-        ...config.scanPatterns.map(p => path_1.default.join(projectRoot, p.replace('**/*', '')))
+        ...config.scanPatterns.map((p) => path_1.default.join(projectRoot, p.replace('**/*', '')))
     ];
     chokidar_1.default.watch(watchPaths, { ignoreInitial: true }).on('all', (event, path) => {
         console.log(`[Watcher] ${event} detected at ${path}`);
@@ -261,14 +258,45 @@ async function main() {
                 res.status(503).json({ error: "Scan in progress, try again later." });
                 return;
             }
+            // Find true dependencies by looking at edges originating from this node
+            const outgoingEdges = registry.edges.filter((e) => e.source === nodeId || e.source.id === nodeId);
+            const depIds = Array.from(new Set(outgoingEdges.map((e) => e.target.id || e.target)));
             // Return everything, but also flag the specific neighborhood for the frontend
             res.json({
                 registry,
                 targetId: nodeId,
-                dependencies: nodeId ? registry.nodes[nodeId]?.dependencies || [] : []
+                dependencies: depIds
             });
         }
         catch (e) {
+            res.status(500).json({ error: e.message });
+        }
+    });
+    app.post('/api/topology/blueprint/discover', async (req, res) => {
+        try {
+            const { nodeId, nodesToAdd } = req.body;
+            console.log(`[Atlas] Auto-adding ${nodesToAdd.length} discovered nodes to Blueprint under parent: ${nodeId}`);
+            const registry = await scanAndResolve();
+            if (!registry) {
+                res.status(503).json({ error: "Scan in progress, try again later." });
+                return;
+            }
+            const payload = nodesToAdd.map((id) => {
+                const realityNode = registry.nodes[id];
+                return {
+                    id,
+                    name: realityNode?.name || id.split('/').pop() || id,
+                    type: realityNode?.type || 'Unknown',
+                    purpose: "Auto-discovered dependency",
+                    parentId: nodeId
+                };
+            }).filter((n) => !!n.id);
+            await blueprint_1.TopologyPlanner.upsertNodes(payload);
+            const newPlannedData = await blueprint_1.TopologyPlanner.loadPlanned();
+            res.json({ success: true, plannedData: newPlannedData });
+        }
+        catch (e) {
+            console.error(`[API Error] ${e.message}`);
             res.status(500).json({ error: e.message });
         }
     });

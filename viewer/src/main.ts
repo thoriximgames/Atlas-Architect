@@ -23,78 +23,71 @@ async function bootstrap() {
         }
     }
 
-    const realityNodes = Object.values(realityData.nodes || {}) as VisualNode[];
-    const realityEdges = realityData.edges || [];
-    
-    const plannedNodesRaw = Array.isArray(plannedData) ? plannedData : (plannedData.plannedNodes || []);
-    
-    // Map reality for quick lookup
-    const realityMap = new Map<string, VisualNode>();
-    realityNodes.forEach(n => realityMap.set(n.id, n));
-
-    // Construct Blueprint Nodes
-    const blueprintNodes: VisualNode[] = plannedNodesRaw.map((pn: any) => {
-        const isReal = realityMap.has(pn.id);
-        const realNode = realityMap.get(pn.id);
-        
-        // Use planned position if available, else default to 0
-        const x = pn.x !== undefined ? pn.x : (realNode?.x || 0);
-        const y = pn.y !== undefined ? pn.y : (realNode?.y || 0);
-        
-        const depth = pn.parentId ? 2 : 1; // Simplistic depth for now
-
-        return {
-            id: pn.id,
-            name: pn.name,
-            type: pn.type || (realNode ? realNode.type : 'Unknown'),
-            status: isReal ? 'verified' : 'planned',
-            parentId: pn.parentId,
-            dependencies: pn.dependencies || [],
-            descendantCount: 0,
-            depth: depth,
-            x: x,
-            y: y,
-            initialX: x,
-            initialY: y,
-            radius: 20,
-            fx: (x !== 0 || y !== 0) ? x : undefined,
-            fy: (x !== 0 || y !== 0) ? y : undefined
-        } as VisualNode;
-    });
-
-    // Calculate blueprint edges
-    const blueprintEdges: any[] = [];
-    blueprintNodes.forEach(n => {
-        if (n.parentId) {
-            blueprintEdges.push({ source: n.parentId, target: n.id, isGravity: true, type: 'inheritance' });
-        }
-        if (n.dependencies) {
-            n.dependencies.forEach(dep => {
-                blueprintEdges.push({ source: n.id, target: dep, isGravity: false, type: 'dependency' });
-            });
-        }
-    });
-
-    // Construct Orphan Nodes (Reality minus Blueprint)
-    const plannedSet = new Set(blueprintNodes.map(n => n.id));
-    const orphanNodes = realityNodes.filter(n => !plannedSet.has(n.id)).map(n => {
-        n.status = 'orphan';
-        n.radius = 20 + Math.sqrt(n.descendantCount || 0) * 6;
-        if (n.initialX !== 0 || n.initialY !== 0) {
-            n.fx = n.x;
-            n.fy = n.y;
-        }
-        return n;
-    });
-    
-    const orphanEdges = realityEdges.filter((e: any) => {
-        const s = e.source.id || e.source;
-        const t = e.target.id || e.target;
-        return !plannedSet.has(s) && !plannedSet.has(t);
-    });
-
     const nodeMap = new Map<string, VisualNode>();
-    [...blueprintNodes, ...orphanNodes].forEach(n => nodeMap.set(n.id, n));
+    let blueprintNodes: VisualNode[] = [];
+    let blueprintEdges: any[] = [];
+    let orphanNodes: VisualNode[] = [];
+    let orphanEdges: any[] = [];
+
+    const rebuildGraphData = (pData: any, rData: any) => {
+        const rNodes = Object.values(rData.nodes || {}) as VisualNode[];
+        const rEdges = rData.edges || [];
+        const pNodesRaw = Array.isArray(pData) ? pData : (pData.plannedNodes || []);
+        
+        const rMap = new Map<string, VisualNode>();
+        rNodes.forEach(n => rMap.set(n.id, n));
+
+        blueprintNodes = pNodesRaw.map((pn: any) => {
+            const isReal = rMap.has(pn.id);
+            const realNode = rMap.get(pn.id);
+            
+            // For blueprint, we ONLY care about positions explicitly saved in planned.json.
+            // If they are newly discovered, let them spawn at 0,0 and let physics expand them.
+            // Do NOT inherit the static layout positions from the reality scan.
+            const hasPlannedPosition = pn.x !== undefined && pn.y !== undefined;
+            const x = hasPlannedPosition ? pn.x : 0;
+            const y = hasPlannedPosition ? pn.y : 0;
+            
+            return {
+                id: pn.id,
+                name: pn.name,
+                type: pn.type || (realNode ? realNode.type : 'Unknown'),
+                status: isReal ? 'verified' : 'planned',
+                parentId: pn.parentId,
+                dependencies: pn.dependencies || [],
+                descendantCount: 0,
+                depth: pn.parentId ? 2 : 1,
+                x: x, y: y, initialX: x, initialY: y, radius: 20,
+                fx: hasPlannedPosition ? x : undefined,
+                fy: hasPlannedPosition ? y : undefined
+            } as VisualNode;
+        });
+
+        blueprintEdges = [];
+        blueprintNodes.forEach(n => {
+            if (n.parentId) blueprintEdges.push({ source: n.parentId, target: n.id, isGravity: true, type: 'inheritance' });
+            if (n.dependencies) n.dependencies.forEach(dep => blueprintEdges.push({ source: n.id, target: dep, isGravity: false, type: 'dependency' }));
+        });
+
+        const pSet = new Set(blueprintNodes.map(n => n.id));
+        orphanNodes = rNodes.filter(n => !pSet.has(n.id)).map(n => {
+            n.status = 'orphan';
+            n.radius = 20 + Math.sqrt(n.descendantCount || 0) * 6;
+            if (n.initialX !== 0 || n.initialY !== 0) { n.fx = n.x; n.fy = n.y; }
+            return n;
+        });
+        
+        orphanEdges = rEdges.filter((e: any) => {
+            const s = e.source.id || e.source;
+            const t = e.target.id || e.target;
+            return !pSet.has(s) && !pSet.has(t);
+        });
+
+        nodeMap.clear();
+        [...blueprintNodes, ...orphanNodes].forEach(n => nodeMap.set(n.id, n));
+    };
+
+    rebuildGraphData(plannedData, realityData);
 
     const inspector = new Inspector();
     const legend = new Legend();
@@ -143,34 +136,46 @@ async function bootstrap() {
         
         const data = await res.json();
         
-        // When we probe, we want to visually reveal dependencies that might be hidden.
-        // In the new SOLID architecture, if we are in the Blueprint tab, we should
-        // probably tell the user to use 'atlas.mjs blueprint' to formally add them.
-        // But for visual discovery, we can temporarily add them to the 'revealed' set
-        // if they are in the blueprint, or just switch to the scan tab.
-
         if (data.dependencies && data.dependencies.length > 0) {
             console.log(`[Discovery] Found dependencies:`, data.dependencies);
             
-            // Switch to Scan view to show the raw reality of these connections
             const hash = window.location.hash.replace('#', '');
             if (hash !== 'orphans') {
-                 switchPage('orphans', false);
+                // We are in Blueprint view. Auto-add to Blueprint!
+                console.log(`[Discovery] Auto-adding dependencies to Blueprint...`);
+                const discRes = await fetch('/api/topology/blueprint/discover', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nodeId: targetId, nodesToAdd: data.dependencies })
+                });
+                
+                if (discRes.ok) {
+                    const discData = await discRes.json();
+                    // Dynamically rebuild local state
+                    rebuildGraphData(discData.plannedData, realityData);
+                    
+                    // Add new IDs to revealed set so they appear (legacy, but safe to keep)
+                    data.dependencies.forEach((id: string) => revealedIds.add(id));
+                    
+                    // Update engine with ONLY blueprint nodes since we are on the blueprint tab
+                    engine.resetData(blueprintNodes, blueprintEdges);
+                    
+                    // Focus on the new cluster
+                    const cluster = new Set<string>([targetId, ...data.dependencies]);
+                    renderer.focus(targetId, cluster);
+                    renderer.centerView([...blueprintNodes].filter(n => cluster.has(n.id)));
+                }
+            } else {
+                // Switch to Scan view behavior (already implemented)
+                const newSelection = new Set<string>();
+                newSelection.add(targetId);
+                data.dependencies.forEach((depId: string) => newSelection.add(depId));
+                selectedGroup = newSelection;
+                renderer.highlightGroup(selectedGroup);
+                renderer.focus(targetId, newSelection);
+                const targetNode = orphanNodes.find(n => n.id === targetId) || blueprintNodes.find(n => n.id === targetId);
+                if (targetNode) inspector.render(targetNode);
             }
-            
-            // Highlight the discovered nodes
-            const newSelection = new Set<string>();
-            newSelection.add(targetId);
-            data.dependencies.forEach((depId: string) => newSelection.add(depId));
-            
-            selectedGroup = newSelection;
-            renderer.highlightGroup(selectedGroup);
-            
-            // Focus and re-center
-            renderer.focus(targetId, newSelection);
-            
-            const targetNode = orphanNodes.find(n => n.id === targetId) || blueprintNodes.find(n => n.id === targetId);
-            if (targetNode) inspector.render(targetNode);
         } else {
              console.log(`[Discovery] No outgoing dependencies found in reality.`);
         }

@@ -14,41 +14,56 @@ const PLANNED_PATH = path.join(projectRoot, 'docs/topology/planned.json');
 export class TopologyPlanner {
     static async loadPlanned() {
         if (!await fs.pathExists(PLANNED_PATH)) {
+            console.log(`[DEBUG] Planned path not found: ${PLANNED_PATH}`);
             return { plannedNodes: [] };
         }
         const data = await fs.readJson(PLANNED_PATH);
-        if (Array.isArray(data)) return { plannedNodes: data };
+        console.log(`[DEBUG] Loaded raw data type: ${Array.isArray(data) ? 'Array' : typeof data}`);
+        if (Array.isArray(data)) {
+            console.log(`[DEBUG] Returning wrapped array with ${data.length} nodes`);
+            return { plannedNodes: data };
+        }
+        console.log(`[DEBUG] Returning object with ${(data.plannedNodes || []).length} nodes`);
         return data;
     }
 
     static async savePlanned(data: any) {
-        const originalData = await fs.readJson(PLANNED_PATH).catch(() => ({}));
-        if (Array.isArray(originalData)) {
-            await fs.writeJson(PLANNED_PATH, data.plannedNodes, { spaces: 2 });
-        } else {
-            await fs.writeJson(PLANNED_PATH, data, { spaces: 2 });
-        }
+        // ALWAYS save as wrapped object to ensure stability across commands.
+        // If data is already an array (due to legacy read), wrap it.
+        const output = Array.isArray(data) ? { plannedNodes: data } : data;
+        
+        await fs.writeJson(PLANNED_PATH, output, { spaces: 2 });
         console.log(`[PLANNER] Updated ${PLANNED_PATH}`);
     }
 
     static async upsertNode(id: string, name: string, type: NodeType, purpose: string, parentId?: string) {
+        await this.upsertNodes([{ id, name, type, purpose, parentId }]);
+    }
+
+    static async upsertNodes(nodes: { id: string, name: string, type: NodeType, purpose: string, parentId?: string }[]) {
         const data = await this.loadPlanned();
-        let node = data.plannedNodes.find((n: any) => n.id === id);
         
-        if (node) {
-            node.name = name;
-            node.type = type;
-            node.purpose = purpose;
-            if (parentId) node.parentId = parentId;
-            console.log(`[PLANNER] Updated node: ${id}`);
-        } else {
-            data.plannedNodes.push({
-                id, name, type, purpose,
-                parentId: parentId || "",
-                dependencies: [],
-                description: ""
-            });
-            console.log(`[PLANNER] Added new node: ${id}`);
+        for (const input of nodes) {
+            let node = data.plannedNodes.find((n: any) => n.id === input.id);
+            
+            if (node) {
+                node.name = input.name;
+                node.type = input.type;
+                node.purpose = input.purpose;
+                if (input.parentId) node.parentId = input.parentId;
+                console.log(`[PLANNER] Updated node: ${input.id}`);
+            } else {
+                data.plannedNodes.push({
+                    id: input.id, 
+                    name: input.name, 
+                    type: input.type, 
+                    purpose: input.purpose,
+                    parentId: input.parentId || "",
+                    dependencies: [],
+                    description: ""
+                });
+                console.log(`[PLANNER] Added new node: ${input.id}`);
+            }
         }
         await this.savePlanned(data);
     }
@@ -132,14 +147,20 @@ export class TopologyPlanner {
 
     static async listNodes(filterType?: string) {
         const data = await this.loadPlanned();
+        console.log(`[DEBUG] listNodes: raw plannedNodes length: ${data.plannedNodes?.length}`);
+        
         const filtered = filterType 
             ? data.plannedNodes.filter((n: any) => n.type === filterType)
             : data.plannedNodes;
         
-        console.log(`\n--- PLANNED NODES (${filtered.length}) ---`);
-        filtered.forEach((n: any) => {
-            console.log(`[${n.type.padEnd(10)}] ${n.id}`);
-        });
+        console.log(`[DEBUG] listNodes: filtered length: ${filtered?.length}`);
+        
+        console.log(`\n--- PLANNED NODES (${(filtered || []).length}) ---`);
+        if (filtered) {
+            filtered.forEach((n: any) => {
+                console.log(`[${n.type.padEnd(10)}] ${n.id}`);
+            });
+        }
     }
 
     static async findNodes(pattern: string) {
@@ -158,7 +179,12 @@ export class TopologyPlanner {
 
 // Simple CLI Interface for Blueprint Commands
 if (typeof require !== 'undefined' && require.main === module) {
-    const [,, cmd, ...args] = process.argv;
+    const rawArgs = process.argv.slice(2);
+    // Filter out --target flag and its value
+    const targetIdx = rawArgs.indexOf('--target');
+    const filteredArgs = rawArgs.filter((_, i) => i !== targetIdx && i !== targetIdx + 1);
+    
+    const [cmd, ...args] = filteredArgs;
 
     async function run() {
         try {
@@ -189,14 +215,16 @@ if (typeof require !== 'undefined' && require.main === module) {
                     break;
 
                 default: 
-                    console.log('Usage: blueprint [add|branch|guard|authority|get|list|find]');
-                    console.log('       blueprint add <id> <name> <type> <purpose> [parentId]');
-                    console.log('       blueprint branch <parentId> <id|name|type|purpose>...');
-                    console.log('       blueprint guard <id> <authorityId> <guarded|restricted|none>');
-                    console.log('       blueprint authority <id> <true|false>');
-                    console.log('       blueprint get <id>');
-                    console.log('       blueprint list [filterType]');
-                    console.log('       blueprint find <pattern>');
+                    if (cmd) {
+                        console.log('Usage: blueprint [add|branch|guard|authority|get|list|find]');
+                        console.log('       blueprint add <id> <name> <type> <purpose> [parentId]');
+                        console.log('       blueprint branch <parentId> <id|name|type|purpose>...');
+                        console.log('       blueprint guard <id> <authorityId> <guarded|restricted|none>');
+                        console.log('       blueprint authority <id> <true|false>');
+                        console.log('       blueprint get <id>');
+                        console.log('       blueprint list [filterType]');
+                        console.log('       blueprint find <pattern>');
+                    }
             }
         } catch (e: any) {
             console.error(`[ERROR] ${e.message}`);

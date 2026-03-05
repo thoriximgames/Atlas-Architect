@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-05T12:15:04.879Z",
+  "lastUpdated": "2026-03-05T12:48:14.161Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -68,6 +68,18 @@
             "type: NodeType",
             "purpose: string",
             "parentId?: string"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "any",
+          "name": "upsertNodes",
+          "params": [
+            "nodes: { id: string",
+            "name: string",
+            "type: NodeType",
+            "purpose: string",
+            "parentId?: string }[]"
           ]
         },
         {
@@ -176,7 +188,12 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "originalData"
+          "name": "output"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "data"
         },
         {
           "visibility": "public",
@@ -436,7 +453,22 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "argv"
+          "name": "rawArgs"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "targetIdx"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "filteredArgs"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "filteredArgs"
         },
         {
           "visibility": "public",
@@ -480,20 +512,20 @@
         }
       ],
       "events": [],
-      "complexity": 36,
+      "complexity": 45,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "965ba4e6f70bf902bf71389ac8d75e1e",
-      "contractHash": "99b028e1311cc56e30adb8a2de7d2276",
-      "initialX": -700,
-      "initialY": 525,
+      "verifiedHash": "05210c4d4acc1dc73e545ebd6efd2d38",
+      "contractHash": "4f1f53ae218839141934ec673baf690c",
+      "initialX": 0,
+      "initialY": 250,
       "sectorAngle": 2.379994434537722,
       "sectorWidth": 0.3807991095260355,
-      "x": -700,
-      "y": 525
+      "x": 0,
+      "y": 250
     },
     "src/Shared/Protocol": {
       "id": "src/Shared/Protocol",
@@ -838,12 +870,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "9c96866a7501a7d65239151f43db54f8",
       "contractHash": "635f3034045b81bd64860de3d6a53a13",
-      "initialX": -850,
-      "initialY": 175,
+      "initialX": 300,
+      "initialY": -250,
       "sectorAngle": 2.379994434537722,
       "sectorWidth": 0.3807991095260355,
-      "x": -850,
-      "y": 175
+      "x": 300,
+      "y": -250
     },
     "src/index": {
       "id": "src/index",
@@ -865,6 +897,7 @@
         "PolarLayoutStrategy",
         "Config",
         "pipeline",
+        "blueprint",
         "Set"
       ],
       "baseClasses": [],
@@ -1025,17 +1058,7 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "plannedPath"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "data"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "plannedNodes"
+          "name": "plannedData"
         },
         {
           "visibility": "public",
@@ -1305,7 +1328,37 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "p"
+          "name": "body"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "registry"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "return"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "outgoingEdges"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "source"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "id"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "depIds"
         },
         {
           "visibility": "public",
@@ -1325,6 +1378,21 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "payload"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityNode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "newPlannedData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "n"
         }
       ],
@@ -1334,21 +1402,21 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 49,
+      "complexity": 52,
       "description": ".ts\", \"src",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "9b53a475e7263b24dd42bc34b23cb149",
-      "contractHash": "5a3a5b9b40ad5ec17a73aa4c3b438ef2",
-      "initialX": -125,
-      "initialY": -300,
+      "verifiedHash": "f3ce72c2fd35cb06bf9c197d43806991",
+      "contractHash": "f4f80ca01cf377c69c1038b029aeab28",
+      "initialX": 0,
+      "initialY": 0,
       "sectorAngle": -1.1423973285781066,
       "sectorWidth": 3.998390650023373,
-      "x": -125,
-      "y": -300
+      "x": 0,
+      "y": 0
     },
     "src/Core/Application/AtlasEngine": {
       "id": "src/Core/Application/AtlasEngine",
@@ -1735,12 +1803,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "f03328dffe1e214e92e519fd1b2b36c9",
       "contractHash": "b85327a30bb69c3e97a5a4203892f449",
-      "initialX": 1025,
-      "initialY": -400,
+      "initialX": 325,
+      "initialY": -75,
       "sectorAngle": -0.7425582635757694,
       "sectorWidth": 1.1995171950070118,
-      "x": 1025,
-      "y": -400
+      "x": 325,
+      "y": -75
     },
     "src/Core/Infrastructure/FileSystem/FileScanner": {
       "id": "src/Core/Infrastructure/FileSystem/FileScanner",
@@ -1864,12 +1932,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "a46314fb4068f355f74d6c777e1baafc",
       "contractHash": "6f813758e9bd1546958801325bf870f8",
-      "initialX": -525,
-      "initialY": -400,
+      "initialX": 75,
+      "initialY": 100,
       "sectorAngle": -2.2419547573345344,
       "sectorWidth": 1.7992757925105178,
-      "x": -525,
-      "y": -400
+      "x": 75,
+      "y": 100
     },
     "src/Core/Infrastructure/Graph/GraphBuilder": {
       "id": "src/Core/Infrastructure/Graph/GraphBuilder",
@@ -2230,12 +2298,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "c0e5ff164d55efc3ff45cd1509bab118",
       "contractHash": "4b8b93e9a6faa2c879ac4e3a43bd20a0",
-      "initialX": 350,
-      "initialY": -150,
+      "initialX": -50,
+      "initialY": -200,
       "sectorAngle": 0.05711986642890521,
       "sectorWidth": 0.39983906500233735,
-      "x": 350,
-      "y": -150
+      "x": -50,
+      "y": -200
     },
     "src/Core/Infrastructure/Layout/PolarLayoutStrategy": {
       "id": "src/Core/Infrastructure/Layout/PolarLayoutStrategy",
@@ -2775,12 +2843,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "e6fff98acd7148308cfe0bebe7001302",
       "contractHash": "236766084d1bee7e10f8bc4d29557ef8",
-      "initialX": 325,
-      "initialY": -25,
+      "initialX": 150,
+      "initialY": 25,
       "sectorAngle": 0.3569991651806582,
       "sectorWidth": 0.19991953250116867,
-      "x": 325,
-      "y": -25
+      "x": 150,
+      "y": 25
     },
     "src/Shared/Config": {
       "id": "src/Shared/Config",
@@ -2845,12 +2913,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "6d4f60b619d11cbc4fad4d01ec44e109",
       "contractHash": "cdb326cfac64d6a8d30b9f37b96dd2e5",
-      "initialX": 250,
-      "initialY": 100,
+      "initialX": 350,
+      "initialY": 25,
       "sectorAngle": 0.5569186976818269,
       "sectorWidth": 0.19991953250116867,
-      "x": 250,
-      "y": 100
+      "x": 350,
+      "y": 25
     },
     "src/pipeline": {
       "id": "src/pipeline",
@@ -3198,12 +3266,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "457459d229dbd313e1d842bb05a59bed",
       "contractHash": "dc1a191c12c70ab18b8d61f9f0026441",
-      "initialX": 125,
-      "initialY": 200,
+      "initialX": -125,
+      "initialY": -75,
       "sectorAngle": 0.7568382301829956,
       "sectorWidth": 0.19991953250116867,
-      "x": 125,
-      "y": 200
+      "x": -125,
+      "y": -75
     },
     "src/Core/Domain/Services/IScanner": {
       "id": "src/Core/Domain/Services/IScanner",
@@ -3229,12 +3297,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "6babec4f9867c51a7bd49ad43d197325",
       "contractHash": "b9f8daff52e77ca850a0f4b2868aebad",
-      "initialX": 150,
-      "initialY": -1150,
+      "initialX": 500,
+      "initialY": -175,
       "sectorAngle": -1.2223651415785741,
       "sectorWidth": 0.23990343900140237,
-      "x": 150,
-      "y": -1150
+      "x": 500,
+      "y": -175
     },
     "src/Core/Domain/Services/IGraphBuilder": {
       "id": "src/Core/Domain/Services/IGraphBuilder",
@@ -3273,12 +3341,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "3483e5e08ec27fccc60b61bd504456fd",
       "contractHash": "16e4ebe0bf7ef3c438aa8de3d3643869",
-      "initialX": 300,
-      "initialY": -775,
+      "initialX": 400,
+      "initialY": -250,
       "sectorAngle": -0.9824617025771718,
       "sectorWidth": 0.23990343900140237,
-      "x": 300,
-      "y": -775
+      "x": 400,
+      "y": -250
     },
     "src/Core/Domain/Services/ILayoutStrategy": {
       "id": "src/Core/Domain/Services/ILayoutStrategy",
@@ -3310,12 +3378,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "7bc6f0356758353c0c574263c0677088",
       "contractHash": "17f8a6122a7b2bbc8e6e4aedf5031bfb",
-      "initialX": 700,
-      "initialY": -700,
+      "initialX": 175,
+      "initialY": -150,
       "sectorAngle": -0.7425582635757695,
       "sectorWidth": 0.23990343900140237,
-      "x": 700,
-      "y": -700
+      "x": 175,
+      "y": -150
     },
     "src/Core/Application/HeartbeatService": {
       "id": "src/Core/Application/HeartbeatService",
@@ -3348,12 +3416,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "966c5b6b6ce494c1481898ff60da3783",
       "contractHash": "ad82594e0838cff20bc7475be2052b58",
-      "initialX": 1050,
-      "initialY": -175,
+      "initialX": 475,
+      "initialY": -75,
       "sectorAngle": -0.5026548245743672,
       "sectorWidth": 0.23990343900140237,
-      "x": 1050,
-      "y": -175
+      "x": 475,
+      "y": -75
     },
     "src/Core/Infrastructure/Graph/MetricsCalculator": {
       "id": "src/Core/Infrastructure/Graph/MetricsCalculator",
@@ -3477,12 +3545,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "642062433d68226c7d2adc08f77fbf0c",
       "contractHash": "45e40aa7d6605c0325778e1bcfcda1f3",
-      "initialX": 650,
-      "initialY": -250,
+      "initialX": 225,
+      "initialY": -225,
       "sectorAngle": -0.26275138557296474,
       "sectorWidth": 0.23990343900140237,
-      "x": 650,
-      "y": -250
+      "x": 225,
+      "y": -225
     },
     "src/Core/Domain/Model/SourceFile": {
       "id": "src/Core/Domain/Model/SourceFile",
@@ -5238,59 +5306,6 @@
       "x": -1150,
       "y": -650
     },
-    "src/Core/Infrastructure/Security/SecurityService": {
-      "id": "src/Core/Infrastructure/Security/SecurityService",
-      "name": "SecurityService",
-      "type": "Service",
-      "file": "src/Core/Infrastructure/Security/SecurityService",
-      "depth": 1,
-      "parentId": "_UNCONNECTED_",
-      "islandId": "island_orphans",
-      "descendantCount": 0,
-      "dependencies": [],
-      "baseClasses": [],
-      "methods": [
-        {
-          "visibility": "public",
-          "returnType": "Promise<boolean>",
-          "name": "authenticate",
-          "params": [
-            "token: string"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "Promise<string>",
-          "name": "encrypt",
-          "params": [
-            "data: string"
-          ]
-        }
-      ],
-      "fields": [
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "token"
-        }
-      ],
-      "events": [],
-      "complexity": 1,
-      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
-      "implementationNotes": "",
-      "lastModifiedBy": "",
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
-      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
-      "initialX": 900,
-      "initialY": -400,
-      "sectorAngle": 2.6655937666822487,
-      "sectorWidth": 0.19039955476301776,
-      "x": 900,
-      "y": -400
-    },
     "src/Core/Infrastructure/Logging/TelemetryProvider": {
       "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
       "name": "TelemetryProvider",
@@ -5370,10 +5385,63 @@
       "contractHash": "c6f61454d07df0fdc82c5d4d8a033d7e",
       "initialX": 950,
       "initialY": -300,
-      "sectorAngle": 2.8559933214452666,
+      "sectorAngle": 2.6655937666822487,
       "sectorWidth": 0.19039955476301776,
       "x": 950,
       "y": -300
+    },
+    "src/Core/Infrastructure/Security/SecurityService": {
+      "id": "src/Core/Infrastructure/Security/SecurityService",
+      "name": "SecurityService",
+      "type": "Service",
+      "file": "src/Core/Infrastructure/Security/SecurityService",
+      "depth": 1,
+      "parentId": "_UNCONNECTED_",
+      "islandId": "island_orphans",
+      "descendantCount": 0,
+      "dependencies": [],
+      "baseClasses": [],
+      "methods": [
+        {
+          "visibility": "public",
+          "returnType": "Promise<boolean>",
+          "name": "authenticate",
+          "params": [
+            "token: string"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "Promise<string>",
+          "name": "encrypt",
+          "params": [
+            "data: string"
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "token"
+        }
+      ],
+      "events": [],
+      "complexity": 1,
+      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
+      "implementationNotes": "",
+      "lastModifiedBy": "",
+      "violations": [],
+      "status": "orphan",
+      "verificationStatus": "auto",
+      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
+      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
+      "initialX": 900,
+      "initialY": -400,
+      "sectorAngle": 2.8559933214452666,
+      "sectorWidth": 0.19039955476301776,
+      "x": 900,
+      "y": -400
     },
     "viewer/src/main": {
       "id": "viewer/src/main",
@@ -5401,14 +5469,6 @@
           "returnType": "any",
           "name": "bootstrap",
           "params": []
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "forEach",
-          "params": [
-            "n => {\r\n        if (n.parentId"
-          ]
         },
         {
           "visibility": "public",
@@ -5467,22 +5527,52 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "realityNodes"
+          "name": "nodeMap"
+        },
+        {
+          "visibility": "public",
+          "type": "VisualNode[]",
+          "name": "blueprintNodes"
+        },
+        {
+          "visibility": "public",
+          "type": "any[]",
+          "name": "blueprintEdges"
+        },
+        {
+          "visibility": "public",
+          "type": "VisualNode[]",
+          "name": "orphanNodes"
+        },
+        {
+          "visibility": "public",
+          "type": "any[]",
+          "name": "orphanEdges"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "realityEdges"
+          "name": "rebuildGraphData"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "plannedNodesRaw"
+          "name": "rNodes"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "realityMap"
+          "name": "rEdges"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "pNodesRaw"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "rMap"
         },
         {
           "visibility": "public",
@@ -5491,7 +5581,7 @@
         },
         {
           "visibility": "public",
-          "type": "VisualNode[]",
+          "type": "any",
           "name": "blueprintNodes"
         },
         {
@@ -5507,6 +5597,21 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "hasPlannedPosition"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "undefined"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "x"
+        },
+        {
+          "visibility": "public",
+          "type": "0",
           "name": "x"
         },
         {
@@ -5516,13 +5621,8 @@
         },
         {
           "visibility": "public",
-          "type": "any",
-          "name": "depth"
-        },
-        {
-          "visibility": "public",
-          "type": "1",
-          "name": "2"
+          "type": "0",
+          "name": "y"
         },
         {
           "visibility": "public",
@@ -5531,7 +5631,7 @@
         },
         {
           "visibility": "public",
-          "type": "any[]",
+          "type": "any",
           "name": "blueprintEdges"
         },
         {
@@ -5547,7 +5647,7 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "plannedSet"
+          "name": "pSet"
         },
         {
           "visibility": "public",
@@ -5633,11 +5733,6 @@
           "visibility": "public",
           "type": "any",
           "name": "target"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "nodeMap"
         },
         {
           "visibility": "public",
@@ -5778,6 +5873,26 @@
           "visibility": "public",
           "type": "any",
           "name": "hash"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "discRes"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "discData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "cluster"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "n"
         },
         {
           "visibility": "public",
@@ -6144,14 +6259,14 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 84,
+      "complexity": 80,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "cb4c53ce1ecd62cf31c324a132de591a",
-      "contractHash": "f1e0f2e0fdb00815743fded46f3af48f",
+      "verifiedHash": "4a6028ff1ca36f0d1196b2075fd9a69b",
+      "contractHash": "e6380b5deb9c335f07499210e5ad043a",
       "initialX": -350,
       "initialY": 650,
       "sectorAngle": 1.523196438104142,
@@ -9416,13 +9531,13 @@
     },
     {
       "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Security/SecurityService",
+      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
       "isGravity": true,
       "type": "inheritance"
     },
     {
       "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
+      "target": "src/Core/Infrastructure/Security/SecurityService",
       "isGravity": true,
       "type": "inheritance"
     },
@@ -9473,6 +9588,12 @@
       "target": "viewer/src/Forces/GalaxyPhysics",
       "isGravity": true,
       "type": "inheritance"
+    },
+    {
+      "source": "src/index",
+      "target": "src/blueprint",
+      "isGravity": false,
+      "type": "dependency"
     },
     {
       "source": "src/Core/Application/AtlasEngine",
