@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { NodeType, GuardState } from './Shared/Protocol';
+import { TopologyPlanner } from './blueprint';
 
 // Context Detection
 const cwd = process.cwd();
@@ -12,143 +12,6 @@ if (path.basename(cwd) === '.atlas') {
 const PIPELINE_ROOT = path.join(projectRoot, 'docs/pipeline');
 const PLANNED_PATH = path.join(projectRoot, 'docs/topology/planned.json');
 const STAGES = ['00_backlog', '01_todo', '02_in_progress', '03_review', '04_completed'];
-
-export class TopologyPlanner {
-    static async loadPlanned() {
-        if (!await fs.pathExists(PLANNED_PATH)) {
-            return { plannedNodes: [] };
-        }
-        const data = await fs.readJson(PLANNED_PATH);
-        if (Array.isArray(data)) return { plannedNodes: data };
-        return data;
-    }
-
-    static async savePlanned(data: any) {
-        // If the original was an array, save as array. 
-        // But for simplicity, we'll save as object to match 'init' and keep it standard.
-        // Actually, the mandate might prefer the array if it's already there.
-        const originalData = await fs.readJson(PLANNED_PATH).catch(() => ({}));
-        if (Array.isArray(originalData)) {
-            await fs.writeJson(PLANNED_PATH, data.plannedNodes, { spaces: 2 });
-        } else {
-            await fs.writeJson(PLANNED_PATH, data, { spaces: 2 });
-        }
-        console.log(`[PLANNER] Updated ${PLANNED_PATH}`);
-    }
-
-    static async upsertNode(id: string, name: string, type: NodeType, purpose: string, parentId?: string) {
-        const data = await this.loadPlanned();
-        let node = data.plannedNodes.find((n: any) => n.id === id);
-        
-        if (node) {
-            node.name = name;
-            node.type = type;
-            node.purpose = purpose;
-            if (parentId) node.parentId = parentId;
-            console.log(`[PLANNER] Updated node: ${id}`);
-        } else {
-            data.plannedNodes.push({
-                id, name, type, purpose,
-                parentId: parentId || "",
-                dependencies: [],
-                description: ""
-            });
-            console.log(`[PLANNER] Added new node: ${id}`);
-        }
-        await this.savePlanned(data);
-    }
-
-    static async branch(parentId: string, children: string[]) {
-        const data = await this.loadPlanned();
-        for (const def of children) {
-            const parts = def.split('|');
-            const id = parts[0];
-            const name = parts[1];
-            const type = parts[2] as NodeType;
-            const purpose = parts[3];
-
-            if (!id || !name || !type) {
-                console.error(`[ERROR] Invalid child definition: ${def}.`);
-                continue;
-            }
-
-            let node = data.plannedNodes.find((n: any) => n.id === id);
-            if (node) {
-                node.name = name;
-                node.type = type;
-                node.purpose = purpose;
-                node.parentId = parentId;
-            } else {
-                data.plannedNodes.push({
-                    id, name, type, purpose: purpose || "",
-                    parentId: parentId,
-                    dependencies: [],
-                    description: ""
-                });
-            }
-        }
-        await this.savePlanned(data);
-        console.log(`[PLANNER] Branch created under ${parentId} (${children.length} nodes).`);
-    }
-
-    static async setGuard(id: string, authorityId: string, state: GuardState) {
-        const data = await this.loadPlanned();
-        let node = data.plannedNodes.find((n: any) => n.id === id);
-        if (!node) throw new Error(`Node ${id} not found in planned.json`);
-
-        node.authorityId = authorityId;
-        node.guardState = state;
-        await this.savePlanned(data);
-        console.log(`[PLANNER] Set Guard: ${id} is now ${state} by ${authorityId}`);
-    }
-
-    static async setAuthority(id: string, isAuthority: boolean) {
-        const data = await this.loadPlanned();
-        let node = data.plannedNodes.find((n: any) => n.id === id);
-        if (!node) throw new Error(`Node ${id} not found in planned.json`);
-
-        node.isAuthority = isAuthority;
-        await this.savePlanned(data);
-        console.log(`[PLANNER] Set Authority: ${id} isAuthority = ${isAuthority}`);
-    }
-
-    // --- QUERY COMMANDS ---
-
-    static async getNode(id: string) {
-        const data = await this.loadPlanned();
-        const node = data.plannedNodes.find((n: any) => n.id === id);
-        if (node) {
-            console.log(JSON.stringify(node, null, 2));
-        } else {
-            console.log(`[QUERY] Node '${id}' not found.`);
-        }
-    }
-
-    static async listNodes(filterType?: string) {
-        const data = await this.loadPlanned();
-        const filtered = filterType 
-            ? data.plannedNodes.filter((n: any) => n.type === filterType)
-            : data.plannedNodes;
-        
-        console.log(`\n--- PLANNED NODES (${filtered.length}) ---`);
-        filtered.forEach((n: any) => {
-            console.log(`[${n.type.padEnd(10)}] ${n.id}`);
-        });
-    }
-
-    static async findNodes(pattern: string) {
-        const data = await this.loadPlanned();
-        const regex = new RegExp(pattern, 'i');
-        const results = data.plannedNodes.filter((n: any) => 
-            regex.test(n.id) || regex.test(n.name) || regex.test(n.purpose || "")
-        );
-
-        console.log(`\n--- SEARCH RESULTS FOR '${pattern}' (${results.length}) ---`);
-        results.forEach((n: any) => {
-            console.log(`[${n.type.padEnd(10)}] ${n.id} (${n.name})`);
-        });
-    }
-}
 
 export class PipelineManager {
     static async list() {
@@ -209,28 +72,29 @@ Created: ${new Date().toISOString()}
     }
 
     static async sync() {
-        const atlasPath = path.join(projectRoot, '.atlas/data/atlas.json');
+        const realityPath = path.join(projectRoot, '.atlas/data/reality.json');
 
         if (!await fs.pathExists(PLANNED_PATH)) {
-            console.log("planned.json missing. Run 'atlas scan' first.");
+            console.log("planned.json missing. Run 'atlas blueprint add' first.");
             return;
         }
 
         const plannedData = await TopologyPlanner.loadPlanned();
         let verifiedIds = new Set<string>();
-        let atlasData: any = {};
-        if (await fs.pathExists(atlasPath)) {
-            atlasData = await fs.readJson(atlasPath);
+        let realityData: any = {};
+        if (await fs.pathExists(realityPath)) {
+            realityData = await fs.readJson(realityPath);
             verifiedIds = new Set(
-                Object.values(atlasData.nodes || {})
-                    .filter((n: any) => n.status === 'verified')
-                    .map((n: any) => n.id)
+                Object.values(realityData.nodes || {})
+                    .map((n: any) => n.id) // Nodes are considered mapped/verified if they exist in reality and plan
             );
         }
 
         const ghostNodes = (plannedData.plannedNodes || []).filter((n: any) => !verifiedIds.has(n.id));
-        const nodesToAudit = Object.values(atlasData.nodes || {})
-            .filter((n: any) => n.status === 'verified' && n.verificationStatus !== 'verified');
+        // nodesToAudit might need a different definition now if reality just outputs orphan nodes.
+        // For now, if a node is in reality but has a 'dirty' verificationStatus, we audit it.
+        const nodesToAudit = Object.values(realityData.nodes || {})
+            .filter((n: any) => n.verificationStatus === 'dirty');
 
         console.log(`[SYNC] Found ${ghostNodes.length} Ghost Nodes and ${nodesToAudit.length} nodes needing audit.`);
 
@@ -333,41 +197,10 @@ if (typeof require !== 'undefined' && require.main === module) {
                 case 'review': await PipelineManager.move(args[0], '03_review'); break;
                 case 'complete': await PipelineManager.move(args[0], '04_completed'); break;
                 case 'todo': await PipelineManager.move(args[0], '01_todo'); break;
-                
-                // --- TOPOLOGY PLANNING (WRITE) ---
-                case 'plan:node': 
-                    await TopologyPlanner.upsertNode(args[0], args[1], args[2] as NodeType, args[3], args[4]); 
-                    break;
-                case 'plan:branch':
-                    await TopologyPlanner.branch(args[0], args.slice(1));
-                    break;
-                case 'plan:guard': 
-                    await TopologyPlanner.setGuard(args[0], args[1], args[2] as GuardState); 
-                    break;
-                case 'plan:authority': 
-                    await TopologyPlanner.setAuthority(args[0], args[1] === 'true'); 
-                    break;
-
-                // --- TOPOLOGY QUERY (READ) ---
-                case 'plan:get':
-                    await TopologyPlanner.getNode(args[0]);
-                    break;
-                case 'plan:list':
-                    await TopologyPlanner.listNodes(args[0]);
-                    break;
-                case 'plan:find':
-                    await TopologyPlanner.findNodes(args[0]);
-                    break;
 
                 default: 
                     if (cmd) {
                         console.log('Usage: pipeline [list|create|sync|todo|start|review|complete]');
-                        console.log('       pipeline plan:node <id> <name> <type> <purpose>');
-                        console.log('       pipeline plan:guard <id> <authorityId> <guarded|restricted|none>');
-                        console.log('       pipeline plan:authority <id> <true|false>');
-                        console.log('       pipeline plan:get <id>');
-                        console.log('       pipeline plan:list [filterType]');
-                        console.log('       pipeline plan:find <pattern>');
                     }
             }
         } catch (e: any) {

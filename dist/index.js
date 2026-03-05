@@ -104,19 +104,23 @@ async function main() {
             const updates = req.body;
             const dataDir = path_1.default.join(projectRoot, '.atlas/data');
             await fs_extra_1.default.ensureDir(dataDir);
-            // 1. Save to planned.json if applicable (for backward compatibility)
-            const plannedPath = path_1.default.join(dataDir, 'planned.json');
+            // 1. Save to planned.json (The Blueprint)
+            const plannedPath = path_1.default.join(projectRoot, 'docs/topology/planned.json');
             if (await fs_extra_1.default.pathExists(plannedPath)) {
                 const data = await fs_extra_1.default.readJson(plannedPath);
-                if (data.plannedNodes) {
-                    for (const id in updates) {
-                        const node = data.plannedNodes.find((n) => n.id === id);
-                        if (node) {
-                            node.x = updates[id].x;
-                            node.y = updates[id].y;
-                        }
+                const plannedNodes = Array.isArray(data) ? data : (data.plannedNodes || []);
+                let modified = false;
+                for (const id in updates) {
+                    const node = plannedNodes.find((n) => n.id === id);
+                    if (node) {
+                        node.x = updates[id].x;
+                        node.y = updates[id].y;
+                        modified = true;
                     }
+                }
+                if (modified) {
                     await fs_extra_1.default.outputJson(plannedPath, data, { spaces: 2 });
+                    console.log(`[Atlas] Updated ${Object.keys(updates).length} node positions in planned.json`);
                 }
             }
             // 2. Save to a global positions.json for all nodes
@@ -130,20 +134,20 @@ async function main() {
             }
             await fs_extra_1.default.outputJson(positionsPath, positions, { spaces: 2 });
             console.log(`[Atlas] Saved ${Object.keys(updates).length} node positions to positions.json`);
-            // 3. Patch atlas.json so the viewer doesn't need a full rescan immediately
-            const atlasPath = path_1.default.join(dataDir, 'atlas.json');
-            if (await fs_extra_1.default.pathExists(atlasPath)) {
-                const atlasData = await fs_extra_1.default.readJson(atlasPath);
-                if (atlasData.nodes) {
+            // 3. Patch reality.json so the viewer doesn't need a full rescan immediately
+            const realityPath = path_1.default.join(dataDir, 'reality.json');
+            if (await fs_extra_1.default.pathExists(realityPath)) {
+                const realityData = await fs_extra_1.default.readJson(realityPath);
+                if (realityData.nodes) {
                     for (const id in updates) {
-                        if (atlasData.nodes[id]) {
-                            atlasData.nodes[id].x = updates[id].x;
-                            atlasData.nodes[id].y = updates[id].y;
-                            atlasData.nodes[id].initialX = updates[id].x;
-                            atlasData.nodes[id].initialY = updates[id].y;
+                        if (realityData.nodes[id]) {
+                            realityData.nodes[id].x = updates[id].x;
+                            realityData.nodes[id].y = updates[id].y;
+                            realityData.nodes[id].initialX = updates[id].x;
+                            realityData.nodes[id].initialY = updates[id].y;
                         }
                     }
-                    await fs_extra_1.default.outputJson(atlasPath, atlasData, { spaces: 2 });
+                    await fs_extra_1.default.outputJson(realityPath, realityData, { spaces: 2 });
                 }
             }
             res.json({ success: true });
@@ -177,8 +181,8 @@ async function main() {
                     }
                 }
             }
-            await fs_extra_1.default.outputJson(path_1.default.join(dataDir, 'atlas.json'), registry, { spaces: 2 });
-            console.log(`[Atlas] Scan complete and atlas.json updated.`);
+            await fs_extra_1.default.outputJson(path_1.default.join(dataDir, 'reality.json'), registry, { spaces: 2 });
+            console.log(`[Atlas] Scan complete and reality.json updated.`);
             // Sync pipeline tasks with the new topology state
             await pipeline_1.PipelineManager.sync();
             return registry;
@@ -191,8 +195,9 @@ async function main() {
     // while the data is read/written to the local project's .atlas/data directory.
     const engineRoot = path_1.default.resolve(__dirname, '..');
     const viewerDist = path_1.default.join(engineRoot, 'viewer/dist');
-    // The data file is in the target project
-    const dataFile = path_1.default.join(projectRoot, '.atlas/data/atlas.json');
+    // The data files
+    const realityFile = path_1.default.join(projectRoot, '.atlas/data/reality.json');
+    const plannedFile = path_1.default.join(projectRoot, 'docs/topology/planned.json');
     // CSP and Basic Headers
     app.use((req, res, next) => {
         res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'");
@@ -203,7 +208,16 @@ async function main() {
         res.redirect('/viewer/');
     });
     app.use('/viewer', express_1.default.static(viewerDist, { dotfiles: 'allow' }));
-    app.get('/data/atlas.json', (req, res) => res.sendFile(dataFile, { dotfiles: 'allow' }));
+    app.get('/data/reality.json', (req, res) => res.sendFile(realityFile, { dotfiles: 'allow' }));
+    // Fallback if planned.json doesn't exist yet
+    app.get('/data/planned.json', async (req, res) => {
+        if (await fs_extra_1.default.pathExists(plannedFile)) {
+            res.sendFile(plannedFile, { dotfiles: 'allow' });
+        }
+        else {
+            res.json({ plannedNodes: [] });
+        }
+    });
     app.get(/\/viewer.*/, (req, res) => res.sendFile(path_1.default.join(viewerDist, 'index.html'), { dotfiles: 'allow' }));
     await scanAndResolve();
     if (process.argv.includes('--scan-only')) {
@@ -217,14 +231,14 @@ async function main() {
             console.error("Usage: atlas slice <nodeId> [depth]");
             process.exit(1);
         }
-        if (await fs_extra_1.default.pathExists(dataFile)) {
-            const registry = await fs_extra_1.default.readJson(dataFile);
+        if (await fs_extra_1.default.pathExists(realityFile)) {
+            const registry = await fs_extra_1.default.readJson(realityFile);
             const sliced = AtlasEngine_1.AtlasEngine.slice(registry, targetId, depth);
             console.log(JSON.stringify(sliced, null, 2));
             process.exit(0);
         }
         else {
-            console.error("atlas.json not found. Run a scan first.");
+            console.error("reality.json not found. Run a scan first.");
             process.exit(1);
         }
     }

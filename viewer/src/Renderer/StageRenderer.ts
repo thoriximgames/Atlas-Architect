@@ -16,6 +16,7 @@ export class StageRenderer {
     private currentNodes: VisualNode[] = [];
     private weightMap: Map<string, number> = new Map();
     private transform: d3.ZoomTransform = d3.zoomIdentity;
+    private zoom: d3.ZoomBehavior<SVGSVGElement, any>;
     private focusedNodeIds: Set<string> = new Set();
     private selectedNodeId: string | null = null;
     private brush: d3.BrushBehavior<unknown>;
@@ -69,21 +70,67 @@ export class StageRenderer {
         this.brushLayer.call(this.brush);
 
         this.g = this.svg.append('g');
-        const zoom = d3.zoom<SVGSVGElement, any>()
+        this.zoom = d3.zoom<SVGSVGElement, any>()
             .filter((event) => event.type === 'wheel' || event.button === 2)
             .on('zoom', (e) => {
                 this.transform = e.transform;
                 this.g.attr('transform', e.transform.toString());
                 this.renderCanvas();
             });
-        this.svg.call(zoom);
+        this.svg.call(this.zoom);
         const initialTransform = d3.zoomIdentity.translate(window.innerWidth / 2, window.innerHeight / 2);
-        this.svg.call(zoom.transform, initialTransform);
+        this.svg.call(this.zoom.transform, initialTransform);
 
         this.linkLayer = this.g.append('g');
         this.nodeLayer = this.g.append('g');
         this.setupMarkers();
         window.addEventListener('resize', () => this.onResize());
+    }
+
+    centerView(nodes: VisualNode[], instant: boolean = false) {
+        if (!nodes || nodes.length === 0) return;
+
+        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+        let count = 0;
+        nodes.forEach(n => {
+            if (n.x !== undefined && n.y !== undefined) {
+                const r = n.radius || 20;
+                minX = Math.min(minX, n.x - r);
+                maxX = Math.max(maxX, n.x + r);
+                minY = Math.min(minY, n.y - r);
+                maxY = Math.max(maxY, n.y + r);
+                count++;
+            }
+        });
+
+        if (count === 0) return;
+
+        const viewWidth = window.innerWidth;
+        const viewHeight = window.innerHeight;
+        const padding = 120; // total padding in pixels
+
+        const graphWidth = (maxX - minX) || 1;
+        const graphHeight = (maxY - minY) || 1;
+
+        const scaleX = (viewWidth - padding) / graphWidth;
+        const scaleY = (viewHeight - padding) / graphHeight;
+        let k = Math.min(scaleX, scaleY);
+        
+        // Clamp scale: don't zoom in too much, and don't zoom out too much
+        k = Math.min(1.2, Math.max(0.15, k));
+
+        const centerX = (minX + maxX) / 2;
+        const centerY = (minY + maxY) / 2;
+
+        const nextTransform = d3.zoomIdentity
+            .translate(viewWidth / 2 - centerX * k, viewHeight / 2 - centerY * k)
+            .scale(k);
+
+        if (instant) {
+            this.svg.call(this.zoom.transform, nextTransform);
+        } else {
+            this.svg.transition().duration(850).ease(d3.easeCubicInOut).call(this.zoom.transform, nextTransform);
+        }
     }
 
     onGroupSelect(callback: (ids: Set<string>) => void) {
@@ -349,7 +396,7 @@ export class StageRenderer {
             const screenX = this.transform.x + node.x * this.transform.k;
             const screenY = this.transform.y + node.y * this.transform.k;
             toolbox.classList.remove('hidden');
-            const offset = (node.radius + 20) * this.transform.k;
+            const offset = ((node.radius || 20) + 20) * this.transform.k;
             toolbox.style.left = `${screenX}px`;
             toolbox.style.top = `${screenY - offset}px`;
             toolbox.style.transform = 'translateX(-50%)';

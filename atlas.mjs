@@ -102,6 +102,8 @@ async function main() {
     const distPath = path.join(__dirname, 'dist', 'index.js');
     const pipelinePath = path.join(__dirname, 'src', 'pipeline.ts');
     const pipelineDistPath = path.join(__dirname, 'dist', 'pipeline.js');
+    const blueprintPath = path.join(__dirname, 'src', 'blueprint.ts');
+    const blueprintDistPath = path.join(__dirname, 'dist', 'blueprint.js');
 
     // Prefer compiled dist if it exists and is newer, or if we are in a "production" context
     const useTsNode = !(await fs.pathExists(distPath)); 
@@ -109,6 +111,7 @@ async function main() {
     const loaderArgs = useTsNode ? ['--loader', 'ts-node/esm'] : [];
     const mainScript = useTsNode ? enginePath : distPath;
     const pipeScript = useTsNode ? pipelinePath : pipelineDistPath;
+    const blueprintScript = useTsNode ? blueprintPath : blueprintDistPath;
 
     switch (command) {
         case 'scan':
@@ -148,6 +151,11 @@ async function main() {
             await runCommand(runner, [...loaderArgs, pipeScript, ...planCmd, '--target', target]);
             break;
 
+        case 'blueprint':
+            const blueprintCmd = args.slice(1).filter(a => a !== '--target' && a !== args[targetIdx + 1]);
+            await runCommand(runner, [...loaderArgs, blueprintScript, ...blueprintCmd, '--target', target]);
+            break;
+
         case 'kill':
             await killProjectSession(config.project);
             break;
@@ -155,12 +163,13 @@ async function main() {
         case 'help':
         default:
             console.log(`
-Atlas Unified Toolbox (v8.1.0)
+Atlas Unified Toolbox (v8.2.0)
 Commands:
   init [name]         Scaffold the minimal Atlas footprint in the target project
-  scan                Perform a topological scan and update atlas.json
+  scan                Perform a topological scan and update reality.json
   serve | start       Kill old instance, scan, build viewer (if needed), and launch
   slice <id> [depth]  Extract a neighborhood around a node
+  blueprint <cmd>     Manage the intentional architecture (add, branch, guard, etc.)
   plan <cmd>          Manage the architectural pipeline (backlog, todo, etc.)
   kill                Safely terminate the Atlas process for the current project
   help                Show this help

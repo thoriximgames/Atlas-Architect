@@ -1,0 +1,183 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TopologyPlanner = void 0;
+const fs_extra_1 = __importDefault(require("fs-extra"));
+const path_1 = __importDefault(require("path"));
+// Context Detection
+const cwd = process.cwd();
+let projectRoot = cwd;
+if (path_1.default.basename(cwd) === '.atlas') {
+    projectRoot = path_1.default.resolve(cwd, '..');
+}
+const PLANNED_PATH = path_1.default.join(projectRoot, 'docs/topology/planned.json');
+class TopologyPlanner {
+    static async loadPlanned() {
+        if (!await fs_extra_1.default.pathExists(PLANNED_PATH)) {
+            return { plannedNodes: [] };
+        }
+        const data = await fs_extra_1.default.readJson(PLANNED_PATH);
+        if (Array.isArray(data))
+            return { plannedNodes: data };
+        return data;
+    }
+    static async savePlanned(data) {
+        const originalData = await fs_extra_1.default.readJson(PLANNED_PATH).catch(() => ({}));
+        if (Array.isArray(originalData)) {
+            await fs_extra_1.default.writeJson(PLANNED_PATH, data.plannedNodes, { spaces: 2 });
+        }
+        else {
+            await fs_extra_1.default.writeJson(PLANNED_PATH, data, { spaces: 2 });
+        }
+        console.log(`[PLANNER] Updated ${PLANNED_PATH}`);
+    }
+    static async upsertNode(id, name, type, purpose, parentId) {
+        const data = await this.loadPlanned();
+        let node = data.plannedNodes.find((n) => n.id === id);
+        if (node) {
+            node.name = name;
+            node.type = type;
+            node.purpose = purpose;
+            if (parentId)
+                node.parentId = parentId;
+            console.log(`[PLANNER] Updated node: ${id}`);
+        }
+        else {
+            data.plannedNodes.push({
+                id, name, type, purpose,
+                parentId: parentId || "",
+                dependencies: [],
+                description: ""
+            });
+            console.log(`[PLANNER] Added new node: ${id}`);
+        }
+        await this.savePlanned(data);
+    }
+    static async branch(parentId, children) {
+        const data = await this.loadPlanned();
+        for (const def of children) {
+            const parts = def.split('|');
+            const id = parts[0];
+            const name = parts[1];
+            const type = parts[2];
+            const purpose = parts[3];
+            if (!id || !name || !type) {
+                console.error(`[ERROR] Invalid child definition: ${def}.`);
+                continue;
+            }
+            let node = data.plannedNodes.find((n) => n.id === id);
+            if (node) {
+                node.name = name;
+                node.type = type;
+                node.purpose = purpose;
+                node.parentId = parentId;
+            }
+            else {
+                data.plannedNodes.push({
+                    id, name, type, purpose: purpose || "",
+                    parentId: parentId,
+                    dependencies: [],
+                    description: ""
+                });
+            }
+        }
+        await this.savePlanned(data);
+        console.log(`[PLANNER] Branch created under ${parentId} (${children.length} nodes).`);
+    }
+    static async setGuard(id, authorityId, state) {
+        const data = await this.loadPlanned();
+        let node = data.plannedNodes.find((n) => n.id === id);
+        if (!node)
+            throw new Error(`Node ${id} not found in planned.json`);
+        node.authorityId = authorityId;
+        node.guardState = state;
+        await this.savePlanned(data);
+        console.log(`[PLANNER] Set Guard: ${id} is now ${state} by ${authorityId}`);
+    }
+    static async setAuthority(id, isAuthority) {
+        const data = await this.loadPlanned();
+        let node = data.plannedNodes.find((n) => n.id === id);
+        if (!node)
+            throw new Error(`Node ${id} not found in planned.json`);
+        node.isAuthority = isAuthority;
+        await this.savePlanned(data);
+        console.log(`[PLANNER] Set Authority: ${id} isAuthority = ${isAuthority}`);
+    }
+    static async getNode(id) {
+        const data = await this.loadPlanned();
+        const node = data.plannedNodes.find((n) => n.id === id);
+        if (node) {
+            console.log(JSON.stringify(node, null, 2));
+        }
+        else {
+            console.log(`[QUERY] Node '${id}' not found.`);
+        }
+    }
+    static async listNodes(filterType) {
+        const data = await this.loadPlanned();
+        const filtered = filterType
+            ? data.plannedNodes.filter((n) => n.type === filterType)
+            : data.plannedNodes;
+        console.log(`\n--- PLANNED NODES (${filtered.length}) ---`);
+        filtered.forEach((n) => {
+            console.log(`[${n.type.padEnd(10)}] ${n.id}`);
+        });
+    }
+    static async findNodes(pattern) {
+        const data = await this.loadPlanned();
+        const regex = new RegExp(pattern, 'i');
+        const results = data.plannedNodes.filter((n) => regex.test(n.id) || regex.test(n.name) || regex.test(n.purpose || ""));
+        console.log(`\n--- SEARCH RESULTS FOR '${pattern}' (${results.length}) ---`);
+        results.forEach((n) => {
+            console.log(`[${n.type.padEnd(10)}] ${n.id} (${n.name})`);
+        });
+    }
+}
+exports.TopologyPlanner = TopologyPlanner;
+// Simple CLI Interface for Blueprint Commands
+if (typeof require !== 'undefined' && require.main === module) {
+    const [, , cmd, ...args] = process.argv;
+    async function run() {
+        try {
+            switch (cmd) {
+                case 'add':
+                    await TopologyPlanner.upsertNode(args[0], args[1], args[2], args[3], args[4]);
+                    break;
+                case 'branch':
+                    await TopologyPlanner.branch(args[0], args.slice(1));
+                    break;
+                case 'guard':
+                    await TopologyPlanner.setGuard(args[0], args[1], args[2]);
+                    break;
+                case 'authority':
+                    await TopologyPlanner.setAuthority(args[0], args[1] === 'true');
+                    break;
+                case 'get':
+                    await TopologyPlanner.getNode(args[0]);
+                    break;
+                case 'list':
+                    await TopologyPlanner.listNodes(args[0]);
+                    break;
+                case 'find':
+                    await TopologyPlanner.findNodes(args[0]);
+                    break;
+                default:
+                    console.log('Usage: blueprint [add|branch|guard|authority|get|list|find]');
+                    console.log('       blueprint add <id> <name> <type> <purpose> [parentId]');
+                    console.log('       blueprint branch <parentId> <id|name|type|purpose>...');
+                    console.log('       blueprint guard <id> <authorityId> <guarded|restricted|none>');
+                    console.log('       blueprint authority <id> <true|false>');
+                    console.log('       blueprint get <id>');
+                    console.log('       blueprint list [filterType]');
+                    console.log('       blueprint find <pattern>');
+            }
+        }
+        catch (e) {
+            console.error(`[ERROR] ${e.message}`);
+            process.exit(1);
+        }
+    }
+    run();
+}

@@ -113,19 +113,25 @@ async function main() {
             const dataDir = path.join(projectRoot, '.atlas/data');
             await fs.ensureDir(dataDir);
             
-            // 1. Save to planned.json if applicable (for backward compatibility)
-            const plannedPath = path.join(dataDir, 'planned.json');
+            // 1. Save to planned.json (The Blueprint)
+            const plannedPath = path.join(projectRoot, 'docs/topology/planned.json');
             if (await fs.pathExists(plannedPath)) {
                 const data = await fs.readJson(plannedPath);
-                if (data.plannedNodes) {
-                    for (const id in updates) {
-                        const node = data.plannedNodes.find((n: any) => n.id === id);
-                        if (node) {
-                            node.x = updates[id].x;
-                            node.y = updates[id].y;
-                        }
+                const plannedNodes = Array.isArray(data) ? data : (data.plannedNodes || []);
+                
+                let modified = false;
+                for (const id in updates) {
+                    const node = plannedNodes.find((n: any) => n.id === id);
+                    if (node) {
+                        node.x = updates[id].x;
+                        node.y = updates[id].y;
+                        modified = true;
                     }
+                }
+                
+                if (modified) {
                     await fs.outputJson(plannedPath, data, { spaces: 2 });
+                    console.log(`[Atlas] Updated ${Object.keys(updates).length} node positions in planned.json`);
                 }
             }
             
@@ -141,20 +147,20 @@ async function main() {
             await fs.outputJson(positionsPath, positions, { spaces: 2 });
             console.log(`[Atlas] Saved ${Object.keys(updates).length} node positions to positions.json`);
             
-            // 3. Patch atlas.json so the viewer doesn't need a full rescan immediately
-            const atlasPath = path.join(dataDir, 'atlas.json');
-            if (await fs.pathExists(atlasPath)) {
-                const atlasData = await fs.readJson(atlasPath);
-                if (atlasData.nodes) {
+            // 3. Patch reality.json so the viewer doesn't need a full rescan immediately
+            const realityPath = path.join(dataDir, 'reality.json');
+            if (await fs.pathExists(realityPath)) {
+                const realityData = await fs.readJson(realityPath);
+                if (realityData.nodes) {
                     for (const id in updates) {
-                        if (atlasData.nodes[id]) {
-                            atlasData.nodes[id].x = updates[id].x;
-                            atlasData.nodes[id].y = updates[id].y;
-                            atlasData.nodes[id].initialX = updates[id].x;
-                            atlasData.nodes[id].initialY = updates[id].y;
+                        if (realityData.nodes[id]) {
+                            realityData.nodes[id].x = updates[id].x;
+                            realityData.nodes[id].y = updates[id].y;
+                            realityData.nodes[id].initialX = updates[id].x;
+                            realityData.nodes[id].initialY = updates[id].y;
                         }
                     }
-                    await fs.outputJson(atlasPath, atlasData, { spaces: 2 });
+                    await fs.outputJson(realityPath, realityData, { spaces: 2 });
                 }
             }
 
@@ -191,8 +197,8 @@ async function main() {
                 }
             }
             
-            await fs.outputJson(path.join(dataDir, 'atlas.json'), registry, { spaces: 2 });
-            console.log(`[Atlas] Scan complete and atlas.json updated.`);
+            await fs.outputJson(path.join(dataDir, 'reality.json'), registry, { spaces: 2 });
+            console.log(`[Atlas] Scan complete and reality.json updated.`);
             
             // Sync pipeline tasks with the new topology state
             await PipelineManager.sync();
@@ -208,8 +214,9 @@ async function main() {
     const engineRoot = path.resolve(__dirname, '..');
     const viewerDist = path.join(engineRoot, 'viewer/dist');
     
-    // The data file is in the target project
-    const dataFile = path.join(projectRoot, '.atlas/data/atlas.json');
+    // The data files
+    const realityFile = path.join(projectRoot, '.atlas/data/reality.json');
+    const plannedFile = path.join(projectRoot, 'docs/topology/planned.json');
 
     // CSP and Basic Headers
     app.use((req, res, next) => {
@@ -222,8 +229,19 @@ async function main() {
         res.redirect('/viewer/');
     });
     app.use('/viewer', express.static(viewerDist, { dotfiles: 'allow' }));
-    app.get('/data/atlas.json', (req, res) => res.sendFile(dataFile, { dotfiles: 'allow' }));
+    app.get('/data/reality.json', (req, res) => res.sendFile(realityFile, { dotfiles: 'allow' }));
+    
+    // Fallback if planned.json doesn't exist yet
+    app.get('/data/planned.json', async (req, res) => {
+        if (await fs.pathExists(plannedFile)) {
+            res.sendFile(plannedFile, { dotfiles: 'allow' });
+        } else {
+            res.json({ plannedNodes: [] });
+        }
+    });
+
     app.get(/\/viewer.*/, (req, res) => res.sendFile(path.join(viewerDist, 'index.html'), { dotfiles: 'allow' }));
+
 
     await scanAndResolve();
     
@@ -241,13 +259,13 @@ async function main() {
             process.exit(1);
         }
 
-        if (await fs.pathExists(dataFile)) {
-            const registry = await fs.readJson(dataFile);
+        if (await fs.pathExists(realityFile)) {
+            const registry = await fs.readJson(realityFile);
             const sliced = AtlasEngine.slice(registry, targetId, depth);
             console.log(JSON.stringify(sliced, null, 2));
             process.exit(0);
         } else {
-            console.error("atlas.json not found. Run a scan first.");
+            console.error("reality.json not found. Run a scan first.");
             process.exit(1);
         }
     }

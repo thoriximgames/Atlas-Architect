@@ -1,18 +1,142 @@
 {
   "src/Core/Application/AtlasEngine": {
-    "x": 1105.771454244489,
-    "y": -466.1217555296343
+    "x": 1025,
+    "y": -400
   },
   "src/Core/Application/HeartbeatService": {
-    "x": 1199.865722172328,
-    "y": -17.951288418317088
+    "x": 1050,
+    "y": -175
   },
   "src/Core/Infrastructure/Logging/TelemetryProvider": {
-    "x": 925,
-    "y": -450
+    "x": 950,
+    "y": -300
   },
   "src/Core/Infrastructure/NewService": {
-    "x": 975,
+    "x": 850,
+    "y": -350
+  },
+  "_UNCONNECTED_": {
+    "x": -425,
+    "y": 300
+  },
+  "src/blueprint": {
+    "x": -700,
+    "y": 525
+  },
+  "src/Shared/Protocol": {
+    "x": -850,
+    "y": 175
+  },
+  "src/index": {
+    "x": -125,
     "y": -300
+  },
+  "src/Core/Infrastructure/FileSystem/FileScanner": {
+    "x": -525,
+    "y": -400
+  },
+  "src/Core/Infrastructure/Graph/GraphBuilder": {
+    "x": 350,
+    "y": -150
+  },
+  "src/Core/Infrastructure/Layout/PolarLayoutStrategy": {
+    "x": 325,
+    "y": -25
+  },
+  "src/Shared/Config": {
+    "x": 250,
+    "y": 100
+  },
+  "src/pipeline": {
+    "x": 125,
+    "y": 200
+  },
+  "src/Core/Domain/Services/IScanner": {
+    "x": 150,
+    "y": -1150
+  },
+  "src/Core/Domain/Services/IGraphBuilder": {
+    "x": 300,
+    "y": -775
+  },
+  "src/Core/Domain/Services/ILayoutStrategy": {
+    "x": 700,
+    "y": -700
+  },
+  "src/Core/Infrastructure/Graph/MetricsCalculator": {
+    "x": 650,
+    "y": -250
+  },
+  "src/Core/Domain/Model/SourceFile": {
+    "x": -200,
+    "y": -1000
+  },
+  "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory": {
+    "x": -950,
+    "y": -675
+  },
+  "src/Core/Domain/Model/GraphNode": {
+    "x": 725,
+    "y": 0
+  },
+  "src/Core/Domain/Services/IParser": {
+    "x": -1125,
+    "y": -1050
+  },
+  "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser": {
+    "x": -1175,
+    "y": -250
+  },
+  "src/Core/Infrastructure/FileSystem/Parsers/CppParser": {
+    "x": -900,
+    "y": -1075
+  },
+  "src/Core/Infrastructure/FileSystem/Parsers/TsParser": {
+    "x": -700,
+    "y": -1025
+  },
+  "src/Core/Infrastructure/FileSystem/Parsers/PythonParser": {
+    "x": -575,
+    "y": -950
+  },
+  "src/Core/Infrastructure/FileSystem/Parsers/BaseParser": {
+    "x": -1150,
+    "y": -650
+  },
+  "viewer/src/main": {
+    "x": -350,
+    "y": 650
+  },
+  "viewer/src/Engine/GalaxyEngine": {
+    "x": -250,
+    "y": 1075
+  },
+  "viewer/src/Renderer/StageRenderer": {
+    "x": 125,
+    "y": 675
+  },
+  "viewer/src/UI/Inspector": {
+    "x": -500,
+    "y": 1050
+  },
+  "viewer/src/UI/Legend": {
+    "x": -675,
+    "y": 950
+  },
+  "viewer/src/Protocol/VisualTypes": {
+    "x": -800,
+    "y": 725
+  },
+  "viewer/src/Theme/ThemeManager": {
+    "x": -100,
+    "y": 1025
+  },
+  "viewer/src/Forces/GalaxyPhysics": {
+    "x": -875,
+    "y": 100
+  },
+  "src/Core/Infrastructure/Security/SecurityService": {
+    "x": 900,
+    "y": -400
   }
 }

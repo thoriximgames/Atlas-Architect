@@ -3,9 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PipelineManager = exports.TopologyPlanner = void 0;
+exports.PipelineManager = void 0;
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const path_1 = __importDefault(require("path"));
+const blueprint_1 = require("./blueprint");
 // Context Detection
 const cwd = process.cwd();
 let projectRoot = cwd;
@@ -15,133 +16,6 @@ if (path_1.default.basename(cwd) === '.atlas') {
 const PIPELINE_ROOT = path_1.default.join(projectRoot, 'docs/pipeline');
 const PLANNED_PATH = path_1.default.join(projectRoot, 'docs/topology/planned.json');
 const STAGES = ['00_backlog', '01_todo', '02_in_progress', '03_review', '04_completed'];
-class TopologyPlanner {
-    static async loadPlanned() {
-        if (!await fs_extra_1.default.pathExists(PLANNED_PATH)) {
-            return { plannedNodes: [] };
-        }
-        const data = await fs_extra_1.default.readJson(PLANNED_PATH);
-        if (Array.isArray(data))
-            return { plannedNodes: data };
-        return data;
-    }
-    static async savePlanned(data) {
-        // If the original was an array, save as array. 
-        // But for simplicity, we'll save as object to match 'init' and keep it standard.
-        // Actually, the mandate might prefer the array if it's already there.
-        const originalData = await fs_extra_1.default.readJson(PLANNED_PATH).catch(() => ({}));
-        if (Array.isArray(originalData)) {
-            await fs_extra_1.default.writeJson(PLANNED_PATH, data.plannedNodes, { spaces: 2 });
-        }
-        else {
-            await fs_extra_1.default.writeJson(PLANNED_PATH, data, { spaces: 2 });
-        }
-        console.log(`[PLANNER] Updated ${PLANNED_PATH}`);
-    }
-    static async upsertNode(id, name, type, purpose, parentId) {
-        const data = await this.loadPlanned();
-        let node = data.plannedNodes.find((n) => n.id === id);
-        if (node) {
-            node.name = name;
-            node.type = type;
-            node.purpose = purpose;
-            if (parentId)
-                node.parentId = parentId;
-            console.log(`[PLANNER] Updated node: ${id}`);
-        }
-        else {
-            data.plannedNodes.push({
-                id, name, type, purpose,
-                parentId: parentId || "",
-                dependencies: [],
-                description: ""
-            });
-            console.log(`[PLANNER] Added new node: ${id}`);
-        }
-        await this.savePlanned(data);
-    }
-    static async branch(parentId, children) {
-        const data = await this.loadPlanned();
-        for (const def of children) {
-            const parts = def.split('|');
-            const id = parts[0];
-            const name = parts[1];
-            const type = parts[2];
-            const purpose = parts[3];
-            if (!id || !name || !type) {
-                console.error(`[ERROR] Invalid child definition: ${def}.`);
-                continue;
-            }
-            let node = data.plannedNodes.find((n) => n.id === id);
-            if (node) {
-                node.name = name;
-                node.type = type;
-                node.purpose = purpose;
-                node.parentId = parentId;
-            }
-            else {
-                data.plannedNodes.push({
-                    id, name, type, purpose: purpose || "",
-                    parentId: parentId,
-                    dependencies: [],
-                    description: ""
-                });
-            }
-        }
-        await this.savePlanned(data);
-        console.log(`[PLANNER] Branch created under ${parentId} (${children.length} nodes).`);
-    }
-    static async setGuard(id, authorityId, state) {
-        const data = await this.loadPlanned();
-        let node = data.plannedNodes.find((n) => n.id === id);
-        if (!node)
-            throw new Error(`Node ${id} not found in planned.json`);
-        node.authorityId = authorityId;
-        node.guardState = state;
-        await this.savePlanned(data);
-        console.log(`[PLANNER] Set Guard: ${id} is now ${state} by ${authorityId}`);
-    }
-    static async setAuthority(id, isAuthority) {
-        const data = await this.loadPlanned();
-        let node = data.plannedNodes.find((n) => n.id === id);
-        if (!node)
-            throw new Error(`Node ${id} not found in planned.json`);
-        node.isAuthority = isAuthority;
-        await this.savePlanned(data);
-        console.log(`[PLANNER] Set Authority: ${id} isAuthority = ${isAuthority}`);
-    }
-    // --- QUERY COMMANDS ---
-    static async getNode(id) {
-        const data = await this.loadPlanned();
-        const node = data.plannedNodes.find((n) => n.id === id);
-        if (node) {
-            console.log(JSON.stringify(node, null, 2));
-        }
-        else {
-            console.log(`[QUERY] Node '${id}' not found.`);
-        }
-    }
-    static async listNodes(filterType) {
-        const data = await this.loadPlanned();
-        const filtered = filterType
-            ? data.plannedNodes.filter((n) => n.type === filterType)
-            : data.plannedNodes;
-        console.log(`\n--- PLANNED NODES (${filtered.length}) ---`);
-        filtered.forEach((n) => {
-            console.log(`[${n.type.padEnd(10)}] ${n.id}`);
-        });
-    }
-    static async findNodes(pattern) {
-        const data = await this.loadPlanned();
-        const regex = new RegExp(pattern, 'i');
-        const results = data.plannedNodes.filter((n) => regex.test(n.id) || regex.test(n.name) || regex.test(n.purpose || ""));
-        console.log(`\n--- SEARCH RESULTS FOR '${pattern}' (${results.length}) ---`);
-        results.forEach((n) => {
-            console.log(`[${n.type.padEnd(10)}] ${n.id} (${n.name})`);
-        });
-    }
-}
-exports.TopologyPlanner = TopologyPlanner;
 class PipelineManager {
     static async list() {
         console.log('\n--- CURRENT PIPELINE STATE ---');
@@ -195,23 +69,25 @@ Created: ${new Date().toISOString()}
         console.log(`Task created: ${id}`);
     }
     static async sync() {
-        const atlasPath = path_1.default.join(projectRoot, '.atlas/data/atlas.json');
+        const realityPath = path_1.default.join(projectRoot, '.atlas/data/reality.json');
         if (!await fs_extra_1.default.pathExists(PLANNED_PATH)) {
-            console.log("planned.json missing. Run 'atlas scan' first.");
+            console.log("planned.json missing. Run 'atlas blueprint add' first.");
             return;
         }
-        const plannedData = await TopologyPlanner.loadPlanned();
+        const plannedData = await blueprint_1.TopologyPlanner.loadPlanned();
         let verifiedIds = new Set();
-        let atlasData = {};
-        if (await fs_extra_1.default.pathExists(atlasPath)) {
-            atlasData = await fs_extra_1.default.readJson(atlasPath);
-            verifiedIds = new Set(Object.values(atlasData.nodes || {})
-                .filter((n) => n.status === 'verified')
-                .map((n) => n.id));
+        let realityData = {};
+        if (await fs_extra_1.default.pathExists(realityPath)) {
+            realityData = await fs_extra_1.default.readJson(realityPath);
+            verifiedIds = new Set(Object.values(realityData.nodes || {})
+                .map((n) => n.id) // Nodes are considered mapped/verified if they exist in reality and plan
+            );
         }
         const ghostNodes = (plannedData.plannedNodes || []).filter((n) => !verifiedIds.has(n.id));
-        const nodesToAudit = Object.values(atlasData.nodes || {})
-            .filter((n) => n.status === 'verified' && n.verificationStatus !== 'verified');
+        // nodesToAudit might need a different definition now if reality just outputs orphan nodes.
+        // For now, if a node is in reality but has a 'dirty' verificationStatus, we audit it.
+        const nodesToAudit = Object.values(realityData.nodes || {})
+            .filter((n) => n.verificationStatus === 'dirty');
         console.log(`[SYNC] Found ${ghostNodes.length} Ghost Nodes and ${nodesToAudit.length} nodes needing audit.`);
         for (const node of nodesToAudit) {
             const taskId = 'audit_' + node.id.replace(/[\/\\]/g, '_').replace(/\./g, '_') + '.md';
@@ -319,38 +195,9 @@ if (typeof require !== 'undefined' && require.main === module) {
                 case 'todo':
                     await PipelineManager.move(args[0], '01_todo');
                     break;
-                // --- TOPOLOGY PLANNING (WRITE) ---
-                case 'plan:node':
-                    await TopologyPlanner.upsertNode(args[0], args[1], args[2], args[3], args[4]);
-                    break;
-                case 'plan:branch':
-                    await TopologyPlanner.branch(args[0], args.slice(1));
-                    break;
-                case 'plan:guard':
-                    await TopologyPlanner.setGuard(args[0], args[1], args[2]);
-                    break;
-                case 'plan:authority':
-                    await TopologyPlanner.setAuthority(args[0], args[1] === 'true');
-                    break;
-                // --- TOPOLOGY QUERY (READ) ---
-                case 'plan:get':
-                    await TopologyPlanner.getNode(args[0]);
-                    break;
-                case 'plan:list':
-                    await TopologyPlanner.listNodes(args[0]);
-                    break;
-                case 'plan:find':
-                    await TopologyPlanner.findNodes(args[0]);
-                    break;
                 default:
                     if (cmd) {
                         console.log('Usage: pipeline [list|create|sync|todo|start|review|complete]');
-                        console.log('       pipeline plan:node <id> <name> <type> <purpose>');
-                        console.log('       pipeline plan:guard <id> <authorityId> <guarded|restricted|none>');
-                        console.log('       pipeline plan:authority <id> <true|false>');
-                        console.log('       pipeline plan:get <id>');
-                        console.log('       pipeline plan:list [filterType]');
-                        console.log('       pipeline plan:find <pattern>');
                     }
             }
         }

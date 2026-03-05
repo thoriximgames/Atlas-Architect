@@ -7,37 +7,94 @@ import { VisualNode, VisualLink } from './Protocol/VisualTypes';
 import './style.css';
 
 async function bootstrap() {
-    const res = await fetch('/data/atlas.json');
-    const data = await res.json();
+    const [realityRes, plannedRes] = await Promise.all([
+        fetch('/data/reality.json'),
+        fetch('/data/planned.json')
+    ]);
+    
+    const realityData = await realityRes.json();
+    const plannedData = await plannedRes.json();
 
-    if (data.project) {
-        document.title = `Atlas | ${data.project}`;
+    if (realityData.project) {
+        document.title = `Atlas | ${realityData.project}`;
         const projectLabel = document.getElementById('project-label');
         if (projectLabel) {
-            projectLabel.innerText = `ATLAS | ${data.project.toUpperCase()}`;
+            projectLabel.innerText = `ATLAS | ${realityData.project.toUpperCase()}`;
         }
     }
 
-    const nodes = Object.values(data.nodes) as VisualNode[];
-    const nodeMap = new Map<string, VisualNode>();
-    nodes.forEach(n => nodeMap.set(n.id, n));
+    const realityNodes = Object.values(realityData.nodes || {}) as VisualNode[];
+    const realityEdges = realityData.edges || [];
+    
+    const plannedNodesRaw = Array.isArray(plannedData) ? plannedData : (plannedData.plannedNodes || []);
+    
+    // Map reality for quick lookup
+    const realityMap = new Map<string, VisualNode>();
+    realityNodes.forEach(n => realityMap.set(n.id, n));
 
-    nodes.forEach((n) => {
-        // Rule: If engine provided initialX/Y from planned.json, it's already the offset.
-        // If not, it defaults to a polar projection.
-        n.x = n.initialX || 0;
-        n.y = n.initialY || 0;
+    // Construct Blueprint Nodes
+    const blueprintNodes: VisualNode[] = plannedNodesRaw.map((pn: any) => {
+        const isReal = realityMap.has(pn.id);
+        const realNode = realityMap.get(pn.id);
         
-        // If the backend actually returned non-zero initial coordinates (manual placement),
-        // we lock it immediately so physics doesn't touch it.
+        // Use planned position if available, else default to 0
+        const x = pn.x !== undefined ? pn.x : (realNode?.x || 0);
+        const y = pn.y !== undefined ? pn.y : (realNode?.y || 0);
+        
+        const depth = pn.parentId ? 2 : 1; // Simplistic depth for now
+
+        return {
+            id: pn.id,
+            name: pn.name,
+            type: pn.type || (realNode ? realNode.type : 'Unknown'),
+            status: isReal ? 'verified' : 'planned',
+            parentId: pn.parentId,
+            dependencies: pn.dependencies || [],
+            descendantCount: 0,
+            depth: depth,
+            x: x,
+            y: y,
+            initialX: x,
+            initialY: y,
+            radius: 20,
+            fx: (x !== 0 || y !== 0) ? x : undefined,
+            fy: (x !== 0 || y !== 0) ? y : undefined
+        } as VisualNode;
+    });
+
+    // Calculate blueprint edges
+    const blueprintEdges: any[] = [];
+    blueprintNodes.forEach(n => {
+        if (n.parentId) {
+            blueprintEdges.push({ source: n.parentId, target: n.id, isGravity: true, type: 'inheritance' });
+        }
+        if (n.dependencies) {
+            n.dependencies.forEach(dep => {
+                blueprintEdges.push({ source: n.id, target: dep, isGravity: false, type: 'dependency' });
+            });
+        }
+    });
+
+    // Construct Orphan Nodes (Reality minus Blueprint)
+    const plannedSet = new Set(blueprintNodes.map(n => n.id));
+    const orphanNodes = realityNodes.filter(n => !plannedSet.has(n.id)).map(n => {
+        n.status = 'orphan';
+        n.radius = 20 + Math.sqrt(n.descendantCount || 0) * 6;
         if (n.initialX !== 0 || n.initialY !== 0) {
             n.fx = n.x;
             n.fy = n.y;
         }
-
-        n.radius = 12 + Math.sqrt(n.descendantCount || 0) * 6;
-        if (n.depth === 0 && n.fx === undefined) { n.fx = n.x; n.fy = n.y; }
+        return n;
     });
+    
+    const orphanEdges = realityEdges.filter((e: any) => {
+        const s = e.source.id || e.source;
+        const t = e.target.id || e.target;
+        return !plannedSet.has(s) && !plannedSet.has(t);
+    });
+
+    const nodeMap = new Map<string, VisualNode>();
+    [...blueprintNodes, ...orphanNodes].forEach(n => nodeMap.set(n.id, n));
 
     const inspector = new Inspector();
     const legend = new Legend();
@@ -46,13 +103,12 @@ async function bootstrap() {
     let selectedGroup = new Set<string>();
     let revealedIds = new Set<string>();
 
-    // Initial State: Only reveal Verified nodes (the ones we've decided are correct)
-    nodes.forEach(n => {
+    blueprintNodes.forEach(n => {
         if (n.status === 'verified') revealedIds.add(n.id);
     });
 
     const updateDisplay = (allNodes: VisualNode[], allEdges: any[]) => {
-        const filteredNodes = allNodes.filter(n => revealedIds.has(n.id));
+        const filteredNodes = allNodes.filter(n => revealedIds.has(n.id) || n.status === 'orphan'); // simplify for now
         const activeIds = new Set(filteredNodes.map(n => n.id));
         const filteredEdges = allEdges.filter(l => {
             const s = (l.source as any).id || l.source;
@@ -131,8 +187,8 @@ async function bootstrap() {
     });
 
     const engine = new GalaxyEngine(
-        nodes, 
-        data.edges, 
+        [...blueprintNodes, ...orphanNodes], 
+        [...blueprintEdges, ...orphanEdges], 
         () => renderer.ticking(),
         () => {
             renderer.draw(engine.state.nodes, engine.state.links, engine.state.weightMap, onNodeClick);
@@ -275,17 +331,15 @@ async function bootstrap() {
         selectedGroup.clear();
         renderer.highlightGroup(selectedGroup);
         
-        const filteredNodes = page === 'architecture' ? nodes.filter(n => n.status !== 'orphan') : nodes.filter(n => n.status === 'orphan');
-        const ids = new Set(filteredNodes.map(n => n.id));
-        const filteredLinks = (data.edges as VisualLink[]).filter(l => {
-            const s = (l.source as any).id || l.source;
-            const t = (l.target as any).id || l.target;
-            return ids.has(s) && ids.has(t);
-        });
+        const filteredNodes = page === 'architecture' ? blueprintNodes : orphanNodes;
+        const filteredLinks = page === 'architecture' ? blueprintEdges : orphanEdges;
 
         if (useIntro && page === 'architecture') engine.bootstrap(); 
         else engine.resetData(filteredNodes, filteredLinks);
         
+        // Center camera on the filtered set of nodes
+        renderer.centerView(filteredNodes);
+
         if (page === 'architecture') { btnArchitecture?.classList.add('active'); btnOrphans?.classList.remove('active'); }
         else { btnOrphans?.classList.add('active'); btnArchitecture?.classList.remove('active'); }
 

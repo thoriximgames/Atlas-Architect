@@ -71,101 +71,15 @@ class AtlasEngine {
                 console.log(`[AtlasEngine] Ripple: Node ${id} marked as DIRTY (Dependency Contract Changed).`);
             }
         }
-        // Load planned topology
-        const plannedPath = path_1.default.join(projectRoot, 'docs/topology/planned.json');
-        if (await fs_extra_1.default.pathExists(plannedPath)) {
-            const plannedData = await fs_extra_1.default.readJson(plannedPath);
-            const plannedNodes = Array.isArray(plannedData) ? plannedData : (plannedData.plannedNodes || []);
-            console.log(`[AtlasEngine] Merging ${plannedNodes.length} planned nodes...`);
-            for (const planned of plannedNodes) {
-                // Determine if this planned node already exists in the scanned graph
-                const scannedNode = Object.values(graph.nodes).find(n => {
-                    return n.file.includes(planned.id) || n.id === planned.id;
-                });
-                if (scannedNode) {
-                    // Rule #1: Topology (Design Layer) is the Sovereignty of Truth.
-                    // DO NOT allow scanner heuristics to overwrite planned properties.
-                    scannedNode.name = planned.name;
-                    scannedNode.type = planned.type;
-                    scannedNode.purpose = planned.purpose;
-                    scannedNode.parentId = planned.parentId || scannedNode.parentId;
-                    scannedNode.status = 'verified';
-                    // Rule #1.2: Persistent Coordinates
-                    // If planned.json has coordinates, use them to lock the node in space.
-                    if (planned.x !== undefined) {
-                        scannedNode.x = planned.x;
-                        scannedNode.initialX = planned.x;
-                    }
-                    if (planned.y !== undefined) {
-                        scannedNode.y = planned.y;
-                        scannedNode.initialY = planned.y;
-                    }
-                    // MERGE GUARDIAN PROTOCOL
-                    if (planned.authorityId)
-                        scannedNode.authorityId = planned.authorityId;
-                    if (planned.guardState)
-                        scannedNode.guardState = planned.guardState;
-                    if (planned.isAuthority)
-                        scannedNode.isAuthority = planned.isAuthority;
-                    // Rule #1.1: Hierarchy Promotion
-                    // If a planned parent exists, the edge from that parent MUST be a Gravity edge.
-                    if (planned.parentId) {
-                        const existingEdge = graph.edges.find(e => e.source === planned.parentId && e.target === scannedNode.id);
-                        if (existingEdge) {
-                            existingEdge.isGravity = true;
-                            existingEdge.type = 'inheritance';
-                        }
-                        else {
-                            graph.edges.push({ source: planned.parentId, target: scannedNode.id, isGravity: true, type: 'inheritance' });
-                        }
-                    }
-                }
-                else {
-                    // Ghost node (planned but not yet implemented/scanned)
-                    // If parent doesn't exist, default to depth 1
-                    const parent = planned.parentId ? graph.nodes[planned.parentId] : undefined;
-                    const depth = parent ? parent.depth + 1 : 1;
-                    graph.nodes[planned.id] = {
-                        id: planned.id,
-                        name: planned.name,
-                        type: planned.type,
-                        file: planned.id, // ID is the intended path
-                        depth: depth,
-                        parentId: planned.parentId,
-                        islandId: 'planned_island',
-                        descendantCount: 0,
-                        dependencies: planned.dependencies,
-                        baseClasses: [],
-                        methods: [],
-                        fields: [],
-                        events: [],
-                        complexity: 0,
-                        violations: [],
-                        status: 'planned',
-                        verificationStatus: 'auto',
-                        authorityId: planned.authorityId,
-                        guardState: planned.guardState,
-                        isAuthority: planned.isAuthority,
-                        initialX: 0, initialY: 0, sectorAngle: 0, sectorWidth: 0
-                    };
-                    if (planned.parentId) {
-                        graph.edges.push({ source: planned.parentId, target: planned.id, isGravity: true, type: 'inheritance' });
-                    }
-                    const deps = planned.dependencies || [];
-                    for (const dep of deps) {
-                        graph.edges.push({ source: planned.id, target: dep, isGravity: false, type: 'dependency' });
-                    }
-                }
-            }
-        }
-        // Mark all remaining nodes that weren't in planned.json as 'discovered'
+        // Without planned.json merge, all nodes are just what is scanned.
+        // We set their initial status to 'orphan' (meaning not mapped yet).
         for (const id in graph.nodes) {
             const node = graph.nodes[id];
             if (!node.status) {
-                node.status = 'discovered';
+                node.status = 'orphan';
             }
         }
-        // Recalculate metrics (mass) after planned nodes/hierarchy are merged
+        // Recalculate metrics (mass)
         MetricsCalculator_1.MetricsCalculator.calculateDescendants(graph.nodes, graph.edges);
         console.log(`[AtlasEngine] Applying layout strategy...`);
         this.layoutStrategy.applyLayout(graph.nodes);
