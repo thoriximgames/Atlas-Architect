@@ -337,6 +337,27 @@ async function main() {
         }
     });
 
+    app.post('/api/topology/sync', async (req, res) => {
+        try {
+            console.log(`[Atlas] Manual Sync Triggered`);
+            
+            // 1. Force a fresh scan of reality
+            const registry = await scanAndResolve();
+            if (!registry) {
+                res.status(503).json({ error: "Scan in progress, try again later." });
+                return;
+            }
+
+            // 2. Auto-heal the blueprint with the fresh reality data
+            const healedPlannedData = await TopologyPlanner.heal(registry.nodes);
+
+            res.json({ success: true, realityData: registry, plannedData: healedPlannedData });
+        } catch (e: any) {
+            console.error(`[API Error] ${e.message}`);
+            res.status(500).json({ error: e.message });
+        }
+    });
+
     app.listen(port, () => {
         console.log(`\n================================================================`);
         console.log(`Atlas v8.0 [${config.project}]`);

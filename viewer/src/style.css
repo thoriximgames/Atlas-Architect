@@ -192,3 +192,49 @@ body, html {
     background: #444;
     margin: 0 4px;
 }
+
+/* Bottom Toolbar */
+.atlas-toolbar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    background: var(--surface-light, #2C2C2C);
+    padding: 8px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border-ui, #444);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    z-index: 1000;
+}
+
+.toolbar-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    color: var(--text-mid);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.toolbar-btn:hover {
+    background: #444;
+    color: var(--text-high);
+}
+
+.toolbar-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

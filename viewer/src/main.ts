@@ -3,6 +3,7 @@ import { GalaxyEngine } from './Engine/GalaxyEngine';
 import { StageRenderer } from './Renderer/StageRenderer';
 import { Inspector } from './UI/Inspector';
 import { Legend } from './UI/Legend';
+import { Toolbar } from './UI/Toolbar';
 import { VisualNode, VisualLink } from './Protocol/VisualTypes';
 import './style.css';
 
@@ -12,8 +13,8 @@ async function bootstrap() {
         fetch('/data/planned.json')
     ]);
     
-    const realityData = await realityRes.json();
-    const plannedData = await plannedRes.json();
+    let realityData = await realityRes.json();
+    let plannedData = await plannedRes.json();
 
     if (realityData.project) {
         document.title = `Atlas | ${realityData.project}`;
@@ -119,6 +120,35 @@ async function bootstrap() {
         });
         engine.resetData(filteredNodes, filteredEdges);
     };
+
+    const handleSync = async () => {
+        try {
+            const res = await fetch('/api/topology/sync', { method: 'POST' });
+            if (!res.ok) throw new Error('Sync failed');
+            const data = await res.json();
+            
+            realityData = data.realityData;
+            plannedData = data.plannedData;
+            
+            rebuildGraphData(plannedData, realityData);
+            
+            const hash = window.location.hash.replace('#', '');
+            const isBlueprint = hash !== 'orphans';
+            const currentNodes = isBlueprint ? blueprintNodes : orphanNodes;
+            const currentEdges = isBlueprint ? blueprintEdges : orphanEdges;
+            
+            engine.resetData(currentNodes, currentEdges);
+            
+            if (renderer.selectedId) {
+                 const targetNode = orphanNodes.find(n => n.id === renderer.selectedId) || blueprintNodes.find(n => n.id === renderer.selectedId);
+                 if (targetNode) inspector.render(targetNode);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const toolbar = new Toolbar(handleSync);
 
     const renderer = new StageRenderer(() => { 
         renderer.reset(); 

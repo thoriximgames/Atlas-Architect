@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-05T12:54:52.906Z",
+  "lastUpdated": "2026-03-05T13:16:08.102Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -9,7 +9,7 @@
       "file": "",
       "depth": 0,
       "islandId": "island_orphans",
-      "descendantCount": 33,
+      "descendantCount": 34,
       "dependencies": [],
       "baseClasses": [],
       "methods": [],
@@ -80,6 +80,15 @@
             "type: NodeType",
             "purpose: string",
             "parentId?: string }[]"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "any",
+          "name": "heal",
+          "params": [
+            "realityNodes: Record<string",
+            "any>"
           ]
         },
         {
@@ -239,6 +248,71 @@
           "visibility": "public",
           "type": "any",
           "name": "parentId"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "data"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "modified"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "false"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "rn"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "name"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "name"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "name"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "name"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "modified"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "true"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "modified"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "true"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "data"
         },
         {
           "visibility": "public",
@@ -512,18 +586,18 @@
         }
       ],
       "events": [],
-      "complexity": 45,
+      "complexity": 58,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "05210c4d4acc1dc73e545ebd6efd2d38",
-      "contractHash": "4f1f53ae218839141934ec673baf690c",
+      "verifiedHash": "2b4ca4cb20e55b1f757c6002a99b0a60",
+      "contractHash": "b36fd11fa26b9c7a273a2e5d2ef5e3e5",
       "initialX": 0,
       "initialY": 250,
-      "sectorAngle": 2.379994434537722,
-      "sectorWidth": 0.3807991095260355,
+      "sectorAngle": 2.4023943821569005,
+      "sectorWidth": 0.36959913571644626,
       "x": 0,
       "y": 250
     },
@@ -872,8 +946,8 @@
       "contractHash": "635f3034045b81bd64860de3d6a53a13",
       "initialX": 300,
       "initialY": -250,
-      "sectorAngle": 2.379994434537722,
-      "sectorWidth": 0.3807991095260355,
+      "sectorAngle": 2.4023943821569005,
+      "sectorWidth": 0.36959913571644626,
       "x": 300,
       "y": -250
     },
@@ -1393,6 +1467,21 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "registry"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "return"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "healedPlannedData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "n"
         }
       ],
@@ -1402,19 +1491,19 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 52,
+      "complexity": 54,
       "description": ".ts\", \"src",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "f3ce72c2fd35cb06bf9c197d43806991",
-      "contractHash": "f4f80ca01cf377c69c1038b029aeab28",
+      "verifiedHash": "61e978dbb80c36343096f361a8024a2e",
+      "contractHash": "f1455f3c0739fdb8b43813f2f62165f8",
       "initialX": 0,
       "initialY": 0,
-      "sectorAngle": -1.1423973285781066,
-      "sectorWidth": 3.998390650023373,
+      "sectorAngle": -1.2011971910784502,
+      "sectorWidth": 3.8807909250226857,
       "x": 0,
       "y": 0
     },
@@ -1805,8 +1894,8 @@
       "contractHash": "b85327a30bb69c3e97a5a4203892f449",
       "initialX": 325,
       "initialY": -75,
-      "sectorAngle": -0.7425582635757694,
-      "sectorWidth": 1.1995171950070118,
+      "sectorAngle": -0.8131180985761816,
+      "sectorWidth": 1.1642372775068057,
       "x": 325,
       "y": -75
     },
@@ -1934,8 +2023,8 @@
       "contractHash": "6f813758e9bd1546958801325bf870f8",
       "initialX": 75,
       "initialY": 100,
-      "sectorAngle": -2.2419547573345344,
-      "sectorWidth": 1.7992757925105178,
+      "sectorAngle": -2.268414695459689,
+      "sectorWidth": 1.7463559162602087,
       "x": 75,
       "y": 100
     },
@@ -2300,8 +2389,8 @@
       "contractHash": "4b8b93e9a6faa2c879ac4e3a43bd20a0",
       "initialX": -50,
       "initialY": -200,
-      "sectorAngle": 0.05711986642890521,
-      "sectorWidth": 0.39983906500233735,
+      "sectorAngle": -0.03695991357164441,
+      "sectorWidth": 0.3880790925022686,
       "x": -50,
       "y": -200
     },
@@ -2845,8 +2934,8 @@
       "contractHash": "236766084d1bee7e10f8bc4d29557ef8",
       "initialX": 150,
       "initialY": 25,
-      "sectorAngle": 0.3569991651806582,
-      "sectorWidth": 0.19991953250116867,
+      "sectorAngle": 0.254099405805057,
+      "sectorWidth": 0.1940395462511343,
       "x": 150,
       "y": 25
     },
@@ -2915,8 +3004,8 @@
       "contractHash": "cdb326cfac64d6a8d30b9f37b96dd2e5",
       "initialX": 350,
       "initialY": 25,
-      "sectorAngle": 0.5569186976818269,
-      "sectorWidth": 0.19991953250116867,
+      "sectorAngle": 0.4481389520561913,
+      "sectorWidth": 0.1940395462511343,
       "x": 350,
       "y": 25
     },
@@ -3268,8 +3357,8 @@
       "contractHash": "dc1a191c12c70ab18b8d61f9f0026441",
       "initialX": -125,
       "initialY": -75,
-      "sectorAngle": 0.7568382301829956,
-      "sectorWidth": 0.19991953250116867,
+      "sectorAngle": 0.6421784983073255,
+      "sectorWidth": 0.1940395462511343,
       "x": -125,
       "y": -75
     },
@@ -3299,8 +3388,8 @@
       "contractHash": "b9f8daff52e77ca850a0f4b2868aebad",
       "initialX": 500,
       "initialY": -175,
-      "sectorAngle": -1.2223651415785741,
-      "sectorWidth": 0.23990343900140237,
+      "sectorAngle": -1.2788130095789039,
+      "sectorWidth": 0.23284745550136116,
       "x": 500,
       "y": -175
     },
@@ -3343,8 +3432,8 @@
       "contractHash": "16e4ebe0bf7ef3c438aa8de3d3643869",
       "initialX": 400,
       "initialY": -250,
-      "sectorAngle": -0.9824617025771718,
-      "sectorWidth": 0.23990343900140237,
+      "sectorAngle": -1.0459655540775428,
+      "sectorWidth": 0.23284745550136116,
       "x": 400,
       "y": -250
     },
@@ -3380,8 +3469,8 @@
       "contractHash": "17f8a6122a7b2bbc8e6e4aedf5031bfb",
       "initialX": 175,
       "initialY": -150,
-      "sectorAngle": -0.7425582635757695,
-      "sectorWidth": 0.23990343900140237,
+      "sectorAngle": -0.8131180985761817,
+      "sectorWidth": 0.23284745550136116,
       "x": 175,
       "y": -150
     },
@@ -3418,8 +3507,8 @@
       "contractHash": "ad82594e0838cff20bc7475be2052b58",
       "initialX": 475,
       "initialY": -75,
-      "sectorAngle": -0.5026548245743672,
-      "sectorWidth": 0.23990343900140237,
+      "sectorAngle": -0.5802706430748206,
+      "sectorWidth": 0.23284745550136116,
       "x": 475,
       "y": -75
     },
@@ -3547,8 +3636,8 @@
       "contractHash": "45e40aa7d6605c0325778e1bcfcda1f3",
       "initialX": 225,
       "initialY": -225,
-      "sectorAngle": -0.26275138557296474,
-      "sectorWidth": 0.23990343900140237,
+      "sectorAngle": -0.34742318757345936,
+      "sectorWidth": 0.23284745550136116,
       "x": 225,
       "y": -225
     },
@@ -3639,8 +3728,8 @@
       "contractHash": "7ac4159999f19666d5d4ff91d3e93035",
       "initialX": -200,
       "initialY": -1000,
-      "sectorAngle": -1.4547715981111826,
-      "sectorWidth": 0.22490947406381473,
+      "sectorAngle": -1.5043839820958473,
+      "sectorWidth": 0.2182944895325261,
       "x": -200,
       "y": -1000
     },
@@ -3697,8 +3786,8 @@
       "contractHash": "e082fb22b6810307ee98f7663df38dfe",
       "initialX": -950,
       "initialY": -675,
-      "sectorAngle": -2.3544094943664415,
-      "sectorWidth": 1.5743663184467032,
+      "sectorAngle": -2.377561940225952,
+      "sectorWidth": 1.5280614267276826,
       "x": -950,
       "y": -675
     },
@@ -3894,8 +3983,8 @@
       "contractHash": "071c63fa1f49a2565be72cf33e9a5594",
       "initialX": 725,
       "initialY": 0,
-      "sectorAngle": 0.05711986642890521,
-      "sectorWidth": 0.39983906500233735,
+      "sectorAngle": -0.03695991357164441,
+      "sectorWidth": 0.3880790925022686,
       "x": 725,
       "y": 0
     },
@@ -3931,8 +4020,8 @@
       "contractHash": "d89bb1fcb35da1f51aba81a5f54eb63b",
       "initialX": -1125,
       "initialY": -1050,
-      "sectorAngle": -2.4856066875703338,
-      "sectorWidth": 0.26239438640778384,
+      "sectorAngle": -2.5049003924532585,
+      "sectorWidth": 0.2546769044546138,
       "x": -1125,
       "y": -1050
     },
@@ -4309,8 +4398,8 @@
       "contractHash": "9490d1ae516efe6066e8ab5de84ba510",
       "initialX": -1175,
       "initialY": -250,
-      "sectorAngle": -2.879198267182009,
-      "sectorWidth": 0.5247887728155677,
+      "sectorAngle": -2.8869157491351793,
+      "sectorWidth": 0.5093538089092275,
       "x": -1175,
       "y": -250
     },
@@ -4534,8 +4623,8 @@
       "contractHash": "76148b9e04dfd3fdaabf8dbd6800914f",
       "initialX": -900,
       "initialY": -1075,
-      "sectorAngle": -2.2232123011625498,
-      "sectorWidth": 0.26239438640778384,
+      "sectorAngle": -2.250223487998645,
+      "sectorWidth": 0.2546769044546138,
       "x": -900,
       "y": -1075
     },
@@ -4852,8 +4941,8 @@
       "contractHash": "d6d71db8319269f9338ddb03c87067fd",
       "initialX": -700,
       "initialY": -1025,
-      "sectorAngle": -1.9608179147547655,
-      "sectorWidth": 0.26239438640778384,
+      "sectorAngle": -1.9955465835440311,
+      "sectorWidth": 0.2546769044546138,
       "x": -700,
       "y": -1025
     },
@@ -5137,8 +5226,8 @@
       "contractHash": "d0d32934923f40f9c707f76740443ceb",
       "initialX": -575,
       "initialY": -950,
-      "sectorAngle": -1.6984235283469817,
-      "sectorWidth": 0.26239438640778384,
+      "sectorAngle": -1.7408696790894174,
+      "sectorWidth": 0.2546769044546138,
       "x": -575,
       "y": -950
     },
@@ -5301,8 +5390,8 @@
       "contractHash": "d2cc3cd7c024c2b446812f1399f6e518",
       "initialX": -1150,
       "initialY": -650,
-      "sectorAngle": -2.879198267182009,
-      "sectorWidth": 0.5247887728155677,
+      "sectorAngle": -2.8869157491351793,
+      "sectorWidth": 0.5093538089092275,
       "x": -1150,
       "y": -650
     },
@@ -5385,8 +5474,8 @@
       "contractHash": "c6f61454d07df0fdc82c5d4d8a033d7e",
       "initialX": 950,
       "initialY": -300,
-      "sectorAngle": 2.6655937666822487,
-      "sectorWidth": 0.19039955476301776,
+      "sectorAngle": 2.6795937339442353,
+      "sectorWidth": 0.18479956785822313,
       "x": 950,
       "y": -300
     },
@@ -5438,8 +5527,8 @@
       "contractHash": "13b73708a3a265e048005aa895a3f6d7",
       "initialX": 900,
       "initialY": -400,
-      "sectorAngle": 2.8559933214452666,
-      "sectorWidth": 0.19039955476301776,
+      "sectorAngle": 2.8643933018024583,
+      "sectorWidth": 0.18479956785822313,
       "x": 900,
       "y": -400
     },
@@ -5451,16 +5540,18 @@
       "depth": 1,
       "parentId": "_UNCONNECTED_",
       "islandId": "island_orphans",
-      "descendantCount": 6,
+      "descendantCount": 7,
       "dependencies": [
         "d3",
         "GalaxyEngine",
         "StageRenderer",
         "Inspector",
         "Legend",
+        "Toolbar",
         "VisualTypes",
         "style.css",
-        "Set"
+        "Set",
+        "Error"
       ],
       "baseClasses": [],
       "methods": [
@@ -5828,6 +5919,101 @@
           "visibility": "public",
           "type": "any",
           "name": "target"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "handleSync"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "res"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "data"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "plannedData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "plannedData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "hash"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isBlueprint"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "currentNodes"
+        },
+        {
+          "visibility": "public",
+          "type": "orphanNodes",
+          "name": "blueprintNodes"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "currentEdges"
+        },
+        {
+          "visibility": "public",
+          "type": "orphanEdges",
+          "name": "blueprintEdges"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "targetNode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "n"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "id"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "n"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "id"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "toolbar"
         },
         {
           "visibility": "public",
@@ -6259,18 +6445,18 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 80,
+      "complexity": 109,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "4a6028ff1ca36f0d1196b2075fd9a69b",
-      "contractHash": "e6380b5deb9c335f07499210e5ad043a",
+      "verifiedHash": "ff3e8503912502f1da2cbc32d9fac550",
+      "contractHash": "6f360101735be743dd56febae558bbb5",
       "initialX": -350,
       "initialY": 650,
-      "sectorAngle": 1.523196438104142,
-      "sectorWidth": 1.3327968833411243,
+      "sectorAngle": 1.4783965428657853,
+      "sectorWidth": 1.478396542865785,
       "x": -350,
       "y": 650
     },
@@ -6727,8 +6913,8 @@
       "contractHash": "3aaa3d90043af3fc7fb03e016d910903",
       "initialX": -250,
       "initialY": 1075,
-      "sectorAngle": 1.4121300311590483,
-      "sectorWidth": 0.22213281389018738,
+      "sectorAngle": 1.2671970367421017,
+      "sectorWidth": 0.21119950612368357,
       "x": -250,
       "y": 1075
     },
@@ -8096,8 +8282,8 @@
       "contractHash": "9d020a1f98b9a4c400551870cbdcb816",
       "initialX": 125,
       "initialY": 675,
-      "sectorAngle": 1.0789308103237674,
-      "sectorWidth": 0.44426562778037476,
+      "sectorAngle": 0.9503977775565763,
+      "sectorWidth": 0.42239901224736714,
       "x": 125,
       "y": 675
     },
@@ -8677,8 +8863,8 @@
       "contractHash": "aff7e9feb750e670fed544993d3a85f7",
       "initialX": -500,
       "initialY": 1050,
-      "sectorAngle": 1.6342628450492358,
-      "sectorWidth": 0.22213281389018738,
+      "sectorAngle": 1.4783965428657853,
+      "sectorWidth": 0.21119950612368357,
       "x": -500,
       "y": 1050
     },
@@ -8991,10 +9177,103 @@
       "contractHash": "cc459598792321d3ac25cc4399d51033",
       "initialX": -675,
       "initialY": 950,
-      "sectorAngle": 1.8563956589394233,
-      "sectorWidth": 0.22213281389018738,
+      "sectorAngle": 1.6895960489894688,
+      "sectorWidth": 0.21119950612368357,
       "x": -675,
       "y": 950
+    },
+    "viewer/src/UI/Toolbar": {
+      "id": "viewer/src/UI/Toolbar",
+      "name": "Toolbar",
+      "type": "Unknown",
+      "file": "viewer/src/UI/Toolbar",
+      "depth": 1,
+      "parentId": "viewer/src/main",
+      "islandId": "island_orphans",
+      "descendantCount": 0,
+      "dependencies": [],
+      "baseClasses": [],
+      "methods": [
+        {
+          "visibility": "private",
+          "returnType": "any",
+          "name": "bindEvents",
+          "params": []
+        },
+        {
+          "visibility": "private",
+          "returnType": "any",
+          "name": "setLoading",
+          "params": [
+            "isLoading: boolean"
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "visibility": "private",
+          "type": "HTMLElement",
+          "name": "btnSync"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "btnSync"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "return"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "icon"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "opacity"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "pointerEvents"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "animation"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "opacity"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "pointerEvents"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "animation"
+        }
+      ],
+      "events": [],
+      "complexity": 6,
+      "implementationNotes": "",
+      "lastModifiedBy": "",
+      "violations": [],
+      "status": "orphan",
+      "verificationStatus": "auto",
+      "verifiedHash": "cb6117052f74ecad1c44b154166b1f3a",
+      "contractHash": "9053e077cd883d27cc08b822572ee223",
+      "initialX": -388.85075802139926,
+      "initialY": 1135.2511123034337,
+      "sectorAngle": 1.9007955551131523,
+      "sectorWidth": 0.21119950612368357
     },
     "viewer/src/Protocol/VisualTypes": {
       "id": "viewer/src/Protocol/VisualTypes",
@@ -9044,8 +9323,8 @@
       "contractHash": "555b4525d413f0ec9688aea55df50f47",
       "initialX": -800,
       "initialY": 725,
-      "sectorAngle": 2.0785284728296105,
-      "sectorWidth": 0.22213281389018738,
+      "sectorAngle": 2.1119950612368363,
+      "sectorWidth": 0.21119950612368357,
       "x": -800,
       "y": 725
     },
@@ -9130,8 +9409,8 @@
       "contractHash": "3a3daf510aedc906b2baa81aa157ab43",
       "initialX": -100,
       "initialY": 1025,
-      "sectorAngle": 1.0789308103237674,
-      "sectorWidth": 0.44426562778037476,
+      "sectorAngle": 0.9503977775565763,
+      "sectorWidth": 0.42239901224736714,
       "x": -100,
       "y": 1025
     },
@@ -9389,8 +9668,8 @@
       "contractHash": "c2031ff9e3fabd0f0feff708a059031b",
       "initialX": -875,
       "initialY": 100,
-      "sectorAngle": 3.0463928762082846,
-      "sectorWidth": 0.19039955476301776,
+      "sectorAngle": 3.0491928696606814,
+      "sectorWidth": 0.18479956785822313,
       "x": -875,
       "y": 100
     }
@@ -9573,6 +9852,12 @@
     {
       "source": "viewer/src/main",
       "target": "viewer/src/UI/Legend",
+      "isGravity": true,
+      "type": "inheritance"
+    },
+    {
+      "source": "viewer/src/main",
+      "target": "viewer/src/UI/Toolbar",
       "isGravity": true,
       "type": "inheritance"
     },

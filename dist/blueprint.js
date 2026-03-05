@@ -65,6 +65,35 @@ class TopologyPlanner {
         }
         await this.savePlanned(data);
     }
+    static async heal(realityNodes) {
+        const data = await this.loadPlanned();
+        let modified = false;
+        for (const pn of data.plannedNodes) {
+            const rn = realityNodes[pn.id];
+            if (rn) {
+                // Heal Name if unknown or raw ID
+                if (!pn.name || pn.name === pn.id || pn.name === 'Unknown' || pn.name.includes('/')) {
+                    if (rn.name && rn.name !== pn.name) {
+                        console.log(`[PLANNER] Healing Name for ${pn.id}: ${pn.name} -> ${rn.name}`);
+                        pn.name = rn.name;
+                        modified = true;
+                    }
+                }
+                // Heal Type if unknown
+                if (!pn.type || pn.type === 'Unknown') {
+                    if (rn.type && rn.type !== 'Unknown') {
+                        console.log(`[PLANNER] Healing Type for ${pn.id}: Unknown -> ${rn.type}`);
+                        pn.type = rn.type;
+                        modified = true;
+                    }
+                }
+            }
+        }
+        if (modified) {
+            await this.savePlanned(data);
+        }
+        return data;
+    }
     static async branch(parentId, children) {
         const data = await this.loadPlanned();
         for (const def of children) {
