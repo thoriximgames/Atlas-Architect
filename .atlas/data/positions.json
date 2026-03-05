@@ -4,8 +4,8 @@
     "y": -375
   },
   "src/Core/Application/HeartbeatService": {
-    "x": -250,
-    "y": 150
+    "x": -175,
+    "y": 200
   },
   "src/Core/Infrastructure/Logging/TelemetryProvider": {
     "x": 950,
@@ -24,8 +24,8 @@
     "y": -375
   },
   "src/Shared/Protocol": {
-    "x": 300,
-    "y": -250
+    "x": 375,
+    "y": 125
   },
   "src/index": {
     "x": -250,
@@ -72,8 +72,8 @@
     "y": 125
   },
   "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory": {
-    "x": 175,
-    "y": 0
+    "x": 200,
+    "y": 50
   },
   "src/Core/Domain/Model/GraphNode": {
     "x": 725,
@@ -142,5 +142,13 @@
   "test-node": {
     "x": 31.774422338253107,
     "y": 82.6134980794581
+  },
+  "src/Core/Application/Broadcaster": {
+    "x": -150,
+    "y": 125
+  },
+  "viewer/src/UI/Toolbar": {
+    "x": -424.18382885883324,
+    "y": 1094.0669616988223
   }
 }

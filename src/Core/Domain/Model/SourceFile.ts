@@ -4,6 +4,7 @@ export interface SourceFile {
     id: string;
     name: string;
     filePath: string;
+    language: string;
     type: NodeType;
     dependencies: string[];
     baseClasses: string[];

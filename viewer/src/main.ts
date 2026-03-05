@@ -54,6 +54,7 @@ async function bootstrap() {
                 name: pn.name,
                 type: pn.type || (realNode ? realNode.type : 'Unknown'),
                 status: isReal ? 'verified' : 'planned',
+                language: realNode?.language || 'Unknown',
                 parentId: pn.parentId,
                 dependencies: pn.dependencies || [],
                 descendantCount: realNode?.descendantCount || 0,
@@ -149,6 +150,20 @@ async function bootstrap() {
     };
 
     const toolbar = new Toolbar(handleSync);
+
+    // --- SSE Event Listener ---
+    const eventSource = new EventSource('/api/events');
+    eventSource.onmessage = (event) => {
+        try {
+            const data = JSON.parse(event.data);
+            if (data.type === 'scan-complete') {
+                console.log('[SSE] Scan complete detected, refreshing UI...');
+                handleSync();
+            }
+        } catch (e) {
+            console.error('[SSE Error]', e);
+        }
+    };
 
     const renderer = new StageRenderer(() => { 
         renderer.reset(); 

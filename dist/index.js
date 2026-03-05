@@ -13,9 +13,18 @@ const GraphBuilder_1 = require("./Core/Infrastructure/Graph/GraphBuilder");
 const PolarLayoutStrategy_1 = require("./Core/Infrastructure/Layout/PolarLayoutStrategy");
 const pipeline_1 = require("./pipeline");
 const blueprint_1 = require("./blueprint");
+const Broadcaster_1 = require("./Core/Application/Broadcaster");
+/**
+ * Atlas Architect Root: The primary entry point for the backend engine.
+ * Responsible for session management, API routing, and codebase watching.
+ */
 async function main() {
     const cwd = process.cwd();
     const app = (0, express_1.default)();
+    const broadcaster = new Broadcaster_1.Broadcaster();
+    const isScanOnly = process.argv.includes('--scan-only');
+    const isSlice = process.argv.includes('slice');
+    const isCLI = isScanOnly || isSlice;
     // Context Detection
     let projectRoot = cwd;
     // Parse explicit target flag if provided
@@ -57,36 +66,35 @@ async function main() {
     const sessions = (await fs_extra_1.default.pathExists(registryPath))
         ? await fs_extra_1.default.readJson(registryPath)
         : {};
-    // Prune dead sessions and kill existing ghost for THIS project
-    for (const key in sessions) {
-        try {
-            // Check if PID exists
-            process.kill(sessions[key].pid, 0);
-            // If the process exists AND belongs to the same project, kill it!
-            if (sessions[key].project === config.project || key === config.project) {
-                console.log(`[Atlas] Killing existing ghost instance for project: ${config.project} (PID: ${sessions[key].pid}, Port: ${sessions[key].port})`);
-                process.kill(sessions[key].pid); // Send SIGTERM
+    // Only kill existing session if we are actually intending to start a new server
+    if (!isCLI) {
+        for (const key in sessions) {
+            try {
+                process.kill(sessions[key].pid, 0);
+                if (sessions[key].project === config.project || key === config.project) {
+                    console.log(`[Atlas] Killing existing ghost instance for project: ${config.project} (PID: ${sessions[key].pid}, Port: ${sessions[key].port})`);
+                    process.kill(sessions[key].pid); // Send SIGTERM
+                    delete sessions[key];
+                }
+            }
+            catch (e) {
                 delete sessions[key];
             }
         }
-        catch (e) {
-            // Process doesn't exist
-            delete sessions[key];
+        // Find free port
+        const takenPorts = new Set(Object.values(sessions).map(s => s.port));
+        while (takenPorts.has(port)) {
+            port++;
         }
+        // Register this session
+        sessions[config.project] = {
+            port: port,
+            pid: process.pid,
+            project: config.project,
+            path: projectRoot
+        };
+        await fs_extra_1.default.outputJson(registryPath, sessions, { spaces: 2 });
     }
-    // Find free port
-    const takenPorts = new Set(Object.values(sessions).map(s => s.port));
-    while (takenPorts.has(port)) {
-        port++;
-    }
-    // Register this session
-    sessions[config.project] = {
-        port: port,
-        pid: process.pid,
-        project: config.project,
-        path: projectRoot
-    };
-    await fs_extra_1.default.outputJson(registryPath, sessions, { spaces: 2 });
     // --- END REGISTRY LOGIC ---
     // Composition Root
     const scanner = new FileScanner_1.FileScanner();
@@ -96,8 +104,18 @@ async function main() {
     // --- MIDDLEWARE & LOGGING ---
     app.use(express_1.default.json());
     app.use((req, res, next) => {
-        console.log(`[Express] ${req.method} ${req.url}`);
+        if (!req.url.includes('/api/events')) {
+            console.log(`[Express] ${req.method} ${req.url}`);
+        }
         next();
+    });
+    // --- SSE EVENTS ---
+    app.get('/api/events', (req, res) => {
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+        res.flushHeaders();
+        broadcaster.addClient(res);
     });
     // --- API ROUTES ---
     app.post('/api/topology/positions', async (req, res) => {
@@ -155,7 +173,7 @@ async function main() {
         }
     });
     let isScanning = false;
-    const scanAndResolve = async () => {
+    const scanAndResolve = async (shouldBroadcast = true) => {
         if (isScanning)
             return;
         isScanning = true;
@@ -180,6 +198,10 @@ async function main() {
             }
             await fs_extra_1.default.outputJson(path_1.default.join(dataDir, 'reality.json'), registry, { spaces: 2 });
             console.log(`[Atlas] Scan complete and reality.json updated.`);
+            // Notify UI clients
+            if (shouldBroadcast) {
+                broadcaster.broadcast('scan-complete');
+            }
             // Sync pipeline tasks with the new topology state
             await pipeline_1.PipelineManager.sync();
             return registry;
@@ -239,13 +261,13 @@ async function main() {
             process.exit(1);
         }
     }
-    // Watcher for automatic updates
+    // Watcher for automatic updates - ONLY watch source code, not metadata/topology
     const watchPaths = [
-        path_1.default.join(projectRoot, 'docs/pipeline'),
-        path_1.default.join(projectRoot, 'docs/topology'),
         ...config.scanPatterns.map((p) => path_1.default.join(projectRoot, p.replace('**/*', '')))
     ];
     chokidar_1.default.watch(watchPaths, { ignoreInitial: true }).on('all', (event, path) => {
+        if (path.endsWith('.json') || path.endsWith('.md'))
+            return; // Extra safety
         console.log(`[Watcher] ${event} detected at ${path}`);
         scanAndResolve();
     });
@@ -253,7 +275,8 @@ async function main() {
         try {
             const { nodeId } = req.body;
             console.log(`[Atlas] Manual Probe Triggered for: ${nodeId}`);
-            const registry = await scanAndResolve();
+            // Manual probe doesn't need to broadcast to everyone
+            const registry = await scanAndResolve(false);
             if (!registry) {
                 res.status(503).json({ error: "Scan in progress, try again later." });
                 return;
@@ -276,7 +299,8 @@ async function main() {
         try {
             const { nodeId, nodesToAdd } = req.body;
             console.log(`[Atlas] Auto-adding ${nodesToAdd.length} discovered nodes to Blueprint under parent: ${nodeId}`);
-            const registry = await scanAndResolve();
+            // Discover doesn't need to broadcast
+            const registry = await scanAndResolve(false);
             if (!registry) {
                 res.status(503).json({ error: "Scan in progress, try again later." });
                 return;
@@ -292,7 +316,8 @@ async function main() {
                     name: realityNode?.name || id.split('/').pop() || id,
                     type: realityNode?.type || 'Unknown',
                     purpose: "", // Leave empty so the AI or Architect can explicitly define it later
-                    parentId: nodeId
+                    parentId: nodeId,
+                    description: realityNode?.description || "" // 1:1 Capture from Source Documentation
                 };
             }).filter((n) => !!n.id);
             if (payload.length > 0) {
@@ -309,8 +334,8 @@ async function main() {
     app.post('/api/topology/sync', async (req, res) => {
         try {
             console.log(`[Atlas] Manual Sync Triggered`);
-            // 1. Force a fresh scan of reality
-            const registry = await scanAndResolve();
+            // 1. Force a fresh scan of reality - No broadcast needed
+            const registry = await scanAndResolve(false);
             if (!registry) {
                 res.status(503).json({ error: "Scan in progress, try again later." });
                 return;

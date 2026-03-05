@@ -128,12 +128,27 @@ export class GalaxyEngine {
     resetData(nodes: VisualNode[], links: VisualLink[]) {
         this.stopBootstrap();
         
-        this.activeNodes.length = 0;
-        this.activeNodes.push(...nodes);
-        
-        this.activeLinks.length = 0;
-        this.activeLinks.push(...links);
+        // 1. Ensure all nodes are valid objects
+        const validNodes = nodes.filter(n => n && typeof n === 'object' && n.id);
+        const nodeIds = new Set(validNodes.map(n => n.id));
 
+        this.activeNodes.length = 0;
+        this.activeNodes.push(...validNodes);
+        
+        // 2. Clone links and ensure they only point to valid nodes
+        // D3 mutates link objects (replaces ID with object ref), so cloning is mandatory.
+        const validLinks = links
+            .filter(l => {
+                const s = (l.source as any).id || l.source;
+                const t = (l.target as any).id || l.target;
+                return nodeIds.has(s) && nodeIds.has(t);
+            })
+            .map(l => ({ ...l }));
+
+        this.activeLinks.length = 0;
+        this.activeLinks.push(...validLinks);
+
+        // 3. Reset simulation with fresh data
         this.simulation.nodes(this.activeNodes);
         (this.simulation.force('link') as any).links(this.activeLinks);
         

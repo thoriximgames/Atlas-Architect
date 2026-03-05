@@ -115,6 +115,22 @@ async function main() {
 
     switch (command) {
         case 'scan':
+            console.log(`[Atlas] Checking for active session...`);
+            if (await fs.pathExists(REGISTRY_PATH)) {
+                const sessions = await fs.readJson(REGISTRY_PATH);
+                if (sessions[config.project]) {
+                    const { port } = sessions[config.project];
+                    console.log(`[Atlas] Active session found on port ${port}. Pinging sync endpoint...`);
+                    try {
+                        // Use a simple curl-like check via node or powershell
+                        execSync(`powershell -Command "Invoke-RestMethod -Method POST -Uri 'http://localhost:${port}/api/topology/sync' -ErrorAction Stop"`, { stdio: 'ignore' });
+                        console.log(`[Atlas] Scan triggered successfully on running server.`);
+                        return;
+                    } catch (e) {
+                        console.log(`[Atlas] Server not responding, falling back to local scan...`);
+                    }
+                }
+            }
             console.log(`[Atlas] Performing Fresh Scan for '${config.project}'...`);
             await runCommand(runner, [...loaderArgs, mainScript, '--scan-only', '--target', target]);
             break;

@@ -13,6 +13,16 @@ class BaseParser {
         const ext = path_1.default.extname(filePath);
         const name = path_1.default.basename(filePath, ext);
         const rel = path_1.default.relative(root, filePath).replace(/\\/g, '/');
+        const languageMap = {
+            '.ts': 'TypeScript',
+            '.js': 'JavaScript',
+            '.cs': 'C#',
+            '.cpp': 'C++',
+            '.h': 'C++',
+            '.py': 'Python',
+            '.json': 'JSON',
+            '.md': 'Markdown'
+        };
         const methods = this.extractMethods(content);
         const fields = this.extractFields(content);
         const events = this.extractEvents(content);
@@ -26,6 +36,7 @@ class BaseParser {
             id: rel.replace(ext, ''),
             name,
             filePath: rel,
+            language: languageMap[ext.toLowerCase()] || 'Plain Text',
             type: this.determineType(name, rel, content),
             dependencies: this.extractDependencies(content, name),
             baseClasses: this.extractBaseClasses(content),

@@ -40,7 +40,7 @@ export class TopologyPlanner {
         await this.upsertNodes([{ id, name, type, purpose, parentId }]);
     }
 
-    static async upsertNodes(nodes: { id: string, name: string, type: NodeType, purpose: string, parentId?: string }[]) {
+    static async upsertNodes(nodes: { id: string, name: string, type: NodeType, purpose: string, parentId?: string, description?: string }[]) {
         const data = await this.loadPlanned();
         
         for (const input of nodes) {
@@ -51,6 +51,7 @@ export class TopologyPlanner {
                 node.type = input.type;
                 node.purpose = input.purpose;
                 if (input.parentId) node.parentId = input.parentId;
+                if (input.description !== undefined) node.description = input.description;
                 console.log(`[PLANNER] Updated node: ${input.id}`);
             } else {
                 data.plannedNodes.push({
@@ -60,7 +61,7 @@ export class TopologyPlanner {
                     purpose: input.purpose,
                     parentId: input.parentId || "",
                     dependencies: [],
-                    description: ""
+                    description: input.description || ""
                 });
                 console.log(`[PLANNER] Added new node: ${input.id}`);
             }
@@ -90,6 +91,12 @@ export class TopologyPlanner {
                         pn.type = rn.type;
                         modified = true;
                     }
+                }
+                // Heal Description (Source Documentation) if missing or changed
+                if (rn.description && rn.description !== pn.description) {
+                    console.log(`[PLANNER] Healing Description for ${pn.id}`);
+                    pn.description = rn.description;
+                    modified = true;
                 }
             }
         }

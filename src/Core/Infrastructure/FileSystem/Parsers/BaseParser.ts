@@ -14,6 +14,17 @@ export abstract class BaseParser implements IParser {
         const name = path.basename(filePath, ext);
         const rel = path.relative(root, filePath).replace(/\\/g, '/');
 
+        const languageMap: Record<string, string> = {
+            '.ts': 'TypeScript',
+            '.js': 'JavaScript',
+            '.cs': 'C#',
+            '.cpp': 'C++',
+            '.h': 'C++',
+            '.py': 'Python',
+            '.json': 'JSON',
+            '.md': 'Markdown'
+        };
+
         const methods = this.extractMethods(content);
         const fields = this.extractFields(content);
         const events = this.extractEvents(content);
@@ -29,6 +40,7 @@ export abstract class BaseParser implements IParser {
             id: rel.replace(ext, ''),
             name,
             filePath: rel,
+            language: languageMap[ext.toLowerCase()] || 'Plain Text',
             type: this.determineType(name, rel, content),
             dependencies: this.extractDependencies(content, name),
             baseClasses: this.extractBaseClasses(content),

@@ -7,7 +7,7 @@
       "purpose": "The primary entry point for the Atlas Engine backend.",
       "parentId": "",
       "dependencies": [],
-      "description": "",
+      "description": "Atlas Architect Root: The primary entry point for the backend engine. Responsible for session management, API routing, and codebase watching.",
       "x": -250,
       "y": 0
     },
@@ -19,8 +19,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "x": -250,
-      "y": 150
+      "x": -175,
+      "y": 200
     },
     {
       "id": "src/Core/Application/AtlasEngine",
@@ -40,7 +40,7 @@
       "purpose": "Auto-discovered dependency",
       "parentId": "src/index",
       "dependencies": [],
-      "description": "",
+      "description": "', '",
       "x": 0,
       "y": 0
     },
@@ -118,8 +118,8 @@
       "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
       "dependencies": [],
       "description": "",
-      "x": 175,
-      "y": 0
+      "x": 200,
+      "y": 50
     },
     {
       "id": "src/Core/Domain/Services/IScanner",
@@ -186,6 +186,17 @@
       "description": "",
       "x": 375,
       "y": 175
+    },
+    {
+      "id": "src/Core/Application/Broadcaster",
+      "name": "Broadcaster",
+      "type": "Service",
+      "purpose": "Broadcasting",
+      "parentId": "system",
+      "dependencies": [],
+      "description": "Broadcaster: Manages connected clients and sends Server-Sent Events (SSE).",
+      "x": -150,
+      "y": 125
     }
   ]
 }
