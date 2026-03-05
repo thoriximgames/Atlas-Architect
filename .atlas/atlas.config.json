@@ -1,0 +1,12 @@
+{
+  "project": "Atlas-Architect",
+  "port": 5055,
+  "scanPatterns": [
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/**/*.tsx",
+    "src/**/*.jsx"
+  ],
+  "entryPoints": [],
+  "exclude": []
+}

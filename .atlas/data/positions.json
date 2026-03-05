@@ -1,0 +1,18 @@
+{
+  "src/Core/Application/AtlasEngine": {
+    "x": 1105.771454244489,
+    "y": -466.1217555296343
+  },
+  "src/Core/Application/HeartbeatService": {
+    "x": 1199.865722172328,
+    "y": -17.951288418317088
+  },
+  "src/Core/Infrastructure/Logging/TelemetryProvider": {
+    "x": 925,
+    "y": -450
+  },
+  "src/Core/Infrastructure/NewService": {
+    "x": 975,
+    "y": -300
+  }
+}

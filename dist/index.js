@@ -43,6 +43,10 @@ async function main() {
             process.exit(1);
         }
     }
+    // Default missing fields for robustness
+    config.scanPatterns = config.scanPatterns || ["src/**/*.ts", "src/**/*.js", "src/**/*.tsx", "src/**/*.jsx"];
+    config.entryPoints = config.entryPoints || [];
+    config.exclude = config.exclude || [];
     // --- AUTO-PORT DISCOVERY & SESSION REGISTRY ---
     const homedir = process.env.USERPROFILE || process.env.HOME || "";
     const registryDir = path_1.default.join(homedir, '.gemini');
@@ -236,9 +240,19 @@ async function main() {
     });
     app.post('/api/topology/probe', async (req, res) => {
         try {
-            console.log(`[Atlas] Manual Probe Triggered...`);
+            const { nodeId } = req.body;
+            console.log(`[Atlas] Manual Probe Triggered for: ${nodeId}`);
             const registry = await scanAndResolve();
-            res.json(registry);
+            if (!registry) {
+                res.status(503).json({ error: "Scan in progress, try again later." });
+                return;
+            }
+            // Return everything, but also flag the specific neighborhood for the frontend
+            res.json({
+                registry,
+                targetId: nodeId,
+                dependencies: nodeId ? registry.nodes[nodeId]?.dependencies || [] : []
+            });
         }
         catch (e) {
             res.status(500).json({ error: e.message });

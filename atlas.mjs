@@ -55,13 +55,46 @@ async function main() {
     const args = process.argv.slice(2);
     const command = args[0];
     
-    // Parse --target flag
+    // Parse --target flag safely
+    let target = process.cwd();
     const targetIdx = args.indexOf('--target');
-    const target = targetIdx !== -1 ? path.resolve(args[targetIdx + 1]) : process.cwd();
+    if (targetIdx !== -1 && args.length > targetIdx + 1) {
+        target = path.resolve(args[targetIdx + 1]);
+    }
+
+    // Handle 'init' early as it doesn't require a config
+    if (command === 'init') {
+        const projectName = args[1] && args[1] !== '--target' ? args[1] : path.basename(target);
+        const defaultPort = 5055;
+        
+        console.log(`[Atlas] Initializing footprint for '${projectName}' in ${target}...`);
+        
+        const configContent = {
+            project: projectName,
+            port: defaultPort,
+            scanPatterns: ["src/**/*.ts", "src/**/*.js", "src/**/*.tsx", "src/**/*.jsx"],
+            entryPoints: [],
+            exclude: []
+        };
+
+        const atlasDir = path.join(target, '.atlas');
+        const docsDir = path.join(target, 'docs', 'topology');
+        const dataDir = path.join(atlasDir, 'data');
+        
+        await fs.ensureDir(dataDir);
+        await fs.ensureDir(docsDir);
+        await fs.outputJson(path.join(atlasDir, 'atlas.config.json'), configContent, { spaces: 2 });
+        await fs.outputJson(path.join(docsDir, 'planned.json'), { plannedNodes: [] }, { spaces: 2 });
+        
+        console.log(`[Atlas] SUCCESS: Footprint created. You can now run 'atlas.mjs scan'.`);
+        return;
+    }
+
     const config = await getProjectConfig(target);
 
-    if (!config && command !== 'help') {
+    if (!config && command !== 'help' && command !== undefined) {
         console.error(`[Atlas] Error: Not an Atlas project (missing atlas.config.json in ${target})`);
+        console.error(`[Atlas] Run 'node atlas.mjs init --target <path>' first.`);
         process.exit(1);
     }
 
@@ -78,30 +111,6 @@ async function main() {
     const pipeScript = useTsNode ? pipelinePath : pipelineDistPath;
 
     switch (command) {
-        case 'init':
-            const projectName = args[1] || path.basename(target);
-            const defaultPort = 5055;
-            
-            console.log(`[Atlas] Initializing footprint for '${projectName}' in ${target}...`);
-            
-            const configContent = {
-                project: projectName,
-                port: defaultPort,
-                scanPatterns: ["src/**/*.ts", "src/**/*.js", "src/**/*.tsx", "src/**/*.jsx"],
-                entryPoints: [],
-                exclude: []
-            };
-
-            const atlasDir = path.join(target, '.atlas');
-            const dataDir = path.join(atlasDir, 'data');
-            
-            await fs.ensureDir(dataDir);
-            await fs.outputJson(path.join(atlasDir, 'atlas.config.json'), configContent, { spaces: 2 });
-            await fs.outputJson(path.join(dataDir, 'planned.json'), { plannedNodes: [] }, { spaces: 2 });
-            
-            console.log(`[Atlas] SUCCESS: Footprint created. You can now run 'atlas.mjs scan'.`);
-            break;
-
         case 'scan':
             console.log(`[Atlas] Performing Fresh Scan for '${config.project}'...`);
             await runCommand(runner, [...loaderArgs, mainScript, '--scan-only', '--target', target]);

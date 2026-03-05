@@ -13,17 +13,29 @@ if (path_1.default.basename(cwd) === '.atlas') {
     projectRoot = path_1.default.resolve(cwd, '..');
 }
 const PIPELINE_ROOT = path_1.default.join(projectRoot, 'docs/pipeline');
-const PLANNED_PATH = path_1.default.join(projectRoot, '.atlas/data/planned.json');
+const PLANNED_PATH = path_1.default.join(projectRoot, 'docs/topology/planned.json');
 const STAGES = ['00_backlog', '01_todo', '02_in_progress', '03_review', '04_completed'];
 class TopologyPlanner {
     static async loadPlanned() {
         if (!await fs_extra_1.default.pathExists(PLANNED_PATH)) {
             return { plannedNodes: [] };
         }
-        return await fs_extra_1.default.readJson(PLANNED_PATH);
+        const data = await fs_extra_1.default.readJson(PLANNED_PATH);
+        if (Array.isArray(data))
+            return { plannedNodes: data };
+        return data;
     }
     static async savePlanned(data) {
-        await fs_extra_1.default.writeJson(PLANNED_PATH, data, { spaces: 2 });
+        // If the original was an array, save as array. 
+        // But for simplicity, we'll save as object to match 'init' and keep it standard.
+        // Actually, the mandate might prefer the array if it's already there.
+        const originalData = await fs_extra_1.default.readJson(PLANNED_PATH).catch(() => ({}));
+        if (Array.isArray(originalData)) {
+            await fs_extra_1.default.writeJson(PLANNED_PATH, data.plannedNodes, { spaces: 2 });
+        }
+        else {
+            await fs_extra_1.default.writeJson(PLANNED_PATH, data, { spaces: 2 });
+        }
         console.log(`[PLANNER] Updated ${PLANNED_PATH}`);
     }
     static async upsertNode(id, name, type, purpose, parentId) {
@@ -188,7 +200,7 @@ Created: ${new Date().toISOString()}
             console.log("planned.json missing. Run 'atlas scan' first.");
             return;
         }
-        const plannedData = await fs_extra_1.default.readJson(PLANNED_PATH);
+        const plannedData = await TopologyPlanner.loadPlanned();
         let verifiedIds = new Set();
         let atlasData = {};
         if (await fs_extra_1.default.pathExists(atlasPath)) {
@@ -281,67 +293,71 @@ Generated: ${new Date().toISOString()}
 }
 exports.PipelineManager = PipelineManager;
 // Simple CLI Interface
-const [, , cmd, ...args] = process.argv;
-async function run() {
-    try {
-        switch (cmd) {
-            case 'list':
-                await PipelineManager.list();
-                break;
-            case 'create':
-                await PipelineManager.create(args[0]);
-                break;
-            case 'sync':
-                await PipelineManager.sync();
-                break;
-            case 'start':
-                await PipelineManager.move(args[0], '02_in_progress');
-                break;
-            case 'review':
-                await PipelineManager.move(args[0], '03_review');
-                break;
-            case 'complete':
-                await PipelineManager.move(args[0], '04_completed');
-                break;
-            case 'todo':
-                await PipelineManager.move(args[0], '01_todo');
-                break;
-            // --- TOPOLOGY PLANNING (WRITE) ---
-            case 'plan:node':
-                await TopologyPlanner.upsertNode(args[0], args[1], args[2], args[3], args[4]);
-                break;
-            case 'plan:branch':
-                await TopologyPlanner.branch(args[0], args.slice(1));
-                break;
-            case 'plan:guard':
-                await TopologyPlanner.setGuard(args[0], args[1], args[2]);
-                break;
-            case 'plan:authority':
-                await TopologyPlanner.setAuthority(args[0], args[1] === 'true');
-                break;
-            // --- TOPOLOGY QUERY (READ) ---
-            case 'plan:get':
-                await TopologyPlanner.getNode(args[0]);
-                break;
-            case 'plan:list':
-                await TopologyPlanner.listNodes(args[0]);
-                break;
-            case 'plan:find':
-                await TopologyPlanner.findNodes(args[0]);
-                break;
-            default:
-                console.log('Usage: pipeline [list|create|sync|todo|start|review|complete]');
-                console.log('       pipeline plan:node <id> <name> <type> <purpose>');
-                console.log('       pipeline plan:guard <id> <authorityId> <guarded|restricted|none>');
-                console.log('       pipeline plan:authority <id> <true|false>');
-                console.log('       pipeline plan:get <id>');
-                console.log('       pipeline plan:list [filterType]');
-                console.log('       pipeline plan:find <pattern>');
+if (typeof require !== 'undefined' && require.main === module) {
+    const [, , cmd, ...args] = process.argv;
+    async function run() {
+        try {
+            switch (cmd) {
+                case 'list':
+                    await PipelineManager.list();
+                    break;
+                case 'create':
+                    await PipelineManager.create(args[0]);
+                    break;
+                case 'sync':
+                    await PipelineManager.sync();
+                    break;
+                case 'start':
+                    await PipelineManager.move(args[0], '02_in_progress');
+                    break;
+                case 'review':
+                    await PipelineManager.move(args[0], '03_review');
+                    break;
+                case 'complete':
+                    await PipelineManager.move(args[0], '04_completed');
+                    break;
+                case 'todo':
+                    await PipelineManager.move(args[0], '01_todo');
+                    break;
+                // --- TOPOLOGY PLANNING (WRITE) ---
+                case 'plan:node':
+                    await TopologyPlanner.upsertNode(args[0], args[1], args[2], args[3], args[4]);
+                    break;
+                case 'plan:branch':
+                    await TopologyPlanner.branch(args[0], args.slice(1));
+                    break;
+                case 'plan:guard':
+                    await TopologyPlanner.setGuard(args[0], args[1], args[2]);
+                    break;
+                case 'plan:authority':
+                    await TopologyPlanner.setAuthority(args[0], args[1] === 'true');
+                    break;
+                // --- TOPOLOGY QUERY (READ) ---
+                case 'plan:get':
+                    await TopologyPlanner.getNode(args[0]);
+                    break;
+                case 'plan:list':
+                    await TopologyPlanner.listNodes(args[0]);
+                    break;
+                case 'plan:find':
+                    await TopologyPlanner.findNodes(args[0]);
+                    break;
+                default:
+                    if (cmd) {
+                        console.log('Usage: pipeline [list|create|sync|todo|start|review|complete]');
+                        console.log('       pipeline plan:node <id> <name> <type> <purpose>');
+                        console.log('       pipeline plan:guard <id> <authorityId> <guarded|restricted|none>');
+                        console.log('       pipeline plan:authority <id> <true|false>');
+                        console.log('       pipeline plan:get <id>');
+                        console.log('       pipeline plan:list [filterType]');
+                        console.log('       pipeline plan:find <pattern>');
+                    }
+            }
+        }
+        catch (e) {
+            console.error(`[ERROR] ${e.message}`);
+            process.exit(1);
         }
     }
-    catch (e) {
-        console.error(`[ERROR] ${e.message}`);
-        process.exit(1);
-    }
+    run();
 }
-run();

@@ -1,16 +1,15 @@
 {
-    "project": "MMO-SUITE",
+    "project": "Atlas-Architect",
     "scanPatterns": [
-        "MMO-Server/src/**/*.{cpp,h,cs}",
-        "MMO-Client/Assets/**/*.{cs}",
-        "atlas/src/**/*.{ts,js}"
+        "src/**/*.ts",
+        "viewer/src/**/*.ts"
     ],
     "entryPoints": [
-        "MMO-Server/src/Main",
-        "atlas/src/index"
+        "src/index.ts",
+        "viewer/src/main.ts"
     ],
     "exclude": [
-        "**/bin/**", "**/obj/**", "**/*.meta", "**/*.asmdef", "**/node_modules/**", "**/.git/**"
+        "**/node_modules/**", "**/dist/**", "**/.git/**", "**/bin/**", "**/obj/**"
     ],
-    "port": 5000
+    "port": 5055
 }

@@ -80,10 +80,10 @@ export class AtlasEngine {
         }
 
         // Load planned topology
-        const plannedPath = path.join(projectRoot, '.atlas/data/planned.json');
+        const plannedPath = path.join(projectRoot, 'docs/topology/planned.json');
         if (await fs.pathExists(plannedPath)) {
             const plannedData = await fs.readJson(plannedPath);
-            const plannedNodes: IPlannedNode[] = plannedData.plannedNodes || [];
+            const plannedNodes: any[] = Array.isArray(plannedData) ? plannedData : (plannedData.plannedNodes || []);
             console.log(`[AtlasEngine] Merging ${plannedNodes.length} planned nodes...`);
             
             for (const planned of plannedNodes) {

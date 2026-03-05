@@ -72,10 +72,10 @@ class AtlasEngine {
             }
         }
         // Load planned topology
-        const plannedPath = path_1.default.join(projectRoot, '.atlas/data/planned.json');
+        const plannedPath = path_1.default.join(projectRoot, 'docs/topology/planned.json');
         if (await fs_extra_1.default.pathExists(plannedPath)) {
             const plannedData = await fs_extra_1.default.readJson(plannedPath);
-            const plannedNodes = plannedData.plannedNodes || [];
+            const plannedNodes = Array.isArray(plannedData) ? plannedData : (plannedData.plannedNodes || []);
             console.log(`[AtlasEngine] Merging ${plannedNodes.length} planned nodes...`);
             for (const planned of plannedNodes) {
                 // Determine if this planned node already exists in the scanned graph

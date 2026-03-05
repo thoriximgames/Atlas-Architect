@@ -1,9 +1,41 @@
 [
-    {
-        "id": "atlas/src/Core/Application/HeartbeatService",
-        "name": "HeartbeatService",
-        "type": "Service",
-        "parentId": "atlas/src/Core/Application/AtlasEngine",
-        "dependencies": ["atlas/src/Core/Application/AtlasEngine"]
-    }
+  {
+    "id": "src/Core/Application/HeartbeatService",
+    "name": "HeartbeatService",
+    "type": "Service",
+    "parentId": "src/Core/Application/AtlasEngine",
+    "purpose": "Provides system uptime and health status to the Atlas registry.",
+    "dependencies": [
+      "src/Core/Application/AtlasEngine"
+    ]
+  },
+  {
+    "id": "src/Core/Application/AtlasEngine",
+    "name": "AtlasEngine",
+    "type": "Service",
+    "purpose": "The central processing unit of Atlas, coordinating scanning, graph building, and layout.",
+    "dependencies": [
+      "src/Core/Domain/Services/IScanner",
+      "src/Core/Domain/Services/IGraphBuilder",
+      "src/Core/Domain/Services/ILayoutStrategy"
+    ]
+  },
+  {
+    "id": "src/Core/Infrastructure/NewService",
+    "name": "NewService",
+    "type": "Service",
+    "purpose": "A",
+    "parentId": "new",
+    "dependencies": [],
+    "description": ""
+  },
+  {
+    "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
+    "name": "TelemetryProvider",
+    "type": "Service",
+    "purpose": "Provides",
+    "parentId": "centralized",
+    "dependencies": [],
+    "description": ""
+  }
 ]

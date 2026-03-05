@@ -271,6 +271,11 @@ async function main() {
             
             const registry = await scanAndResolve();
             
+            if (!registry) {
+                res.status(503).json({ error: "Scan in progress, try again later." });
+                return;
+            }
+
             // Return everything, but also flag the specific neighborhood for the frontend
             res.json({
                 registry,
