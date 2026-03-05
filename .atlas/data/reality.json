@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-05T13:42:28.939Z",
+  "lastUpdated": "2026-03-05T13:44:02.452Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -3396,11 +3396,11 @@
       "verificationStatus": "auto",
       "verifiedHash": "6babec4f9867c51a7bd49ad43d197325",
       "contractHash": "b9f8daff52e77ca850a0f4b2868aebad",
-      "initialX": 75,
+      "initialX": 50,
       "initialY": 125,
       "sectorAngle": -1.2788130095789039,
       "sectorWidth": 0.23284745550136116,
-      "x": 75,
+      "x": 50,
       "y": 125
     },
     "src/Core/Domain/Services/IGraphBuilder": {
@@ -3736,12 +3736,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "d7822c7b8f12249f79c3c663623d4a3d",
       "contractHash": "7ac4159999f19666d5d4ff91d3e93035",
-      "initialX": 175,
-      "initialY": 100,
+      "initialX": 0,
+      "initialY": 125,
       "sectorAngle": -1.5043839820958473,
       "sectorWidth": 0.2182944895325261,
-      "x": 175,
-      "y": 100
+      "x": 0,
+      "y": 125
     },
     "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
@@ -3795,11 +3795,11 @@
       "verifiedHash": "f73ba9264ac9435243259eca5812e3f7",
       "contractHash": "e082fb22b6810307ee98f7663df38dfe",
       "initialX": 175,
-      "initialY": -50,
+      "initialY": 0,
       "sectorAngle": -2.377561940225952,
       "sectorWidth": 1.5280614267276826,
       "x": 175,
-      "y": -50
+      "y": 0
     },
     "src/Core/Domain/Model/GraphNode": {
       "id": "src/Core/Domain/Model/GraphNode",

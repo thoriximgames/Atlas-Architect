@@ -52,7 +52,7 @@
     "y": -375
   },
   "src/Core/Domain/Services/IScanner": {
-    "x": 75,
+    "x": 50,
     "y": 125
   },
   "src/Core/Domain/Services/IGraphBuilder": {
@@ -68,12 +68,12 @@
     "y": -225
   },
   "src/Core/Domain/Model/SourceFile": {
-    "x": 175,
-    "y": 100
+    "x": 0,
+    "y": 125
   },
   "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory": {
     "x": 175,
-    "y": -50
+    "y": 0
   },
   "src/Core/Domain/Model/GraphNode": {
     "x": 725,

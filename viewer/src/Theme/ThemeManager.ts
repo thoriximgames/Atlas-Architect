@@ -17,7 +17,7 @@ export class ThemeManager {
         'Data': { fill: '#FFE299', stroke: '#FFCD29', text: '#444444' },
         'Utility': { fill: '#E6E6E6', stroke: '#B3B3B3', text: '#444444' },
         'Logic': { fill: '#E6E6E6', stroke: '#B3B3B3', text: '#444444' },
-        'Unknown': { fill: '#FFB8A8', stroke: '#F24822', text: '#444444' }
+        'Unknown': { fill: '#CCCCCC', stroke: '#888888', text: '#444444' }
     };
 
     static getStyle(type: NodeType | string): NodeStyle {

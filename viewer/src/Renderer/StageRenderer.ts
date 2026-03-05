@@ -164,6 +164,15 @@ export class StageRenderer {
             .append('rect')
             .attr('width', 4).attr('height', 8)
             .attr('fill', '#FFCD29').attr('opacity', 1);
+
+        defs.append('pattern')
+            .attr('id', 'hatch-unknown')
+            .attr('width', 10).attr('height', 10)
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('patternTransform', 'rotate(45)')
+            .append('rect')
+            .attr('width', 5).attr('height', 10)
+            .attr('fill', '#EEEEEE').attr('opacity', 1);
     }
 
     private onResize() {
@@ -278,9 +287,14 @@ export class StageRenderer {
         nEnter.append('path')
             .attr('class', 'main-shape')
             .attr('d', d => this.getPathForType(d.type, d.radius))
-            .attr('fill', d => d.isAuthority ? 'url(#hatch-authority)' : ThemeManager.getStyle(d.type).fill)
+            .attr('fill', d => {
+                if (d.isAuthority) return 'url(#hatch-authority)';
+                if (d.type === 'Unknown') return 'url(#hatch-unknown)';
+                return ThemeManager.getStyle(d.type).fill;
+            })
             .attr('stroke', d => {
                 if (d.isAuthority) return '#FFCD29';
+                if (d.type === 'Unknown') return '#888888';
                 if (d.status === 'planned') return '#808080';
                 return 'none'; 
             })
