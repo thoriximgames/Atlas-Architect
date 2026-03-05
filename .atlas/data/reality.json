@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-05T09:37:00.080Z",
+  "lastUpdated": "2026-03-05T12:15:04.879Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -96,6 +96,14 @@
           "params": [
             "id: string",
             "isAuthority: boolean"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "any",
+          "name": "removeNode",
+          "params": [
+            "id: string"
           ]
         },
         {
@@ -363,6 +371,26 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "initialLength"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "length"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "plannedNodes"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "data"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "node"
         },
         {
@@ -444,17 +472,22 @@
           "visibility": "public",
           "type": "any",
           "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
         }
       ],
       "events": [],
-      "complexity": 34,
+      "complexity": 36,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "3680f538d4be90a0296b21c2c9caf56b",
-      "contractHash": "2449d68e03735dd9c2eaea692e8f7547",
+      "verifiedHash": "965ba4e6f70bf902bf71389ac8d75e1e",
+      "contractHash": "99b028e1311cc56e30adb8a2de7d2276",
       "initialX": -700,
       "initialY": 525,
       "sectorAngle": 2.379994434537722,
@@ -5205,6 +5238,59 @@
       "x": -1150,
       "y": -650
     },
+    "src/Core/Infrastructure/Security/SecurityService": {
+      "id": "src/Core/Infrastructure/Security/SecurityService",
+      "name": "SecurityService",
+      "type": "Service",
+      "file": "src/Core/Infrastructure/Security/SecurityService",
+      "depth": 1,
+      "parentId": "_UNCONNECTED_",
+      "islandId": "island_orphans",
+      "descendantCount": 0,
+      "dependencies": [],
+      "baseClasses": [],
+      "methods": [
+        {
+          "visibility": "public",
+          "returnType": "Promise<boolean>",
+          "name": "authenticate",
+          "params": [
+            "token: string"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "Promise<string>",
+          "name": "encrypt",
+          "params": [
+            "data: string"
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "token"
+        }
+      ],
+      "events": [],
+      "complexity": 1,
+      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
+      "implementationNotes": "",
+      "lastModifiedBy": "",
+      "violations": [],
+      "status": "orphan",
+      "verificationStatus": "auto",
+      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
+      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
+      "initialX": 900,
+      "initialY": -400,
+      "sectorAngle": 2.6655937666822487,
+      "sectorWidth": 0.19039955476301776,
+      "x": 900,
+      "y": -400
+    },
     "src/Core/Infrastructure/Logging/TelemetryProvider": {
       "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
       "name": "TelemetryProvider",
@@ -5284,63 +5370,10 @@
       "contractHash": "c6f61454d07df0fdc82c5d4d8a033d7e",
       "initialX": 950,
       "initialY": -300,
-      "sectorAngle": 2.6655937666822487,
+      "sectorAngle": 2.8559933214452666,
       "sectorWidth": 0.19039955476301776,
       "x": 950,
       "y": -300
-    },
-    "src/Core/Infrastructure/Security/SecurityService": {
-      "id": "src/Core/Infrastructure/Security/SecurityService",
-      "name": "SecurityService",
-      "type": "Service",
-      "file": "src/Core/Infrastructure/Security/SecurityService",
-      "depth": 1,
-      "parentId": "_UNCONNECTED_",
-      "islandId": "island_orphans",
-      "descendantCount": 0,
-      "dependencies": [],
-      "baseClasses": [],
-      "methods": [
-        {
-          "visibility": "public",
-          "returnType": "Promise<boolean>",
-          "name": "authenticate",
-          "params": [
-            "token: string"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "Promise<string>",
-          "name": "encrypt",
-          "params": [
-            "data: string"
-          ]
-        }
-      ],
-      "fields": [
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "token"
-        }
-      ],
-      "events": [],
-      "complexity": 1,
-      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
-      "implementationNotes": "",
-      "lastModifiedBy": "",
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
-      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
-      "initialX": 900,
-      "initialY": -400,
-      "sectorAngle": 2.8559933214452666,
-      "sectorWidth": 0.19039955476301776,
-      "x": 900,
-      "y": -400
     },
     "viewer/src/main": {
       "id": "viewer/src/main",
@@ -5744,102 +5777,37 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "updatedRegistry"
+          "name": "hash"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "registry"
+          "name": "newSelection"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "updatedNodes"
+          "name": "selectedGroup"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "un"
+          "name": "newSelection"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "existing"
+          "name": "targetNode"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "x"
+          "name": "n"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "x"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "fx"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "fx"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "fy"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "fy"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "x"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "0"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "0"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "radius"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "6"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "freshNode"
+          "name": "id"
         },
         {
           "visibility": "public",
@@ -6176,14 +6144,14 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 83,
+      "complexity": 84,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "d4a2a702fdb48db8a54ad05248d4bb06",
-      "contractHash": "2c21c6ee9b85a25d5db9080146f00cd3",
+      "verifiedHash": "cb4c53ce1ecd62cf31c324a132de591a",
+      "contractHash": "f1e0f2e0fdb00815743fded46f3af48f",
       "initialX": -350,
       "initialY": 650,
       "sectorAngle": 1.523196438104142,
@@ -6676,6 +6644,23 @@
           ]
         },
         {
+          "visibility": "public",
+          "returnType": "any",
+          "name": "centerView",
+          "params": [
+            "nodes: VisualNode[]",
+            "instant: boolean = false"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "any",
+          "name": "forEach",
+          "params": [
+            "n => {\r\n            if (n.x !== undefined && n.y !== undefined"
+          ]
+        },
+        {
           "visibility": "private",
           "returnType": "any",
           "name": "setupMarkers",
@@ -6953,6 +6938,206 @@
           "visibility": "public",
           "type": "any",
           "name": "nodeLayer"
+        },
+        {
+          "visibility": "public",
+          "type": "boolean",
+          "name": "instant"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "length"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "return"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "minX"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "maxX"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "minY"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "maxY"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "Infinity"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "count"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "0"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "n"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "r"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "20"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "minX"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "maxX"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "minY"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "maxY"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "count"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "return"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "viewWidth"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "innerWidth"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "viewHeight"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "innerHeight"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "padding"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "120"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "graphWidth"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "1"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "graphHeight"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "1"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "scaleX"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "graphWidth"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "scaleY"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "graphHeight"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "k"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "k"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "centerX"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "2"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "centerY"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "2"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "nextTransform"
         },
         {
           "visibility": "public",
@@ -7781,14 +7966,14 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 84,
+      "complexity": 93,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "038e55bf0b8742af509115f4334b2178",
-      "contractHash": "c34ed20da37056057ad2fe6ff2238dc3",
+      "verifiedHash": "3f1d8c063a3b047988b856d74602d4fc",
+      "contractHash": "7088ffeff13057bee05b77f880fde47f",
       "initialX": 125,
       "initialY": 675,
       "sectorAngle": 1.0789308103237674,
@@ -9231,13 +9416,13 @@
     },
     {
       "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
+      "target": "src/Core/Infrastructure/Security/SecurityService",
       "isGravity": true,
       "type": "inheritance"
     },
     {
       "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Security/SecurityService",
+      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
       "isGravity": true,
       "type": "inheritance"
     },

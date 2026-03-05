@@ -142,34 +142,38 @@ async function bootstrap() {
         if (!res.ok) return;
         
         const data = await res.json();
-        const updatedRegistry = data.registry;
-        const updatedNodes = Object.values(updatedRegistry.nodes) as VisualNode[];
         
-        // 1. Reveal dependencies found in the probe
-        if (data.dependencies) {
-            data.dependencies.forEach((depId: string) => {
-                revealedIds.add(depId);
-            });
-        }
+        // When we probe, we want to visually reveal dependencies that might be hidden.
+        // In the new SOLID architecture, if we are in the Blueprint tab, we should
+        // probably tell the user to use 'atlas.mjs blueprint' to formally add them.
+        // But for visual discovery, we can temporarily add them to the 'revealed' set
+        // if they are in the blueprint, or just switch to the scan tab.
 
-        // 2. Update master node list and map
-        updatedNodes.forEach(un => {
-            const existing = nodeMap.get(un.id);
-            if (existing) {
-                un.x = existing.x; un.y = existing.y;
-                un.fx = existing.fx; un.fy = existing.fy;
-            } else {
-                un.x = 0; un.y = 0;
+        if (data.dependencies && data.dependencies.length > 0) {
+            console.log(`[Discovery] Found dependencies:`, data.dependencies);
+            
+            // Switch to Scan view to show the raw reality of these connections
+            const hash = window.location.hash.replace('#', '');
+            if (hash !== 'orphans') {
+                 switchPage('orphans', false);
             }
-            un.radius = 12 + Math.sqrt(un.descendantCount || 0) * 6;
-            nodeMap.set(un.id, un);
-        });
-
-        // 3. Update view with ONLY the revealed set
-        updateDisplay(updatedNodes, updatedRegistry.edges);
-        
-        const freshNode = updatedNodes.find(n => n.id === targetId);
-        if (freshNode) inspector.render(freshNode);
+            
+            // Highlight the discovered nodes
+            const newSelection = new Set<string>();
+            newSelection.add(targetId);
+            data.dependencies.forEach((depId: string) => newSelection.add(depId));
+            
+            selectedGroup = newSelection;
+            renderer.highlightGroup(selectedGroup);
+            
+            // Focus and re-center
+            renderer.focus(targetId, newSelection);
+            
+            const targetNode = orphanNodes.find(n => n.id === targetId) || blueprintNodes.find(n => n.id === targetId);
+            if (targetNode) inspector.render(targetNode);
+        } else {
+             console.log(`[Discovery] No outgoing dependencies found in reality.`);
+        }
     };
 
     document.getElementById('btn-probe')?.addEventListener('click', () => {

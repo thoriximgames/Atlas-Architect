@@ -105,6 +105,18 @@ class TopologyPlanner {
         await this.savePlanned(data);
         console.log(`[PLANNER] Set Authority: ${id} isAuthority = ${isAuthority}`);
     }
+    static async removeNode(id) {
+        const data = await this.loadPlanned();
+        const initialLength = data.plannedNodes.length;
+        data.plannedNodes = data.plannedNodes.filter((n) => n.id !== id);
+        if (data.plannedNodes.length < initialLength) {
+            await this.savePlanned(data);
+            console.log(`[PLANNER] Removed node: ${id}`);
+        }
+        else {
+            console.log(`[PLANNER] Node not found, nothing removed: ${id}`);
+        }
+    }
     static async getNode(id) {
         const data = await this.loadPlanned();
         const node = data.plannedNodes.find((n) => n.id === id);
@@ -153,6 +165,9 @@ if (typeof require !== 'undefined' && require.main === module) {
                     break;
                 case 'authority':
                     await TopologyPlanner.setAuthority(args[0], args[1] === 'true');
+                    break;
+                case 'remove':
+                    await TopologyPlanner.removeNode(args[0]);
                     break;
                 case 'get':
                     await TopologyPlanner.getNode(args[0]);

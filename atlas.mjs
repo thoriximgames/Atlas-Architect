@@ -156,6 +156,26 @@ async function main() {
             await runCommand(runner, [...loaderArgs, blueprintScript, ...blueprintCmd, '--target', target]);
             break;
 
+        case 'build':
+            console.log(`[Atlas] Building Backend...`);
+            await runCommand('npm.cmd', ['run', 'build'], { cwd: __dirname });
+            console.log(`[Atlas] Building Frontend...`);
+            await runCommand('npm.cmd', ['run', 'build'], { cwd: path.join(__dirname, 'viewer') });
+            console.log(`[Atlas] Build complete.`);
+            break;
+
+        case 'launch':
+            await killProjectSession(config.project);
+            console.log(`[Atlas] Launching Engine for '${config.project}' in background...`);
+            const subprocess = spawn(runner, [...loaderArgs, mainScript, '--target', target], {
+                detached: true,
+                stdio: 'ignore',
+                shell: true
+            });
+            subprocess.unref();
+            console.log(`[Atlas] Server started. View at: http://localhost:${config.port || 5055}/viewer/`);
+            break;
+
         case 'kill':
             await killProjectSession(config.project);
             break;
