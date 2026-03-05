@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-05T13:34:21.890Z",
+  "lastUpdated": "2026-03-05T13:42:28.939Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -4028,12 +4028,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "307a547a1972eaa9f6ac3e2781398a23",
       "contractHash": "d89bb1fcb35da1f51aba81a5f54eb63b",
-      "initialX": -1125,
-      "initialY": -1050,
+      "initialX": 450,
+      "initialY": 125,
       "sectorAngle": -2.5049003924532585,
       "sectorWidth": 0.2546769044546138,
-      "x": -1125,
-      "y": -1050
+      "x": 450,
+      "y": 125
     },
     "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
@@ -4406,12 +4406,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "0b75c6eb3b8f77d8e93245fdc4ee4555",
       "contractHash": "9490d1ae516efe6066e8ab5de84ba510",
-      "initialX": -1175,
-      "initialY": -250,
+      "initialX": 450,
+      "initialY": -100,
       "sectorAngle": -2.8869157491351793,
       "sectorWidth": 0.5093538089092275,
-      "x": -1175,
-      "y": -250
+      "x": 450,
+      "y": -100
     },
     "src/Core/Infrastructure/FileSystem/Parsers/CppParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/CppParser",
@@ -4631,12 +4631,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "6f98436fe307f5a5bef7acc66d836b66",
       "contractHash": "76148b9e04dfd3fdaabf8dbd6800914f",
-      "initialX": -900,
-      "initialY": -1075,
+      "initialX": 475,
+      "initialY": 25,
       "sectorAngle": -2.250223487998645,
       "sectorWidth": 0.2546769044546138,
-      "x": -900,
-      "y": -1075
+      "x": 475,
+      "y": 25
     },
     "src/Core/Infrastructure/FileSystem/Parsers/TsParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/TsParser",
@@ -4949,12 +4949,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "d2b44746c176adecc277ea08ac7de05b",
       "contractHash": "d6d71db8319269f9338ddb03c87067fd",
-      "initialX": -700,
-      "initialY": -1025,
+      "initialX": 375,
+      "initialY": -175,
       "sectorAngle": -1.9955465835440311,
       "sectorWidth": 0.2546769044546138,
-      "x": -700,
-      "y": -1025
+      "x": 375,
+      "y": -175
     },
     "src/Core/Infrastructure/FileSystem/Parsers/PythonParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/PythonParser",
@@ -5234,12 +5234,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "12ac266c49ec27b63d971a3cb1b41048",
       "contractHash": "d0d32934923f40f9c707f76740443ceb",
-      "initialX": -575,
-      "initialY": -950,
+      "initialX": 375,
+      "initialY": 175,
       "sectorAngle": -1.7408696790894174,
       "sectorWidth": 0.2546769044546138,
-      "x": -575,
-      "y": -950
+      "x": 375,
+      "y": 175
     },
     "src/Core/Infrastructure/FileSystem/Parsers/BaseParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",

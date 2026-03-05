@@ -131,6 +131,61 @@
       "description": "",
       "x": 75,
       "y": 125
+    },
+    {
+      "id": "src/Core/Domain/Services/IParser",
+      "name": "IParser",
+      "type": "Interface",
+      "purpose": "",
+      "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "dependencies": [],
+      "description": "",
+      "x": 450,
+      "y": 125
+    },
+    {
+      "id": "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
+      "name": "CSharpParser",
+      "type": "Unknown",
+      "purpose": "",
+      "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "dependencies": [],
+      "description": "",
+      "x": 450,
+      "y": -100
+    },
+    {
+      "id": "src/Core/Infrastructure/FileSystem/Parsers/CppParser",
+      "name": "CppParser",
+      "type": "Unknown",
+      "purpose": "",
+      "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "dependencies": [],
+      "description": "",
+      "x": 475,
+      "y": 25
+    },
+    {
+      "id": "src/Core/Infrastructure/FileSystem/Parsers/TsParser",
+      "name": "TsParser",
+      "type": "Unknown",
+      "purpose": "",
+      "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "dependencies": [],
+      "description": "",
+      "x": 375,
+      "y": -175
+    },
+    {
+      "id": "src/Core/Infrastructure/FileSystem/Parsers/PythonParser",
+      "name": "PythonParser",
+      "type": "Unknown",
+      "purpose": "",
+      "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "dependencies": [],
+      "description": "",
+      "x": 375,
+      "y": 175
     }
   ]
 }

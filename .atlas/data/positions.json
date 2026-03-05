@@ -80,24 +80,24 @@
     "y": 0
   },
   "src/Core/Domain/Services/IParser": {
-    "x": -1125,
-    "y": -1050
+    "x": 450,
+    "y": 125
   },
   "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser": {
-    "x": -1175,
-    "y": -250
+    "x": 450,
+    "y": -100
   },
   "src/Core/Infrastructure/FileSystem/Parsers/CppParser": {
-    "x": -900,
-    "y": -1075
+    "x": 475,
+    "y": 25
   },
   "src/Core/Infrastructure/FileSystem/Parsers/TsParser": {
-    "x": -700,
-    "y": -1025
+    "x": 375,
+    "y": -175
   },
   "src/Core/Infrastructure/FileSystem/Parsers/PythonParser": {
-    "x": -575,
-    "y": -950
+    "x": 375,
+    "y": 175
   },
   "src/Core/Infrastructure/FileSystem/Parsers/BaseParser": {
     "x": -1150,
