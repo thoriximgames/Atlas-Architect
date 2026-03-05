@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-05T13:44:02.452Z",
+  "lastUpdated": "2026-03-05T14:00:22.539Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -7943,6 +7943,21 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "fill"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "d"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "status"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "d"
         },
         {
@@ -7958,7 +7973,7 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "status"
+          "name": "d"
         },
         {
           "visibility": "public",
@@ -8412,14 +8427,14 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 96,
+      "complexity": 98,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "a97925ea59f3eedb603a31b3fd5a389c",
-      "contractHash": "9d020a1f98b9a4c400551870cbdcb816",
+      "verifiedHash": "433be855cbc27f385403cd41befa041b",
+      "contractHash": "e0d0f40b954f053cc896db7ffb6e8c22",
       "initialX": 125,
       "initialY": 675,
       "sectorAngle": 0.9503977775565763,
@@ -9039,7 +9054,7 @@
           "returnType": "string",
           "name": "renderLegendShape",
           "params": [
-            "color: string",
+            "type: string",
             "shape: string"
           ]
         }
@@ -9118,6 +9133,11 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "style"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "size"
         },
         {
@@ -9149,6 +9169,21 @@
           "visibility": "public",
           "type": "any",
           "name": "path"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isUnknown"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "fill"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "fill"
         },
         {
           "visibility": "public",
@@ -9248,6 +9283,11 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "888888"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "style"
         },
         {
@@ -9307,14 +9347,14 @@
         }
       ],
       "events": [],
-      "complexity": 7,
+      "complexity": 9,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "5b70f4e4cc9bd2fd49b6c3af59126944",
-      "contractHash": "cc459598792321d3ac25cc4399d51033",
+      "verifiedHash": "e86af600f90c29f1460390cb3042a182",
+      "contractHash": "d33a70a64653b31b8aa2b84f441fce62",
       "initialX": -675,
       "initialY": 950,
       "sectorAngle": 1.6895960489894688,
@@ -9545,7 +9585,7 @@
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "a29931d28d75971194485a1ea440cb43",
+      "verifiedHash": "98b6722b29530547370f2411d5cc5f89",
       "contractHash": "3a3daf510aedc906b2baa81aa157ab43",
       "initialX": -100,
       "initialY": 1025,

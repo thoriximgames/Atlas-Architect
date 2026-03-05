@@ -15,7 +15,7 @@ export class Legend {
             { label: 'INTERFACE', type: 'Interface', desc: 'Protocol / Portal contract', shape: 'octagon' },
             { label: 'DATA / DTO', type: 'Data', desc: 'Atomic units / Templates', shape: 'circle' },
             { label: 'UTILITY', type: 'Utility', desc: 'Tools and Helpers', shape: 'circle' },
-            { label: 'DEBRIS', type: 'Unknown', desc: 'Unconnected / Dead code', shape: 'circle' }
+            { label: 'UNKNOWN', type: 'Unknown', desc: 'Unmapped / Dead code', shape: 'circle' }
         ];
 
         this.el.innerHTML = `
@@ -23,7 +23,7 @@ export class Legend {
             <div class="info-map-grid">
                 ${items.map(item => `
                     <div class="info-map-item">
-                        ${this.renderLegendShape(ThemeManager.getStyle(item.type).fill, item.shape)}
+                        ${this.renderLegendShape(item.type, item.shape)}
                         <div class="info-map-text">
                             <div class="info-map-label">${item.label}</div>
                             <div class="info-map-desc">${item.desc}</div>
@@ -68,11 +68,18 @@ export class Legend {
         `;
     }
 
-    private renderLegendShape(color: string, shape: string): string {
+    private renderLegendShape(type: string, shape: string): string {
+        const style = ThemeManager.getStyle(type);
         const size = 16;
         const center = size / 2;
         const r = size / 2 - 2;
         let path = '';
+
+        // If it's Unknown, we use a CSS background pattern for the legend icon
+        const isUnknown = type === 'Unknown';
+        const fill = isUnknown 
+            ? 'repeating-linear-gradient(45deg, #CCCCCC, #CCCCCC 2px, #EEEEEE 2px, #EEEEEE 4px)' 
+            : style.fill;
 
         switch (shape) {
             case 'square':
@@ -98,13 +105,16 @@ export class Legend {
                 path = `M ${oPoints.join(' L ')} Z`;
                 break;
             default: // circle
-                return `<div class="info-map-color" style="background: ${color}; border-radius: 50%;"></div>`;
+                return `<div class="info-map-color" style="background: ${fill}; border-radius: 50%; border: 1px solid #888888;"></div>`;
         }
 
+        // For SVG shapes, if it's unknown, we still use solid grey in the legend for simplicity 
+        // OR we'd need to define the pattern in the Legend's local SVG defs.
+        // Let's just use the circle default for Unknown to show the pattern correctly.
         return `
             <div class="info-map-color" style="background: none; border: none; display: flex; align-items: center; justify-content: center;">
                 <svg width="${size}" height="${size}">
-                    <path d="${path}" fill="${color}" stroke="rgba(0,0,0,0.3)" stroke-width="1" />
+                    <path d="${path}" fill="${isUnknown ? '#CCCCCC' : fill}" stroke="rgba(0,0,0,0.3)" stroke-width="1" />
                 </svg>
             </div>
         `;

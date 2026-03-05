@@ -167,12 +167,12 @@ export class StageRenderer {
 
         defs.append('pattern')
             .attr('id', 'hatch-unknown')
-            .attr('width', 10).attr('height', 10)
+            .attr('width', 8).attr('height', 8)
             .attr('patternUnits', 'userSpaceOnUse')
             .attr('patternTransform', 'rotate(45)')
             .append('rect')
-            .attr('width', 5).attr('height', 10)
-            .attr('fill', '#EEEEEE').attr('opacity', 1);
+            .attr('width', 2).attr('height', 8)
+            .attr('fill', 'rgba(255,255,255,0.4)');
     }
 
     private onResize() {
@@ -289,7 +289,7 @@ export class StageRenderer {
             .attr('d', d => this.getPathForType(d.type, d.radius))
             .attr('fill', d => {
                 if (d.isAuthority) return 'url(#hatch-authority)';
-                if (d.type === 'Unknown') return 'url(#hatch-unknown)';
+                // Standard solid fill for all types (Unknown is grey in ThemeManager)
                 return ThemeManager.getStyle(d.type).fill;
             })
             .attr('stroke', d => {
@@ -301,6 +301,14 @@ export class StageRenderer {
             .attr('stroke-width', 2)
             .attr('stroke-dasharray', d => d.status === 'planned' ? '4,4' : 'none')
             .style('filter', 'url(#node-shadow)');
+
+        // --- HATCH OVERLAY (LAYERED ON TOP) ---
+        nEnter.filter(d => d.type === 'Unknown')
+            .append('path')
+            .attr('class', 'hatch-overlay')
+            .attr('d', d => this.getPathForType(d.type, d.radius))
+            .attr('fill', 'url(#hatch-unknown)')
+            .style('pointer-events', 'none');
         
         nEnter.append('text').text(d => d.name).attr('text-anchor', 'middle').attr('dy', '0.35em')
             .attr('fill', d => ThemeManager.getStyle(d.type).text)
@@ -381,7 +389,9 @@ export class StageRenderer {
             this.nodeSelection.select('.main-shape')
                 .attr('stroke', (d: any) => {
                     if (ids.has(d.id)) return ThemeManager.selectionBlue;
+                    // --- PRESERVE DEFAULT OUTLINES ---
                     if (d.isAuthority) return '#FFCD29';
+                    if (d.type === 'Unknown') return '#888888';
                     if (d.status === 'planned') return '#808080';
                     return 'none';
                 })
