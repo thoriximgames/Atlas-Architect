@@ -131,10 +131,8 @@ async function main() {
     app.post('/api/topology/positions', async (req, res) => {
         try {
             const updates = req.body;
-            const dataDir = path_1.default.join(projectRoot, '.atlas/data');
-            await fs_extra_1.default.ensureDir(dataDir);
             // 1. Save to planned.json (The Blueprint) using TopologyPlanner for consistency
-            const plannedData = await blueprint_1.TopologyPlanner.loadPlanned();
+            const plannedData = await blueprint_1.TopologyPlanner.loadBlueprint();
             let modified = false;
             for (const id in updates) {
                 const node = plannedData.plannedNodes.find((n) => n.id === id);
@@ -145,10 +143,12 @@ async function main() {
                 }
             }
             if (modified) {
-                await blueprint_1.TopologyPlanner.savePlanned(plannedData);
+                await blueprint_1.TopologyPlanner.saveBlueprint(plannedData);
                 console.log(`[Atlas] Updated ${Object.keys(updates).length} node positions in planned.json`);
             }
             // 2. Save to a global positions.json for all nodes
+            const dataDir = path_1.default.join(projectRoot, '.atlas/data');
+            await fs_extra_1.default.ensureDir(dataDir);
             const positionsPath = path_1.default.join(dataDir, 'positions.json');
             let positions = {};
             if (await fs_extra_1.default.pathExists(positionsPath)) {
@@ -221,31 +221,32 @@ async function main() {
         }
     };
     // The engine and viewer are served from the central repository
-    // while the data is read/written to the local project's .atlas/data directory.
     const engineRoot = path_1.default.resolve(__dirname, '..');
     const viewerDist = path_1.default.join(engineRoot, 'viewer/dist');
-    // The data files
     const realityFile = path_1.default.join(projectRoot, '.atlas/data/reality.json');
-    const plannedFile = path_1.default.join(projectRoot, 'docs/topology/planned.json');
     // CSP and Basic Headers
     app.use((req, res, next) => {
         res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'");
         next();
     });
     app.get('/', (req, res) => {
-        console.log(`[Atlas] Root hit! Redirecting to /viewer/...`);
         res.redirect('/viewer/');
     });
     app.use('/viewer', express_1.default.static(viewerDist, { dotfiles: 'allow' }));
     app.get('/data/reality.json', (req, res) => res.sendFile(realityFile, { dotfiles: 'allow' }));
-    // Fallback if planned.json doesn't exist yet
+    // Compatibility route for legacy fetch
     app.get('/data/planned.json', async (req, res) => {
-        if (await fs_extra_1.default.pathExists(plannedFile)) {
-            res.sendFile(plannedFile, { dotfiles: 'allow' });
-        }
-        else {
-            res.json({ plannedNodes: [] });
-        }
+        const data = await blueprint_1.TopologyPlanner.loadBlueprint(false);
+        res.json(data);
+    });
+    app.get('/api/blueprint', async (req, res) => {
+        const isStaging = req.query.mode === 'stage';
+        const data = await blueprint_1.TopologyPlanner.loadBlueprint(isStaging);
+        res.json(data);
+    });
+    app.post('/api/blueprint/promote', async (req, res) => {
+        await blueprint_1.TopologyPlanner.promote();
+        res.json({ success: true });
     });
     app.get('/api/config/node-types', async (req, res) => {
         const typesPath = path_1.default.join(projectRoot, '.atlas', 'data', 'node_types.json');
@@ -266,10 +267,6 @@ async function main() {
         const sliceIndex = process.argv.indexOf('slice');
         const targetId = process.argv[sliceIndex + 1];
         const depth = parseInt(process.argv[sliceIndex + 2] || '1', 10);
-        if (!targetId) {
-            console.error("Usage: atlas slice <nodeId> [depth]");
-            process.exit(1);
-        }
         if (await fs_extra_1.default.pathExists(realityFile)) {
             const registry = await fs_extra_1.default.readJson(realityFile);
             const sliced = AtlasEngine_1.AtlasEngine.slice(registry, targetId, depth);
@@ -281,35 +278,26 @@ async function main() {
             process.exit(1);
         }
     }
-    // Watcher for automatic updates - ONLY watch source code, not metadata/topology
+    // Watcher for automatic updates
     const watchPaths = [
         ...config.scanPatterns.map((p) => path_1.default.join(projectRoot, p.replace('**/*', '')))
     ];
     chokidar_1.default.watch(watchPaths, { ignoreInitial: true }).on('all', (event, path) => {
         if (path.endsWith('.json') || path.endsWith('.md'))
-            return; // Extra safety
-        console.log(`[Watcher] ${event} detected at ${path}`);
+            return;
         scanAndResolve();
     });
     app.post('/api/topology/probe', async (req, res) => {
         try {
             const { nodeId } = req.body;
-            console.log(`[Atlas] Manual Probe Triggered for: ${nodeId}`);
-            // Manual probe doesn't need to broadcast to everyone
             const registry = await scanAndResolve(false);
             if (!registry) {
-                res.status(503).json({ error: "Scan in progress, try again later." });
+                res.status(503).json({ error: "Scan in progress" });
                 return;
             }
-            // Find true dependencies by looking at edges originating from this node
             const outgoingEdges = registry.edges.filter((e) => e.source === nodeId || e.source.id === nodeId);
             const depIds = Array.from(new Set(outgoingEdges.map((e) => e.target.id || e.target)));
-            // Return everything, but also flag the specific neighborhood for the frontend
-            res.json({
-                registry,
-                targetId: nodeId,
-                dependencies: depIds
-            });
+            res.json({ registry, targetId: nodeId, dependencies: depIds });
         }
         catch (e) {
             res.status(500).json({ error: e.message });
@@ -318,14 +306,12 @@ async function main() {
     app.post('/api/topology/blueprint/discover', async (req, res) => {
         try {
             const { nodeId, nodesToAdd } = req.body;
-            console.log(`[Atlas] Auto-adding ${nodesToAdd.length} discovered nodes to Blueprint under parent: ${nodeId}`);
-            // Discover doesn't need to broadcast
             const registry = await scanAndResolve(false);
             if (!registry) {
-                res.status(503).json({ error: "Scan in progress, try again later." });
+                res.status(503).json({ error: "Scan in progress" });
                 return;
             }
-            const plannedData = await blueprint_1.TopologyPlanner.loadPlanned();
+            const plannedData = await blueprint_1.TopologyPlanner.loadBlueprint();
             const existingIds = new Set((plannedData.plannedNodes || []).map((n) => n.id));
             const payload = nodesToAdd
                 .filter((id) => !existingIds.has(id))
@@ -335,15 +321,15 @@ async function main() {
                     id,
                     name: realityNode?.name || id.split('/').pop() || id,
                     type: realityNode?.type || 'Unknown',
-                    purpose: "", // Leave empty so the AI or Architect can explicitly define it later
+                    purpose: "",
                     parentId: nodeId,
-                    description: realityNode?.description || "" // 1:1 Capture from Source Documentation
+                    description: realityNode?.description || ""
                 };
             }).filter((n) => !!n.id);
             if (payload.length > 0) {
                 await blueprint_1.TopologyPlanner.upsertNodes(payload);
             }
-            const newPlannedData = await blueprint_1.TopologyPlanner.loadPlanned();
+            const newPlannedData = await blueprint_1.TopologyPlanner.loadBlueprint();
             res.json({ success: true, plannedData: newPlannedData });
         }
         catch (e) {
@@ -353,19 +339,15 @@ async function main() {
     });
     app.post('/api/topology/sync', async (req, res) => {
         try {
-            console.log(`[Atlas] Manual Sync Triggered`);
-            // 1. Force a fresh scan of reality - No broadcast needed
             const registry = await scanAndResolve(false);
             if (!registry) {
-                res.status(503).json({ error: "Scan in progress, try again later." });
+                res.status(503).json({ error: "Scan in progress" });
                 return;
             }
-            // 2. Auto-heal the blueprint with the fresh reality data
             const healedPlannedData = await blueprint_1.TopologyPlanner.heal(registry.nodes);
             res.json({ success: true, realityData: registry, plannedData: healedPlannedData });
         }
         catch (e) {
-            console.error(`[API Error] ${e.message}`);
             res.status(500).json({ error: e.message });
         }
     });
@@ -375,7 +357,6 @@ async function main() {
         console.log(`Atlas v8.0 [${config.project}]`);
         console.log(`URL:  ${url}`);
         console.log(`PID:  ${process.pid}`);
-        console.log(`Registry: ${registryPath}`);
         console.log(`================================================================\n`);
         if (!isCLI) {
             const start = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';

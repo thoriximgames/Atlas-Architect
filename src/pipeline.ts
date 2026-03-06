@@ -88,12 +88,7 @@ Created: ${new Date().toISOString()}
     static async sync() {
         const realityPath = path.join(projectRoot, '.atlas/data/reality.json');
 
-        if (!await fs.pathExists(PLANNED_PATH)) {
-            console.log("planned.json missing. Run 'atlas blueprint add' first.");
-            return;
-        }
-
-        const plannedData = await TopologyPlanner.loadPlanned();
+        const plannedData = await TopologyPlanner.loadBlueprint();
         let verifiedIds = new Set<string>();
         let realityData: any = {};
         if (await fs.pathExists(realityPath)) {

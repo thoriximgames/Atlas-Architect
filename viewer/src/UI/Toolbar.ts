@@ -1,9 +1,20 @@
 export class Toolbar {
     private btnSync: HTMLElement;
+    private activeStageLabel: HTMLElement;
 
     constructor(private onSync: () => Promise<void>) {
         this.btnSync = document.getElementById('btn-sync-data')!;
+        this.activeStageLabel = document.getElementById('active-stage-label')!;
         this.bindEvents();
+    }
+
+    setActiveStage(name: string) {
+        if (name) {
+            this.activeStageLabel.innerText = `ACTIVE STAGE: ${name}`;
+            this.activeStageLabel.classList.remove('hidden');
+        } else {
+            this.activeStageLabel.classList.add('hidden');
+        }
     }
 
     private bindEvents() {

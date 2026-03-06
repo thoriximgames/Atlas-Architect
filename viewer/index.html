@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,38 +10,36 @@
     <div id="app-container">
         <div id="visualizer-canvas"></div>
         
-        <!-- Left Side: Nav Toggle & Project Name -->
-        <div style="position: fixed; left: 25px; top: 25px; z-index: 1001; display: flex; align-items: center; gap: 15px;">
-            <button id="btn-toggle-layers" class="icon-btn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-            </button>
+        <!-- Top UI Header -->
+        <div id="top-ui-header" style="position: fixed; top: 15px; left: 0; right: 0; padding: 0 25px; z-index: 1001; display: flex; justify-content: space-between; align-items: center; pointer-events: none;">
+            <!-- Left: Project Identity -->
             <div id="project-label" style="color: #888888; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; pointer-events: none; white-space: nowrap; font-family: 'Inter', sans-serif;">
                 ATLAS | LOADING...
             </div>
+
+            <!-- Center: Core Mode Switcher (Absolute centered in viewport) -->
+            <div id="mode-switcher" style="position: absolute; left: 50%; transform: translateX(-50%); display: flex; background: #1a1a1a; border: 1px solid #444; border-radius: 6px; overflow: hidden; height: 32px; pointer-events: all; box-shadow: var(--shadow-ui);">
+                <button id="btn-mode-architecture" class="mode-btn active" style="padding: 0 20px; font-size: 10px; font-weight: 800; cursor: pointer; background: transparent; border: none; color: #eee; transition: all 0.2s;">BLUEPRINT</button>
+                <button id="btn-mode-stage" class="mode-btn" style="padding: 0 20px; font-size: 10px; font-weight: 800; cursor: pointer; background: transparent; border: none; color: #666; border-left: 1px solid #444; transition: all 0.2s;">PLANNING</button>
+            </div>
+
+            <!-- Right: Context Status -->
+            <div style="display: flex; align-items: center; pointer-events: all;">
+            </div>
         </div>
 
-        <!-- Navigation Sidebar (Left) -->
-        <nav id="layer-sidebar" class="sidebar left hidden">
-            <header class="sidebar-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
-                <h1 id="nav-title">Registry Layers</h1>
-                <button id="btn-switch-nav" class="icon-btn" style="width: 24px; height: 24px; margin-bottom: -5px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        <!-- Floating Legend Panel (Overlay) -->
+        <div id="legend-sidebar" class="sidebar left hidden">
+            <header class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h1>Atlas Legend</h1>
+                <button id="btn-close-legend" class="icon-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </header>
-            
-            <!-- Layer Selector Content -->
-            <div id="nav-content-layers" class="sidebar-content">
-                <div id="view-selector" style="display: flex; flex-direction: column; gap: 8px;">
-                    <button id="btn-architecture" class="view-btn active" data-view="architecture">Blueprint</button>
-                    <button id="btn-orphans" class="view-btn" data-view="orphans">Scan</button>
-                </div>
-            </div>
-
-            <!-- Legend Content (Hidden by default) -->
-            <div id="nav-content-info" class="sidebar-content hidden">
+            <div class="sidebar-content">
                 <div id="legend-container"></div>
             </div>
-        </nav>
+        </div>
 
         <!-- Node Information Sidebar (Right) -->
         <aside id="sidebar" class="sidebar right hidden">
@@ -61,14 +59,22 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             </button>
         </div>
+
         <!-- Bottom Toolbar -->
-        <div id="bottom-toolbar" class="atlas-toolbar">
-            <button id="btn-sync-data" class="toolbar-btn" title="Sync Blueprint with Reality">
+        <div id="bottom-toolbar" class="atlas-toolbar" style="gap: 15px; padding: 8px 15px; display: flex; align-items: center;">
+            <button id="btn-toggle-legend" class="toolbar-btn" title="Show Legend" style="padding: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            </button>
+            <div style="width: 1px; height: 20px; background: #444; align-self: center;"></div>
+            <button id="btn-sync-data" class="toolbar-btn" title="Rescan Reality" style="padding: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="23 4 23 10 17 10"></polyline>
                     <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
                 </svg>
-                <span>Sync Reality</span>
+            </button>
+            <div id="divider-promote" class="hidden" style="width: 1px; height: 20px; background: #444; align-self: center;"></div>
+            <button id="btn-promote-stage" class="toolbar-btn hidden" title="Promote Staging to Authoritative Blueprint" style="padding: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: #f59e0b;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
             </button>
         </div>
     </div>

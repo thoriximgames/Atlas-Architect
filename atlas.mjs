@@ -102,8 +102,8 @@ async function main() {
     const distPath = path.join(__dirname, 'dist', 'index.js');
     const pipelinePath = path.join(__dirname, 'src', 'pipeline.ts');
     const pipelineDistPath = path.join(__dirname, 'dist', 'pipeline.js');
-    const blueprintPath = path.join(__dirname, 'src', 'blueprint.ts');
-    const blueprintDistPath = path.join(__dirname, 'dist', 'blueprint.js');
+    const blueprintPath = path.join(__dirname, 'src', 'blueprint-cli.ts');
+    const blueprintDistPath = path.join(__dirname, 'dist', 'blueprint-cli.js');
 
     // Prefer compiled dist if it exists and is newer, or if we are in a "production" context
     const useTsNode = !(await fs.pathExists(distPath)); 
@@ -276,7 +276,7 @@ async function main() {
                     }
                     console.log('');
                 } else {
-                    console.log('Commands: add, list');
+                    console.log('Commands: add, list, shapes, set');
                 }
             }
             break;

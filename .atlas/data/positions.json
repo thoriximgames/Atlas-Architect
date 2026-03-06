@@ -24,7 +24,7 @@
     "y": -200
   },
   "src/Shared/Protocol": {
-    "x": -300,
+    "x": -225,
     "y": -475
   },
   "src/index": {
@@ -56,7 +56,7 @@
     "y": 150
   },
   "src/Core/Domain/Services/IGraphBuilder": {
-    "x": -225,
+    "x": -300,
     "y": -475
   },
   "src/Core/Domain/Services/ILayoutStrategy": {
@@ -76,7 +76,7 @@
     "y": 0
   },
   "src/Core/Domain/Model/GraphNode": {
-    "x": -400,
+    "x": -375,
     "y": -600
   },
   "src/Core/Domain/Services/IParser": {
@@ -100,8 +100,8 @@
     "y": 0
   },
   "src/Core/Infrastructure/FileSystem/Parsers/BaseParser": {
-    "x": -1150,
-    "y": -650
+    "x": 400,
+    "y": -275
   },
   "viewer/src/main": {
     "x": -325,
@@ -152,7 +152,7 @@
     "y": 1094.0669616988223
   },
   "src/Shared/NodeTypeConfig": {
-    "x": -989.9069059878366,
-    "y": -199.83927727684065
+    "x": 400,
+    "y": -375
   }
 }

@@ -103,7 +103,7 @@
       "purpose": "Intentional architecture and blueprint manager.",
       "parentId": "src/index",
       "dependencies": [],
-      "description": "TopologyPlanner: Intentional architecture and evolution manager. DESIGN INTENT: Manages two states of the architecture: 1. Authoritative (planned.json): The verified, current structural mandate. 2. Staging (staging.json): The draft board for planning future refactors. Provides CLI-driven \"Promotion\" to move staging into the authoritative blueprint.",
+      "description": "TopologyPlanner: Intentional architecture and blueprint manager. DESIGN INTENT: Provides the \"Visions\" of the project. It manages the planned.json file, which represents the desired architectural state. It allows the Architect to define nodes, relationships, and constraints before they are implemented, serving as the authoritative source for drift detection. KEY RESPONSIBILITIES: 1. Manages the lifecycle of Planned Nodes (Ghosts) in the architectural blueprint. 2. Healing Logic: Synchronizes metadata (names, types, descriptions) from reality to the blueprint. 3. Handles Guarding and Authority: Assigns ownership and protection levels to nodes. 4. Provides CLI subcommands for command-driven architectural management.",
       "x": 25,
       "y": -200,
       "designIntent": "Provides the 'Visions' of the project. It manages the planned.json file, serving as the authoritative source for intentional topology and drift detection."
