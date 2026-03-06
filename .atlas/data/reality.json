@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-06T12:09:09.649Z",
+  "lastUpdated": "2026-03-06T12:41:12.217Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -4380,12 +4380,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "0c5791aed767ea1219266ef29c282198",
       "contractHash": "4a2f6e99bf4500440c88c942f8218be1",
-      "initialX": 725,
-      "initialY": 0,
+      "initialX": -400,
+      "initialY": -600,
       "sectorAngle": -0.03966657390896211,
       "sectorWidth": 0.3649324799624507,
-      "x": 725,
-      "y": 0
+      "x": -400,
+      "y": -600
     },
     "src/Core/Domain/Services/IParser": {
       "id": "src/Core/Domain/Services/IParser",
@@ -6235,6 +6235,11 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "blueprintChildrenMap"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "blueprintNodes"
         },
         {
@@ -6246,6 +6251,21 @@
           "visibility": "public",
           "type": "any",
           "name": "realNode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "bChildCount"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "0"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "effectiveDescendants"
         },
         {
           "visibility": "public",
@@ -7152,14 +7172,14 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 119,
+      "complexity": 120,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "bd36dc1b9e5ce16479b65b574833dd62",
-      "contractHash": "49c148c48766e1b2166ffda129c9f403",
+      "verifiedHash": "c17b33b67041967e8df542c3c45551db",
+      "contractHash": "afddf9f66ef1dc24c240597b0b823425",
       "initialX": -325,
       "initialY": 600,
       "sectorAngle": 1.5707963267948966,
@@ -7760,14 +7780,6 @@
           "name": "each",
           "params": [
             "function(d"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "each",
-          "params": [
-            "function(d: any"
           ]
         },
         {
@@ -8387,26 +8399,6 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "tx"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "x"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "ty"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
           "name": "spacing"
         },
         {
@@ -8587,26 +8579,6 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "guardState"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "status"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "status"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "iconEl"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
           "name": "isOrphan"
         },
         {
@@ -8617,7 +8589,7 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "hasParent"
+          "name": "hasParentInGraph"
         },
         {
           "visibility": "public",
@@ -8662,6 +8634,61 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "hasDescendants"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "0"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "iconY"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "unifiedShadow"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "vText"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "bText"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "vIcon"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "bIcon"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "guardState"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "status"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "status"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "s"
         },
         {
@@ -8758,11 +8785,6 @@
           "visibility": "public",
           "type": "any",
           "name": "1"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "style"
         },
         {
           "visibility": "public",
@@ -8828,11 +8850,6 @@
           "visibility": "public",
           "type": "any",
           "name": "i"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "selectionBlue"
         },
         {
           "visibility": "public",
@@ -8971,14 +8988,14 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 112,
+      "complexity": 118,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "9cab087b6aa8959db4fd03821e4adbb2",
-      "contractHash": "de638e58980c3824baa78e4db8e596ad",
+      "verifiedHash": "b38ca18f0c51eb024874bfb9b5d26dba",
+      "contractHash": "7f769fd70373344e698b67499c58ffe4",
       "initialX": 125,
       "initialY": 675,
       "sectorAngle": 1.1718639263390498,

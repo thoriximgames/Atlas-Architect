@@ -49,9 +49,19 @@ async function bootstrap() {
         const rMap = new Map<string, VisualNode>();
         rNodes.forEach(n => rMap.set(n.id, n));
 
+        // Calculate immediate blueprint children count
+        const blueprintChildrenMap = new Map<string, number>();
+        pNodesRaw.forEach((pn: any) => {
+            if (pn.parentId) {
+                blueprintChildrenMap.set(pn.parentId, (blueprintChildrenMap.get(pn.parentId) || 0) + 1);
+            }
+        });
+
         blueprintNodes = pNodesRaw.map((pn: any) => {
             const isReal = rMap.has(pn.id);
             const realNode = rMap.get(pn.id);
+            const bChildCount = blueprintChildrenMap.get(pn.id) || 0;
+            const effectiveDescendants = Math.max(realNode?.descendantCount || 0, bChildCount);
             
             // For blueprint, we ONLY care about positions explicitly saved in planned.json.
             // If they are newly discovered, let them spawn at 0,0 and let physics expand them.
@@ -68,7 +78,7 @@ async function bootstrap() {
                 language: realNode?.language || 'Unknown',
                 parentId: pn.parentId,
                 dependencies: pn.dependencies || [],
-                descendantCount: realNode?.descendantCount || 0,
+                descendantCount: effectiveDescendants,
                 complexity: realNode?.complexity || 0,
                 methods: realNode?.methods || [],
                 fields: realNode?.fields || [],
@@ -80,7 +90,7 @@ async function bootstrap() {
                 designIntent: pn.designIntent || realNode?.designIntent || "",
                 depth: pn.parentId ? 2 : 1,
                 x: x, y: y, initialX: x, initialY: y, 
-                radius: 20 + Math.sqrt(realNode?.descendantCount || 0) * 6,
+                radius: 20 + Math.sqrt(effectiveDescendants) * 6,
                 fx: hasPlannedPosition ? x : undefined,
                 fy: hasPlannedPosition ? y : undefined
             } as VisualNode;

@@ -107,7 +107,7 @@ export class StageRenderer {
 
         const viewWidth = window.innerWidth;
         const viewHeight = window.innerHeight;
-        const padding = 120; // total padding in pixels
+        const padding = 120;
 
         const graphWidth = (maxX - minX) || 1;
         const graphHeight = (maxY - minY) || 1;
@@ -115,8 +115,6 @@ export class StageRenderer {
         const scaleX = (viewWidth - padding) / graphWidth;
         const scaleY = (viewHeight - padding) / graphHeight;
         let k = Math.min(scaleX, scaleY);
-        
-        // Clamp scale: don't zoom in too much, and don't zoom out too much
         k = Math.min(1.2, Math.max(0.15, k));
 
         const centerX = (minX + maxX) / 2;
@@ -140,14 +138,15 @@ export class StageRenderer {
     get selectedId(): string | null { return this.selectedNodeId; }
 
     private setupMarkers() {
-        this.svg.append('defs').append('marker')
+        const defs = this.svg.append('defs');
+        
+        defs.append('marker')
             .attr('id', 'arrow').attr('viewBox', '0 -5 10 10').attr('refX', 8).attr('refY', 0)
             .attr('markerWidth', 6).attr('markerHeight', 6).attr('orient', 'auto')
             .append('path').attr('d', 'M0,-5L10,0L0,5')
             .attr('fill', ThemeManager.connectorNormal)
             .attr('opacity', 1);
 
-        const defs = this.svg.select('defs');
         const filter = defs.append('filter')
             .attr('id', 'node-shadow')
             .attr('x', '-20%').attr('y', '-20%').attr('width', '140%').attr('height', '140%');
@@ -186,15 +185,12 @@ export class StageRenderer {
     private renderCanvas() {
         if (!this.ctx) return;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        // 1. Draw Optimized Tiled Grid
         this.drawTiledGrid();
 
         this.ctx.save();
         this.ctx.translate(this.transform.x, this.transform.y);
         this.ctx.scale(this.transform.k, this.transform.k);
 
-        // 2. Draw Non-Gravity Links
         const nonGravityLinks = this.currentLinks.filter(l => !l.isGravity);
         const hasSelection = this.selectedNodeId !== null || this.focusedNodeIds.size > 0;
 
@@ -221,11 +217,8 @@ export class StageRenderer {
 
     private drawTiledGrid() {
         const k = this.transform.k;
-        const tx = this.transform.x;
-        const ty = this.transform.y;
         const spacing = 20 * k;
-        
-        if (spacing < 2) return; // Performance guard
+        if (spacing < 2) return;
 
         const patternCanvas = document.createElement('canvas');
         patternCanvas.width = spacing;
@@ -241,7 +234,7 @@ export class StageRenderer {
         const pattern = this.ctx.createPattern(patternCanvas, 'repeat');
         if (pattern) {
             this.ctx.save();
-            this.ctx.translate(tx % spacing, ty % spacing);
+            this.ctx.translate(this.transform.x % spacing, this.transform.y % spacing);
             this.ctx.fillStyle = pattern;
             this.ctx.fillRect(-spacing, -spacing, this.canvas.width + spacing * 2, this.canvas.height + spacing * 2);
             this.ctx.restore();
@@ -275,95 +268,76 @@ export class StageRenderer {
 
         if (dragBehavior) nEnter.call(dragBehavior);
         
-        // 1. Create Base Elements for New Nodes
         nEnter.append('path').attr('class', 'base-class-outline');
         nEnter.append('circle').attr('class', 'guardian-halo');
         nEnter.append('path').attr('class', 'main-shape').style('filter', 'url(#node-shadow)');
         nEnter.append('path').attr('class', 'hatch-overlay').style('pointer-events', 'none');
         nEnter.append('text').attr('class', 'node-label').attr('text-anchor', 'middle').attr('dy', '0.35em').style('pointer-events', 'none');
         nEnter.append('text').attr('class', 'violation-icon').attr('text-anchor', 'middle').style('pointer-events', 'none');
+        nEnter.append('text').attr('class', 'branch-icon').attr('text-anchor', 'middle').style('pointer-events', 'none');
 
         this.nodeSelection = nEnter.merge(n as any) as any;
 
-        // 2. Update Attributes for ALL nodes
         const self = this;
-        
         this.nodeSelection.each(function(d) {
             const group = d3.select(this);
             const r = d.radius || 20;
 
-            // Base Class Outline
+            // --- STATUS ICONS LOGIC ---
+            const isOrphan = d.status === 'orphan';
+            const hasParentInGraph = d.parentId && self.currentNodes.some(n => n.id === d.parentId);
+            const isUnconnected = !hasParentInGraph && d.parentId !== "" && d.id !== 'src/index'; 
+            
+            const isCritical = isOrphan || isUnconnected;
+            const isMissingData = !d.purpose || !d.description || d.purpose === 'Auto-discovered dependency' || d.purpose === 'The';
+            const hasDescendants = (d.descendantCount || 0) > 0;
+
+            const iconY = -(r + 14);
+            const unifiedShadow = 'drop-shadow(0px 2px 2px rgba(0,0,0,0.8))';
+            let vText = isCritical ? '🛑' : (isMissingData ? '⚠️' : '');
+            let bText = hasDescendants ? '🌿' : '';
+
+            const vIcon = group.select('.violation-icon');
+            const bIcon = group.select('.branch-icon');
+
+            if (vText && bText) {
+                vIcon.text(vText).attr('dx', -12).attr('dy', iconY).attr('font-size', '16px').style('display', 'block').style('filter', unifiedShadow);
+                bIcon.text(bText).attr('dx', 12).attr('dy', iconY).attr('font-size', '16px').style('display', 'block').style('filter', unifiedShadow);
+            } else if (vText) {
+                vIcon.text(vText).attr('dx', 0).attr('dy', iconY).attr('font-size', '18px').style('display', 'block').style('filter', unifiedShadow);
+                bIcon.style('display', 'none');
+            } else if (bText) {
+                bIcon.text(bText).attr('dx', 0).attr('dy', iconY).attr('font-size', '18px').style('display', 'block').style('filter', unifiedShadow);
+                vIcon.style('display', 'none');
+            } else {
+                vIcon.style('display', 'none');
+                bIcon.style('display', 'none');
+            }
+
+            // --- GEOMETRY UPDATES ---
             group.select('.base-class-outline')
                 .attr('d', self.getPathForType(d.type, r + 6))
-                .attr('fill', 'none')
-                .attr('stroke', '#A259FF')
-                .attr('stroke-width', 2)
-                .attr('stroke-dasharray', '4,4')
+                .attr('fill', 'none').attr('stroke', '#A259FF').attr('stroke-width', 2).attr('stroke-dasharray', '4,4')
                 .style('display', (d.baseClasses?.length || 0) > 0 ? 'block' : 'none');
 
-            // Guardian Halo
             group.select('.guardian-halo')
-                .attr('r', r + 14)
-                .attr('fill', 'none')
-                .attr('stroke', '#FFCD29')
-                .attr('stroke-width', 3)
+                .attr('r', r + 14).attr('fill', 'none').attr('stroke', '#FFCD29').attr('stroke-width', 3)
                 .style('display', d.guardState === 'guarded' ? 'block' : 'none');
 
-            // Main Shape
             group.select('.main-shape')
                 .attr('d', self.getPathForType(d.type, r))
                 .attr('fill', d.isAuthority ? 'url(#hatch-authority)' : ThemeManager.getStyle(d.type).fill)
-                .attr('stroke', () => {
-                    if (d.isAuthority) return '#FFCD29';
-                    if (d.type === 'Unknown') return '#888888';
-                    if (d.status === 'planned') return '#808080';
-                    return 'none';
-                })
-                .attr('stroke-width', 2)
-                .attr('stroke-dasharray', d.status === 'planned' ? '4,4' : 'none');
+                .attr('stroke', d.isAuthority ? '#FFCD29' : (d.type === 'Unknown' ? '#888888' : (d.status === 'planned' ? '#808080' : 'none')))
+                .attr('stroke-width', 2).attr('stroke-dasharray', d.status === 'planned' ? '4,4' : 'none');
 
-            // Hatch Overlay (for Unknowns)
             group.select('.hatch-overlay')
                 .attr('d', self.getPathForType(d.type, r))
                 .attr('fill', 'url(#hatch-unknown)')
                 .style('display', d.type === 'Unknown' ? 'block' : 'none');
 
-            // Label
             group.select('.node-label')
-                .text(d.name)
-                .attr('fill', ThemeManager.getStyle(d.type).text)
-                .attr('font-size', r > 40 ? '13px' : '10px')
-                .attr('font-weight', '700');
-
-            // Violation Icons (Tiered Sequence)
-            group.select('.violation-icon')
-                .each(function(d: any) {
-                    const iconEl = d3.select(this);
-                    const isOrphan = d.status === 'orphan';
-                    
-                    // Check if node is truly connected in the gravity hierarchy (has a parent that exists)
-                    const hasParent = d.parentId && self.currentNodes.some(n => n.id === d.parentId);
-                    const isUnconnected = !hasParent && d.parentId !== "" && d.id !== 'src/index'; 
-                    
-                    const isCritical = isOrphan || isUnconnected;
-                    const isMissingData = !d.purpose || !d.description || d.purpose === 'Auto-discovered dependency' || d.purpose === 'The';
-                    
-                    if (isCritical) {
-                        iconEl.text('🛑')
-                            .attr('dy', `-${r + 8}px`)
-                            .attr('font-size', '18px')
-                            .style('display', 'block')
-                            .style('filter', 'drop-shadow(0px 2px 4px rgba(239, 68, 68, 0.8))');
-                    } else if (isMissingData) {
-                        iconEl.text('⚠️')
-                            .attr('dy', `-${r + 8}px`)
-                            .attr('font-size', '16px')
-                            .style('display', 'block')
-                            .style('filter', 'drop-shadow(0px 2px 2px rgba(0,0,0,0.8))');
-                    } else {
-                        iconEl.style('display', 'none');
-                    }
-                });
+                .text(d.name).attr('fill', ThemeManager.getStyle(d.type).text)
+                .attr('font-size', r > 40 ? '13px' : '10px').attr('font-weight', '700');
         });
 
         this.renderCanvas();
@@ -394,27 +368,17 @@ export class StageRenderer {
     }
 
     private getPathForType(type: string, r: number): string {
-        const style = ThemeManager.getStyle(type);
-        const shape = style.shape || 'circle';
-
+        const shape = ThemeManager.getStyle(type).shape || 'circle';
         switch (shape) {
             case 'square':
-                // Rounded square with minimal radius
                 const sr = r * 0.1;
                 return `M ${-r+sr},${-r} L ${r-sr},${-r} Q ${r},${-r} ${r},${-r+sr} L ${r},${r-sr} Q ${r},${r} ${r-sr},${r} L ${-r+sr},${r} Q ${-r},${r} ${-r},${r-sr} L ${-r},${-r+sr} Q ${-r},${-r} ${-r+sr},${-r} Z`;
-            case 'hexagon': 
-                return this.getSharpPolygonPath(6, r);
-            case 'pentagon':
-                return this.getSharpPolygonPath(5, r);
-            case 'triangle':
-                return `M 0,${-r*1.2} L ${r*1.1},${r*0.8} L ${-r*1.1},${r*0.8} Z`;
-            case 'diamond': 
-                return `M 0,${-r*1.3} L ${r*1.3},0 L 0,${r*1.3} L ${-r*1.3},0 Z`;
-            case 'octagon': 
-                return this.getSharpPolygonPath(8, r);
-            case 'circle':
-            default: 
-                return `M 0,0 m ${-r},0 a ${r},${r} 0 1,0 ${r * 2},0 a ${r},${r} 0 1,0 ${-(r * 2)},0`;
+            case 'hexagon': return this.getSharpPolygonPath(6, r);
+            case 'pentagon': return this.getSharpPolygonPath(5, r);
+            case 'triangle': return `M 0,${-r*1.2} L ${r*1.1},${r*0.8} L ${-r*1.1},${r*0.8} Z`;
+            case 'diamond': return `M 0,${-r*1.3} L ${r*1.3},0 L 0,${r*1.3} L ${-r*1.3},0 Z`;
+            case 'octagon': return this.getSharpPolygonPath(8, r);
+            default: return `M 0,0 m ${-r},0 a ${r},${r} 0 1,0 ${r * 2},0 a ${r},${r} 0 1,0 ${-(r * 2)},0`;
         }
     }
 
@@ -422,10 +386,8 @@ export class StageRenderer {
         let path = "";
         for (let i = 0; i < sides; i++) {
             const angle = (i * (360 / sides)) * (Math.PI / 180) + rotation;
-            const x = radius * Math.cos(angle);
-            const y = radius * Math.sin(angle);
-            if (i === 0) path += `M ${x},${y}`;
-            else path += ` L ${x},${y}`;
+            const x = radius * Math.cos(angle); const y = radius * Math.sin(angle);
+            if (i === 0) path += `M ${x},${y}`; else path += ` L ${x},${y}`;
         }
         return path + " Z";
     }
@@ -433,14 +395,7 @@ export class StageRenderer {
     highlightGroup(ids: Set<string>) {
         if (this.nodeSelection) {
             this.nodeSelection.select('.main-shape')
-                .attr('stroke', (d: any) => {
-                    if (ids.has(d.id)) return ThemeManager.selectionBlue;
-                    // --- PRESERVE DEFAULT OUTLINES ---
-                    if (d.isAuthority) return '#FFCD29';
-                    if (d.type === 'Unknown') return '#888888';
-                    if (d.status === 'planned') return '#808080';
-                    return 'none';
-                })
+                .attr('stroke', (d: any) => ids.has(d.id) ? ThemeManager.selectionBlue : (d.isAuthority ? '#FFCD29' : (d.type === 'Unknown' ? '#888888' : (d.status === 'planned' ? '#808080' : 'none'))))
                 .attr('stroke-width', (d: any) => ids.has(d.id) ? 5 : 2);
         }
         if (this.linkSelection) {
@@ -453,24 +408,15 @@ export class StageRenderer {
     focus(selectedId: string, ids: Set<string>) {
         this.selectedNodeId = selectedId;
         this.focusedNodeIds = ids;
-
-        if (this.nodeSelection) {
-            this.nodeSelection.transition().duration(250).style('opacity', (d: any) => ids.has(d.id) ? 1 : 0.05);
-        }
-        if (this.linkSelection) {
-            this.linkSelection.transition().duration(250).style('opacity', (d: any) => ids.has(d.source.id) && ids.has(d.target.id) ? 1 : 0);
-        }
+        if (this.nodeSelection) this.nodeSelection.transition().duration(250).style('opacity', (d: any) => ids.has(d.id) ? 1 : 0.05);
+        if (this.linkSelection) this.linkSelection.transition().duration(250).style('opacity', (d: any) => ids.has(d.source.id) && ids.has(d.target.id) ? 1 : 0);
         this.renderCanvas();
         this.updateToolbox();
     }
 
     private updateToolbox() {
         const toolbox = document.getElementById('node-toolbox');
-        if (!toolbox || !this.selectedNodeId) {
-            toolbox?.classList.add('hidden');
-            return;
-        }
-
+        if (!toolbox || !this.selectedNodeId) { toolbox?.classList.add('hidden'); return; }
         const node = this.currentNodes.find(n => n.id === this.selectedNodeId);
         if (node && node.x !== undefined && node.y !== undefined) {
             const screenX = this.transform.x + node.x * this.transform.k;

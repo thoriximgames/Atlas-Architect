@@ -76,8 +76,8 @@
     "y": 0
   },
   "src/Core/Domain/Model/GraphNode": {
-    "x": 725,
-    "y": 0
+    "x": -400,
+    "y": -600
   },
   "src/Core/Domain/Services/IParser": {
     "x": 125,

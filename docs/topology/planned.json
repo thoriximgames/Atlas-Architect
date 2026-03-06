@@ -251,6 +251,18 @@
       "description": "",
       "x": -300,
       "y": -475
+    },
+    {
+      "id": "src/Core/Domain/Model/GraphNode",
+      "name": "GraphNode",
+      "type": "Interface",
+      "purpose": "",
+      "parentId": "src/Core/Infrastructure/Graph/MetricsCalculator",
+      "dependencies": [],
+      "description": "",
+      "designIntent": "",
+      "x": -400,
+      "y": -600
     }
   ]
 }
