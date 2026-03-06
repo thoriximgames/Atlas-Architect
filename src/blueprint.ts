@@ -174,6 +174,27 @@ export class TopologyPlanner {
         }
     }
 
+    static async setNodeProperty(id: string, property: string, value: string) {
+        const data = await this.loadPlanned();
+        let node = data.plannedNodes.find((n: any) => n.id === id);
+        if (!node) throw new Error(`Node ${id} not found in planned.json`);
+
+        switch (property) {
+            case 'name': node.name = value; break;
+            case 'type': node.type = value as NodeType; break;
+            case 'purpose': node.purpose = value; break;
+            case 'parentId': node.parentId = value; break;
+            case 'description': node.description = value; break;
+            case 'x': node.x = parseFloat(value); break;
+            case 'y': node.y = parseFloat(value); break;
+            default:
+                throw new Error(`Unsupported property '${property}'. Use: name, type, purpose, parentId, description, x, y`);
+        }
+
+        await this.savePlanned(data);
+        console.log(`[PLANNER] SUCCESS: Updated ${property} for '${id}'`);
+    }
+
     static async getNode(id: string) {
         const data = await this.loadPlanned();
         const node = data.plannedNodes.find((n: any) => n.id === id);
@@ -240,6 +261,9 @@ if (typeof require !== 'undefined' && require.main === module) {
                 case 'authority': 
                     await TopologyPlanner.setAuthority(args[0], args[1] === 'true'); 
                     break;
+                case 'set':
+                    await TopologyPlanner.setNodeProperty(args[0], args[1], args.slice(2).join(' '));
+                    break;
                 case 'remove':
                     await TopologyPlanner.removeNode(args[0]);
                     break;
@@ -255,8 +279,9 @@ if (typeof require !== 'undefined' && require.main === module) {
 
                 default: 
                     if (cmd) {
-                        console.log('Usage: blueprint [add|branch|guard|authority|get|list|find]');
+                        console.log('Usage: blueprint [add|set|branch|guard|authority|get|list|find]');
                         console.log('       blueprint add <id> <name> <type> <purpose> [parentId]');
+                        console.log('       blueprint set <id> <property> <value>');
                         console.log('       blueprint branch <parentId> <id|name|type|purpose>...');
                         console.log('       blueprint guard <id> <authorityId> <guarded|restricted|none>');
                         console.log('       blueprint authority <id> <true|false>');

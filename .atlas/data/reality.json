@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-06T10:09:25.061Z",
+  "lastUpdated": "2026-03-06T10:24:14.825Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -127,6 +127,16 @@
           "name": "removeNode",
           "params": [
             "id: string"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "any",
+          "name": "setNodeProperty",
+          "params": [
+            "id: string",
+            "property: string",
+            "value: string"
           ]
         },
         {
@@ -524,6 +534,111 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "name"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "value"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "NodeType"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "purpose"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "value"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "parentId"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "value"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "description"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "value"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "x"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "y"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "data"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "node"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "id"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "data"
         },
         {
@@ -615,17 +730,22 @@
           "visibility": "public",
           "type": "any",
           "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
         }
       ],
       "events": [],
-      "complexity": 63,
+      "complexity": 72,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "2d8f2e1e215ede5a83b2a08c15cd2fee",
-      "contractHash": "44b2de2a77f455c95b6d2bbefa7bb56b",
+      "verifiedHash": "3c3dd605315e303f0d02dc733164c91a",
+      "contractHash": "9ed9c3c72be7b8085415aee052a84d3e",
       "initialX": 50,
       "initialY": -375,
       "sectorAngle": 2.443460952792061,
@@ -5773,10 +5893,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "7b15e53b8d55d1ffe649a3a5e2dcda4c",
       "contractHash": "8881a69096f2cc967aeeacfbc1bf97b2",
-      "initialX": -1128.2500523411065,
-      "initialY": -408.7197320809091,
+      "initialX": -989.9069059878366,
+      "initialY": -199.83927727684065,
       "sectorAngle": -2.7940379107684117,
-      "sectorWidth": 0.6951094856427632
+      "sectorWidth": 0.6951094856427632,
+      "x": -989.9069059878366,
+      "y": -199.83927727684065
     },
     "src/Core/Infrastructure/Logging/TelemetryProvider": {
       "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
@@ -7591,6 +7713,14 @@
         {
           "visibility": "public",
           "returnType": "any",
+          "name": "each",
+          "params": [
+            "function(d: any"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "any",
           "name": "ticking",
           "params": []
         },
@@ -8420,6 +8550,61 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "iconEl"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isOrphan"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "status"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "hasParent"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "n"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "id"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isUnconnected"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isCritical"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isUnconnected"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isMissingData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "purpose"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "purpose"
         },
         {
@@ -8734,14 +8919,14 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 105,
+      "complexity": 112,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "08f025ba66ba9b68f254b96e8d83a32e",
-      "contractHash": "a301fe9783ee940b240b0337e70f2074",
+      "verifiedHash": "9cab087b6aa8959db4fd03821e4adbb2",
+      "contractHash": "de638e58980c3824baa78e4db8e596ad",
       "initialX": 125,
       "initialY": 675,
       "sectorAngle": 1.1718639263390498,

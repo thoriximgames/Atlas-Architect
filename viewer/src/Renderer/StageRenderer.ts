@@ -281,7 +281,7 @@ export class StageRenderer {
         nEnter.append('path').attr('class', 'main-shape').style('filter', 'url(#node-shadow)');
         nEnter.append('path').attr('class', 'hatch-overlay').style('pointer-events', 'none');
         nEnter.append('text').attr('class', 'node-label').attr('text-anchor', 'middle').attr('dy', '0.35em').style('pointer-events', 'none');
-        nEnter.append('text').attr('class', 'warning-icon').text('⚠️').attr('text-anchor', 'middle').style('pointer-events', 'none').style('filter', 'drop-shadow(0px 2px 2px rgba(0,0,0,0.8))');
+        nEnter.append('text').attr('class', 'violation-icon').attr('text-anchor', 'middle').style('pointer-events', 'none');
 
         this.nodeSelection = nEnter.merge(n as any) as any;
 
@@ -335,11 +335,35 @@ export class StageRenderer {
                 .attr('font-size', r > 40 ? '13px' : '10px')
                 .attr('font-weight', '700');
 
-            // Warning Icon
-            group.select('.warning-icon')
-                .attr('dy', `-${r + 8}px`)
-                .attr('font-size', '16px')
-                .style('display', (!d.purpose || !d.description || d.purpose === 'Auto-discovered dependency') ? 'block' : 'none');
+            // Violation Icons (Tiered Sequence)
+            group.select('.violation-icon')
+                .each(function(d: any) {
+                    const iconEl = d3.select(this);
+                    const isOrphan = d.status === 'orphan';
+                    
+                    // Check if node is truly connected in the gravity hierarchy (has a parent that exists)
+                    const hasParent = d.parentId && self.currentNodes.some(n => n.id === d.parentId);
+                    const isUnconnected = !hasParent && d.parentId !== "" && d.id !== 'src/index'; 
+                    
+                    const isCritical = isOrphan || isUnconnected;
+                    const isMissingData = !d.purpose || !d.description || d.purpose === 'Auto-discovered dependency' || d.purpose === 'The';
+                    
+                    if (isCritical) {
+                        iconEl.text('🛑')
+                            .attr('dy', `-${r + 8}px`)
+                            .attr('font-size', '18px')
+                            .style('display', 'block')
+                            .style('filter', 'drop-shadow(0px 2px 4px rgba(239, 68, 68, 0.8))');
+                    } else if (isMissingData) {
+                        iconEl.text('⚠️')
+                            .attr('dy', `-${r + 8}px`)
+                            .attr('font-size', '16px')
+                            .style('display', 'block')
+                            .style('filter', 'drop-shadow(0px 2px 2px rgba(0,0,0,0.8))');
+                    } else {
+                        iconEl.style('display', 'none');
+                    }
+                });
         });
 
         this.renderCanvas();
