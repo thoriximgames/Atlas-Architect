@@ -238,6 +238,16 @@ async function main() {
             res.json({ plannedNodes: [] });
         }
     });
+    app.get('/api/config/node-types', async (req, res) => {
+        const typesPath = path_1.default.join(projectRoot, '.atlas', 'data', 'node_types.json');
+        if (await fs_extra_1.default.pathExists(typesPath)) {
+            const types = await fs_extra_1.default.readJson(typesPath);
+            res.json(types);
+        }
+        else {
+            res.status(404).json({ error: 'Node types config not found' });
+        }
+    });
     app.get(/\/viewer.*/, (req, res) => res.sendFile(path_1.default.join(viewerDist, 'index.html'), { dotfiles: 'allow' }));
     await scanAndResolve();
     if (process.argv.includes('--scan-only')) {

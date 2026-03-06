@@ -5,9 +5,11 @@ import { Inspector } from './UI/Inspector';
 import { Legend } from './UI/Legend';
 import { Toolbar } from './UI/Toolbar';
 import { VisualNode, VisualLink } from './Protocol/VisualTypes';
+import { ThemeManager } from './Theme/ThemeManager';
 import './style.css';
 
 async function bootstrap() {
+    await ThemeManager.loadConfig();
     const [realityRes, plannedRes] = await Promise.all([
         fetch('/data/reality.json'),
         fetch('/data/planned.json')

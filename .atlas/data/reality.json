@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-06T09:00:33.341Z",
+  "lastUpdated": "2026-03-06T09:29:18.138Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -9,7 +9,7 @@
       "file": "",
       "depth": 0,
       "islandId": "island_orphans",
-      "descendantCount": 35,
+      "descendantCount": 36,
       "dependencies": [],
       "baseClasses": [],
       "methods": [],
@@ -628,8 +628,8 @@
       "contractHash": "44b2de2a77f455c95b6d2bbefa7bb56b",
       "initialX": 50,
       "initialY": -375,
-      "sectorAngle": 2.423514332769269,
-      "sectorWidth": 0.35903916041026207,
+      "sectorAngle": 2.443460952792061,
+      "sectorWidth": 0.3490658503988659,
       "x": 50,
       "y": -375
     },
@@ -984,8 +984,8 @@
       "contractHash": "cf9e15c8e486d48d5cff769bb8b3f326",
       "initialX": 375,
       "initialY": 125,
-      "sectorAngle": 2.423514332769269,
-      "sectorWidth": 0.35903916041026207,
+      "sectorAngle": 2.443460952792061,
+      "sectorWidth": 0.3490658503988659,
       "x": 375,
       "y": 125
     },
@@ -998,7 +998,7 @@
       "depth": 1,
       "parentId": "_UNCONNECTED_",
       "islandId": "island_orphans",
-      "descendantCount": 21,
+      "descendantCount": 22,
       "dependencies": [
         "express",
         "path",
@@ -1443,6 +1443,16 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "typesPath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "types"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "sliceIndex"
         },
         {
@@ -1597,19 +1607,19 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 67,
+      "complexity": 68,
       "description": "Atlas Architect Root: The primary entry point for the backend engine. Responsible for session management, API routing, and codebase watching.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "ce6de33d0a647de3bee463f31dafbca3",
-      "contractHash": "88d9b235f96b6ebbc1515966d0d18781",
+      "verifiedHash": "07df9fbbfb0a12c763583c0b6e5709a8",
+      "contractHash": "bb50ad0537e61515cc09b285a84cc1c9",
       "initialX": -250,
       "initialY": 0,
-      "sectorAngle": -1.1668772713333517,
-      "sectorWidth": 3.9494307645128828,
+      "sectorAngle": -1.1344640137963142,
+      "sectorWidth": 4.014257279586958,
       "x": -250,
       "y": 0
     },
@@ -2001,8 +2011,8 @@
       "contractHash": "b85327a30bb69c3e97a5a4203892f449",
       "initialX": -175,
       "initialY": -375,
-      "sectorAngle": -0.884775073868146,
-      "sectorWidth": 1.1284087898608235,
+      "sectorAngle": -0.7695315338338635,
+      "sectorWidth": 1.0947974398873521,
       "x": -175,
       "y": -375
     },
@@ -2015,7 +2025,7 @@
       "depth": 1,
       "parentId": "src/index",
       "islandId": "island_orphans",
-      "descendantCount": 8,
+      "descendantCount": 9,
       "dependencies": [
         "fast-glob",
         "path",
@@ -2131,8 +2141,8 @@
       "contractHash": "6f813758e9bd1546958801325bf870f8",
       "initialX": 0,
       "initialY": 0,
-      "sectorAngle": -2.2952860611941754,
-      "sectorWidth": 1.6926131847912353,
+      "sectorAngle": -2.2292614536836663,
+      "sectorWidth": 1.8246623998122535,
       "x": 0,
       "y": 0
     },
@@ -2498,8 +2508,8 @@
       "contractHash": "4b8b93e9a6faa2c879ac4e3a43bd20a0",
       "initialX": -100,
       "initialY": -375,
-      "sectorAngle": -0.13250254729426367,
-      "sectorWidth": 0.3761362632869412,
+      "sectorAngle": -0.03966657390896211,
+      "sectorWidth": 0.3649324799624507,
       "x": -100,
       "y": -375
     },
@@ -3044,8 +3054,8 @@
       "contractHash": "236766084d1bee7e10f8bc4d29557ef8",
       "initialX": -25,
       "initialY": -375,
-      "sectorAngle": 0.14959965017094223,
-      "sectorWidth": 0.1880681316434706,
+      "sectorAngle": 0.23403278606287592,
+      "sectorWidth": 0.18246623998122535,
       "x": -25,
       "y": -375
     },
@@ -3115,8 +3125,8 @@
       "contractHash": "cdb326cfac64d6a8d30b9f37b96dd2e5",
       "initialX": 100,
       "initialY": -375,
-      "sectorAngle": 0.33766778181441287,
-      "sectorWidth": 0.1880681316434706,
+      "sectorAngle": 0.4164990260441013,
+      "sectorWidth": 0.18246623998122535,
       "x": 100,
       "y": -375
     },
@@ -3469,8 +3479,8 @@
       "contractHash": "dc1a191c12c70ab18b8d61f9f0026441",
       "initialX": -250,
       "initialY": -375,
-      "sectorAngle": 0.5257359134578835,
-      "sectorWidth": 0.1880681316434706,
+      "sectorAngle": 0.5989652660253266,
+      "sectorWidth": 0.18246623998122535,
       "x": -250,
       "y": -375
     },
@@ -3556,8 +3566,8 @@
       "contractHash": "a115ed8ccad34bab964d124fdb825def",
       "initialX": -150,
       "initialY": 125,
-      "sectorAngle": 0.7138040451013541,
-      "sectorWidth": 0.1880681316434706,
+      "sectorAngle": 0.781431506006552,
+      "sectorWidth": 0.18246623998122535,
       "x": -150,
       "y": 125
     },
@@ -3588,8 +3598,8 @@
       "contractHash": "b9f8daff52e77ca850a0f4b2868aebad",
       "initialX": 50,
       "initialY": 125,
-      "sectorAngle": -1.3361385898124754,
-      "sectorWidth": 0.22568175797216472,
+      "sectorAngle": -1.2074505097888044,
+      "sectorWidth": 0.21895948797747045,
       "x": 50,
       "y": 125
     },
@@ -3633,8 +3643,8 @@
       "contractHash": "16e4ebe0bf7ef3c438aa8de3d3643869",
       "initialX": 400,
       "initialY": -250,
-      "sectorAngle": -1.1104568318403105,
-      "sectorWidth": 0.22568175797216472,
+      "sectorAngle": -0.9884910218113341,
+      "sectorWidth": 0.21895948797747045,
       "x": 400,
       "y": -250
     },
@@ -3671,8 +3681,8 @@
       "contractHash": "17f8a6122a7b2bbc8e6e4aedf5031bfb",
       "initialX": 175,
       "initialY": -150,
-      "sectorAngle": -0.8847750738681459,
-      "sectorWidth": 0.22568175797216472,
+      "sectorAngle": -0.7695315338338635,
+      "sectorWidth": 0.21895948797747045,
       "x": 175,
       "y": -150
     },
@@ -3710,8 +3720,8 @@
       "contractHash": "ad82594e0838cff20bc7475be2052b58",
       "initialX": -175,
       "initialY": 200,
-      "sectorAngle": -0.6590933158959811,
-      "sectorWidth": 0.22568175797216472,
+      "sectorAngle": -0.5505720458563932,
+      "sectorWidth": 0.21895948797747045,
       "x": -175,
       "y": 200
     },
@@ -3840,8 +3850,8 @@
       "contractHash": "45e40aa7d6605c0325778e1bcfcda1f3",
       "initialX": 225,
       "initialY": -225,
-      "sectorAngle": -0.4334115579238164,
-      "sectorWidth": 0.22568175797216472,
+      "sectorAngle": -0.3316125578789227,
+      "sectorWidth": 0.21895948797747045,
       "x": 225,
       "y": -225
     },
@@ -3938,8 +3948,8 @@
       "contractHash": "416f57f18d30c1598da263b1afa76e77",
       "initialX": 0,
       "initialY": 125,
-      "sectorAngle": -1.55476779284801,
-      "sectorWidth": 0.21157664809890442,
+      "sectorAngle": -1.4183003871004427,
+      "sectorWidth": 0.20274026664580594,
       "x": 0,
       "y": 125
     },
@@ -3952,7 +3962,7 @@
       "depth": 1,
       "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
       "islandId": "island_orphans",
-      "descendantCount": 6,
+      "descendantCount": 7,
       "dependencies": [
         "IParser",
         "CSharpParser",
@@ -3997,8 +4007,8 @@
       "contractHash": "e082fb22b6810307ee98f7663df38dfe",
       "initialX": 200,
       "initialY": 50,
-      "sectorAngle": -2.4010743852436276,
-      "sectorWidth": 1.481036536692331,
+      "sectorAngle": -2.3306315870065695,
+      "sectorWidth": 1.6219221331664475,
       "x": 200,
       "y": 50
     },
@@ -4200,8 +4210,8 @@
       "contractHash": "bc2ea22721c2b0cc8c814aa0094e80eb",
       "initialX": 725,
       "initialY": 0,
-      "sectorAngle": -0.13250254729426367,
-      "sectorWidth": 0.3761362632869412,
+      "sectorAngle": -0.03966657390896211,
+      "sectorWidth": 0.3649324799624507,
       "x": 725,
       "y": 0
     },
@@ -4238,8 +4248,8 @@
       "contractHash": "d89bb1fcb35da1f51aba81a5f54eb63b",
       "initialX": 450,
       "initialY": 125,
-      "sectorAngle": -2.524494096634655,
-      "sectorWidth": 0.24683942278205517,
+      "sectorAngle": -2.3306315870065695,
+      "sectorWidth": 0.23170316188092105,
       "x": 450,
       "y": 125
     },
@@ -4252,7 +4262,7 @@
       "depth": 1,
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "islandId": "island_orphans",
-      "descendantCount": 1,
+      "descendantCount": 2,
       "dependencies": [
         "BaseParser",
         "Protocol",
@@ -4617,8 +4627,8 @@
       "contractHash": "9490d1ae516efe6066e8ab5de84ba510",
       "initialX": 450,
       "initialY": -100,
-      "sectorAngle": -2.894753230807738,
-      "sectorWidth": 0.49367884556411035,
+      "sectorAngle": -2.7940379107684117,
+      "sectorWidth": 0.6951094856427632,
       "x": 450,
       "y": -100
     },
@@ -4843,8 +4853,8 @@
       "contractHash": "76148b9e04dfd3fdaabf8dbd6800914f",
       "initialX": 475,
       "initialY": 25,
-      "sectorAngle": -2.2776546738526,
-      "sectorWidth": 0.24683942278205517,
+      "sectorAngle": -2.0989284251256484,
+      "sectorWidth": 0.23170316188092105,
       "x": 475,
       "y": 25
     },
@@ -5162,8 +5172,8 @@
       "contractHash": "d6d71db8319269f9338ddb03c87067fd",
       "initialX": 375,
       "initialY": -175,
-      "sectorAngle": -2.030815251070545,
-      "sectorWidth": 0.24683942278205517,
+      "sectorAngle": -1.867225263244727,
+      "sectorWidth": 0.23170316188092105,
       "x": 375,
       "y": -175
     },
@@ -5448,8 +5458,8 @@
       "contractHash": "d0d32934923f40f9c707f76740443ceb",
       "initialX": 375,
       "initialY": 175,
-      "sectorAngle": -1.7839758282884897,
-      "sectorWidth": 0.24683942278205517,
+      "sectorAngle": -1.635522101363806,
+      "sectorWidth": 0.23170316188092105,
       "x": 375,
       "y": 175
     },
@@ -5462,14 +5472,15 @@
       "depth": 1,
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
       "islandId": "island_orphans",
-      "descendantCount": 0,
+      "descendantCount": 1,
       "dependencies": [
         "fs-extra",
         "path",
         "crypto",
         "IParser",
         "SourceFile",
-        "Protocol"
+        "Protocol",
+        "NodeTypeConfig"
       ],
       "baseClasses": [
         "IParser"
@@ -5500,6 +5511,26 @@
           "visibility": "public",
           "type": "any",
           "name": "boolean"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "null"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "null"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "configPath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "nodeTypesConfig"
         },
         {
           "visibility": "public",
@@ -5589,6 +5620,26 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "typeDef"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "kw"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "lowName"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "NodeType"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "systemKeywords"
         },
         {
@@ -5633,20 +5684,153 @@
         }
       ],
       "events": [],
-      "complexity": 39,
+      "complexity": 60,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "d4fb409e3d72c04a4ee33548a7ebb6d6",
-      "contractHash": "f3e94d7a3d18beaf007487d64514c64f",
+      "verifiedHash": "a41d22cf44b6769a7db48b3c361f199f",
+      "contractHash": "67c31f56491366642c4fd472bd9766ee",
       "initialX": -1150,
       "initialY": -650,
-      "sectorAngle": -2.894753230807738,
-      "sectorWidth": 0.49367884556411035,
+      "sectorAngle": -2.7940379107684117,
+      "sectorWidth": 0.6951094856427632,
       "x": -1150,
       "y": -650
+    },
+    "src/Shared/NodeTypeConfig": {
+      "id": "src/Shared/NodeTypeConfig",
+      "name": "NodeTypeConfig",
+      "type": "Interface",
+      "file": "src/Shared/NodeTypeConfig",
+      "language": "TypeScript",
+      "depth": 1,
+      "parentId": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "islandId": "island_orphans",
+      "descendantCount": 0,
+      "dependencies": [],
+      "baseClasses": [],
+      "methods": [],
+      "fields": [
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "NodeShape"
+        },
+        {
+          "visibility": "public",
+          "type": "string",
+          "name": "id"
+        },
+        {
+          "visibility": "public",
+          "type": "string[]",
+          "name": "keywords"
+        },
+        {
+          "visibility": "public",
+          "type": "string",
+          "name": "fill"
+        },
+        {
+          "visibility": "public",
+          "type": "string",
+          "name": "stroke"
+        },
+        {
+          "visibility": "public",
+          "type": "string",
+          "name": "text"
+        },
+        {
+          "visibility": "public",
+          "type": "string",
+          "name": "label"
+        },
+        {
+          "visibility": "public",
+          "type": "string",
+          "name": "desc"
+        },
+        {
+          "visibility": "public",
+          "type": "NodeShape",
+          "name": "shape"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "NodeTypesConfig"
+        }
+      ],
+      "events": [],
+      "complexity": 1,
+      "implementationNotes": "",
+      "lastModifiedBy": "",
+      "violations": [],
+      "status": "orphan",
+      "verificationStatus": "auto",
+      "verifiedHash": "0664f5ddc9853ed0353d7d5c635271d0",
+      "contractHash": "8881a69096f2cc967aeeacfbc1bf97b2",
+      "initialX": -1128.2500523411065,
+      "initialY": -408.7197320809091,
+      "sectorAngle": -2.7940379107684117,
+      "sectorWidth": 0.6951094856427632
+    },
+    "src/Core/Infrastructure/Security/SecurityService": {
+      "id": "src/Core/Infrastructure/Security/SecurityService",
+      "name": "SecurityService",
+      "type": "Service",
+      "file": "src/Core/Infrastructure/Security/SecurityService",
+      "language": "TypeScript",
+      "depth": 1,
+      "parentId": "_UNCONNECTED_",
+      "islandId": "island_orphans",
+      "descendantCount": 0,
+      "dependencies": [],
+      "baseClasses": [],
+      "methods": [
+        {
+          "visibility": "public",
+          "returnType": "Promise<boolean>",
+          "name": "authenticate",
+          "params": [
+            "token: string"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "Promise<string>",
+          "name": "encrypt",
+          "params": [
+            "data: string"
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "token"
+        }
+      ],
+      "events": [],
+      "complexity": 1,
+      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
+      "implementationNotes": "",
+      "lastModifiedBy": "",
+      "violations": [],
+      "status": "orphan",
+      "verificationStatus": "auto",
+      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
+      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
+      "initialX": 900,
+      "initialY": -400,
+      "sectorAngle": 2.705260340591211,
+      "sectorWidth": 0.17453292519943295,
+      "x": 900,
+      "y": -400
     },
     "src/Core/Infrastructure/Logging/TelemetryProvider": {
       "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
@@ -5728,64 +5912,10 @@
       "contractHash": "c6f61454d07df0fdc82c5d4d8a033d7e",
       "initialX": 950,
       "initialY": -300,
-      "sectorAngle": 2.6927937030769655,
-      "sectorWidth": 0.17951958020513104,
+      "sectorAngle": 2.8797932657906435,
+      "sectorWidth": 0.17453292519943295,
       "x": 950,
       "y": -300
-    },
-    "src/Core/Infrastructure/Security/SecurityService": {
-      "id": "src/Core/Infrastructure/Security/SecurityService",
-      "name": "SecurityService",
-      "type": "Service",
-      "file": "src/Core/Infrastructure/Security/SecurityService",
-      "language": "TypeScript",
-      "depth": 1,
-      "parentId": "_UNCONNECTED_",
-      "islandId": "island_orphans",
-      "descendantCount": 0,
-      "dependencies": [],
-      "baseClasses": [],
-      "methods": [
-        {
-          "visibility": "public",
-          "returnType": "Promise<boolean>",
-          "name": "authenticate",
-          "params": [
-            "token: string"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "Promise<string>",
-          "name": "encrypt",
-          "params": [
-            "data: string"
-          ]
-        }
-      ],
-      "fields": [
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "token"
-        }
-      ],
-      "events": [],
-      "complexity": 1,
-      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
-      "implementationNotes": "",
-      "lastModifiedBy": "",
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
-      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
-      "initialX": 900,
-      "initialY": -400,
-      "sectorAngle": 2.8723132832820966,
-      "sectorWidth": 0.17951958020513104,
-      "x": 900,
-      "y": -400
     },
     "viewer/src/main": {
       "id": "viewer/src/main",
@@ -5805,6 +5935,7 @@
         "Legend",
         "Toolbar",
         "VisualTypes",
+        "ThemeManager",
         "style.css",
         "Set",
         "Error",
@@ -6853,12 +6984,12 @@
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "a69a5bf244e06a77af2d2ee01d9a8697",
+      "verifiedHash": "098274568d43152678bf01e8e0b7d117",
       "contractHash": "49c148c48766e1b2166ffda129c9f403",
       "initialX": -350,
       "initialY": 650,
-      "sectorAngle": 1.5259164317436138,
-      "sectorWidth": 1.4361566416410483,
+      "sectorAngle": 1.5707963267948966,
+      "sectorWidth": 1.3962634015954636,
       "x": -350,
       "y": 650
     },
@@ -7376,8 +7507,8 @@
       "contractHash": "af3921d4395c84925ce4cadcc6728a83",
       "initialX": -250,
       "initialY": 1075,
-      "sectorAngle": 1.320751197223464,
-      "sectorWidth": 0.20516523452014973,
+      "sectorAngle": 0.9723977261111264,
+      "sectorWidth": 0.19946620022792336,
       "x": -250,
       "y": 1075
     },
@@ -7390,7 +7521,7 @@
       "depth": 1,
       "parentId": "viewer/src/main",
       "islandId": "island_orphans",
-      "descendantCount": 1,
+      "descendantCount": 0,
       "dependencies": [
         "d3",
         "VisualTypes",
@@ -8761,15 +8892,15 @@
       "contractHash": "e0d0f40b954f053cc896db7ffb6e8c22",
       "initialX": 125,
       "initialY": 675,
-      "sectorAngle": 1.0130033454432394,
-      "sectorWidth": 0.41033046904029946,
+      "sectorAngle": 1.1718639263390498,
+      "sectorWidth": 0.19946620022792336,
       "x": 125,
       "y": 675
     },
     "viewer/src/UI/Inspector": {
       "id": "viewer/src/UI/Inspector",
       "name": "Inspector",
-      "type": "Interface",
+      "type": "Component",
       "file": "viewer/src/UI/Inspector",
       "language": "TypeScript",
       "depth": 1,
@@ -9343,8 +9474,8 @@
       "contractHash": "aff7e9feb750e670fed544993d3a85f7",
       "initialX": -500,
       "initialY": 1050,
-      "sectorAngle": 1.5259164317436138,
-      "sectorWidth": 0.20516523452014973,
+      "sectorAngle": 1.371330126566973,
+      "sectorWidth": 0.19946620022792336,
       "x": -500,
       "y": 1050
     },
@@ -9359,7 +9490,8 @@
       "islandId": "island_orphans",
       "descendantCount": 0,
       "dependencies": [
-        "ThemeManager"
+        "ThemeManager",
+        "NodeTypeConfig"
       ],
       "baseClasses": [],
       "methods": [
@@ -9395,6 +9527,26 @@
           "visibility": "public",
           "type": "any",
           "name": "el"
+        },
+        {
+          "visibility": "public",
+          "type": "any[]",
+          "name": "items"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "response"
+        },
+        {
+          "visibility": "public",
+          "type": "NodeTypesConfig",
+          "name": "config"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "items"
         },
         {
           "visibility": "public",
@@ -9673,18 +9825,18 @@
         }
       ],
       "events": [],
-      "complexity": 9,
+      "complexity": 11,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "e86af600f90c29f1460390cb3042a182",
-      "contractHash": "d33a70a64653b31b8aa2b84f441fce62",
+      "verifiedHash": "72a540a0f7bc9f1e4baf12c946124f88",
+      "contractHash": "e18e632200ec48c87207f4566e0ffbb7",
       "initialX": -675,
       "initialY": 950,
-      "sectorAngle": 1.7310816662637636,
-      "sectorWidth": 0.20516523452014973,
+      "sectorAngle": 1.5707963267948963,
+      "sectorWidth": 0.19946620022792336,
       "x": -675,
       "y": 950
     },
@@ -9779,8 +9931,8 @@
       "contractHash": "9053e077cd883d27cc08b822572ee223",
       "initialX": -424.18382885883324,
       "initialY": 1094.0669616988223,
-      "sectorAngle": 1.9362469007839134,
-      "sectorWidth": 0.20516523452014973,
+      "sectorAngle": 1.7702625270228196,
+      "sectorWidth": 0.19946620022792336,
       "x": -424.18382885883324,
       "y": 1094.0669616988223
     },
@@ -9833,8 +9985,8 @@
       "contractHash": "555b4525d413f0ec9688aea55df50f47",
       "initialX": -800,
       "initialY": 725,
-      "sectorAngle": 2.1414121353040634,
-      "sectorWidth": 0.20516523452014973,
+      "sectorAngle": 1.9697287272507429,
+      "sectorWidth": 0.19946620022792336,
       "x": -800,
       "y": 725
     },
@@ -9845,20 +9997,26 @@
       "file": "viewer/src/Theme/ThemeManager",
       "language": "TypeScript",
       "depth": 1,
-      "parentId": "viewer/src/Renderer/StageRenderer",
+      "parentId": "viewer/src/main",
       "islandId": "island_orphans",
       "descendantCount": 0,
       "dependencies": [
-        "Protocol"
+        "NodeTypeConfig"
       ],
       "baseClasses": [],
       "methods": [
         {
           "visibility": "public",
+          "returnType": "any",
+          "name": "loadConfig",
+          "params": []
+        },
+        {
+          "visibility": "public",
           "returnType": "NodeStyle",
           "name": "getStyle",
           "params": [
-            "type: NodeType | string"
+            "type: string"
           ]
         },
         {
@@ -9907,21 +10065,41 @@
           "visibility": "public",
           "type": "string",
           "name": "text"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "response"
+        },
+        {
+          "visibility": "public",
+          "type": "NodeTypesConfig",
+          "name": "config"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "style"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "styles"
         }
       ],
       "events": [],
-      "complexity": 2,
+      "complexity": 5,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "98b6722b29530547370f2411d5cc5f89",
-      "contractHash": "3a3daf510aedc906b2baa81aa157ab43",
+      "verifiedHash": "f19424b5c0cef6871efeeaa74903b2e6",
+      "contractHash": "72cb00a972b5130d7b25916bbbc3f857",
       "initialX": -100,
       "initialY": 1025,
-      "sectorAngle": 1.0130033454432394,
-      "sectorWidth": 0.41033046904029946,
+      "sectorAngle": 2.1691949274786664,
+      "sectorWidth": 0.19946620022792336,
       "x": -100,
       "y": 1025
     },
@@ -10180,8 +10358,8 @@
       "contractHash": "c2031ff9e3fabd0f0feff708a059031b",
       "initialX": -875,
       "initialY": 100,
-      "sectorAngle": 3.0518328634872276,
-      "sectorWidth": 0.17951958020513104,
+      "sectorAngle": 3.0543261909900763,
+      "sectorWidth": 0.17453292519943295,
       "x": -875,
       "y": 100
     }
@@ -10332,14 +10510,20 @@
       "type": "inheritance"
     },
     {
-      "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
+      "source": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "target": "src/Shared/NodeTypeConfig",
       "isGravity": true,
       "type": "inheritance"
     },
     {
       "source": "_UNCONNECTED_",
       "target": "src/Core/Infrastructure/Security/SecurityService",
+      "isGravity": true,
+      "type": "inheritance"
+    },
+    {
+      "source": "_UNCONNECTED_",
+      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
       "isGravity": true,
       "type": "inheritance"
     },
@@ -10386,7 +10570,7 @@
       "type": "inheritance"
     },
     {
-      "source": "viewer/src/Renderer/StageRenderer",
+      "source": "viewer/src/main",
       "target": "viewer/src/Theme/ThemeManager",
       "isGravity": true,
       "type": "inheritance"
@@ -10596,6 +10780,12 @@
       "type": "dependency"
     },
     {
+      "source": "viewer/src/Renderer/StageRenderer",
+      "target": "viewer/src/Theme/ThemeManager",
+      "isGravity": false,
+      "type": "dependency"
+    },
+    {
       "source": "viewer/src/UI/Inspector",
       "target": "viewer/src/Protocol/VisualTypes",
       "isGravity": false,
@@ -10614,6 +10804,12 @@
       "type": "dependency"
     },
     {
+      "source": "viewer/src/UI/Legend",
+      "target": "src/Shared/NodeTypeConfig",
+      "isGravity": false,
+      "type": "dependency"
+    },
+    {
       "source": "viewer/src/Protocol/VisualTypes",
       "target": "src/Shared/Protocol",
       "isGravity": false,
@@ -10621,7 +10817,7 @@
     },
     {
       "source": "viewer/src/Theme/ThemeManager",
-      "target": "src/Shared/Protocol",
+      "target": "src/Shared/NodeTypeConfig",
       "isGravity": false,
       "type": "dependency"
     },

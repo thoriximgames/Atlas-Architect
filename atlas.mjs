@@ -192,6 +192,55 @@ async function main() {
             console.log(`[Atlas] Server started. View at: http://localhost:${config.port || 5055}/viewer/`);
             break;
 
+        case 'type':
+            {
+                const typeCmd = args[1];
+                const typesPath = path.join(target, '.atlas', 'data', 'node_types.json');
+                
+                if (!await fs.pathExists(typesPath)) {
+                    console.error(`[Atlas] Error: node_types.json not found in ${target}/.atlas/data/`);
+                    process.exit(1);
+                }
+                
+                const typeConfig = await fs.readJson(typesPath);
+                
+                if (typeCmd === 'add') {
+                    const typeName = args[2];
+                    const keywords = args[3];
+                    const fill = args[4];
+                    const stroke = args[5];
+                    const shape = args[6];
+                    const desc = args[7];
+                    
+                    if (!typeName || !keywords || !fill || !stroke || !shape || !desc) {
+                        console.log('Usage: node atlas.mjs type add <name> <keywords_comma_separated> <fill> <stroke> <shape> <desc>');
+                        console.log('Example: node atlas.mjs type add Gateway "gateway,portal" #FFB8A8 #F24822 hexagon "Entry point"');
+                        process.exit(1);
+                    }
+                    
+                    typeConfig[typeName] = {
+                        id: typeName,
+                        keywords: keywords.split(',').map(k => k.trim()),
+                        style: { fill, stroke, text: '#444444' },
+                        legend: { label: typeName.toUpperCase(), desc, shape }
+                    };
+                    
+                    await fs.outputJson(typesPath, typeConfig, { spaces: 4 });
+                    console.log(`[Atlas] SUCCESS: Added node type '${typeName}'. Run 'node atlas.mjs scan' to apply.`);
+                } else if (typeCmd === 'list') {
+                    console.log('\n[Atlas] Defined Node Types:');
+                    console.log('===========================');
+                    for (const id in typeConfig) {
+                        const t = typeConfig[id];
+                        console.log(`${id.padEnd(12)} | ${t.legend.shape.padEnd(8)} | ${t.style.fill} | ${t.keywords.join(', ')}`);
+                    }
+                    console.log('');
+                } else {
+                    console.log('Commands: add, list');
+                }
+            }
+            break;
+
         case 'kill':
             await killProjectSession(config.project);
             break;

@@ -1,4 +1,5 @@
 import { ThemeManager } from '../Theme/ThemeManager';
+import { NodeTypesConfig } from '../../../src/Shared/NodeTypeConfig';
 
 export class Legend {
     private el: HTMLElement;
@@ -7,16 +8,32 @@ export class Legend {
         this.el = document.getElementById('legend-container')!;
     }
 
-    render() {
-        const items = [
-            { label: 'SYSTEM', type: 'System', desc: 'Core infrastructure / Foundations', shape: 'square' },
-            { label: 'SERVICE', type: 'Service', desc: 'Global utility managers', shape: 'hexagon' },
-            { label: 'COMPONENT', type: 'Component', desc: 'Modular logic plugins', shape: 'diamond' },
-            { label: 'INTERFACE', type: 'Interface', desc: 'Protocol / Portal contract', shape: 'octagon' },
-            { label: 'DATA / DTO', type: 'Data', desc: 'Atomic units / Templates', shape: 'circle' },
-            { label: 'UTILITY', type: 'Utility', desc: 'Tools and Helpers', shape: 'circle' },
-            { label: 'UNKNOWN', type: 'Unknown', desc: 'Unmapped / Dead code', shape: 'circle' }
-        ];
+    async render() {
+        let items: any[] = [];
+        try {
+            const response = await fetch('/api/config/node-types');
+            if (response.ok) {
+                const config: NodeTypesConfig = await response.json();
+                items = Object.values(config).map(type => ({
+                    label: type.legend.label,
+                    type: type.id,
+                    desc: type.legend.desc,
+                    shape: type.legend.shape
+                }));
+            }
+        } catch (e) {
+            console.warn('[Legend] Failed to load dynamic node types, using defaults.', e);
+            items = [
+                { label: 'SYSTEM', type: 'System', desc: 'Core infrastructure / Foundations', shape: 'square' },
+                { label: 'SERVICE', type: 'Service', desc: 'Global utility managers', shape: 'hexagon' },
+                { label: 'COMPONENT', type: 'Component', desc: 'Modular logic plugins', shape: 'diamond' },
+                { label: 'INTERFACE', type: 'Interface', desc: 'Protocol / Portal contract', shape: 'octagon' },
+                { label: 'DATA / DTO', type: 'Data', desc: 'Atomic units / Templates', shape: 'circle' },
+                { label: 'LOGIC', type: 'Logic', desc: 'Algorithms and Parsers', shape: 'circle' },
+                { label: 'UTILITY', type: 'Utility', desc: 'Tools and Helpers', shape: 'circle' },
+                { label: 'UNKNOWN', type: 'Unknown', desc: 'Unmapped / Dead code', shape: 'circle' }
+            ];
+        }
 
         this.el.innerHTML = `
             <div class="info-map-header">FUNCTIONAL GEOMETRY</div>

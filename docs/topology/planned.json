@@ -36,7 +36,7 @@
     {
       "id": "src/Core/Infrastructure/FileSystem/FileScanner",
       "name": "FileScanner",
-      "type": "Unknown",
+      "type": "Logic",
       "purpose": "Auto-discovered dependency",
       "parentId": "src/index",
       "dependencies": [],
@@ -47,7 +47,7 @@
     {
       "id": "src/Core/Infrastructure/Graph/GraphBuilder",
       "name": "GraphBuilder",
-      "type": "Unknown",
+      "type": "Logic",
       "purpose": "Auto-discovered dependency",
       "parentId": "src/index",
       "dependencies": [],
@@ -58,7 +58,7 @@
     {
       "id": "src/Core/Infrastructure/Layout/PolarLayoutStrategy",
       "name": "PolarLayoutStrategy",
-      "type": "Unknown",
+      "type": "Logic",
       "purpose": "Auto-discovered dependency",
       "parentId": "src/index",
       "dependencies": [],
@@ -69,7 +69,7 @@
     {
       "id": "src/Shared/Config",
       "name": "Config",
-      "type": "Unknown",
+      "type": "Interface",
       "purpose": "Auto-discovered dependency",
       "parentId": "src/index",
       "dependencies": [],
@@ -113,7 +113,7 @@
     {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "name": "ParserFactory",
-      "type": "Unknown",
+      "type": "Logic",
       "purpose": "",
       "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
       "dependencies": [],
@@ -146,7 +146,7 @@
     {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
       "name": "CSharpParser",
-      "type": "Unknown",
+      "type": "Logic",
       "purpose": "",
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "dependencies": [],
@@ -157,7 +157,7 @@
     {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/CppParser",
       "name": "CppParser",
-      "type": "Unknown",
+      "type": "Logic",
       "purpose": "",
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "dependencies": [],
@@ -168,7 +168,7 @@
     {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/TsParser",
       "name": "TsParser",
-      "type": "Unknown",
+      "type": "Interface",
       "purpose": "",
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "dependencies": [],
@@ -179,7 +179,7 @@
     {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/PythonParser",
       "name": "PythonParser",
-      "type": "Unknown",
+      "type": "Logic",
       "purpose": "",
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "dependencies": [],

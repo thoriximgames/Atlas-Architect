@@ -8,7 +8,15 @@ const fs_extra_1 = __importDefault(require("fs-extra"));
 const path_1 = __importDefault(require("path"));
 const crypto_1 = __importDefault(require("crypto"));
 class BaseParser {
+    nodeTypesConfig = null;
     async parse(filePath, root) {
+        // Ensure config is loaded (could be optimized to load once per scan session)
+        if (!this.nodeTypesConfig) {
+            const configPath = path_1.default.join(root, '.atlas', 'data', 'node_types.json');
+            if (await fs_extra_1.default.pathExists(configPath)) {
+                this.nodeTypesConfig = await fs_extra_1.default.readJson(configPath);
+            }
+        }
         const content = await fs_extra_1.default.readFile(filePath, 'utf8');
         const ext = path_1.default.extname(filePath);
         const name = path_1.default.basename(filePath, ext);
@@ -69,6 +77,35 @@ class BaseParser {
     determineType(name, rel, content) {
         const low = rel.toLowerCase();
         const lowName = name.toLowerCase();
+        // If config is available, use dynamic heuristics
+        if (this.nodeTypesConfig) {
+            // First check explicit Protocol/Interface detection (strongest signals)
+            if (lowName.startsWith('i') && /^[A-Z]/.test(name.substring(1)))
+                return 'Interface';
+            if (content.includes('interface ') || low.includes('/protocol/') || low.includes('/domain/services/')) {
+                return 'Interface';
+            }
+            // Check keywords from config
+            for (const typeId in this.nodeTypesConfig) {
+                const typeDef = this.nodeTypesConfig[typeId];
+                if (typeDef.keywords.some(kw => lowName.endsWith(kw.toLowerCase()) || lowName === kw.toLowerCase())) {
+                    return typeId;
+                }
+            }
+            // Fallback to directory-based heuristics if no keyword match
+            if (low.includes('/logic/') || low.includes('/algorithms/'))
+                return 'Logic';
+            if (low.includes('/data/') || low.includes('/dto/') || low.includes('/model/'))
+                return 'Data';
+            if (low.includes('/services/'))
+                return 'Service';
+            if (low.includes('/components/') || low.includes('/ui/'))
+                return 'Component';
+            if (low.includes('/shared/') || low.includes('/utils/'))
+                return 'Utility';
+            return 'Unknown';
+        }
+        // --- LEGACY HARDCODED FALLBACK (If config fails to load) ---
         // 1. Protocols / Interfaces
         if (lowName.startsWith('i') && /^[A-Z]/.test(name.substring(1)))
             return 'Interface';

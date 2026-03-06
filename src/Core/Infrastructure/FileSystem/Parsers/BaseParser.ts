@@ -4,11 +4,21 @@ import crypto from 'crypto';
 import { IParser } from '../../../Domain/Services/IParser';
 import { SourceFile } from '../../../Domain/Model/SourceFile';
 import { NodeType, IMethodDefinition, IEventDefinition, IFieldDefinition } from '../../../../Shared/Protocol';
+import { NodeTypesConfig } from '../../../../Shared/NodeTypeConfig';
 
 export abstract class BaseParser implements IParser {
     abstract canParse(filePath: string): boolean;
+    protected nodeTypesConfig: NodeTypesConfig | null = null;
 
     async parse(filePath: string, root: string): Promise<SourceFile> {
+        // Ensure config is loaded (could be optimized to load once per scan session)
+        if (!this.nodeTypesConfig) {
+            const configPath = path.join(root, '.atlas', 'data', 'node_types.json');
+            if (await fs.pathExists(configPath)) {
+                this.nodeTypesConfig = await fs.readJson(configPath);
+            }
+        }
+
         const content = await fs.readFile(filePath, 'utf8');
         const ext = path.extname(filePath);
         const name = path.basename(filePath, ext);
@@ -84,6 +94,33 @@ export abstract class BaseParser implements IParser {
         const low = rel.toLowerCase();
         const lowName = name.toLowerCase();
 
+        // If config is available, use dynamic heuristics
+        if (this.nodeTypesConfig) {
+            // First check explicit Protocol/Interface detection (strongest signals)
+            if (lowName.startsWith('i') && /^[A-Z]/.test(name.substring(1))) return 'Interface';
+            if (content.includes('interface ') || low.includes('/protocol/') || low.includes('/domain/services/')) {
+                return 'Interface';
+            }
+
+            // Check keywords from config
+            for (const typeId in this.nodeTypesConfig) {
+                const typeDef = this.nodeTypesConfig[typeId];
+                if (typeDef.keywords.some(kw => lowName.endsWith(kw.toLowerCase()) || lowName === kw.toLowerCase())) {
+                    return typeId as NodeType;
+                }
+            }
+
+            // Fallback to directory-based heuristics if no keyword match
+            if (low.includes('/logic/') || low.includes('/algorithms/')) return 'Logic';
+            if (low.includes('/data/') || low.includes('/dto/') || low.includes('/model/')) return 'Data';
+            if (low.includes('/services/')) return 'Service';
+            if (low.includes('/components/') || low.includes('/ui/')) return 'Component';
+            if (low.includes('/shared/') || low.includes('/utils/')) return 'Utility';
+
+            return 'Unknown';
+        }
+
+        // --- LEGACY HARDCODED FALLBACK (If config fails to load) ---
         // 1. Protocols / Interfaces
         if (lowName.startsWith('i') && /^[A-Z]/.test(name.substring(1))) return 'Interface';
         if (content.includes('interface ') || content.includes('class I') || content.includes('struct I') || low.includes('/protocol/') || low.includes('/domain/services/')) {

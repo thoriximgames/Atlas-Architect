@@ -1,0 +1,183 @@
+{
+    "System": {
+        "id": "System",
+        "keywords": [
+            "manager",
+            "controller",
+            "system",
+            "engine",
+            "heartbeat",
+            "broadcaster",
+            "registry",
+            "runner",
+            "host",
+            "server",
+            "application",
+            "gateway",
+            "orchestrator",
+            "index"
+        ],
+        "style": {
+            "fill": "#FFB8A8",
+            "stroke": "#F24822",
+            "text": "#444444"
+        },
+        "legend": {
+            "label": "SYSTEM",
+            "desc": "Core infrastructure / Foundations",
+            "shape": "square"
+        }
+    },
+    "Service": {
+        "id": "Service",
+        "keywords": [
+            "service",
+            "provider",
+            "client",
+            "api"
+        ],
+        "style": {
+            "fill": "#B3EFBD",
+            "stroke": "#14AE5C",
+            "text": "#444444"
+        },
+        "legend": {
+            "label": "SERVICE",
+            "desc": "Global utility managers",
+            "shape": "hexagon"
+        }
+    },
+    "Component": {
+        "id": "Component",
+        "keywords": [
+            "component"
+        ],
+        "style": {
+            "fill": "#A8DAFF",
+            "stroke": "#0D99FF",
+            "text": "#444444"
+        },
+        "legend": {
+            "label": "COMPONENT",
+            "desc": "Modular logic plugins",
+            "shape": "diamond"
+        }
+    },
+    "Interface": {
+        "id": "Interface",
+        "keywords": [
+            "interface",
+            "protocol"
+        ],
+        "style": {
+            "fill": "#D3BDFF",
+            "stroke": "#9747FF",
+            "text": "#444444"
+        },
+        "legend": {
+            "label": "INTERFACE",
+            "desc": "Protocol / Portal contract",
+            "shape": "octagon"
+        }
+    },
+    "Data": {
+        "id": "Data",
+        "keywords": [
+            "data",
+            "dto",
+            "model",
+            "template",
+            "params"
+        ],
+        "style": {
+            "fill": "#FFE299",
+            "stroke": "#FFCD29",
+            "text": "#444444"
+        },
+        "legend": {
+            "label": "DATA / DTO",
+            "desc": "Atomic units / Templates",
+            "shape": "circle"
+        }
+    },
+    "Logic": {
+        "id": "Logic",
+        "keywords": [
+            "strategy",
+            "builder",
+            "factory",
+            "calculator",
+            "parser",
+            "processor",
+            "validator",
+            "mapper",
+            "resolver",
+            "generator",
+            "detector",
+            "scanner"
+        ],
+        "style": {
+            "fill": "#E6E6E6",
+            "stroke": "#B3B3B3",
+            "text": "#444444"
+        },
+        "legend": {
+            "label": "LOGIC",
+            "desc": "Algorithms and Parsers",
+            "shape": "circle"
+        }
+    },
+    "Utility": {
+        "id": "Utility",
+        "keywords": [
+            "helper",
+            "utils",
+            "common",
+            "shared",
+            "extensions",
+            "tools",
+            "constants"
+        ],
+        "style": {
+            "fill": "#E6E6E6",
+            "stroke": "#B3B3B3",
+            "text": "#444444"
+        },
+        "legend": {
+            "label": "UTILITY",
+            "desc": "Tools and Helpers",
+            "shape": "circle"
+        }
+    },
+    "Unknown": {
+        "id": "Unknown",
+        "keywords": [],
+        "style": {
+            "fill": "#CCCCCC",
+            "stroke": "#888888",
+            "text": "#444444"
+        },
+        "legend": {
+            "label": "UNKNOWN",
+            "desc": "Unmapped / Dead code",
+            "shape": "circle"
+        }
+    },
+    "Gateway": {
+        "id": "Gateway",
+        "keywords": [
+            "gateway",
+            "portal"
+        ],
+        "style": {
+            "fill": "#FFB8A8",
+            "stroke": "#F24822",
+            "text": "#444444"
+        },
+        "legend": {
+            "label": "GATEWAY",
+            "desc": "Network Entry Point",
+            "shape": "hexagon"
+        }
+    }
+}
