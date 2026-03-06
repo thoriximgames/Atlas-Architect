@@ -16,8 +16,17 @@ const pipeline_1 = require("./pipeline");
 const blueprint_1 = require("./blueprint");
 const Broadcaster_1 = require("./Core/Application/Broadcaster");
 /**
- * Atlas Architect Root: The primary entry point for the backend engine.
- * Responsible for session management, API routing, and codebase watching.
+ * Atlas Architect Root: The primary entry point and Composition Root for the backend engine.
+ *
+ * DESIGN INTENT:
+ * This module orchestrates the entire lifecycle of the Atlas service. It is responsible for:
+ * 1.  System Bootstrapping: Initializing configuration, session management, and the shared registry.
+ * 2.  Composition Root: Assembling the core engine (FileScanner, GraphBuilder, LayoutStrategy).
+ * 3.  API Gateway: Serving the REST API for topology data, node management, and visualizer assets.
+ * 4.  Codebase Watcher: Monitoring the target project for source changes to trigger automated rescans.
+ * 5.  Broadcast Hub: Managing real-time Server-Sent Events (SSE) to keep connected clients synchronized.
+ *
+ * All topological data flows through this root before being persisted to .atlas/data.
  */
 async function main() {
     const cwd = process.cwd();

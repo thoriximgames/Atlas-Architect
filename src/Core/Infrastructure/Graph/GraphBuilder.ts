@@ -4,6 +4,21 @@ import { GraphNode } from '../../Domain/Model/GraphNode';
 import { IAtlasEdge } from '../../../Shared/Protocol';
 import { MetricsCalculator } from './MetricsCalculator';
 
+/**
+ * GraphBuilder: Topological relationship resolver and graph architect.
+ * 
+ * DESIGN INTENT:
+ * Serves as the "Skeleton" constructor for the system. It takes the flat list of 
+ * scanned source files and transforms them into a directed hierarchical graph. 
+ * It is responsible for resolving string-based dependencies into concrete node 
+ * relationships and identifying architectural orphans.
+ * 
+ * KEY RESPONSIBILITIES:
+ * 1. Build the primary hierarchy based on entry points and gravity-based relationships.
+ * 2. Resolve 'Interstellar' dependencies (cross-module imports).
+ * 3. Event Bridge: Implicitly connects publishers and subscribers based on event names.
+ * 4. Orphan Identification: Groups all unreachable nodes into the virtual '_UNCONNECTED_' root.
+ */
 export class GraphBuilder implements IGraphBuilder {
     private nodes: Record<string, GraphNode> = {};
     private edges: IAtlasEdge[] = [];

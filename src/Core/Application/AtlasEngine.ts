@@ -8,6 +8,20 @@ import { HeartbeatService } from './HeartbeatService';
 import { IAtlasConfig } from '../../Shared/Config';
 import { MetricsCalculator } from '../Infrastructure/Graph/MetricsCalculator';
 
+/**
+ * AtlasEngine: The core orchestration unit of the system.
+ * 
+ * DESIGN INTENT:
+ * Acts as the "Brain" of the Atlas ecosystem. It bridges the gap between raw file system 
+ * data and high-level architectural models. It implements the drift detection logic 
+ * by comparing the scanned 'Reality' against the historical 'Registry'.
+ * 
+ * KEY RESPONSIBILITIES:
+ * 1. Orchestrates the Scan -> Build -> Layout -> Validate pipeline.
+ * 2. Manages Drift Detection: Identifies 'Dirty' nodes where implementation violates verified state.
+ * 3. Contract Ripple: Detects changes in public interfaces and invalidates dependents.
+ * 4. Architectural Linting: Enforces "Iron Law" rules defined in the system config.
+ */
 export class AtlasEngine {
     private heartbeat = new HeartbeatService();
 

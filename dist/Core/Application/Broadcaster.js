@@ -2,7 +2,18 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Broadcaster = void 0;
 /**
- * Broadcaster: Manages connected clients and sends Server-Sent Events (SSE).
+ * Broadcaster: Real-time synchronization hub.
+ *
+ * DESIGN INTENT:
+ * Provides the "Nervous System" of the Atlas service. It enables immediate
+ * feedback loops by pushing server-side events (SSE) to all connected visualizers.
+ * It ensures that when a scan completes or a command is issued, the UI reflects
+ * the new state without a manual refresh.
+ *
+ * KEY RESPONSIBILITIES:
+ * 1. Manages a registry of active Server-Sent Events (SSE) client connections.
+ * 2. Provides a simplified broadcast interface for system-wide event propagation.
+ * 3. Handles initial keep-alive signals and automatic client cleanup on disconnect.
  */
 class Broadcaster {
     clients = [];

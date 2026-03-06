@@ -18,6 +18,7 @@ export interface GraphNode {
     complexity: number;
     description?: string;
     purpose?: string;
+    designIntent?: string;
     lastModifiedBy?: string;
     implementationNotes?: string;
     violations: string[];

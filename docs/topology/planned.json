@@ -2,14 +2,15 @@
   "plannedNodes": [
     {
       "id": "src/index",
-      "name": "AtlasEngineRoot",
+      "name": "Atlas Engine Root",
       "type": "System",
-      "purpose": "The primary entry point for the Atlas Engine backend.",
+      "purpose": "Primary entry point and Composition Root for the backend engine.",
       "parentId": "",
       "dependencies": [],
-      "description": "Atlas Architect Root: The primary entry point for the backend engine. Responsible for session management, API routing, and codebase watching.",
-      "x": -250,
-      "y": 0
+      "description": "Atlas Architect Root: The primary entry point and Composition Root for the backend engine. DESIGN INTENT: This module orchestrates the entire lifecycle of the Atlas service. It is responsible for: 1. System Bootstrapping: Initializing configuration, session management, and the shared registry. 2. Composition Root: Assembling the core engine (FileScanner, GraphBuilder, LayoutStrategy). 3. API Gateway: Serving the REST API for topology data, node management, and visualizer assets. 4. Codebase Watcher: Monitoring the target project for source changes to trigger automated rescans. 5. Broadcast Hub: Managing real-time Server-Sent Events (SSE) to keep connected clients synchronized. All topological data flows through this root before being persisted to .atlas data.",
+      "x": -375,
+      "y": 0,
+      "designIntent": "Orchestrates the service lifecycle, including bootstrapping, core engine assembly (Scanner, Graph, Layout), API Gateway, and real-time broadcasting via SSE."
     },
     {
       "id": "src/Core/Application/HeartbeatService",
@@ -18,86 +19,94 @@
       "purpose": "Monitors system health and broadcasts status.",
       "parentId": "src/index",
       "dependencies": [],
-      "description": "HeartbeatService runs on a timer to ensure the Atlas engine is alive and responding to requests.",
-      "x": -175,
-      "y": 200
+      "description": "",
+      "x": -325,
+      "y": 150,
+      "designIntent": "HeartbeatService runs on a timer to ensure the Atlas engine is alive and responding to requests."
     },
     {
       "id": "src/Core/Application/AtlasEngine",
       "name": "AtlasEngine",
       "type": "Application",
-      "purpose": "The",
+      "purpose": "Core orchestration unit responsible for the Scan - - - pipeline.",
       "parentId": "src/index",
       "dependencies": [],
-      "description": "AtlasEngine",
-      "x": -175,
-      "y": -375
+      "description": "AtlasEngine: The core orchestration unit of the system. DESIGN INTENT: Acts as the \"Brain\" of the Atlas ecosystem. It bridges the gap between raw file system data and high-level architectural models. It implements the drift detection logic by comparing the scanned 'Reality' against the historical 'Registry'. KEY RESPONSIBILITIES: 1. Orchestrates the Scan -> Build -> Layout -> Validate pipeline. 2. Manages Drift Detection: Identifies 'Dirty' nodes where implementation violates verified state. 3. Contract Ripple: Detects changes in public interfaces and invalidates dependents. 4. Architectural Linting: Enforces \"Iron Law\" rules defined in the system config.",
+      "x": -375,
+      "y": -200,
+      "designIntent": "Acts as the 'Brain' of the Atlas ecosystem. It bridges the gap between raw file system data and high-level architectural models. It implements the drift detection logic by comparing the scanned 'Reality' against the historical 'Registry'."
     },
     {
       "id": "src/Core/Infrastructure/FileSystem/FileScanner",
       "name": "FileScanner",
       "type": "Logic",
-      "purpose": "Auto-discovered dependency",
+      "purpose": "Deep-tissue source code extractor and crawler.",
       "parentId": "src/index",
       "dependencies": [],
-      "description": "', '",
-      "x": 0,
-      "y": 0
+      "description": "FileScanner: Deep-tissue source code extractor. DESIGN INTENT: Provides the \"Eyes\" of the Atlas engine. It is responsible for crawling the physical filesystem and extracting structured metadata from source files. It abstracts away the complexities of globbing, file exclusion, and multi-language parsing. KEY RESPONSIBILITIES: 1. Crawls the project directory using configurable inclusion exclusion patterns. 2. Delegates parsing to language-specific parsers via the ParserFactory. 3. Merges results to ensure consistent node identification across the project. 4. Normalizes file paths and manages the initial extraction of dependencies and metrics.",
+      "x": -125,
+      "y": 0,
+      "designIntent": "Provides the 'Eyes' of the Atlas engine. It crawls the physical filesystem and extracts structured metadata from source files, abstracting away multi-language parsing."
     },
     {
       "id": "src/Core/Infrastructure/Graph/GraphBuilder",
       "name": "GraphBuilder",
       "type": "Logic",
-      "purpose": "Auto-discovered dependency",
+      "purpose": "Topological relationship resolver and graph architect.",
       "parentId": "src/index",
       "dependencies": [],
-      "description": "",
-      "x": -100,
-      "y": -375
+      "description": "GraphBuilder: Topological relationship resolver and graph architect. DESIGN INTENT: Serves as the \"Skeleton\" constructor for the system. It takes the flat list of scanned source files and transforms them into a directed hierarchical graph. It is responsible for resolving string-based dependencies into concrete node relationships and identifying architectural orphans. KEY RESPONSIBILITIES: 1. Build the primary hierarchy based on entry points and gravity-based relationships. 2. Resolve 'Interstellar' dependencies (cross-module imports). 3. Event Bridge: Implicitly connects publishers and subscribers based on event names. 4. Orphan Identification: Groups all unreachable nodes into the virtual '_UNCONNECTED_' root.",
+      "x": -175,
+      "y": -200,
+      "designIntent": "Serves as the 'Skeleton' constructor for the system. It transforms scanned source files into a directed hierarchical graph, resolving dependencies and identifies orphans."
     },
     {
       "id": "src/Core/Infrastructure/Layout/PolarLayoutStrategy",
       "name": "PolarLayoutStrategy",
       "type": "Logic",
-      "purpose": "Auto-discovered dependency",
+      "purpose": "Mathematical projection and spatial positioning engine.",
       "parentId": "src/index",
       "dependencies": [],
-      "description": "",
-      "x": -25,
-      "y": -375
+      "description": "PolarLayoutStrategy: Mathematical projection and spatial positioning engine. DESIGN INTENT: Implements the visual \"Soul\" of the Atlas project. It translates the abstract tree-like hierarchy of the graph into concrete 2D coordinates using a polar coordinate system. By distributing nodes in wedges around their parents, it ensures a non-overlapping, expansive layout that emphasizes hierarchy and 'Mass'. KEY RESPONSIBILITIES: 1. Calculates node coordinates using a Wedge-based distribution algorithm. 2. Manages radial depth based on the topological distance from roots. 3. Supports manual coordinate overrides for persistent layouts. 4. Ensures hierarchical stability by sorting nodes by 'Mass' (descendant count).",
+      "x": -75,
+      "y": -200,
+      "designIntent": "Implements the visual 'Soul' of the Atlas project. It translates the abstract tree hierarchy into concrete 2D coordinates using a polar wedge distribution algorithm."
     },
     {
       "id": "src/Shared/Config",
       "name": "Config",
       "type": "Interface",
-      "purpose": "Auto-discovered dependency",
+      "purpose": "Architectural ruleset and system configuration.",
       "parentId": "src/index",
       "dependencies": [],
-      "description": "",
-      "x": 100,
-      "y": -375
+      "description": "IAtlasConfig: The architectural ruleset and system configuration. DESIGN INTENT: Serves as the \"Foundational Mandate\" for an Atlas project. It defines the scanning boundaries and, most importantly, the architectural constraints (rules) that the engine uses to detect \"Iron Law\" violations. KEY RESPONSIBILITIES: 1. Defines project entry points and file inclusion exclusion patterns. 2. Houses the Architectural Ruleset used for automated linting. 3. Configures environmental properties like the service port.",
+      "x": -375,
+      "y": 150,
+      "designIntent": "Serves as the 'Foundational Mandate' for an Atlas project. It defines the scanning boundaries and architectural constraints used for automated linting."
     },
     {
       "id": "src/pipeline",
       "name": "pipeline",
-      "type": "Unknown",
-      "purpose": "Auto-discovered dependency",
+      "type": "Tool",
+      "purpose": "Task lifecycle and synchronization state manager.",
       "parentId": "src/index",
       "dependencies": [],
-      "description": "",
+      "description": "PipelineManager: Task lifecycle and synchronization state manager. DESIGN INTENT: Provides the \"Muscles\" of the project management layer. It automates the synchronization between the scanned 'Reality' and the 'Planned' blueprint by generating actionable Markdown tasks for architectural drift or missing implementations. KEY RESPONSIBILITIES: 1. Generates 'Ghost Node' tasks for nodes planned in the blueprint but missing in code. 2. Generates 'Audit' tasks for implementation changes that violate previous verifications. 3. Manages the 5-stage task lifecycle (Backlog -> Todo -> In Progress -> Review -> Completed). 4. Ensures only 1 active task is in progress per the Iron Law.",
       "x": -250,
-      "y": -375
+      "y": -200,
+      "designIntent": "Provides the 'Muscles' of the project management layer. It automates the synchronization between scanned reality and the blueprint by generating Markdown tasks."
     },
     {
       "id": "src/blueprint",
       "name": "blueprint",
-      "type": "Unknown",
-      "purpose": "Auto-discovered dependency",
+      "type": "Tool",
+      "purpose": "Intentional architecture and blueprint manager.",
       "parentId": "src/index",
       "dependencies": [],
-      "description": "",
-      "x": 50,
-      "y": -375
+      "description": "TopologyPlanner: Intentional architecture and blueprint manager. DESIGN INTENT: Provides the \"Visions\" of the project. It manages the planned.json file, which represents the desired architectural state. It allows the Architect to define nodes, relationships, and constraints before they are implemented, serving as the authoritative source for drift detection. KEY RESPONSIBILITIES: 1. Manages the lifecycle of Planned Nodes (Ghosts) in the architectural blueprint. 2. Healing Logic: Synchronizes metadata (names, types, descriptions) from reality to the blueprint. 3. Handles Guarding and Authority: Assigns ownership and protection levels to nodes. 4. Provides CLI subcommands for command-driven architectural management.",
+      "x": 25,
+      "y": -200,
+      "designIntent": "Provides the 'Visions' of the project. It manages the planned.json file, serving as the authoritative source for intentional topology and drift detection."
     },
     {
       "id": "src/Core/Domain/Model/SourceFile",
@@ -107,8 +116,8 @@
       "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
       "dependencies": [],
       "description": "",
-      "x": 0,
-      "y": 125
+      "x": -125,
+      "y": 150
     },
     {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
@@ -118,8 +127,8 @@
       "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
       "dependencies": [],
       "description": "",
-      "x": 200,
-      "y": 50
+      "x": 125,
+      "y": 0
     },
     {
       "id": "src/Core/Domain/Services/IScanner",
@@ -129,8 +138,8 @@
       "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
       "dependencies": [],
       "description": "",
-      "x": 50,
-      "y": 125
+      "x": -75,
+      "y": 150
     },
     {
       "id": "src/Core/Domain/Services/IParser",
@@ -140,8 +149,8 @@
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "dependencies": [],
       "description": "",
-      "x": 450,
-      "y": 125
+      "x": 125,
+      "y": 150
     },
     {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
@@ -151,8 +160,8 @@
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "dependencies": [],
       "description": "",
-      "x": 450,
-      "y": -100
+      "x": 400,
+      "y": -150
     },
     {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/CppParser",
@@ -162,8 +171,8 @@
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "dependencies": [],
       "description": "",
-      "x": 475,
-      "y": 25
+      "x": 400,
+      "y": -75
     },
     {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/TsParser",
@@ -173,8 +182,8 @@
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "dependencies": [],
       "description": "",
-      "x": 375,
-      "y": -175
+      "x": 175,
+      "y": 150
     },
     {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/PythonParser",
@@ -184,19 +193,64 @@
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "dependencies": [],
       "description": "",
-      "x": 375,
-      "y": 175
+      "x": 400,
+      "y": 0
     },
     {
       "id": "src/Core/Application/Broadcaster",
       "name": "Broadcaster",
       "type": "Service",
-      "purpose": "Broadcasting",
+      "purpose": "Real-time synchronization hub.",
       "parentId": "src/index",
       "dependencies": [],
-      "description": "Broadcaster: Manages connected clients and sends Server-Sent Events (SSE).",
+      "description": "Broadcaster: Real-time synchronization hub. DESIGN INTENT: Provides the \"Nervous System\" of the Atlas service. It enables immediate feedback loops by pushing server-side events (SSE) to all connected visualizers. It ensures that when a scan completes or a command is issued, the UI reflects the new state without a manual refresh. KEY RESPONSIBILITIES: 1. Manages a registry of active Server-Sent Events (SSE) client connections. 2. Provides a simplified broadcast interface for system-wide event propagation. 3. Handles initial keep-alive signals and automatic client cleanup on disconnect.",
+      "x": -275,
+      "y": 150,
+      "designIntent": "Provides the 'Nervous System' of the Atlas service. It enables immediate feedback loops by pushing server-side events (SSE) to all connected visualizers."
+    },
+    {
+      "id": "src/Core/Domain/Services/IGraphBuilder",
+      "name": "IGraphBuilder",
+      "type": "Interface",
+      "purpose": "",
+      "parentId": "src/Core/Application/AtlasEngine",
+      "dependencies": [],
+      "description": "",
+      "x": -225,
+      "y": -475
+    },
+    {
+      "id": "src/Core/Domain/Services/ILayoutStrategy",
+      "name": "ILayoutStrategy",
+      "type": "Interface",
+      "purpose": "",
+      "parentId": "src/Core/Application/AtlasEngine",
+      "dependencies": [],
+      "description": "",
       "x": -150,
-      "y": 125
+      "y": -475
+    },
+    {
+      "id": "src/Core/Infrastructure/Graph/MetricsCalculator",
+      "name": "MetricsCalculator",
+      "type": "Logic",
+      "purpose": "",
+      "parentId": "src/Core/Application/AtlasEngine",
+      "dependencies": [],
+      "description": "",
+      "x": -375,
+      "y": -475
+    },
+    {
+      "id": "src/Shared/Protocol",
+      "name": "Protocol",
+      "type": "Interface",
+      "purpose": "",
+      "parentId": "src/Core/Application/AtlasEngine",
+      "dependencies": [],
+      "description": "",
+      "x": -300,
+      "y": -475
     }
   ]
 }

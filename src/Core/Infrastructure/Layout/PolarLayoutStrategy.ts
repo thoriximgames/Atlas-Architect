@@ -1,6 +1,21 @@
 import { ILayoutStrategy } from '../../Domain/Services/ILayoutStrategy.js';
 import { GraphNode } from '../../Domain/Model/GraphNode.js';
 
+/**
+ * PolarLayoutStrategy: Mathematical projection and spatial positioning engine.
+ * 
+ * DESIGN INTENT:
+ * Implements the visual "Soul" of the Atlas project. It translates the abstract 
+ * tree-like hierarchy of the graph into concrete 2D coordinates using a polar 
+ * coordinate system. By distributing nodes in wedges around their parents, it 
+ * ensures a non-overlapping, expansive layout that emphasizes hierarchy and 'Mass'.
+ * 
+ * KEY RESPONSIBILITIES:
+ * 1. Calculates node coordinates using a Wedge-based distribution algorithm.
+ * 2. Manages radial depth based on the topological distance from roots.
+ * 3. Supports manual coordinate overrides for persistent layouts.
+ * 4. Ensures hierarchical stability by sorting nodes by 'Mass' (descendant count).
+ */
 export class PolarLayoutStrategy implements ILayoutStrategy {
     private static LAYER_RADIUS = 800; 
 

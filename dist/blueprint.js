@@ -13,6 +13,21 @@ if (path_1.default.basename(cwd) === '.atlas') {
     projectRoot = path_1.default.resolve(cwd, '..');
 }
 const PLANNED_PATH = path_1.default.join(projectRoot, 'docs/topology/planned.json');
+/**
+ * TopologyPlanner: Intentional architecture and blueprint manager.
+ *
+ * DESIGN INTENT:
+ * Provides the "Visions" of the project. It manages the planned.json file, which
+ * represents the desired architectural state. It allows the Architect to define
+ * nodes, relationships, and constraints before they are implemented, serving
+ * as the authoritative source for drift detection.
+ *
+ * KEY RESPONSIBILITIES:
+ * 1. Manages the lifecycle of Planned Nodes (Ghosts) in the architectural blueprint.
+ * 2. Healing Logic: Synchronizes metadata (names, types, descriptions) from reality to the blueprint.
+ * 3. Handles Guarding and Authority: Assigns ownership and protection levels to nodes.
+ * 4. Provides CLI subcommands for command-driven architectural management.
+ */
 class TopologyPlanner {
     static async loadPlanned() {
         if (!await fs_extra_1.default.pathExists(PLANNED_PATH)) {
@@ -50,6 +65,8 @@ class TopologyPlanner {
                     node.parentId = input.parentId;
                 if (input.description !== undefined)
                     node.description = input.description;
+                if (input.designIntent !== undefined)
+                    node.designIntent = input.designIntent;
                 console.log(`[PLANNER] Updated node: ${input.id}`);
             }
             else {
@@ -60,7 +77,8 @@ class TopologyPlanner {
                     purpose: input.purpose,
                     parentId: input.parentId || "",
                     dependencies: [],
-                    description: input.description || ""
+                    description: input.description || "",
+                    designIntent: input.designIntent || ""
                 });
                 console.log(`[PLANNER] Added new node: ${input.id}`);
             }
@@ -185,6 +203,9 @@ class TopologyPlanner {
             case 'description':
                 node.description = value;
                 break;
+            case 'designIntent':
+                node.designIntent = value;
+                break;
             case 'x':
                 node.x = parseFloat(value);
                 break;
@@ -192,7 +213,7 @@ class TopologyPlanner {
                 node.y = parseFloat(value);
                 break;
             default:
-                throw new Error(`Unsupported property '${property}'. Use: name, type, purpose, parentId, description, x, y`);
+                throw new Error(`Unsupported property '${property}'. Use: name, type, purpose, parentId, description, designIntent, x, y`);
         }
         await this.savePlanned(data);
         console.log(`[PLANNER] SUCCESS: Updated ${property} for '${id}'`);

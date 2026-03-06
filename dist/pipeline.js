@@ -7,6 +7,20 @@ exports.PipelineManager = void 0;
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const path_1 = __importDefault(require("path"));
 const blueprint_1 = require("./blueprint");
+/**
+ * PipelineManager: Task lifecycle and synchronization state manager.
+ *
+ * DESIGN INTENT:
+ * Provides the "Muscles" of the project management layer. It automates the
+ * synchronization between the scanned 'Reality' and the 'Planned' blueprint by
+ * generating actionable Markdown tasks for architectural drift or missing implementations.
+ *
+ * KEY RESPONSIBILITIES:
+ * 1. Generates 'Ghost Node' tasks for nodes planned in the blueprint but missing in code.
+ * 2. Generates 'Audit' tasks for implementation changes that violate previous verifications.
+ * 3. Manages the 5-stage task lifecycle (Backlog -> Todo -> In Progress -> Review -> Completed).
+ * 4. Ensures only 1 active task is in progress per the Iron Law.
+ */
 // Context Detection
 const cwd = process.cwd();
 let projectRoot = cwd;

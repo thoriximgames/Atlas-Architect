@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-06T10:24:14.825Z",
+  "lastUpdated": "2026-03-06T12:09:09.649Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -81,7 +81,8 @@
             "type: NodeType",
             "purpose: string",
             "parentId?: string",
-            "description?: string }[]"
+            "description?: string",
+            "designIntent?: string }[]"
           ]
         },
         {
@@ -270,6 +271,16 @@
           "visibility": "public",
           "type": "any",
           "name": "description"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "designIntent"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "designIntent"
         },
         {
           "visibility": "public",
@@ -604,6 +615,21 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "designIntent"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "value"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "x"
         },
         {
@@ -738,20 +764,21 @@
         }
       ],
       "events": [],
-      "complexity": 72,
+      "complexity": 76,
+      "description": "TopologyPlanner: Intentional architecture and blueprint manager. DESIGN INTENT: Provides the \"Visions\" of the project. It manages the planned.json file, which represents the desired architectural state. It allows the Architect to define nodes, relationships, and constraints before they are implemented, serving as the authoritative source for drift detection. KEY RESPONSIBILITIES: 1. Manages the lifecycle of Planned Nodes (Ghosts) in the architectural blueprint. 2. Healing Logic: Synchronizes metadata (names, types, descriptions) from reality to the blueprint. 3. Handles Guarding and Authority: Assigns ownership and protection levels to nodes. 4. Provides CLI subcommands for command-driven architectural management.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "3c3dd605315e303f0d02dc733164c91a",
-      "contractHash": "9ed9c3c72be7b8085415aee052a84d3e",
-      "initialX": 50,
-      "initialY": -375,
+      "verifiedHash": "c967aaf254616d473d1917dbab2f6361",
+      "contractHash": "52ac7c7346b57f1931b187f64e3a3288",
+      "initialX": 25,
+      "initialY": -200,
       "sectorAngle": 2.443460952792061,
       "sectorWidth": 0.3490658503988659,
-      "x": 50,
-      "y": -375
+      "x": 25,
+      "y": -200
     },
     "src/Shared/Protocol": {
       "id": "src/Shared/Protocol",
@@ -924,6 +951,11 @@
         },
         {
           "visibility": "public",
+          "type": "any",
+          "name": "string"
+        },
+        {
+          "visibility": "public",
           "type": "string[]",
           "name": "violations"
         },
@@ -1035,6 +1067,16 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "string"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "string"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "GuardState"
         },
         {
@@ -1094,20 +1136,20 @@
         }
       ],
       "events": [],
-      "complexity": 27,
+      "complexity": 30,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "3f86ec4167fd423b5e9e8bbf77d07031",
-      "contractHash": "cf9e15c8e486d48d5cff769bb8b3f326",
-      "initialX": 375,
-      "initialY": 125,
+      "verifiedHash": "4f05c6672aa6ba82dd478e8f9716d018",
+      "contractHash": "935974802313314bf68ae64461a40042",
+      "initialX": -300,
+      "initialY": -475,
       "sectorAngle": 2.443460952792061,
       "sectorWidth": 0.3490658503988659,
-      "x": 375,
-      "y": 125
+      "x": -300,
+      "y": -475
     },
     "src/index": {
       "id": "src/index",
@@ -1728,19 +1770,19 @@
         }
       ],
       "complexity": 68,
-      "description": "Atlas Architect Root: The primary entry point for the backend engine. Responsible for session management, API routing, and codebase watching.",
+      "description": "Atlas Architect Root: The primary entry point and Composition Root for the backend engine. DESIGN INTENT: This module orchestrates the entire lifecycle of the Atlas service. It is responsible for: 1. System Bootstrapping: Initializing configuration, session management, and the shared registry. 2. Composition Root: Assembling the core engine (FileScanner, GraphBuilder, LayoutStrategy). 3. API Gateway: Serving the REST API for topology data, node management, and visualizer assets. 4. Codebase Watcher: Monitoring the target project for source changes to trigger automated rescans. 5. Broadcast Hub: Managing real-time Server-Sent Events (SSE) to keep connected clients synchronized. All topological data flows through this root before being persisted to .atlas data.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "07df9fbbfb0a12c763583c0b6e5709a8",
+      "verifiedHash": "5d50017e9b14d94b5e79dac6127f6e3f",
       "contractHash": "bb50ad0537e61515cc09b285a84cc1c9",
-      "initialX": -250,
+      "initialX": -375,
       "initialY": 0,
       "sectorAngle": -1.1344640137963142,
       "sectorWidth": 4.014257279586958,
-      "x": -250,
+      "x": -375,
       "y": 0
     },
     "src/Core/Application/AtlasEngine": {
@@ -2122,19 +2164,20 @@
       ],
       "events": [],
       "complexity": 36,
+      "description": "AtlasEngine: The core orchestration unit of the system. DESIGN INTENT: Acts as the \"Brain\" of the Atlas ecosystem. It bridges the gap between raw file system data and high-level architectural models. It implements the drift detection logic by comparing the scanned 'Reality' against the historical 'Registry'. KEY RESPONSIBILITIES: 1. Orchestrates the Scan -> Build -> Layout -> Validate pipeline. 2. Manages Drift Detection: Identifies 'Dirty' nodes where implementation violates verified state. 3. Contract Ripple: Detects changes in public interfaces and invalidates dependents. 4. Architectural Linting: Enforces \"Iron Law\" rules defined in the system config.",
       "implementationNotes": "\n[SYSTEM] Marked dirty due to contract change in dependency.",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "f03328dffe1e214e92e519fd1b2b36c9",
+      "verifiedHash": "0e5141e62fa67a55cb8d5af44c29f441",
       "contractHash": "b85327a30bb69c3e97a5a4203892f449",
-      "initialX": -175,
-      "initialY": -375,
+      "initialX": -375,
+      "initialY": -200,
       "sectorAngle": -0.7695315338338635,
       "sectorWidth": 1.0947974398873521,
-      "x": -175,
-      "y": -375
+      "x": -375,
+      "y": -200
     },
     "src/Core/Infrastructure/FileSystem/FileScanner": {
       "id": "src/Core/Infrastructure/FileSystem/FileScanner",
@@ -2251,19 +2294,19 @@
       ],
       "events": [],
       "complexity": 8,
-      "description": "', '",
+      "description": "FileScanner: Deep-tissue source code extractor. DESIGN INTENT: Provides the \"Eyes\" of the Atlas engine. It is responsible for crawling the physical filesystem and extracting structured metadata from source files. It abstracts away the complexities of globbing, file exclusion, and multi-language parsing. KEY RESPONSIBILITIES: 1. Crawls the project directory using configurable inclusion exclusion patterns. 2. Delegates parsing to language-specific parsers via the ParserFactory. 3. Merges results to ensure consistent node identification across the project. 4. Normalizes file paths and manages the initial extraction of dependencies and metrics.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "a46314fb4068f355f74d6c777e1baafc",
+      "verifiedHash": "2e95eab20488449cf54a8761e70576fd",
       "contractHash": "6f813758e9bd1546958801325bf870f8",
-      "initialX": 0,
+      "initialX": -125,
       "initialY": 0,
       "sectorAngle": -2.2292614536836663,
       "sectorWidth": 1.8246623998122535,
-      "x": 0,
+      "x": -125,
       "y": 0
     },
     "src/Core/Infrastructure/Graph/GraphBuilder": {
@@ -2619,19 +2662,20 @@
       ],
       "events": [],
       "complexity": 51,
+      "description": "GraphBuilder: Topological relationship resolver and graph architect. DESIGN INTENT: Serves as the \"Skeleton\" constructor for the system. It takes the flat list of scanned source files and transforms them into a directed hierarchical graph. It is responsible for resolving string-based dependencies into concrete node relationships and identifying architectural orphans. KEY RESPONSIBILITIES: 1. Build the primary hierarchy based on entry points and gravity-based relationships. 2. Resolve 'Interstellar' dependencies (cross-module imports). 3. Event Bridge: Implicitly connects publishers and subscribers based on event names. 4. Orphan Identification: Groups all unreachable nodes into the virtual '_UNCONNECTED_' root.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "13f4a81c32d59a4a07d5c4d91cfcc553",
+      "verifiedHash": "5e7c06d922ee828a200db869bf7ad6bd",
       "contractHash": "4b8b93e9a6faa2c879ac4e3a43bd20a0",
-      "initialX": -100,
-      "initialY": -375,
+      "initialX": -175,
+      "initialY": -200,
       "sectorAngle": -0.03966657390896211,
       "sectorWidth": 0.3649324799624507,
-      "x": -100,
-      "y": -375
+      "x": -175,
+      "y": -200
     },
     "src/Core/Infrastructure/Layout/PolarLayoutStrategy": {
       "id": "src/Core/Infrastructure/Layout/PolarLayoutStrategy",
@@ -3165,19 +3209,20 @@
       ],
       "events": [],
       "complexity": 16,
+      "description": "PolarLayoutStrategy: Mathematical projection and spatial positioning engine. DESIGN INTENT: Implements the visual \"Soul\" of the Atlas project. It translates the abstract tree-like hierarchy of the graph into concrete 2D coordinates using a polar coordinate system. By distributing nodes in wedges around their parents, it ensures a non-overlapping, expansive layout that emphasizes hierarchy and 'Mass'. KEY RESPONSIBILITIES: 1. Calculates node coordinates using a Wedge-based distribution algorithm. 2. Manages radial depth based on the topological distance from roots. 3. Supports manual coordinate overrides for persistent layouts. 4. Ensures hierarchical stability by sorting nodes by 'Mass' (descendant count).",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "e6fff98acd7148308cfe0bebe7001302",
+      "verifiedHash": "177004576aaac93d82199b32fa9dd488",
       "contractHash": "236766084d1bee7e10f8bc4d29557ef8",
-      "initialX": -25,
-      "initialY": -375,
+      "initialX": -75,
+      "initialY": -200,
       "sectorAngle": 0.23403278606287592,
       "sectorWidth": 0.18246623998122535,
-      "x": -25,
-      "y": -375
+      "x": -75,
+      "y": -200
     },
     "src/Shared/Config": {
       "id": "src/Shared/Config",
@@ -3236,24 +3281,25 @@
       ],
       "events": [],
       "complexity": 4,
+      "description": "IAtlasConfig: The architectural ruleset and system configuration. DESIGN INTENT: Serves as the \"Foundational Mandate\" for an Atlas project. It defines the scanning boundaries and, most importantly, the architectural constraints (rules) that the engine uses to detect \"Iron Law\" violations. KEY RESPONSIBILITIES: 1. Defines project entry points and file inclusion exclusion patterns. 2. Houses the Architectural Ruleset used for automated linting. 3. Configures environmental properties like the service port.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "6d4f60b619d11cbc4fad4d01ec44e109",
+      "verifiedHash": "580042349f758d9118f9769599489b7a",
       "contractHash": "cdb326cfac64d6a8d30b9f37b96dd2e5",
-      "initialX": 100,
-      "initialY": -375,
+      "initialX": -375,
+      "initialY": 150,
       "sectorAngle": 0.4164990260441013,
       "sectorWidth": 0.18246623998122535,
-      "x": 100,
-      "y": -375
+      "x": -375,
+      "y": 150
     },
     "src/pipeline": {
       "id": "src/pipeline",
       "name": "pipeline",
-      "type": "Unknown",
+      "type": "Tool",
       "file": "src/pipeline",
       "language": "TypeScript",
       "depth": 1,
@@ -3590,24 +3636,25 @@
       ],
       "events": [],
       "complexity": 38,
+      "description": "PipelineManager: Task lifecycle and synchronization state manager. DESIGN INTENT: Provides the \"Muscles\" of the project management layer. It automates the synchronization between the scanned 'Reality' and the 'Planned' blueprint by generating actionable Markdown tasks for architectural drift or missing implementations. KEY RESPONSIBILITIES: 1. Generates 'Ghost Node' tasks for nodes planned in the blueprint but missing in code. 2. Generates 'Audit' tasks for implementation changes that violate previous verifications. 3. Manages the 5-stage task lifecycle (Backlog -> Todo -> In Progress -> Review -> Completed). 4. Ensures only 1 active task is in progress per the Iron Law.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "457459d229dbd313e1d842bb05a59bed",
+      "verifiedHash": "22ee6cbd9c34aa6056a078ba8bf85122",
       "contractHash": "dc1a191c12c70ab18b8d61f9f0026441",
       "initialX": -250,
-      "initialY": -375,
+      "initialY": -200,
       "sectorAngle": 0.5989652660253266,
       "sectorWidth": 0.18246623998122535,
       "x": -250,
-      "y": -375
+      "y": -200
     },
     "src/Core/Application/Broadcaster": {
       "id": "src/Core/Application/Broadcaster",
       "name": "Broadcaster",
-      "type": "System",
+      "type": "Interface",
       "file": "src/Core/Application/Broadcaster",
       "language": "TypeScript",
       "depth": 1,
@@ -3676,20 +3723,20 @@
         }
       ],
       "complexity": 1,
-      "description": "Broadcaster: Manages connected clients and sends Server-Sent Events (SSE).",
+      "description": "Broadcaster: Real-time synchronization hub. DESIGN INTENT: Provides the \"Nervous System\" of the Atlas service. It enables immediate feedback loops by pushing server-side events (SSE) to all connected visualizers. It ensures that when a scan completes or a command is issued, the UI reflects the new state without a manual refresh. KEY RESPONSIBILITIES: 1. Manages a registry of active Server-Sent Events (SSE) client connections. 2. Provides a simplified broadcast interface for system-wide event propagation. 3. Handles initial keep-alive signals and automatic client cleanup on disconnect.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "fc7e625e498fe6866238678696bcd9aa",
+      "verifiedHash": "3b0275efc50e4941efd3c9f85de5979c",
       "contractHash": "a115ed8ccad34bab964d124fdb825def",
-      "initialX": -150,
-      "initialY": 125,
+      "initialX": -275,
+      "initialY": 150,
       "sectorAngle": 0.781431506006552,
       "sectorWidth": 0.18246623998122535,
-      "x": -150,
-      "y": 125
+      "x": -275,
+      "y": 150
     },
     "src/Core/Domain/Services/IScanner": {
       "id": "src/Core/Domain/Services/IScanner",
@@ -3716,12 +3763,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "6babec4f9867c51a7bd49ad43d197325",
       "contractHash": "b9f8daff52e77ca850a0f4b2868aebad",
-      "initialX": 50,
-      "initialY": 125,
+      "initialX": -75,
+      "initialY": 150,
       "sectorAngle": -1.2074505097888044,
       "sectorWidth": 0.21895948797747045,
-      "x": 50,
-      "y": 125
+      "x": -75,
+      "y": 150
     },
     "src/Core/Domain/Services/IGraphBuilder": {
       "id": "src/Core/Domain/Services/IGraphBuilder",
@@ -3761,12 +3808,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "3483e5e08ec27fccc60b61bd504456fd",
       "contractHash": "16e4ebe0bf7ef3c438aa8de3d3643869",
-      "initialX": 400,
-      "initialY": -250,
+      "initialX": -225,
+      "initialY": -475,
       "sectorAngle": -0.9884910218113341,
       "sectorWidth": 0.21895948797747045,
-      "x": 400,
-      "y": -250
+      "x": -225,
+      "y": -475
     },
     "src/Core/Domain/Services/ILayoutStrategy": {
       "id": "src/Core/Domain/Services/ILayoutStrategy",
@@ -3799,12 +3846,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "7bc6f0356758353c0c574263c0677088",
       "contractHash": "17f8a6122a7b2bbc8e6e4aedf5031bfb",
-      "initialX": 175,
-      "initialY": -150,
+      "initialX": -150,
+      "initialY": -475,
       "sectorAngle": -0.7695315338338635,
       "sectorWidth": 0.21895948797747045,
-      "x": 175,
-      "y": -150
+      "x": -150,
+      "y": -475
     },
     "src/Core/Application/HeartbeatService": {
       "id": "src/Core/Application/HeartbeatService",
@@ -3838,12 +3885,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "966c5b6b6ce494c1481898ff60da3783",
       "contractHash": "ad82594e0838cff20bc7475be2052b58",
-      "initialX": -175,
-      "initialY": 200,
+      "initialX": -325,
+      "initialY": 150,
       "sectorAngle": -0.5505720458563932,
       "sectorWidth": 0.21895948797747045,
-      "x": -175,
-      "y": 200
+      "x": -325,
+      "y": 150
     },
     "src/Core/Infrastructure/Graph/MetricsCalculator": {
       "id": "src/Core/Infrastructure/Graph/MetricsCalculator",
@@ -3968,12 +4015,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "642062433d68226c7d2adc08f77fbf0c",
       "contractHash": "45e40aa7d6605c0325778e1bcfcda1f3",
-      "initialX": 225,
-      "initialY": -225,
+      "initialX": -375,
+      "initialY": -475,
       "sectorAngle": -0.3316125578789227,
       "sectorWidth": 0.21895948797747045,
-      "x": 225,
-      "y": -225
+      "x": -375,
+      "y": -475
     },
     "src/Core/Domain/Model/SourceFile": {
       "id": "src/Core/Domain/Model/SourceFile",
@@ -4066,12 +4113,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "089516595bb9f4269d63941af969ee85",
       "contractHash": "416f57f18d30c1598da263b1afa76e77",
-      "initialX": 0,
-      "initialY": 125,
+      "initialX": -125,
+      "initialY": 150,
       "sectorAngle": -1.4183003871004427,
       "sectorWidth": 0.20274026664580594,
-      "x": 0,
-      "y": 125
+      "x": -125,
+      "y": 150
     },
     "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
@@ -4125,12 +4172,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "f73ba9264ac9435243259eca5812e3f7",
       "contractHash": "e082fb22b6810307ee98f7663df38dfe",
-      "initialX": 200,
-      "initialY": 50,
+      "initialX": 125,
+      "initialY": 0,
       "sectorAngle": -2.3306315870065695,
       "sectorWidth": 1.6219221331664475,
-      "x": 200,
-      "y": 50
+      "x": 125,
+      "y": 0
     },
     "src/Core/Domain/Model/GraphNode": {
       "id": "src/Core/Domain/Model/GraphNode",
@@ -4240,6 +4287,11 @@
         },
         {
           "visibility": "public",
+          "type": "any",
+          "name": "string"
+        },
+        {
+          "visibility": "public",
           "type": "string[]",
           "name": "violations"
         },
@@ -4320,14 +4372,14 @@
         }
       ],
       "events": [],
-      "complexity": 16,
+      "complexity": 17,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "1181cec87cf187349c61f05c86685481",
-      "contractHash": "bc2ea22721c2b0cc8c814aa0094e80eb",
+      "verifiedHash": "0c5791aed767ea1219266ef29c282198",
+      "contractHash": "4a2f6e99bf4500440c88c942f8218be1",
       "initialX": 725,
       "initialY": 0,
       "sectorAngle": -0.03966657390896211,
@@ -4366,12 +4418,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "307a547a1972eaa9f6ac3e2781398a23",
       "contractHash": "d89bb1fcb35da1f51aba81a5f54eb63b",
-      "initialX": 450,
-      "initialY": 125,
+      "initialX": 125,
+      "initialY": 150,
       "sectorAngle": -2.3306315870065695,
       "sectorWidth": 0.23170316188092105,
-      "x": 450,
-      "y": 125
+      "x": 125,
+      "y": 150
     },
     "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
@@ -4745,12 +4797,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "0b75c6eb3b8f77d8e93245fdc4ee4555",
       "contractHash": "9490d1ae516efe6066e8ab5de84ba510",
-      "initialX": 450,
-      "initialY": -100,
+      "initialX": 400,
+      "initialY": -150,
       "sectorAngle": -2.7940379107684117,
       "sectorWidth": 0.6951094856427632,
-      "x": 450,
-      "y": -100
+      "x": 400,
+      "y": -150
     },
     "src/Core/Infrastructure/FileSystem/Parsers/CppParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/CppParser",
@@ -4971,12 +5023,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "6f98436fe307f5a5bef7acc66d836b66",
       "contractHash": "76148b9e04dfd3fdaabf8dbd6800914f",
-      "initialX": 475,
-      "initialY": 25,
+      "initialX": 400,
+      "initialY": -75,
       "sectorAngle": -2.0989284251256484,
       "sectorWidth": 0.23170316188092105,
-      "x": 475,
-      "y": 25
+      "x": 400,
+      "y": -75
     },
     "src/Core/Infrastructure/FileSystem/Parsers/TsParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/TsParser",
@@ -5290,12 +5342,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "4c6907ea09b0d14941f4c1abe4968bf7",
       "contractHash": "d6d71db8319269f9338ddb03c87067fd",
-      "initialX": 375,
-      "initialY": -175,
+      "initialX": 175,
+      "initialY": 150,
       "sectorAngle": -1.867225263244727,
       "sectorWidth": 0.23170316188092105,
-      "x": 375,
-      "y": -175
+      "x": 175,
+      "y": 150
     },
     "src/Core/Infrastructure/FileSystem/Parsers/PythonParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/PythonParser",
@@ -5576,12 +5628,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "12ac266c49ec27b63d971a3cb1b41048",
       "contractHash": "d0d32934923f40f9c707f76740443ceb",
-      "initialX": 375,
-      "initialY": 175,
+      "initialX": 400,
+      "initialY": 0,
       "sectorAngle": -1.635522101363806,
       "sectorWidth": 0.23170316188092105,
-      "x": 375,
-      "y": 175
+      "x": 400,
+      "y": 0
     },
     "src/Core/Infrastructure/FileSystem/Parsers/BaseParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
@@ -7100,20 +7152,20 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 115,
+      "complexity": 119,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "098274568d43152678bf01e8e0b7d117",
+      "verifiedHash": "bd36dc1b9e5ce16479b65b574833dd62",
       "contractHash": "49c148c48766e1b2166ffda129c9f403",
-      "initialX": -350,
-      "initialY": 650,
+      "initialX": -325,
+      "initialY": 600,
       "sectorAngle": 1.5707963267948966,
       "sectorWidth": 1.3962634015954636,
-      "x": -350,
-      "y": 650
+      "x": -325,
+      "y": 600
     },
     "viewer/src/Engine/GalaxyEngine": {
       "id": "viewer/src/Engine/GalaxyEngine",
@@ -9107,6 +9159,11 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "all"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "style"
         },
         {
@@ -9162,7 +9219,57 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "60a5fa"
+          "name": "fbbf24"
+        },
+        {
+          "visibility": "public",
+          "type": "10px",
+          "name": "size"
+        },
+        {
+          "visibility": "public",
+          "type": "4px",
+          "name": "bottom"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "style"
+        },
+        {
+          "visibility": "public",
+          "type": "13px",
+          "name": "size"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "5"
+        },
+        {
+          "visibility": "public",
+          "type": "12px",
+          "name": "bottom"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "fbbf24"
+        },
+        {
+          "visibility": "public",
+          "type": "10px",
+          "name": "left"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "style"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "fbbf24"
         },
         {
           "visibility": "public",
@@ -9501,14 +9608,14 @@
         }
       ],
       "events": [],
-      "complexity": 16,
+      "complexity": 17,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "8f6673f1d8ccade22a6ace4074c82366",
-      "contractHash": "aff7e9feb750e670fed544993d3a85f7",
+      "verifiedHash": "8340bbe7a479fe56df0d452777a582e5",
+      "contractHash": "0b728fe4c8b58ce1432bf8c4a3f0b458",
       "initialX": -500,
       "initialY": 1050,
       "sectorAngle": 1.371330126566973,
@@ -10133,12 +10240,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "83ba05296ec9ba0b5561fa381f5a29f8",
       "contractHash": "acf625b1f618352335b5b8e70bae8455",
-      "initialX": -100,
-      "initialY": 1025,
+      "initialX": -50,
+      "initialY": 1000,
       "sectorAngle": 2.1691949274786664,
       "sectorWidth": 0.19946620022792336,
-      "x": -100,
-      "y": 1025
+      "x": -50,
+      "y": 1000
     },
     "viewer/src/Forces/GalaxyPhysics": {
       "id": "viewer/src/Forces/GalaxyPhysics",

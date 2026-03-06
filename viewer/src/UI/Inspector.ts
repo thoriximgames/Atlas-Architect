@@ -12,34 +12,8 @@ export class Inspector {
                 <div class="type-color-dot" style="width: 12px; height: 12px; border-radius: 50%; background: ${style.fill}; margin-right: 8px;"></div>
                 <div class="type-label" style="text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; opacity: 0.8; font-weight: 600;">${node.type} ${node.language ? `• ${node.language}` : ''}</div>
             </div>
-            <div class="file-path" style="font-family: monospace; font-size: 11px; opacity: 0.6; margin-bottom: 16px;">${node.id}</div>
+            <div class="file-path" style="font-family: monospace; font-size: 11px; opacity: 0.6; margin-bottom: 16px; word-break: break-all;">${node.id}</div>
             
-            ${node.purpose ? `
-                <div class="inspector-section">
-                    <h3 style="color: #60a5fa; font-size: 10px; margin-bottom: 4px;">DESIGN INTENT (AI CONTEXT)</h3>
-                    <div class="node-purpose" style="font-size: 13px; line-height: 1.5; margin-bottom: 12px; border-left: 2px solid #60a5fa; padding-left: 10px;">${node.purpose}</div>
-                </div>
-            ` : `
-                <div class="inspector-section">
-                    <h3 style="color: #60a5fa; font-size: 10px; margin-bottom: 4px;">DESIGN INTENT (AI CONTEXT)</h3>
-                    <div class="node-purpose" style="font-size: 13px; line-height: 1.5; margin-bottom: 12px; border-left: 2px solid #ef4444; padding-left: 10px; color: #ef4444; font-style: italic;">⚠️ Missing AI Context (Purpose not defined)</div>
-                </div>
-            `}
-
-            ${node.description ? `
-                <div class="inspector-section">
-                    <h3 style="color: #a1a1aa; font-size: 10px; margin-bottom: 4px;">SOURCE DOCUMENTATION</h3>
-                    <div class="node-description" style="font-size: 12px; line-height: 1.4; opacity: 0.8; margin-bottom: 12px;">${node.description}</div>
-                </div>
-            ` : `
-                <div class="inspector-section">
-                    <h3 style="color: #a1a1aa; font-size: 10px; margin-bottom: 4px;">SOURCE DOCUMENTATION</h3>
-                    <div class="node-description" style="font-size: 12px; line-height: 1.4; margin-bottom: 12px; color: #ef4444; font-style: italic;">⚠️ Missing Source Documentation (No comments found)</div>
-                </div>
-            `}
-
-            ${this.renderLayers(node)}
-
             <div class="stat-grid">
                 <div class="stat-card">
                     <div class="stat-label">Hierarchy</div>
@@ -54,6 +28,39 @@ export class Inspector {
                     <div class="stat-value">${node.complexity}</div>
                 </div>
             </div>
+
+            ${this.renderLayers(node)}
+
+            ${node.purpose ? `
+                <div class="inspector-section">
+                    <h3 style="color: #60a5fa; font-size: 10px; margin-bottom: 4px;">FUNCTIONAL PURPOSE</h3>
+                    <div class="node-purpose" style="font-size: 13px; line-height: 1.5; margin-bottom: 12px; border-left: 2px solid #60a5fa; padding-left: 10px;">${node.purpose}</div>
+                </div>
+            ` : ''}
+
+            ${node.designIntent ? `
+                <div class="inspector-section">
+                    <h3 style="color: #fbbf24; font-size: 10px; margin-bottom: 4px;">DESIGN INTENT (AI CONTEXT)</h3>
+                    <div class="node-intent" style="font-size: 13px; line-height: 1.5; margin-bottom: 12px; border-left: 2px solid #fbbf24; padding-left: 10px;">${node.designIntent}</div>
+                </div>
+            ` : `
+                <div class="inspector-section">
+                    <h3 style="color: #fbbf24; font-size: 10px; margin-bottom: 4px;">DESIGN INTENT (AI CONTEXT)</h3>
+                    <div class="node-intent" style="font-size: 13px; line-height: 1.5; margin-bottom: 12px; border-left: 2px solid #ef4444; padding-left: 10px; color: #ef4444; font-style: italic;">⚠️ Missing AI Context (Design Intent not defined)</div>
+                </div>
+            `}
+
+            ${node.description ? `
+                <div class="inspector-section">
+                    <h3 style="color: #a1a1aa; font-size: 10px; margin-bottom: 4px;">SOURCE DOCUMENTATION</h3>
+                    <div class="node-description" style="font-size: 12px; line-height: 1.4; opacity: 0.8; margin-bottom: 12px;">${node.description}</div>
+                </div>
+            ` : `
+                <div class="inspector-section">
+                    <h3 style="color: #a1a1aa; font-size: 10px; margin-bottom: 4px;">SOURCE DOCUMENTATION</h3>
+                    <div class="node-description" style="font-size: 12px; line-height: 1.4; margin-bottom: 12px; color: #ef4444; font-style: italic;">⚠️ Missing Source Documentation (No comments found)</div>
+                </div>
+            `}
         `;
 
         if (node.methods && node.methods.length > 0) {

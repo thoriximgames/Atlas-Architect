@@ -43,6 +43,7 @@ export interface IAtlasNode {
     complexity: number;
     description?: string;
     purpose?: string;
+    designIntent?: string;
     lastModifiedBy?: string;
     implementationNotes?: string;
     violations: string[];
@@ -76,6 +77,8 @@ export interface IPlannedNode {
     parentId: string;
     dependencies: string[];
     purpose?: string;
+    description?: string;
+    designIntent?: string;
     authorityId?: string;
     guardState?: GuardState;
     isAuthority?: boolean;

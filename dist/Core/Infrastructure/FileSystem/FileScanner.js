@@ -7,6 +7,20 @@ exports.FileScanner = void 0;
 const fast_glob_1 = __importDefault(require("fast-glob"));
 const path_1 = __importDefault(require("path"));
 const ParserFactory_1 = require("./Parsers/ParserFactory");
+/**
+ * FileScanner: Deep-tissue source code extractor.
+ *
+ * DESIGN INTENT:
+ * Provides the "Eyes" of the Atlas engine. It is responsible for crawling the physical
+ * filesystem and extracting structured metadata from source files. It abstracts
+ * away the complexities of globbing, file exclusion, and multi-language parsing.
+ *
+ * KEY RESPONSIBILITIES:
+ * 1. Crawls the project directory using configurable inclusion/exclusion patterns.
+ * 2. Delegates parsing to language-specific parsers via the ParserFactory.
+ * 3. Merges results to ensure consistent node identification across the project.
+ * 4. Normalizes file paths and manages the initial extraction of dependencies and metrics.
+ */
 class FileScanner {
     exclude = [
         '**/bin/**', '**/obj/**', '**/*.meta', '**/*.asmdef', '**/node_modules/**', '**/.git/**',

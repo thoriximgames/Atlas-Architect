@@ -117,14 +117,14 @@
             "scanner"
         ],
         "style": {
-            "fill": "#E6E6E6",
-            "stroke": "#B3B3B3",
+            "fill": "#45AAF2",
+            "stroke": "#2D98DA",
             "text": "#444444"
         },
         "legend": {
             "label": "LOGIC",
             "desc": "Algorithms and Parsers",
-            "shape": "circle"
+            "shape": "triangle"
         }
     },
     "Utility": {
@@ -178,6 +178,44 @@
             "label": "GATEWAY",
             "desc": "Network Entry Point",
             "shape": "hexagon"
+        }
+    },
+    "Tool": {
+        "id": "Tool",
+        "keywords": [
+            "tool",
+            "cli",
+            "planner",
+            "pipeline",
+            "script"
+        ],
+        "style": {
+            "fill": "#E056FD",
+            "stroke": "#BE2EDD",
+            "text": "#444444"
+        },
+        "legend": {
+            "label": "TOOL",
+            "desc": "Architectural tools and CLI management scripts",
+            "shape": "pentagon"
+        }
+    },
+    "Application": {
+        "id": "Application",
+        "keywords": [
+            "application",
+            "app",
+            "orchestrator"
+        ],
+        "style": {
+            "fill": "#2BCBBA",
+            "stroke": "#0FB9B1",
+            "text": "#444444"
+        },
+        "legend": {
+            "label": "APPLICATION",
+            "desc": "Application orchestration and runtime layers",
+            "shape": "circle"
         }
     }
 }

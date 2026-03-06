@@ -10,6 +10,15 @@ import './style.css';
 
 async function bootstrap() {
     await ThemeManager.loadConfig();
+    
+    // Auto-sync on load to ensure reality is fresh
+    try {
+        console.log('[Atlas] Auto-syncing on startup...');
+        await fetch('/api/topology/sync', { method: 'POST' });
+    } catch (e) {
+        console.warn('[Atlas] Auto-sync failed, using cached data.', e);
+    }
+
     const [realityRes, plannedRes] = await Promise.all([
         fetch('/data/reality.json'),
         fetch('/data/planned.json')
@@ -68,6 +77,7 @@ async function bootstrap() {
                 baseClasses: realNode?.baseClasses || [],
                 purpose: pn.purpose || realNode?.purpose || "",
                 description: pn.description || realNode?.description || "",
+                designIntent: pn.designIntent || realNode?.designIntent || "",
                 depth: pn.parentId ? 2 : 1,
                 x: x, y: y, initialX: x, initialY: y, 
                 radius: 20 + Math.sqrt(realNode?.descendantCount || 0) * 6,
