@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs-extra';
 import chokidar from 'chokidar';
+import { exec } from 'child_process';
 import { AtlasEngine } from './Core/Application/AtlasEngine';
 import { FileScanner } from './Core/Infrastructure/FileSystem/FileScanner';
 import { GraphBuilder } from './Core/Infrastructure/Graph/GraphBuilder';
@@ -391,12 +392,18 @@ async function main() {
     });
 
     app.listen(port, () => {
+        const url = `http://localhost:${port}/viewer/`;
         console.log(`\n================================================================`);
         console.log(`Atlas v8.0 [${config.project}]`);
-        console.log(`URL:  http://localhost:${port}/viewer/`);
+        console.log(`URL:  ${url}`);
         console.log(`PID:  ${process.pid}`);
         console.log(`Registry: ${registryPath}`);
         console.log(`================================================================\n`);
+
+        if (!isCLI) {
+            const start = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
+            exec(`${start} ${url}`);
+        }
     });
 }
 main();

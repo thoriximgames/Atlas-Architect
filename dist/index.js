@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const chokidar_1 = __importDefault(require("chokidar"));
+const child_process_1 = require("child_process");
 const AtlasEngine_1 = require("./Core/Application/AtlasEngine");
 const FileScanner_1 = require("./Core/Infrastructure/FileSystem/FileScanner");
 const GraphBuilder_1 = require("./Core/Infrastructure/Graph/GraphBuilder");
@@ -350,12 +351,17 @@ async function main() {
         }
     });
     app.listen(port, () => {
+        const url = `http://localhost:${port}/viewer/`;
         console.log(`\n================================================================`);
         console.log(`Atlas v8.0 [${config.project}]`);
-        console.log(`URL:  http://localhost:${port}/viewer/`);
+        console.log(`URL:  ${url}`);
         console.log(`PID:  ${process.pid}`);
         console.log(`Registry: ${registryPath}`);
         console.log(`================================================================\n`);
+        if (!isCLI) {
+            const start = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
+            (0, child_process_1.exec)(`${start} ${url}`);
+        }
     });
 }
 main();

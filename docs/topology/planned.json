@@ -25,9 +25,9 @@
     {
       "id": "src/Core/Application/AtlasEngine",
       "name": "AtlasEngine",
-      "type": "Unknown",
-      "purpose": "Auto-discovered dependency",
-      "parentId": "src/index",
+      "type": "Application",
+      "purpose": "The",
+      "parentId": "core",
       "dependencies": [],
       "description": "",
       "x": -175,

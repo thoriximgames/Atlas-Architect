@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-05T14:49:48.797Z",
+  "lastUpdated": "2026-03-06T08:46:29.020Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -1001,6 +1001,7 @@
         "path",
         "fs-extra",
         "chokidar",
+        "child_process",
         "AtlasEngine",
         "FileScanner",
         "GraphBuilder",
@@ -1564,7 +1565,27 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "url"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "n"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "start"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "platform"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "platform"
         }
       ],
       "events": [
@@ -1573,15 +1594,15 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 64,
+      "complexity": 67,
       "description": "Atlas Architect Root: The primary entry point for the backend engine. Responsible for session management, API routing, and codebase watching.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "d8c2ccdb4a052958fc8a70f7d5c55a0a",
-      "contractHash": "8880ea5a05fea8fc12856659317c4e9d",
+      "verifiedHash": "ce6de33d0a647de3bee463f31dafbca3",
+      "contractHash": "88d9b235f96b6ebbc1515966d0d18781",
       "initialX": -250,
       "initialY": 0,
       "sectorAngle": -1.1668772713333517,
@@ -1967,7 +1988,7 @@
       ],
       "events": [],
       "complexity": 36,
-      "implementationNotes": "",
+      "implementationNotes": "\n[SYSTEM] Marked dirty due to contract change in dependency.",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
@@ -5568,6 +5589,59 @@
       "x": -1150,
       "y": -650
     },
+    "src/Core/Infrastructure/Security/SecurityService": {
+      "id": "src/Core/Infrastructure/Security/SecurityService",
+      "name": "SecurityService",
+      "type": "Service",
+      "file": "src/Core/Infrastructure/Security/SecurityService",
+      "depth": 1,
+      "parentId": "_UNCONNECTED_",
+      "islandId": "island_orphans",
+      "descendantCount": 0,
+      "dependencies": [],
+      "baseClasses": [],
+      "methods": [
+        {
+          "visibility": "public",
+          "returnType": "Promise<boolean>",
+          "name": "authenticate",
+          "params": [
+            "token: string"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "Promise<string>",
+          "name": "encrypt",
+          "params": [
+            "data: string"
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "token"
+        }
+      ],
+      "events": [],
+      "complexity": 1,
+      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
+      "implementationNotes": "",
+      "lastModifiedBy": "",
+      "violations": [],
+      "status": "orphan",
+      "verificationStatus": "auto",
+      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
+      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
+      "initialX": 900,
+      "initialY": -400,
+      "sectorAngle": 2.6927937030769655,
+      "sectorWidth": 0.17951958020513104,
+      "x": 900,
+      "y": -400
+    },
     "src/Core/Infrastructure/Logging/TelemetryProvider": {
       "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
       "name": "TelemetryProvider",
@@ -5647,63 +5721,10 @@
       "contractHash": "c6f61454d07df0fdc82c5d4d8a033d7e",
       "initialX": 950,
       "initialY": -300,
-      "sectorAngle": 2.6927937030769655,
+      "sectorAngle": 2.8723132832820966,
       "sectorWidth": 0.17951958020513104,
       "x": 950,
       "y": -300
-    },
-    "src/Core/Infrastructure/Security/SecurityService": {
-      "id": "src/Core/Infrastructure/Security/SecurityService",
-      "name": "SecurityService",
-      "type": "Service",
-      "file": "src/Core/Infrastructure/Security/SecurityService",
-      "depth": 1,
-      "parentId": "_UNCONNECTED_",
-      "islandId": "island_orphans",
-      "descendantCount": 0,
-      "dependencies": [],
-      "baseClasses": [],
-      "methods": [
-        {
-          "visibility": "public",
-          "returnType": "Promise<boolean>",
-          "name": "authenticate",
-          "params": [
-            "token: string"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "Promise<string>",
-          "name": "encrypt",
-          "params": [
-            "data: string"
-          ]
-        }
-      ],
-      "fields": [
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "token"
-        }
-      ],
-      "events": [],
-      "complexity": 1,
-      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
-      "implementationNotes": "",
-      "lastModifiedBy": "",
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
-      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
-      "initialX": 900,
-      "initialY": -400,
-      "sectorAngle": 2.8723132832820966,
-      "sectorWidth": 0.17951958020513104,
-      "x": 900,
-      "y": -400
     },
     "viewer/src/main": {
       "id": "viewer/src/main",
@@ -10242,13 +10263,13 @@
     },
     {
       "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
+      "target": "src/Core/Infrastructure/Security/SecurityService",
       "isGravity": true,
       "type": "inheritance"
     },
     {
       "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Security/SecurityService",
+      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
       "isGravity": true,
       "type": "inheritance"
     },
