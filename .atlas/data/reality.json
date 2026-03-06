@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-06T08:46:29.020Z",
+  "lastUpdated": "2026-03-06T09:00:33.341Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -31,6 +31,7 @@
       "name": "blueprint",
       "type": "Unknown",
       "file": "src/blueprint",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "_UNCONNECTED_",
       "islandId": "island_orphans",
@@ -635,8 +636,9 @@
     "src/Shared/Protocol": {
       "id": "src/Shared/Protocol",
       "name": "Protocol",
-      "type": "Unknown",
+      "type": "Interface",
       "file": "src/Shared/Protocol",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/blueprint",
       "islandId": "island_orphans",
@@ -990,8 +992,9 @@
     "src/index": {
       "id": "src/index",
       "name": "index",
-      "type": "Unknown",
+      "type": "System",
       "file": "src/index",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "_UNCONNECTED_",
       "islandId": "island_orphans",
@@ -1613,8 +1616,9 @@
     "src/Core/Application/AtlasEngine": {
       "id": "src/Core/Application/AtlasEngine",
       "name": "AtlasEngine",
-      "type": "Unknown",
+      "type": "System",
       "file": "src/Core/Application/AtlasEngine",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/index",
       "islandId": "island_orphans",
@@ -2005,8 +2009,9 @@
     "src/Core/Infrastructure/FileSystem/FileScanner": {
       "id": "src/Core/Infrastructure/FileSystem/FileScanner",
       "name": "FileScanner",
-      "type": "Unknown",
+      "type": "Logic",
       "file": "src/Core/Infrastructure/FileSystem/FileScanner",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/index",
       "islandId": "island_orphans",
@@ -2134,8 +2139,9 @@
     "src/Core/Infrastructure/Graph/GraphBuilder": {
       "id": "src/Core/Infrastructure/Graph/GraphBuilder",
       "name": "GraphBuilder",
-      "type": "Unknown",
+      "type": "Logic",
       "file": "src/Core/Infrastructure/Graph/GraphBuilder",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/index",
       "islandId": "island_orphans",
@@ -2488,7 +2494,7 @@
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "c0e5ff164d55efc3ff45cd1509bab118",
+      "verifiedHash": "13f4a81c32d59a4a07d5c4d91cfcc553",
       "contractHash": "4b8b93e9a6faa2c879ac4e3a43bd20a0",
       "initialX": -100,
       "initialY": -375,
@@ -2500,8 +2506,9 @@
     "src/Core/Infrastructure/Layout/PolarLayoutStrategy": {
       "id": "src/Core/Infrastructure/Layout/PolarLayoutStrategy",
       "name": "PolarLayoutStrategy",
-      "type": "Unknown",
+      "type": "Logic",
       "file": "src/Core/Infrastructure/Layout/PolarLayoutStrategy",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/index",
       "islandId": "island_orphans",
@@ -3045,8 +3052,9 @@
     "src/Shared/Config": {
       "id": "src/Shared/Config",
       "name": "Config",
-      "type": "Unknown",
+      "type": "Interface",
       "file": "src/Shared/Config",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/index",
       "islandId": "island_orphans",
@@ -3117,6 +3125,7 @@
       "name": "pipeline",
       "type": "Unknown",
       "file": "src/pipeline",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/index",
       "islandId": "island_orphans",
@@ -3468,8 +3477,9 @@
     "src/Core/Application/Broadcaster": {
       "id": "src/Core/Application/Broadcaster",
       "name": "Broadcaster",
-      "type": "Unknown",
+      "type": "System",
       "file": "src/Core/Application/Broadcaster",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/index",
       "islandId": "island_orphans",
@@ -3556,6 +3566,7 @@
       "name": "IScanner",
       "type": "Interface",
       "file": "src/Core/Domain/Services/IScanner",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Application/AtlasEngine",
       "islandId": "island_orphans",
@@ -3587,6 +3598,7 @@
       "name": "IGraphBuilder",
       "type": "Interface",
       "file": "src/Core/Domain/Services/IGraphBuilder",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Application/AtlasEngine",
       "islandId": "island_orphans",
@@ -3631,6 +3643,7 @@
       "name": "ILayoutStrategy",
       "type": "Interface",
       "file": "src/Core/Domain/Services/ILayoutStrategy",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Application/AtlasEngine",
       "islandId": "island_orphans",
@@ -3668,6 +3681,7 @@
       "name": "HeartbeatService",
       "type": "Service",
       "file": "src/Core/Application/HeartbeatService",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Application/AtlasEngine",
       "islandId": "island_orphans",
@@ -3704,8 +3718,9 @@
     "src/Core/Infrastructure/Graph/MetricsCalculator": {
       "id": "src/Core/Infrastructure/Graph/MetricsCalculator",
       "name": "MetricsCalculator",
-      "type": "Unknown",
+      "type": "Logic",
       "file": "src/Core/Infrastructure/Graph/MetricsCalculator",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Application/AtlasEngine",
       "islandId": "island_orphans",
@@ -3835,6 +3850,7 @@
       "name": "SourceFile",
       "type": "Interface",
       "file": "src/Core/Domain/Model/SourceFile",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
       "islandId": "island_orphans",
@@ -3930,8 +3946,9 @@
     "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "name": "ParserFactory",
-      "type": "Unknown",
+      "type": "Logic",
       "file": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
       "islandId": "island_orphans",
@@ -3990,6 +4007,7 @@
       "name": "GraphNode",
       "type": "Interface",
       "file": "src/Core/Domain/Model/GraphNode",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Infrastructure/Graph/GraphBuilder",
       "islandId": "island_orphans",
@@ -4014,6 +4032,11 @@
           "visibility": "public",
           "type": "string",
           "name": "file"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "string"
         },
         {
           "visibility": "public",
@@ -4167,14 +4190,14 @@
         }
       ],
       "events": [],
-      "complexity": 15,
+      "complexity": 16,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "99bc7d7aaaf751993832977e78c32d1f",
-      "contractHash": "071c63fa1f49a2565be72cf33e9a5594",
+      "verifiedHash": "1181cec87cf187349c61f05c86685481",
+      "contractHash": "bc2ea22721c2b0cc8c814aa0094e80eb",
       "initialX": 725,
       "initialY": 0,
       "sectorAngle": -0.13250254729426367,
@@ -4187,6 +4210,7 @@
       "name": "IParser",
       "type": "Interface",
       "file": "src/Core/Domain/Services/IParser",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "islandId": "island_orphans",
@@ -4222,8 +4246,9 @@
     "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
       "name": "CSharpParser",
-      "type": "Unknown",
+      "type": "Logic",
       "file": "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "islandId": "island_orphans",
@@ -4600,8 +4625,9 @@
     "src/Core/Infrastructure/FileSystem/Parsers/CppParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/CppParser",
       "name": "CppParser",
-      "type": "Unknown",
+      "type": "Logic",
       "file": "src/Core/Infrastructure/FileSystem/Parsers/CppParser",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "islandId": "island_orphans",
@@ -4825,8 +4851,9 @@
     "src/Core/Infrastructure/FileSystem/Parsers/TsParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/TsParser",
       "name": "TsParser",
-      "type": "Unknown",
+      "type": "Interface",
       "file": "src/Core/Infrastructure/FileSystem/Parsers/TsParser",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "islandId": "island_orphans",
@@ -5125,13 +5152,13 @@
         }
       ],
       "events": [],
-      "complexity": 45,
+      "complexity": 52,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "d2b44746c176adecc277ea08ac7de05b",
+      "verifiedHash": "4c6907ea09b0d14941f4c1abe4968bf7",
       "contractHash": "d6d71db8319269f9338ddb03c87067fd",
       "initialX": 375,
       "initialY": -175,
@@ -5143,8 +5170,9 @@
     "src/Core/Infrastructure/FileSystem/Parsers/PythonParser": {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/PythonParser",
       "name": "PythonParser",
-      "type": "Unknown",
+      "type": "Logic",
       "file": "src/Core/Infrastructure/FileSystem/Parsers/PythonParser",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory",
       "islandId": "island_orphans",
@@ -5430,6 +5458,7 @@
       "name": "BaseParser",
       "type": "Interface",
       "file": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
       "islandId": "island_orphans",
@@ -5560,6 +5589,11 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "systemKeywords"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "hasLifecycle"
         },
         {
@@ -5571,17 +5605,42 @@
           "visibility": "public",
           "type": "any",
           "name": "isModuleOrRepo"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "kw"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "logicKeywords"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "kw"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "utilKeywords"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "kw"
         }
       ],
       "events": [],
-      "complexity": 29,
+      "complexity": 39,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "e97e8a3cd99dd6c64f19fb19c1504850",
-      "contractHash": "d2cc3cd7c024c2b446812f1399f6e518",
+      "verifiedHash": "d4fb409e3d72c04a4ee33548a7ebb6d6",
+      "contractHash": "f3e94d7a3d18beaf007487d64514c64f",
       "initialX": -1150,
       "initialY": -650,
       "sectorAngle": -2.894753230807738,
@@ -5589,64 +5648,12 @@
       "x": -1150,
       "y": -650
     },
-    "src/Core/Infrastructure/Security/SecurityService": {
-      "id": "src/Core/Infrastructure/Security/SecurityService",
-      "name": "SecurityService",
-      "type": "Service",
-      "file": "src/Core/Infrastructure/Security/SecurityService",
-      "depth": 1,
-      "parentId": "_UNCONNECTED_",
-      "islandId": "island_orphans",
-      "descendantCount": 0,
-      "dependencies": [],
-      "baseClasses": [],
-      "methods": [
-        {
-          "visibility": "public",
-          "returnType": "Promise<boolean>",
-          "name": "authenticate",
-          "params": [
-            "token: string"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "Promise<string>",
-          "name": "encrypt",
-          "params": [
-            "data: string"
-          ]
-        }
-      ],
-      "fields": [
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "token"
-        }
-      ],
-      "events": [],
-      "complexity": 1,
-      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
-      "implementationNotes": "",
-      "lastModifiedBy": "",
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
-      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
-      "initialX": 900,
-      "initialY": -400,
-      "sectorAngle": 2.6927937030769655,
-      "sectorWidth": 0.17951958020513104,
-      "x": 900,
-      "y": -400
-    },
     "src/Core/Infrastructure/Logging/TelemetryProvider": {
       "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
       "name": "TelemetryProvider",
-      "type": "Unknown",
+      "type": "Service",
       "file": "src/Core/Infrastructure/Logging/TelemetryProvider",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "_UNCONNECTED_",
       "islandId": "island_orphans",
@@ -5721,16 +5728,71 @@
       "contractHash": "c6f61454d07df0fdc82c5d4d8a033d7e",
       "initialX": 950,
       "initialY": -300,
-      "sectorAngle": 2.8723132832820966,
+      "sectorAngle": 2.6927937030769655,
       "sectorWidth": 0.17951958020513104,
       "x": 950,
       "y": -300
+    },
+    "src/Core/Infrastructure/Security/SecurityService": {
+      "id": "src/Core/Infrastructure/Security/SecurityService",
+      "name": "SecurityService",
+      "type": "Service",
+      "file": "src/Core/Infrastructure/Security/SecurityService",
+      "language": "TypeScript",
+      "depth": 1,
+      "parentId": "_UNCONNECTED_",
+      "islandId": "island_orphans",
+      "descendantCount": 0,
+      "dependencies": [],
+      "baseClasses": [],
+      "methods": [
+        {
+          "visibility": "public",
+          "returnType": "Promise<boolean>",
+          "name": "authenticate",
+          "params": [
+            "token: string"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "Promise<string>",
+          "name": "encrypt",
+          "params": [
+            "data: string"
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "token"
+        }
+      ],
+      "events": [],
+      "complexity": 1,
+      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
+      "implementationNotes": "",
+      "lastModifiedBy": "",
+      "violations": [],
+      "status": "orphan",
+      "verificationStatus": "auto",
+      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
+      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
+      "initialX": 900,
+      "initialY": -400,
+      "sectorAngle": 2.8723132832820966,
+      "sectorWidth": 0.17951958020513104,
+      "x": 900,
+      "y": -400
     },
     "viewer/src/main": {
       "id": "viewer/src/main",
       "name": "main",
       "type": "Unknown",
       "file": "viewer/src/main",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "_UNCONNECTED_",
       "islandId": "island_orphans",
@@ -6803,8 +6865,9 @@
     "viewer/src/Engine/GalaxyEngine": {
       "id": "viewer/src/Engine/GalaxyEngine",
       "name": "GalaxyEngine",
-      "type": "Unknown",
+      "type": "System",
       "file": "viewer/src/Engine/GalaxyEngine",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "viewer/src/main",
       "islandId": "island_orphans",
@@ -7323,6 +7386,7 @@
       "name": "StageRenderer",
       "type": "Unknown",
       "file": "viewer/src/Renderer/StageRenderer",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "viewer/src/main",
       "islandId": "island_orphans",
@@ -8707,6 +8771,7 @@
       "name": "Inspector",
       "type": "Interface",
       "file": "viewer/src/UI/Inspector",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "viewer/src/main",
       "islandId": "island_orphans",
@@ -9286,8 +9351,9 @@
     "viewer/src/UI/Legend": {
       "id": "viewer/src/UI/Legend",
       "name": "Legend",
-      "type": "Unknown",
+      "type": "Component",
       "file": "viewer/src/UI/Legend",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "viewer/src/main",
       "islandId": "island_orphans",
@@ -9625,8 +9691,9 @@
     "viewer/src/UI/Toolbar": {
       "id": "viewer/src/UI/Toolbar",
       "name": "Toolbar",
-      "type": "Unknown",
+      "type": "Component",
       "file": "viewer/src/UI/Toolbar",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "viewer/src/main",
       "islandId": "island_orphans",
@@ -9722,6 +9789,7 @@
       "name": "VisualTypes",
       "type": "Interface",
       "file": "viewer/src/Protocol/VisualTypes",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "viewer/src/main",
       "islandId": "island_orphans",
@@ -9773,8 +9841,9 @@
     "viewer/src/Theme/ThemeManager": {
       "id": "viewer/src/Theme/ThemeManager",
       "name": "ThemeManager",
-      "type": "System",
+      "type": "Interface",
       "file": "viewer/src/Theme/ThemeManager",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "viewer/src/Renderer/StageRenderer",
       "islandId": "island_orphans",
@@ -9861,6 +9930,7 @@
       "name": "GalaxyPhysics",
       "type": "Unknown",
       "file": "viewer/src/Forces/GalaxyPhysics",
+      "language": "TypeScript",
       "depth": 1,
       "parentId": "_UNCONNECTED_",
       "islandId": "island_orphans",
@@ -10263,13 +10333,13 @@
     },
     {
       "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Security/SecurityService",
+      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
       "isGravity": true,
       "type": "inheritance"
     },
     {
       "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
+      "target": "src/Core/Infrastructure/Security/SecurityService",
       "isGravity": true,
       "type": "inheritance"
     },

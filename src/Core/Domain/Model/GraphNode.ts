@@ -5,6 +5,7 @@ export interface GraphNode {
     name: string;
     type: NodeType;
     file: string;
+    language?: string;
     depth: number;
     parentId?: string;
     islandId: string;

@@ -54,6 +54,7 @@ export class GraphBuilder implements IGraphBuilder {
                     name: raw.name,
                     type: raw.type,
                     file: raw.id,
+                    language: raw.language,
                     depth: depth,
                     parentId: parentId,
                     islandId: islandId,
@@ -193,6 +194,7 @@ export class GraphBuilder implements IGraphBuilder {
                 name: raw.name,
                 type: raw.type, // Use detected type
                 file: raw.id,
+                language: raw.language,
                 depth: 1, // Flatten orphans to depth 1 relative to the Debris Root
                 parentId: pid,
                 islandId: 'island_orphans',

@@ -100,9 +100,10 @@ export class TsParser extends BaseParser {
     }
 
     protected determineType(name: string, rel: string, content: string): NodeType {
-        if (content.includes('interface ' + name)) return 'Interface';
-        if (name.endsWith('DTO')) return 'DTO';
-        if (name.endsWith('Service')) return 'Service';
+        if (content.includes('interface ' + name) || content.includes('type ' + name + ' =')) return 'Interface';
+        if (name.endsWith('DTO') || name.endsWith('Model')) return 'Data';
+        if (name.endsWith('Service') || name.endsWith('Provider') || name.endsWith('Client')) return 'Service';
+        if (name.endsWith('Helper') || name.endsWith('Utils') || name.endsWith('Constants')) return 'Utility';
         return super.determineType(name, rel, content);
     }
 }

@@ -16,12 +16,18 @@ class BaseParser {
         const languageMap = {
             '.ts': 'TypeScript',
             '.js': 'JavaScript',
+            '.tsx': 'TypeScript (React)',
+            '.jsx': 'JavaScript (React)',
             '.cs': 'C#',
             '.cpp': 'C++',
             '.h': 'C++',
+            '.hpp': 'C++',
             '.py': 'Python',
             '.json': 'JSON',
-            '.md': 'Markdown'
+            '.md': 'Markdown',
+            '.sh': 'Shell',
+            '.ps1': 'PowerShell',
+            '.mjs': 'JavaScript (ESM)'
         };
         const methods = this.extractMethods(content);
         const fields = this.extractFields(content);
@@ -66,23 +72,45 @@ class BaseParser {
         // 1. Protocols / Interfaces
         if (lowName.startsWith('i') && /^[A-Z]/.test(name.substring(1)))
             return 'Interface';
-        if (content.includes('class I') || content.includes('struct I') || low.includes('/protocol/'))
+        if (content.includes('interface ') || content.includes('class I') || content.includes('struct I') || low.includes('/protocol/') || low.includes('/domain/services/')) {
             return 'Interface';
+        }
         // 2. Systems / Core Logic
+        const systemKeywords = [
+            'manager', 'controller', 'system', 'engine', 'heartbeat', 'broadcaster',
+            'registry', 'runner', 'host', 'server', 'application', 'gateway', 'orchestrator', 'index'
+        ];
         const hasLifecycle = /void\s+(?:Awake|Start|Update|Init|Main|Execute|Tick|OnEnable)/i.test(content);
         const isContextOrRegistry = lowName.endsWith('context') || lowName.endsWith('registry');
         const isModuleOrRepo = lowName.endsWith('module') || lowName.endsWith('repository');
-        if (hasLifecycle || lowName.endsWith('manager') || lowName.endsWith('controller') || lowName.endsWith('system') || isContextOrRegistry || isModuleOrRepo) {
+        if (hasLifecycle || systemKeywords.some(kw => lowName.endsWith(kw)) || isContextOrRegistry || isModuleOrRepo) {
             return 'System';
         }
-        // 3. Data / DTOs
-        if (low.includes('/data/') || low.includes('/dto/') || lowName.endsWith('data') || lowName.endsWith('template') || lowName.endsWith('params')) {
+        // 3. Logic / Algorithms
+        const logicKeywords = [
+            'strategy', 'builder', 'factory', 'calculator', 'parser', 'processor',
+            'validator', 'mapper', 'resolver', 'generator', 'detector', 'scanner'
+        ];
+        if (logicKeywords.some(kw => lowName.endsWith(kw)) || low.includes('/logic/') || low.includes('/algorithms/')) {
+            return 'Logic';
+        }
+        // 4. Data / DTOs
+        if (low.includes('/data/') || low.includes('/dto/') || lowName.endsWith('data') || lowName.endsWith('template') || lowName.endsWith('params') || lowName.endsWith('model')) {
             return 'Data';
         }
-        if (low.includes('/services/') || lowName.endsWith('service'))
+        // 5. Services
+        if (low.includes('/services/') || lowName.endsWith('service') || lowName.endsWith('provider') || lowName.endsWith('client')) {
             return 'Service';
-        if (low.includes('/components/') || lowName.endsWith('component'))
+        }
+        // 6. Components
+        if (low.includes('/components/') || lowName.endsWith('component') || low.includes('/ui/')) {
             return 'Component';
+        }
+        // 7. Utilities
+        const utilKeywords = ['helper', 'utils', 'common', 'shared', 'extensions', 'tools', 'constants'];
+        if (utilKeywords.some(kw => lowName.includes(kw)) || low.includes('/shared/') || low.includes('/utils/')) {
+            return 'Utility';
+        }
         return 'Unknown';
     }
 }

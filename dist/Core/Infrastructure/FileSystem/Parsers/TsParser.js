@@ -94,12 +94,14 @@ class TsParser extends BaseParser_1.BaseParser {
         return match[1].split(/,|implements|extends/).map(s => s.trim().split('.').pop()).filter(s => s.length > 0);
     }
     determineType(name, rel, content) {
-        if (content.includes('interface ' + name))
+        if (content.includes('interface ' + name) || content.includes('type ' + name + ' ='))
             return 'Interface';
-        if (name.endsWith('DTO'))
-            return 'DTO';
-        if (name.endsWith('Service'))
+        if (name.endsWith('DTO') || name.endsWith('Model'))
+            return 'Data';
+        if (name.endsWith('Service') || name.endsWith('Provider') || name.endsWith('Client'))
             return 'Service';
+        if (name.endsWith('Helper') || name.endsWith('Utils') || name.endsWith('Constants'))
+            return 'Utility';
         return super.determineType(name, rel, content);
     }
 }
