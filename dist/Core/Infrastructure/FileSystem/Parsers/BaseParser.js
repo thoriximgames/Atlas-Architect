@@ -10,12 +10,10 @@ const crypto_1 = __importDefault(require("crypto"));
 class BaseParser {
     nodeTypesConfig = null;
     async parse(filePath, root) {
-        // Ensure config is loaded (could be optimized to load once per scan session)
-        if (!this.nodeTypesConfig) {
-            const configPath = path_1.default.join(root, '.atlas', 'data', 'node_types.json');
-            if (await fs_extra_1.default.pathExists(configPath)) {
-                this.nodeTypesConfig = await fs_extra_1.default.readJson(configPath);
-            }
+        // Always reload config per file to ensure latest CLI updates are applied during scan
+        const configPath = path_1.default.join(root, '.atlas', 'data', 'node_types.json');
+        if (await fs_extra_1.default.pathExists(configPath)) {
+            this.nodeTypesConfig = await fs_extra_1.default.readJson(configPath);
         }
         const content = await fs_extra_1.default.readFile(filePath, 'utf8');
         const ext = path_1.default.extname(filePath);

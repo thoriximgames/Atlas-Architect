@@ -11,12 +11,10 @@ export abstract class BaseParser implements IParser {
     protected nodeTypesConfig: NodeTypesConfig | null = null;
 
     async parse(filePath: string, root: string): Promise<SourceFile> {
-        // Ensure config is loaded (could be optimized to load once per scan session)
-        if (!this.nodeTypesConfig) {
-            const configPath = path.join(root, '.atlas', 'data', 'node_types.json');
-            if (await fs.pathExists(configPath)) {
-                this.nodeTypesConfig = await fs.readJson(configPath);
-            }
+        // Always reload config per file to ensure latest CLI updates are applied during scan
+        const configPath = path.join(root, '.atlas', 'data', 'node_types.json');
+        if (await fs.pathExists(configPath)) {
+            this.nodeTypesConfig = await fs.readJson(configPath);
         }
 
         const content = await fs.readFile(filePath, 'utf8');

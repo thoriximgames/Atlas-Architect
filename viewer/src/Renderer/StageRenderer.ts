@@ -254,77 +254,94 @@ export class StageRenderer {
         this.weightMap = weightMap;
 
         const gravityLinks = links.filter(l => l.isGravity);
-        const l = this.linkLayer.selectAll('line').data(gravityLinks, (d: any) => `${d.source.id || d.source}-${d.target.id || d.target}`);
+        const l = this.linkLayer.selectAll('line.gravity-link').data(gravityLinks, (d: any) => `${d.source.id || d.source}-${d.target.id || d.target}`);
         l.exit().remove();
         const lEnter = l.enter().append('line')
+            .attr('class', 'gravity-link')
             .attr('stroke', ThemeManager.connectorNormal)
             .attr('stroke-opacity', 1)
             .attr('stroke-width', 2.5)
             .attr('marker-end', 'url(#arrow)');
         this.linkSelection = lEnter.merge(l as any) as any;
 
-        const n = this.nodeLayer.selectAll('g').data(nodes, (d: any) => d.id);
+        const n = this.nodeLayer.selectAll('g.node-group').data(nodes, (d: any) => d.id);
         n.exit().remove();
         
-        const nEnter = n.enter().append('g').attr('cursor', 'pointer')
+        const nEnter = n.enter().append('g')
+            .attr('class', 'node-group')
+            .attr('cursor', 'pointer')
             .on('mousedown', (e) => { e.stopPropagation(); }) 
             .on('click', (e, d) => { e.stopPropagation(); onClick(e, d); });
 
         if (dragBehavior) nEnter.call(dragBehavior);
         
-        nEnter.filter(d => (d.baseClasses?.length || 0) > 0).append('path')
-            .attr('d', d => this.getPathForType(d.type, d.radius + 6))
-            .attr('fill', 'none')
-            .attr('stroke', '#A259FF')
-            .attr('stroke-width', 2)
-            .attr('stroke-dasharray', '4,4');
-
-        nEnter.filter(d => d.guardState === 'guarded').append('circle')
-            .attr('r', d => d.radius + 14).attr('fill', 'none')
-            .attr('stroke', '#FFCD29').attr('stroke-width', 3)
-            .attr('class', 'guardian-halo');
-
-        nEnter.append('path')
-            .attr('class', 'main-shape')
-            .attr('d', d => this.getPathForType(d.type, d.radius))
-            .attr('fill', d => {
-                if (d.isAuthority) return 'url(#hatch-authority)';
-                // Standard solid fill for all types (Unknown is grey in ThemeManager)
-                return ThemeManager.getStyle(d.type).fill;
-            })
-            .attr('stroke', d => {
-                if (d.isAuthority) return '#FFCD29';
-                if (d.type === 'Unknown') return '#888888';
-                if (d.status === 'planned') return '#808080';
-                return 'none'; 
-            })
-            .attr('stroke-width', 2)
-            .attr('stroke-dasharray', d => d.status === 'planned' ? '4,4' : 'none')
-            .style('filter', 'url(#node-shadow)');
-
-        // --- HATCH OVERLAY (LAYERED ON TOP) ---
-        nEnter.filter(d => d.type === 'Unknown')
-            .append('path')
-            .attr('class', 'hatch-overlay')
-            .attr('d', d => this.getPathForType(d.type, d.radius))
-            .attr('fill', 'url(#hatch-unknown)')
-            .style('pointer-events', 'none');
-        
-        nEnter.append('text').text(d => d.name).attr('text-anchor', 'middle').attr('dy', '0.35em')
-            .attr('fill', d => ThemeManager.getStyle(d.type).text)
-            .attr('font-size', d => d.radius > 40 ? '13px' : '10px').attr('font-weight', '700').style('pointer-events', 'none');
-        
-        // --- MISSING DATA WARNING ---
-        nEnter.filter((d: any) => !d.purpose || !d.description || d.purpose === 'Auto-discovered dependency')
-            .append('text')
-            .text('⚠️')
-            .attr('text-anchor', 'middle')
-            .attr('dy', (d: any) => `-${(d.radius || 20) + 8}px`)
-            .attr('font-size', '16px')
-            .style('pointer-events', 'none')
-            .style('filter', 'drop-shadow(0px 2px 2px rgba(0,0,0,0.8))');
+        // 1. Create Base Elements for New Nodes
+        nEnter.append('path').attr('class', 'base-class-outline');
+        nEnter.append('circle').attr('class', 'guardian-halo');
+        nEnter.append('path').attr('class', 'main-shape').style('filter', 'url(#node-shadow)');
+        nEnter.append('path').attr('class', 'hatch-overlay').style('pointer-events', 'none');
+        nEnter.append('text').attr('class', 'node-label').attr('text-anchor', 'middle').attr('dy', '0.35em').style('pointer-events', 'none');
+        nEnter.append('text').attr('class', 'warning-icon').text('⚠️').attr('text-anchor', 'middle').style('pointer-events', 'none').style('filter', 'drop-shadow(0px 2px 2px rgba(0,0,0,0.8))');
 
         this.nodeSelection = nEnter.merge(n as any) as any;
+
+        // 2. Update Attributes for ALL nodes
+        const self = this;
+        
+        this.nodeSelection.each(function(d) {
+            const group = d3.select(this);
+            const r = d.radius || 20;
+
+            // Base Class Outline
+            group.select('.base-class-outline')
+                .attr('d', self.getPathForType(d.type, r + 6))
+                .attr('fill', 'none')
+                .attr('stroke', '#A259FF')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '4,4')
+                .style('display', (d.baseClasses?.length || 0) > 0 ? 'block' : 'none');
+
+            // Guardian Halo
+            group.select('.guardian-halo')
+                .attr('r', r + 14)
+                .attr('fill', 'none')
+                .attr('stroke', '#FFCD29')
+                .attr('stroke-width', 3)
+                .style('display', d.guardState === 'guarded' ? 'block' : 'none');
+
+            // Main Shape
+            group.select('.main-shape')
+                .attr('d', self.getPathForType(d.type, r))
+                .attr('fill', d.isAuthority ? 'url(#hatch-authority)' : ThemeManager.getStyle(d.type).fill)
+                .attr('stroke', () => {
+                    if (d.isAuthority) return '#FFCD29';
+                    if (d.type === 'Unknown') return '#888888';
+                    if (d.status === 'planned') return '#808080';
+                    return 'none';
+                })
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', d.status === 'planned' ? '4,4' : 'none');
+
+            // Hatch Overlay (for Unknowns)
+            group.select('.hatch-overlay')
+                .attr('d', self.getPathForType(d.type, r))
+                .attr('fill', 'url(#hatch-unknown)')
+                .style('display', d.type === 'Unknown' ? 'block' : 'none');
+
+            // Label
+            group.select('.node-label')
+                .text(d.name)
+                .attr('fill', ThemeManager.getStyle(d.type).text)
+                .attr('font-size', r > 40 ? '13px' : '10px')
+                .attr('font-weight', '700');
+
+            // Warning Icon
+            group.select('.warning-icon')
+                .attr('dy', `-${r + 8}px`)
+                .attr('font-size', '16px')
+                .style('display', (!d.purpose || !d.description || d.purpose === 'Auto-discovered dependency') ? 'block' : 'none');
+        });
+
         this.renderCanvas();
     }
 
@@ -353,33 +370,38 @@ export class StageRenderer {
     }
 
     private getPathForType(type: string, r: number): string {
-        switch (type) {
-            case 'System':
-                const sr = 10;
+        const style = ThemeManager.getStyle(type);
+        const shape = style.shape || 'circle';
+
+        switch (shape) {
+            case 'square':
+                // Rounded square with minimal radius
+                const sr = r * 0.1;
                 return `M ${-r+sr},${-r} L ${r-sr},${-r} Q ${r},${-r} ${r},${-r+sr} L ${r},${r-sr} Q ${r},${r} ${r-sr},${r} L ${-r+sr},${r} Q ${-r},${r} ${-r},${r-sr} L ${-r},${-r+sr} Q ${-r},${-r} ${-r+sr},${-r} Z`;
-            case 'Service': return this.getRoundedPolygonPath(6, r, 12);
-            case 'Component': return this.getRoundedPolygonPath(4, r * 1.2, 15, Math.PI / 2);
-            case 'Interface': return this.getRoundedPolygonPath(8, r, 10);
-            default: return `M 0,0 m ${-r},0 a ${r},${r} 0 1,0 ${r * 2},0 a ${r},${r} 0 1,0 ${-(r * 2)},0`;
+            case 'hexagon': 
+                return this.getSharpPolygonPath(6, r);
+            case 'pentagon':
+                return this.getSharpPolygonPath(5, r);
+            case 'triangle':
+                return `M 0,${-r*1.2} L ${r*1.1},${r*0.8} L ${-r*1.1},${r*0.8} Z`;
+            case 'diamond': 
+                return `M 0,${-r*1.3} L ${r*1.3},0 L 0,${r*1.3} L ${-r*1.3},0 Z`;
+            case 'octagon': 
+                return this.getSharpPolygonPath(8, r);
+            case 'circle':
+            default: 
+                return `M 0,0 m ${-r},0 a ${r},${r} 0 1,0 ${r * 2},0 a ${r},${r} 0 1,0 ${-(r * 2)},0`;
         }
     }
 
-    private getRoundedPolygonPath(sides: number, radius: number, cornerRadius: number, rotation: number = 0): string {
-        const points = [];
+    private getSharpPolygonPath(sides: number, radius: number, rotation: number = 0): string {
+        let path = "";
         for (let i = 0; i < sides; i++) {
             const angle = (i * (360 / sides)) * (Math.PI / 180) + rotation;
-            points.push({ x: radius * Math.cos(angle), y: radius * Math.sin(angle) });
-        }
-        let path = "";
-        for (let i = 0; i < points.length; i++) {
-            const p1 = points[i]; const p2 = points[(i + 1) % points.length]; const p0 = points[(i - 1 + points.length) % points.length];
-            const d1x = p1.x - p0.x; const d1y = p1.y - p0.y; const d2x = p2.x - p1.x; const d2y = p2.y - p1.y;
-            const l1 = Math.sqrt(d1x * d1x + d1y * d1y); const l2 = Math.sqrt(d2x * d2x + d2y * d2y);
-            const c = Math.min(cornerRadius, l1 / 2, l2 / 2);
-            const startX = p1.x - (d1x / l1) * c; const startY = p1.y - (d1y / l1) * c;
-            const endX = p1.x + (d2x / l2) * c; const endY = p1.y + (d2y / l2) * c;
-            if (i === 0) path += `M ${startX},${startY}`; else path += ` L ${startX},${startY}`;
-            path += ` Q ${p1.x},${p1.y} ${endX},${endY}`;
+            const x = radius * Math.cos(angle);
+            const y = radius * Math.sin(angle);
+            if (i === 0) path += `M ${x},${y}`;
+            else path += ` L ${x},${y}`;
         }
         return path + " Z";
     }

@@ -1,4 +1,4 @@
-export type NodeShape = 'square' | 'hexagon' | 'diamond' | 'octagon' | 'circle';
+export type NodeShape = 'square' | 'hexagon' | 'diamond' | 'octagon' | 'circle' | 'triangle' | 'pentagon';
 
 export interface INodeTypeDefinition {
     id: string; // The type name (e.g., 'System')

@@ -196,6 +196,7 @@ async function main() {
             {
                 const typeCmd = args[1];
                 const typesPath = path.join(target, '.atlas', 'data', 'node_types.json');
+                const SHAPES = ['circle', 'square', 'hexagon', 'octagon', 'diamond', 'triangle', 'pentagon'];
                 
                 if (!await fs.pathExists(typesPath)) {
                     console.error(`[Atlas] Error: node_types.json not found in ${target}/.atlas/data/`);
@@ -214,7 +215,12 @@ async function main() {
                     
                     if (!typeName || !keywords || !fill || !stroke || !shape || !desc) {
                         console.log('Usage: node atlas.mjs type add <name> <keywords_comma_separated> <fill> <stroke> <shape> <desc>');
-                        console.log('Example: node atlas.mjs type add Gateway "gateway,portal" #FFB8A8 #F24822 hexagon "Entry point"');
+                        console.log(`Shapes: ${SHAPES.join(', ')}`);
+                        process.exit(1);
+                    }
+
+                    if (!SHAPES.includes(shape)) {
+                        console.error(`[Atlas] Error: Invalid shape '${shape}'. Supported: ${SHAPES.join(', ')}`);
                         process.exit(1);
                     }
                     
@@ -226,7 +232,41 @@ async function main() {
                     };
                     
                     await fs.outputJson(typesPath, typeConfig, { spaces: 4 });
-                    console.log(`[Atlas] SUCCESS: Added node type '${typeName}'. Run 'node atlas.mjs scan' to apply.`);
+                    console.log(`[Atlas] SUCCESS: Saved node type '${typeName}'.`);
+                } else if (typeCmd === 'set') {
+                    const typeName = args[2];
+                    const prop = args[3];
+                    const value = args[4];
+
+                    if (!typeConfig[typeName]) {
+                        console.error(`[Atlas] Error: Type '${typeName}' not found.`);
+                        process.exit(1);
+                    }
+
+                    if (prop === 'shape') {
+                        if (!SHAPES.includes(value)) {
+                            console.error(`[Atlas] Error: Invalid shape '${value}'.`);
+                            process.exit(1);
+                        }
+                        typeConfig[typeName].legend.shape = value;
+                    } else if (prop === 'fill') {
+                        typeConfig[typeName].style.fill = value;
+                    } else if (prop === 'stroke') {
+                        typeConfig[typeName].style.stroke = value;
+                    } else if (prop === 'keywords') {
+                        typeConfig[typeName].keywords = value.split(',').map(k => k.trim());
+                    } else {
+                        console.error(`[Atlas] Error: Unsupported property '${prop}'. Use: shape, fill, stroke, keywords`);
+                        process.exit(1);
+                    }
+
+                    await fs.outputJson(typesPath, typeConfig, { spaces: 4 });
+                    console.log(`[Atlas] SUCCESS: Updated ${prop} for '${typeName}'.`);
+                } else if (typeCmd === 'shapes') {
+                    console.log('\n[Atlas] Supported Node Shapes:');
+                    console.log('=============================');
+                    SHAPES.forEach(s => console.log(` - ${s}`));
+                    console.log('');
                 } else if (typeCmd === 'list') {
                     console.log('\n[Atlas] Defined Node Types:');
                     console.log('===========================');
