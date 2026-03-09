@@ -127,58 +127,109 @@ async function main() {
         res.flushHeaders();
         broadcaster.addClient(res);
     });
-    // --- API ROUTES ---
-    app.post('/api/topology/positions', async (req, res) => {
+    // --- API ROUTES: STATE BRIDGE ---
+    app.post('/api/topology/sync', async (req, res) => {
         try {
-            const updates = req.body;
-            // 1. Save to planned.json (The Blueprint) using TopologyPlanner for consistency
-            const plannedData = await blueprint_1.TopologyPlanner.loadBlueprint();
-            let modified = false;
-            for (const id in updates) {
-                const node = plannedData.plannedNodes.find((n) => n.id === id);
-                if (node) {
-                    node.x = updates[id].x;
-                    node.y = updates[id].y;
-                    modified = true;
+            await scanAndResolve();
+            const realityPath = path_1.default.join(projectRoot, '.atlas/data/reality.json');
+            const realityData = await fs_extra_1.default.pathExists(realityPath) ? await fs_extra_1.default.readJson(realityPath) : { nodes: {} };
+            res.json({ success: true, realityData });
+        }
+        catch (e) {
+            res.status(500).json({ error: e.message });
+        }
+    });
+    app.get('/api/topology/state', async (req, res) => {
+        const isLocked = await blueprint_1.TopologyPlanner.isLocked();
+        res.json({ planningActive: isLocked, locked: isLocked });
+    });
+    // Helper for enriching data
+    const enrichData = async (data) => {
+        const realityPath = path_1.default.join(projectRoot, '.atlas/data/reality.json');
+        if (await fs_extra_1.default.pathExists(realityPath)) {
+            const realityData = await fs_extra_1.default.readJson(realityPath);
+            const realityNodes = realityData.nodes || {};
+            data.plannedNodes = data.plannedNodes.map((pn) => {
+                const rn = realityNodes[pn.id];
+                return {
+                    ...pn,
+                    status: rn ? 'verified' : 'planned',
+                    language: rn?.language || 'Unknown',
+                    complexity: rn?.complexity || 0,
+                    methods: rn?.methods || [],
+                    fields: rn?.fields || [],
+                    events: rn?.events || [],
+                    file: rn?.file || pn.id,
+                    baseClasses: rn?.baseClasses || [],
+                    purpose: pn.purpose || rn?.purpose || "",
+                    description: pn.description || rn?.description || ""
+                };
+            });
+            const plannedIds = new Set(data.plannedNodes.map((n) => n.id));
+            const orphans = Object.values(realityNodes).filter((rn) => !plannedIds.has(rn.id) && rn.id !== '_UNCONNECTED_');
+            if (orphans.length > 0) {
+                if (!plannedIds.has('_UNCONNECTED_')) {
+                    data.plannedNodes.push({ id: '_UNCONNECTED_', name: 'UNCONNECTED', type: 'Unknown', purpose: 'Orphaned Code', x: -1000, y: -1000 });
                 }
+                orphans.forEach((o) => {
+                    data.plannedNodes.push({ ...o, parentId: '_UNCONNECTED_', status: 'orphan' });
+                });
             }
-            if (modified) {
-                await blueprint_1.TopologyPlanner.saveBlueprint(plannedData);
-                console.log(`[Atlas] Updated ${Object.keys(updates).length} node positions in planned.json`);
+        }
+        return data;
+    };
+    // Helper for saving positions
+    const savePositions = async (updates, isPlanMode) => {
+        const data = await blueprint_1.TopologyPlanner.loadBlueprint(isPlanMode);
+        let modified = false;
+        for (const id in updates) {
+            const node = data.plannedNodes.find((n) => n.id === id);
+            if (node) {
+                node.x = updates[id].x;
+                node.y = updates[id].y;
+                modified = true;
             }
-            // 2. Save to a global positions.json for all nodes
-            const dataDir = path_1.default.join(projectRoot, '.atlas/data');
-            await fs_extra_1.default.ensureDir(dataDir);
-            const positionsPath = path_1.default.join(dataDir, 'positions.json');
-            let positions = {};
-            if (await fs_extra_1.default.pathExists(positionsPath)) {
-                positions = await fs_extra_1.default.readJson(positionsPath);
-            }
-            for (const id in updates) {
-                positions[id] = updates[id];
-            }
-            await fs_extra_1.default.outputJson(positionsPath, positions, { spaces: 2 });
-            console.log(`[Atlas] Saved ${Object.keys(updates).length} node positions to positions.json`);
-            // 3. Patch reality.json so the viewer doesn't need a full rescan immediately
-            const realityPath = path_1.default.join(dataDir, 'reality.json');
-            if (await fs_extra_1.default.pathExists(realityPath)) {
-                const realityData = await fs_extra_1.default.readJson(realityPath);
-                if (realityData.nodes) {
-                    for (const id in updates) {
-                        if (realityData.nodes[id]) {
-                            realityData.nodes[id].x = updates[id].x;
-                            realityData.nodes[id].y = updates[id].y;
-                            realityData.nodes[id].initialX = updates[id].x;
-                            realityData.nodes[id].initialY = updates[id].y;
-                        }
-                    }
-                    await fs_extra_1.default.outputJson(realityPath, realityData, { spaces: 2 });
-                }
-            }
+        }
+        if (modified) {
+            // Using skipLockCheck=true because UI dragging shouldn't trigger the CLI-level Authority Lock 
+            // if we are explicitly editing the blueprint when unlocked.
+            await blueprint_1.TopologyPlanner.saveBlueprint(data, isPlanMode, true);
+        }
+    };
+    // --- API ROUTES: BLUEPRINT DOMAIN (AUTHORITATIVE) ---
+    app.get('/api/blueprint', async (req, res) => {
+        const data = await blueprint_1.TopologyPlanner.loadBlueprint(false);
+        res.json(await enrichData(data));
+    });
+    app.post('/api/blueprint/positions', async (req, res) => {
+        try {
+            await savePositions(req.body, false);
             res.json({ success: true });
         }
         catch (e) {
-            console.error(`[API Error] ${e.message}`);
+            res.status(500).json({ error: e.message });
+        }
+    });
+    // --- API ROUTES: PLAN DOMAIN (DRAFT) ---
+    app.get('/api/plan', async (req, res) => {
+        const data = await blueprint_1.TopologyPlanner.loadBlueprint(true);
+        res.json(await enrichData(data));
+    });
+    app.post('/api/plan/positions', async (req, res) => {
+        try {
+            await savePositions(req.body, true);
+            res.json({ success: true });
+        }
+        catch (e) {
+            res.status(500).json({ error: e.message });
+        }
+    });
+    app.post('/api/plan/merge', async (req, res) => {
+        try {
+            await blueprint_1.TopologyPlanner.promote();
+            res.json({ success: true });
+        }
+        catch (e) {
             res.status(500).json({ error: e.message });
         }
     });

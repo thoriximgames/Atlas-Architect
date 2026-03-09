@@ -73,49 +73,9 @@ async function bootstrap() {
     }
 
     const nodeMap = new Map<string, VisualNode>();
+    let selectedNodeIds = new Set<string>();
     let activeNodes: VisualNode[] = [];
     let activeLinks: any[] = [];
-
-    const calculateNodes = (pData: any) => {
-        const pNodesRaw = Array.isArray(pData) ? pData : (pData.plannedNodes || []);
-
-        const blueprintChildrenMap = new Map<string, number>();
-        pNodesRaw.forEach((pn: any) => {
-            if (pn.parentId) {
-                blueprintChildrenMap.set(pn.parentId, (blueprintChildrenMap.get(pn.parentId) || 0) + 1);
-            }
-        });
-
-        return pNodesRaw.map((pn: any) => {
-            const bChildCount = blueprintChildrenMap.get(pn.id) || 0;
-            const effectiveDescendants = Math.max(pn.descendantCount || 0, bChildCount);
-            const hasPos = pn.x !== undefined && pn.y !== undefined;
-            
-            return {
-                ...pn,
-                descendantCount: effectiveDescendants,
-                depth: pn.parentId && pn.parentId !== '_UNCONNECTED_' ? 2 : 1,
-                x: hasPos ? pn.x : 0, y: hasPos ? pn.y : 0, 
-                initialX: hasPos ? pn.x : 0, initialY: hasPos ? pn.y : 0, 
-                radius: 20 + Math.sqrt(effectiveDescendants) * 6,
-                fx: hasPos ? pn.x : undefined, fy: hasPos ? pn.y : undefined
-            } as VisualNode;
-        });
-    };
-
-    const rebuildGraphData = (pData: any) => {
-        activeNodes = calculateNodes(pData);
-        activeLinks = [];
-        activeNodes.forEach(n => {
-            if (n.parentId) activeLinks.push({ source: n.parentId, target: n.id, isGravity: true, type: 'inheritance' });
-            if (n.dependencies) n.dependencies.forEach(dep => activeLinks.push({ source: n.id, target: dep, isGravity: false, type: 'dependency' }));
-        });
-
-        nodeMap.clear();
-        activeNodes.forEach(n => nodeMap.set(n.id, n));
-    };
-
-    rebuildGraphData(plannedData);
 
     const inspector = new Inspector();
     const legend = new Legend();
@@ -123,6 +83,10 @@ async function bootstrap() {
         renderer.reset(); inspector.clear(); 
         document.getElementById('sidebar')?.classList.add('hidden');
         document.getElementById('node-toolbox')?.classList.add('hidden');
+    });
+
+    renderer.onGroupSelect((ids) => {
+        selectedNodeIds = ids;
     });
 
     const handleSync = async () => {
@@ -142,8 +106,9 @@ async function bootstrap() {
         currentMode = page;
         engine.stopBootstrap(); renderer.reset(); inspector.clear();
 
+        const endpoint = page === 'plan' ? '/api/plan' : '/api/blueprint';
         const [res, stateRes] = await Promise.all([
-            fetch(`/api/blueprint${page === 'plan' ? '?mode=plan' : ''}`),
+            fetch(endpoint),
             fetch('/api/topology/state')
         ]);
         plannedData = await res.json();
@@ -152,6 +117,7 @@ async function bootstrap() {
         updateLockBadge(stateData.locked, page);
         
         rebuildGraphData(plannedData);
+        engine.setPositionsUrl(`${endpoint}/positions`);
         engine.resetData(activeNodes, activeLinks);
         renderer.centerView(activeNodes);
 
@@ -196,6 +162,47 @@ async function bootstrap() {
     btnLegend?.addEventListener('click', () => { legendPanel?.classList.toggle('hidden'); legend.render(); });
     btnCloseLegend?.addEventListener('click', () => legendPanel?.classList.add('hidden'));
 
+    const calculateNodes = (pData: any) => {
+        const pNodesRaw = Array.isArray(pData) ? pData : (pData.plannedNodes || []);
+
+        const blueprintChildrenMap = new Map<string, number>();
+        pNodesRaw.forEach((pn: any) => {
+            if (pn.parentId) {
+                blueprintChildrenMap.set(pn.parentId, (blueprintChildrenMap.get(pn.parentId) || 0) + 1);
+            }
+        });
+
+        return pNodesRaw.map((pn: any) => {
+            const bChildCount = blueprintChildrenMap.get(pn.id) || 0;
+            const effectiveDescendants = Math.max(pn.descendantCount || 0, bChildCount);
+            const hasPos = pn.x !== undefined && pn.y !== undefined;
+            
+            return {
+                ...pn,
+                descendantCount: effectiveDescendants,
+                depth: pn.parentId && pn.parentId !== '_UNCONNECTED_' ? 2 : 1,
+                x: hasPos ? pn.x : 0, y: hasPos ? pn.y : 0, 
+                initialX: hasPos ? pn.x : 0, initialY: hasPos ? pn.y : 0, 
+                radius: 20 + Math.sqrt(effectiveDescendants) * 6,
+                fx: hasPos ? pn.x : undefined, fy: hasPos ? pn.y : undefined
+            } as VisualNode;
+        });
+    };
+
+    const rebuildGraphData = (pData: any) => {
+        activeNodes = calculateNodes(pData);
+        activeLinks = [];
+        activeNodes.forEach(n => {
+            if (n.parentId) activeLinks.push({ source: n.parentId, target: n.id, isGravity: true, type: 'inheritance' });
+            if (n.dependencies) n.dependencies.forEach(dep => activeLinks.push({ source: n.id, target: dep, isGravity: false, type: 'dependency' }));
+        });
+
+        nodeMap.clear();
+        activeNodes.forEach(n => nodeMap.set(n.id, n));
+    };
+
+    rebuildGraphData(plannedData);
+
     const engine = new GalaxyEngine(activeNodes, activeLinks, () => renderer.ticking(), () => {
         renderer.draw(engine.state.nodes, engine.state.links, engine.state.weightMap, onNodeClick);
         renderer.enableDrag(drag(d3));
@@ -204,11 +211,44 @@ async function bootstrap() {
     const drag = (d3: any) => {
         function dragstarted(event: any, d: any) {
             if (!event.active) engine.simulation.alphaTarget(0.3).restart();
-            d.fx = d.x; d.fy = d.y;
+            
+            // If dragging a selected node, lock all selected nodes at their current positions
+            if (selectedNodeIds.has(d.id)) {
+                selectedNodeIds.forEach(id => {
+                    const node = nodeMap.get(id);
+                    if (node) {
+                        node.fx = node.x;
+                        node.fy = node.y;
+                    }
+                });
+            } else {
+                // Otherwise, just lock the single node being dragged
+                d.fx = d.x;
+                d.fy = d.y;
+            }
         }
+
         function dragged(event: any, d: any) {
-            d.fx = Math.round(event.x / 25) * 25; d.fy = Math.round(event.y / 25) * 25;
+            const dx = event.dx;
+            const dy = event.dy;
+
+            if (selectedNodeIds.has(d.id)) {
+                // Move the entire selection as a group
+                selectedNodeIds.forEach(id => {
+                    const node = nodeMap.get(id);
+                    if (node) {
+                        // Apply movement and snap to grid
+                        node.fx = Math.round(((node.fx || node.x) + dx) / 25) * 25;
+                        node.fy = Math.round(((node.fy || node.y) + dy) / 25) * 25;
+                    }
+                });
+            } else {
+                // Standard single-node drag
+                d.fx = Math.round(event.x / 25) * 25;
+                d.fy = Math.round(event.y / 25) * 25;
+            }
         }
+
         function dragended(event: any, d: any) {
             if (!event.active) engine.simulation.alphaTarget(0);
             engine.savePositions();
@@ -231,6 +271,10 @@ async function bootstrap() {
 
     const onNodeClick = (_: any, node: VisualNode) => {
         const pathIds = resolveAncestryPath(node.id, nodeMap);
+        
+        // Single node click also sets it as the 'selection' for dragging
+        selectedNodeIds = new Set([node.id]);
+        
         renderer.focus(node.id, pathIds);
         inspector.render(node);
         document.getElementById('sidebar')?.classList.remove('hidden');

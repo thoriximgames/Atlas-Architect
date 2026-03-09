@@ -8,15 +8,17 @@ export class GalaxyEngine {
     private allNodes: VisualNode[];
     private allLinks: VisualLink[];
     private onUpdate: () => void;
-    private onDataChange: () => void; // Renamed from onSpawn for clarity
+    private onDataChange: () => void; 
     private weightMap: Map<string, number> = new Map();
     private spawnTimer: any = null;
+    private positionsUrl: string;
 
-    constructor(nodes: VisualNode[], links: VisualLink[], onUpdate: () => void, onDataChange: () => void) {
+    constructor(nodes: VisualNode[], links: VisualLink[], onUpdate: () => void, onDataChange: () => void, positionsUrl: string = '/api/blueprint/positions') {
         this.allNodes = nodes;
         this.allLinks = links;
         this.onUpdate = onUpdate;
         this.onDataChange = onDataChange;
+        this.positionsUrl = positionsUrl;
 
         for (const n of nodes) this.weightMap.set(n.id, n.descendantCount);
 
@@ -34,6 +36,10 @@ export class GalaxyEngine {
         this.simulation.force('y', d3.forceY<VisualNode>(d => d.initialY).strength(0.15));
         
         this.simulation.force('collision', d3.forceCollide<VisualNode>().radius(d => d.radius + 20).strength(0.5));
+    }
+
+    setPositionsUrl(url: string) {
+        this.positionsUrl = url;
     }
 
     bootstrap() {
@@ -94,7 +100,7 @@ export class GalaxyEngine {
         });
 
         try {
-            const res = await fetch('../api/topology/positions', {
+            const res = await fetch(this.positionsUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)

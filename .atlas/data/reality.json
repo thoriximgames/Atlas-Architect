@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-09T15:19:52.007Z",
+  "lastUpdated": "2026-03-09T15:49:32.588Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -1251,12 +1251,72 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "body"
+          "name": "realityPath"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "plannedData"
+          "name": "realityData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isLocked"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "enrichData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityPath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityNodes"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "plannedNodes"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "rn"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "plannedIds"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "orphans"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "data"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "savePositions"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "data"
         },
         {
           "visibility": "public",
@@ -1311,67 +1371,17 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "dataDir"
+          "name": "skipLockCheck"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "positionsPath"
+          "name": "data"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "positions"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "realityPath"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "realityData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "x"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "x"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "initialX"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "x"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "initialY"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
+          "name": "data"
         },
         {
           "visibility": "public",
@@ -1740,15 +1750,15 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 95,
+      "complexity": 119,
       "description": "Atlas Architect Root: The primary entry point and Composition Root for the backend engine. DESIGN INTENT: This module orchestrates the entire lifecycle of the Atlas service. It is responsible for: 1. System Bootstrapping: Initializing configuration, session management, and the shared registry. 2. Composition Root: Assembling the core engine (FileScanner, GraphBuilder, LayoutStrategy). 3. API Gateway: Serving the REST API for topology data, node management, and visualizer assets. 4. Codebase Watcher: Monitoring the target project for source changes to trigger automated rescans. 5. Broadcast Hub: Managing real-time Server-Sent Events (SSE) to keep connected clients synchronized. All topological data flows through this root before being persisted to .atlas data.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "0be2a524c10911571cef31fa934d5102",
-      "contractHash": "19f6a802a6d7aed64b47007b75135f0c",
+      "verifiedHash": "43485207e2467704183e40e0617c72c6",
+      "contractHash": "28ea81ec926ae3b21c7a529f120c4283",
       "initialX": -375,
       "initialY": 0,
       "sectorAngle": -1.1887107337907326,
@@ -5919,60 +5929,6 @@
       "x": 400,
       "y": -375
     },
-    "src/Core/Infrastructure/Security/SecurityService": {
-      "id": "src/Core/Infrastructure/Security/SecurityService",
-      "name": "SecurityService",
-      "type": "Service",
-      "file": "src/Core/Infrastructure/Security/SecurityService",
-      "language": "TypeScript",
-      "depth": 1,
-      "parentId": "_UNCONNECTED_",
-      "islandId": "island_orphans",
-      "descendantCount": 0,
-      "dependencies": [],
-      "baseClasses": [],
-      "methods": [
-        {
-          "visibility": "public",
-          "returnType": "Promise<boolean>",
-          "name": "authenticate",
-          "params": [
-            "token: string"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "Promise<string>",
-          "name": "encrypt",
-          "params": [
-            "data: string"
-          ]
-        }
-      ],
-      "fields": [
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "token"
-        }
-      ],
-      "events": [],
-      "complexity": 1,
-      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
-      "implementationNotes": "",
-      "lastModifiedBy": "",
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
-      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
-      "initialX": 900,
-      "initialY": -400,
-      "sectorAngle": 2.7170531058073895,
-      "sectorWidth": 0.1698158191129618,
-      "x": 900,
-      "y": -400
-    },
     "src/Core/Infrastructure/Logging/TelemetryProvider": {
       "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
       "name": "TelemetryProvider",
@@ -6053,10 +6009,64 @@
       "contractHash": "c6f61454d07df0fdc82c5d4d8a033d7e",
       "initialX": 950,
       "initialY": -300,
-      "sectorAngle": 2.886868924920351,
+      "sectorAngle": 2.7170531058073895,
       "sectorWidth": 0.1698158191129618,
       "x": 950,
       "y": -300
+    },
+    "src/Core/Infrastructure/Security/SecurityService": {
+      "id": "src/Core/Infrastructure/Security/SecurityService",
+      "name": "SecurityService",
+      "type": "Service",
+      "file": "src/Core/Infrastructure/Security/SecurityService",
+      "language": "TypeScript",
+      "depth": 1,
+      "parentId": "_UNCONNECTED_",
+      "islandId": "island_orphans",
+      "descendantCount": 0,
+      "dependencies": [],
+      "baseClasses": [],
+      "methods": [
+        {
+          "visibility": "public",
+          "returnType": "Promise<boolean>",
+          "name": "authenticate",
+          "params": [
+            "token: string"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "Promise<string>",
+          "name": "encrypt",
+          "params": [
+            "data: string"
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "token"
+        }
+      ],
+      "events": [],
+      "complexity": 1,
+      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
+      "implementationNotes": "",
+      "lastModifiedBy": "",
+      "violations": [],
+      "status": "orphan",
+      "verificationStatus": "auto",
+      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
+      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
+      "initialX": 900,
+      "initialY": -400,
+      "sectorAngle": 2.886868924920351,
+      "sectorWidth": 0.1698158191129618,
+      "x": 900,
+      "y": -400
     },
     "viewer/src/main": {
       "id": "viewer/src/main",
@@ -6078,6 +6088,7 @@
         "VisualTypes",
         "ThemeManager",
         "style.css",
+        "Set",
         "EventSource"
       ],
       "baseClasses": [],
@@ -6239,6 +6250,11 @@
         },
         {
           "visibility": "public",
+          "type": "any",
+          "name": "selectedNodeIds"
+        },
+        {
+          "visibility": "public",
           "type": "VisualNode[]",
           "name": "activeNodes"
         },
@@ -6246,6 +6262,141 @@
           "visibility": "public",
           "type": "any[]",
           "name": "activeLinks"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "inspector"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "legend"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "renderer"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "selectedNodeIds"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "ids"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "handleSync"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "bpRes"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "currentMode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "mode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "plannedData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "toolbar"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "switchPage"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "currentMode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "page"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "endpoint"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "page"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "plannedData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "stateData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "btnArch"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "btnPlan"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "btnMerge"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "divMerge"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "page"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "res"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "btnLegend"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "btnCloseLegend"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "legendPanel"
         },
         {
           "visibility": "public",
@@ -6325,137 +6476,22 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "inspector"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "legend"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "renderer"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "handleSync"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "bpRes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "currentMode"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "mode"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "plannedData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "toolbar"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "switchPage"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "currentMode"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "page"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "page"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "mode"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "plannedData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "stateData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "btnArch"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "btnPlan"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "btnMerge"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "divMerge"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "page"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "res"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "btnLegend"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "btnCloseLegend"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "legendPanel"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
           "name": "engine"
         },
         {
           "visibility": "public",
           "type": "any",
           "name": "drag"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "id"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "node"
         },
         {
           "visibility": "public",
@@ -6476,6 +6512,76 @@
           "visibility": "public",
           "type": "any",
           "name": "y"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "fx"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "x"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "fy"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "y"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "dx"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "dx"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "dy"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "dy"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "id"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "node"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "fx"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "25"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "fy"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "25"
         },
         {
           "visibility": "public",
@@ -6555,6 +6661,11 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "selectedNodeIds"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "handleRoute"
         },
         {
@@ -6612,14 +6723,14 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 75,
+      "complexity": 80,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "ccc9e98548004bd5af3867271fbc87a2",
-      "contractHash": "d3e5824bf1687cc93710bffe55cdc571",
+      "verifiedHash": "ea4804cc69f04e0ed184e55533ee115d",
+      "contractHash": "28d4a19f0409eaa46e5a4eb8f3de5927",
       "initialX": -325,
       "initialY": 600,
       "sectorAngle": 1.4434344624601754,
@@ -6645,6 +6756,14 @@
       ],
       "baseClasses": [],
       "methods": [
+        {
+          "visibility": "public",
+          "returnType": "any",
+          "name": "setPositionsUrl",
+          "params": [
+            "url: string"
+          ]
+        },
         {
           "visibility": "public",
           "returnType": "any",
@@ -6735,6 +6854,16 @@
           "name": "null"
         },
         {
+          "visibility": "private",
+          "type": "string",
+          "name": "positionsUrl"
+        },
+        {
+          "visibility": "public",
+          "type": "string",
+          "name": "positionsUrl"
+        },
+        {
           "visibility": "public",
           "type": "any",
           "name": "allNodes"
@@ -6777,6 +6906,16 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "positionsUrl"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "positionsUrl"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "simulation"
         },
         {
@@ -6808,6 +6947,16 @@
           "visibility": "public",
           "type": "any",
           "name": "d"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "positionsUrl"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "url"
         },
         {
           "visibility": "public",
@@ -7137,8 +7286,8 @@
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "8d677ea3a46d97374ee71330676ad683",
-      "contractHash": "af3921d4395c84925ce4cadcc6728a83",
+      "verifiedHash": "471fa31b54057482f4e8dd86a4398e92",
+      "contractHash": "8567802f0f3c1fb0b034b94d3e1b8887",
       "initialX": -250,
       "initialY": 1075,
       "sectorAngle": 0.8612087969300206,
@@ -10147,13 +10296,13 @@
     },
     {
       "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Security/SecurityService",
+      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
       "isGravity": true,
       "type": "inheritance"
     },
     {
       "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
+      "target": "src/Core/Infrastructure/Security/SecurityService",
       "isGravity": true,
       "type": "inheritance"
     },

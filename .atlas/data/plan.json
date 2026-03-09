@@ -296,7 +296,9 @@
       "parentId": "Service",
       "dependencies": [],
       "description": "",
-      "designIntent": ""
+      "designIntent": "",
+      "x": 550,
+      "y": 275
     },
     {
       "id": "src/blueprint-cli",
@@ -306,7 +308,9 @@
       "parentId": "src/blueprint",
       "dependencies": [],
       "description": "",
-      "designIntent": ""
+      "designIntent": "",
+      "x": 75,
+      "y": -250
     },
     {
       "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
@@ -316,7 +320,9 @@
       "parentId": "src/Core/Application/AtlasEngine",
       "dependencies": [],
       "description": "",
-      "designIntent": ""
+      "designIntent": "",
+      "x": -500,
+      "y": -250
     },
     {
       "id": "src/Core/Infrastructure/Security/SecurityService",
@@ -326,7 +332,9 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "designIntent": ""
+      "designIntent": "",
+      "x": 25,
+      "y": -100
     },
     {
       "id": "viewer/src/main",
@@ -336,7 +344,9 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "",
-      "designIntent": ""
+      "designIntent": "",
+      "x": -359.07328837879595,
+      "y": 401.59090348683355
     },
     {
       "id": "viewer/src/Engine/GalaxyEngine",
@@ -346,7 +356,9 @@
       "parentId": "viewer/src/main",
       "dependencies": [],
       "description": "",
-      "designIntent": ""
+      "designIntent": "",
+      "x": 50,
+      "y": 525
     },
     {
       "id": "viewer/src/Renderer/StageRenderer",
@@ -356,7 +368,9 @@
       "parentId": "viewer/src/main",
       "dependencies": [],
       "description": "",
-      "designIntent": ""
+      "designIntent": "",
+      "x": -100,
+      "y": 525
     },
     {
       "id": "viewer/src/UI/Inspector",
@@ -366,7 +380,9 @@
       "parentId": "viewer/src/main",
       "dependencies": [],
       "description": "",
-      "designIntent": ""
+      "designIntent": "",
+      "x": -25,
+      "y": 525
     },
     {
       "id": "viewer/src/UI/Legend",
@@ -376,7 +392,9 @@
       "parentId": "viewer/src/main",
       "dependencies": [],
       "description": "",
-      "designIntent": ""
+      "designIntent": "",
+      "x": 150,
+      "y": 550
     },
     {
       "id": "viewer/src/Forces/GalaxyPhysics",
@@ -386,7 +404,9 @@
       "parentId": "viewer/src/Engine/GalaxyEngine",
       "dependencies": [],
       "description": "",
-      "designIntent": ""
+      "designIntent": "",
+      "x": 150,
+      "y": 725
     }
   ]
 }
