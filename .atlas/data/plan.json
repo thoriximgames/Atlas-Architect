@@ -20,8 +20,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "HeartbeatService: System health monitoring and pulse broadcasting. DESIGN INTENT: Provides a minimal, low-overhead signal to confirm the Atlas Engine process is alive and its internal timer loop is functioning. It serves as the \"Vital Signs\" monitor for the backend, ensuring that background tasks (like the Watcher) remain active. KEY RESPONSIBILITIES: 1. Emits a periodic, timestamped \"System Nominal\" signal to the console. 2. Acts as a baseline verification point for system uptime. 3. Provides a hook for future health-monitoring integrations (e.g., external watchdog).",
-      "x": -325,
-      "y": 150,
+      "x": -300,
+      "y": 250,
       "designIntent": "Provides a minimal, low-overhead signal to confirm the Atlas Engine process is alive and its internal timer loop is functioning. Serves as the 'Vital Signs' monitor."
     },
     {
@@ -81,7 +81,7 @@
       "dependencies": [],
       "description": "IAtlasConfig: The architectural ruleset and system configuration. DESIGN INTENT: Serves as the \"Foundational Mandate\" for an Atlas project. It defines the scanning boundaries and, most importantly, the architectural constraints (rules) that the engine uses to detect \"Iron Law\" violations. KEY RESPONSIBILITIES: 1. Defines project entry points and file inclusion exclusion patterns. 2. Houses the Architectural Ruleset used for automated linting. 3. Configures environmental properties like the service port.",
       "x": -375,
-      "y": 150,
+      "y": 250,
       "designIntent": "Serves as the 'Foundational Mandate' for an Atlas project. It defines the scanning boundaries and architectural constraints used for automated linting."
     },
     {
@@ -204,8 +204,8 @@
       "parentId": "src/index",
       "dependencies": [],
       "description": "Broadcaster: Real-time synchronization hub. DESIGN INTENT: Provides the \"Nervous System\" of the Atlas service. It enables immediate feedback loops by pushing server-side events (SSE) to all connected visualizers. It ensures that when a scan completes or a command is issued, the UI reflects the new state without a manual refresh. KEY RESPONSIBILITIES: 1. Manages a registry of active Server-Sent Events (SSE) client connections. 2. Provides a simplified broadcast interface for system-wide event propagation. 3. Handles initial keep-alive signals and automatic client cleanup on disconnect.",
-      "x": -275,
-      "y": 150,
+      "x": -225,
+      "y": 250,
       "designIntent": "Provides the 'Nervous System' of the Atlas service. It enables immediate feedback loops by pushing server-side events (SSE) to all connected visualizers."
     },
     {
@@ -217,7 +217,7 @@
       "dependencies": [],
       "description": "",
       "x": -300,
-      "y": -475
+      "y": -375
     },
     {
       "id": "src/Core/Domain/Services/ILayoutStrategy",
@@ -228,7 +228,7 @@
       "dependencies": [],
       "description": "",
       "x": -150,
-      "y": -475
+      "y": -375
     },
     {
       "id": "src/Core/Infrastructure/Graph/MetricsCalculator",
@@ -239,7 +239,7 @@
       "dependencies": [],
       "description": "",
       "x": -375,
-      "y": -475
+      "y": -375
     },
     {
       "id": "src/Shared/Protocol",
@@ -250,7 +250,7 @@
       "dependencies": [],
       "description": "",
       "x": -225,
-      "y": -475
+      "y": -375
     },
     {
       "id": "src/Core/Domain/Model/GraphNode",
@@ -262,7 +262,7 @@
       "description": "",
       "designIntent": "",
       "x": -375,
-      "y": -600
+      "y": -500
     },
     {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
@@ -297,8 +297,8 @@
       "dependencies": [],
       "description": "",
       "designIntent": "",
-      "x": 550,
-      "y": 275
+      "x": -1000,
+      "y": 625
     },
     {
       "id": "src/blueprint-cli",
@@ -309,8 +309,8 @@
       "dependencies": [],
       "description": "",
       "designIntent": "",
-      "x": 75,
-      "y": -250
+      "x": 25,
+      "y": -275
     },
     {
       "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
@@ -321,8 +321,8 @@
       "dependencies": [],
       "description": "",
       "designIntent": "",
-      "x": -500,
-      "y": -250
+      "x": -550,
+      "y": -200
     },
     {
       "id": "src/Core/Infrastructure/Security/SecurityService",
@@ -333,8 +333,8 @@
       "dependencies": [],
       "description": "",
       "designIntent": "",
-      "x": 25,
-      "y": -100
+      "x": -150,
+      "y": 250
     },
     {
       "id": "viewer/src/main",
@@ -345,8 +345,8 @@
       "dependencies": [],
       "description": "",
       "designIntent": "",
-      "x": -359.07328837879595,
-      "y": 401.59090348683355
+      "x": -575,
+      "y": 0
     },
     {
       "id": "viewer/src/Engine/GalaxyEngine",
@@ -357,8 +357,8 @@
       "dependencies": [],
       "description": "",
       "designIntent": "",
-      "x": 50,
-      "y": 525
+      "x": -575,
+      "y": 125
     },
     {
       "id": "viewer/src/Renderer/StageRenderer",
@@ -369,8 +369,8 @@
       "dependencies": [],
       "description": "",
       "designIntent": "",
-      "x": -100,
-      "y": 525
+      "x": -800,
+      "y": 125
     },
     {
       "id": "viewer/src/UI/Inspector",
@@ -381,8 +381,8 @@
       "dependencies": [],
       "description": "",
       "designIntent": "",
-      "x": -25,
-      "y": 525
+      "x": -725,
+      "y": 125
     },
     {
       "id": "viewer/src/UI/Legend",
@@ -393,8 +393,8 @@
       "dependencies": [],
       "description": "",
       "designIntent": "",
-      "x": 150,
-      "y": 550
+      "x": -650,
+      "y": 125
     },
     {
       "id": "viewer/src/Forces/GalaxyPhysics",
@@ -405,8 +405,8 @@
       "dependencies": [],
       "description": "",
       "designIntent": "",
-      "x": 150,
-      "y": 725
+      "x": -575,
+      "y": 250
     }
   ]
 }

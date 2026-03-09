@@ -211,16 +211,20 @@ async function bootstrap() {
     const drag = (d3: any) => {
         function dragstarted(event: any, d: any) {
             if (!event.active) engine.simulation.alphaTarget(0.3).restart();
-            
+
             // If dragging a selected node, lock all selected nodes at their current positions
             if (selectedNodeIds.has(d.id)) {
                 selectedNodeIds.forEach(id => {
-                    const node = nodeMap.get(id);
+                    const node = nodeMap.get(id) as any;
                     if (node) {
                         node.fx = node.x;
                         node.fy = node.y;
+                        node.startX = node.x; // Record exact starting position
+                        node.startY = node.y;
                     }
                 });
+                d.startX = d.x;
+                d.startY = d.y;
             } else {
                 // Otherwise, just lock the single node being dragged
                 d.fx = d.x;
@@ -229,17 +233,21 @@ async function bootstrap() {
         }
 
         function dragged(event: any, d: any) {
-            const dx = event.dx;
-            const dy = event.dy;
-
             if (selectedNodeIds.has(d.id)) {
-                // Move the entire selection as a group
+                // 1. Calculate absolute snapped position for the primary dragged node
+                const snappedX = Math.round(event.x / 25) * 25;
+                const snappedY = Math.round(event.y / 25) * 25;
+
+                // 2. Calculate the exact snapped delta from the start of the drag
+                const deltaX = snappedX - d.startX;
+                const deltaY = snappedY - d.startY;
+
+                // 3. Apply this exact delta to all nodes in the selection
                 selectedNodeIds.forEach(id => {
-                    const node = nodeMap.get(id);
-                    if (node) {
-                        // Apply movement and snap to grid
-                        node.fx = Math.round(((node.fx || node.x) + dx) / 25) * 25;
-                        node.fy = Math.round(((node.fy || node.y) + dy) / 25) * 25;
+                    const node = nodeMap.get(id) as any;
+                    if (node && node.startX !== undefined && node.startY !== undefined) {
+                        node.fx = node.startX + deltaX;
+                        node.fy = node.startY + deltaY;
                     }
                 });
             } else {
@@ -255,7 +263,6 @@ async function bootstrap() {
         }
         return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
     };
-
     const resolveAncestryPath = (targetId: string, nodeMap: Map<string, VisualNode>): Set<string> => {
         const pathIds = new Set<string>();
         let currentId: string | undefined = targetId;

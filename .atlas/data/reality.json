@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-09T15:49:32.588Z",
+  "lastUpdated": "2026-03-09T17:03:37.400Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -19,12 +19,12 @@
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "initialX": -425,
-      "initialY": 300,
+      "initialX": -800,
+      "initialY": 500,
       "sectorAngle": 0,
       "sectorWidth": 6.283185307179586,
-      "x": -425,
-      "y": 300
+      "x": -800,
+      "y": 500
     },
     "src/blueprint-cli": {
       "id": "src/blueprint-cli",
@@ -148,10 +148,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "443da8f027559a0881cf1474a21fb4c5",
       "contractHash": "732016359c82bcbe9f2f7aea755fe013",
-      "initialX": -866.3473127454297,
-      "initialY": 830.326642773055,
+      "initialX": 25,
+      "initialY": -275,
       "sectorAngle": 2.3774214675814656,
-      "sectorWidth": 0.5094474573388854
+      "sectorWidth": 0.5094474573388854,
+      "x": 25,
+      "y": -275
     },
     "src/blueprint": {
       "id": "src/blueprint",
@@ -1046,11 +1048,11 @@
       "verifiedHash": "4f05c6672aa6ba82dd478e8f9716d018",
       "contractHash": "935974802313314bf68ae64461a40042",
       "initialX": -225,
-      "initialY": -475,
+      "initialY": -375,
       "sectorAngle": 2.5047833319161867,
       "sectorWidth": 0.2547237286694427,
       "x": -225,
-      "y": -475
+      "y": -375
     },
     "src/index": {
       "id": "src/index",
@@ -1286,6 +1288,11 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "project"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "plannedNodes"
         },
         {
@@ -1306,6 +1313,11 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "uNode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "data"
         },
         {
@@ -1321,7 +1333,22 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "modified"
+          "name": "dataDir"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "positionsPath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityPath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "intentModified"
         },
         {
           "visibility": "public",
@@ -1361,7 +1388,7 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "modified"
+          "name": "intentModified"
         },
         {
           "visibility": "public",
@@ -1371,7 +1398,52 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "skipLockCheck"
+          "name": "positions"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "x"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "x"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "y"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "y"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "initialX"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "x"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "initialY"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "y"
         },
         {
           "visibility": "public",
@@ -1750,15 +1822,15 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 119,
+      "complexity": 134,
       "description": "Atlas Architect Root: The primary entry point and Composition Root for the backend engine. DESIGN INTENT: This module orchestrates the entire lifecycle of the Atlas service. It is responsible for: 1. System Bootstrapping: Initializing configuration, session management, and the shared registry. 2. Composition Root: Assembling the core engine (FileScanner, GraphBuilder, LayoutStrategy). 3. API Gateway: Serving the REST API for topology data, node management, and visualizer assets. 4. Codebase Watcher: Monitoring the target project for source changes to trigger automated rescans. 5. Broadcast Hub: Managing real-time Server-Sent Events (SSE) to keep connected clients synchronized. All topological data flows through this root before being persisted to .atlas data.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "43485207e2467704183e40e0617c72c6",
-      "contractHash": "28ea81ec926ae3b21c7a529f120c4283",
+      "verifiedHash": "504a6aeb7d3e725c3c3ff748ca92ca49",
+      "contractHash": "9a85417d81b5b36d1a71a3c667e107bc",
       "initialX": -375,
       "initialY": 0,
       "sectorAngle": -1.1887107337907326,
@@ -3271,11 +3343,11 @@
       "verifiedHash": "580042349f758d9118f9769599489b7a",
       "contractHash": "cdb326cfac64d6a8d30b9f37b96dd2e5",
       "initialX": -375,
-      "initialY": 150,
+      "initialY": 250,
       "sectorAngle": 0.320334386053996,
       "sectorWidth": 0.17753471998173279,
       "x": -375,
-      "y": 150
+      "y": 250
     },
     "src/pipeline": {
       "id": "src/pipeline",
@@ -3707,12 +3779,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "3b0275efc50e4941efd3c9f85de5979c",
       "contractHash": "a115ed8ccad34bab964d124fdb825def",
-      "initialX": -275,
-      "initialY": 150,
+      "initialX": -225,
+      "initialY": 250,
       "sectorAngle": 0.6754038260174615,
       "sectorWidth": 0.17753471998173279,
-      "x": -275,
-      "y": 150
+      "x": -225,
+      "y": 250
     },
     "src/Core/Domain/Services/IScanner": {
       "id": "src/Core/Domain/Services/IScanner",
@@ -3785,11 +3857,11 @@
       "verifiedHash": "3483e5e08ec27fccc60b61bd504456fd",
       "contractHash": "16e4ebe0bf7ef3c438aa8de3d3643869",
       "initialX": -300,
-      "initialY": -475,
+      "initialY": -375,
       "sectorAngle": -1.0466829578053463,
       "sectorWidth": 0.21304166397807933,
       "x": -300,
-      "y": -475
+      "y": -375
     },
     "src/Core/Domain/Services/ILayoutStrategy": {
       "id": "src/Core/Domain/Services/ILayoutStrategy",
@@ -3823,11 +3895,11 @@
       "verifiedHash": "7bc6f0356758353c0c574263c0677088",
       "contractHash": "17f8a6122a7b2bbc8e6e4aedf5031bfb",
       "initialX": -150,
-      "initialY": -475,
+      "initialY": -375,
       "sectorAngle": -0.8336412938272668,
       "sectorWidth": 0.21304166397807933,
       "x": -150,
-      "y": -475
+      "y": -375
     },
     "src/Core/Application/HeartbeatService": {
       "id": "src/Core/Application/HeartbeatService",
@@ -3862,12 +3934,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "b824ee54006050472a5d5751bb306afa",
       "contractHash": "ad82594e0838cff20bc7475be2052b58",
-      "initialX": -325,
-      "initialY": 150,
+      "initialX": -300,
+      "initialY": 250,
       "sectorAngle": -0.6205996298491876,
       "sectorWidth": 0.21304166397807933,
-      "x": -325,
-      "y": 150
+      "x": -300,
+      "y": 250
     },
     "src/Core/Infrastructure/Graph/MetricsCalculator": {
       "id": "src/Core/Infrastructure/Graph/MetricsCalculator",
@@ -3993,11 +4065,11 @@
       "verifiedHash": "642062433d68226c7d2adc08f77fbf0c",
       "contractHash": "45e40aa7d6605c0325778e1bcfcda1f3",
       "initialX": -375,
-      "initialY": -475,
+      "initialY": -375,
       "sectorAngle": -0.4075579658711082,
       "sectorWidth": 0.21304166397807933,
       "x": -375,
-      "y": -475
+      "y": -375
     },
     "src/Core/Domain/Model/SourceFile": {
       "id": "src/Core/Domain/Model/SourceFile",
@@ -4358,11 +4430,11 @@
       "verifiedHash": "0c5791aed767ea1219266ef29c282198",
       "contractHash": "4a2f6e99bf4500440c88c942f8218be1",
       "initialX": -375,
-      "initialY": -600,
+      "initialY": -500,
       "sectorAngle": -0.12350241390033598,
       "sectorWidth": 0.35506943996346557,
       "x": -375,
-      "y": -600
+      "y": -500
     },
     "src/Core/Domain/Services/IParser": {
       "id": "src/Core/Domain/Services/IParser",
@@ -6007,12 +6079,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "6ceee2360ef51f6e6b465848b7964720",
       "contractHash": "c6f61454d07df0fdc82c5d4d8a033d7e",
-      "initialX": 950,
-      "initialY": -300,
+      "initialX": -550,
+      "initialY": -200,
       "sectorAngle": 2.7170531058073895,
       "sectorWidth": 0.1698158191129618,
-      "x": 950,
-      "y": -300
+      "x": -550,
+      "y": -200
     },
     "src/Core/Infrastructure/Security/SecurityService": {
       "id": "src/Core/Infrastructure/Security/SecurityService",
@@ -6061,12 +6133,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
       "contractHash": "13b73708a3a265e048005aa895a3f6d7",
-      "initialX": 900,
-      "initialY": -400,
+      "initialX": -150,
+      "initialY": 250,
       "sectorAngle": 2.886868924920351,
       "sectorWidth": 0.1698158191129618,
-      "x": 900,
-      "y": -400
+      "x": -150,
+      "y": 250
     },
     "viewer/src/main": {
       "id": "viewer/src/main",
@@ -6496,6 +6568,11 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "any"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "fx"
         },
         {
@@ -6507,6 +6584,46 @@
           "visibility": "public",
           "type": "any",
           "name": "fy"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "y"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "startX"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "x"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "startY"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "y"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "startX"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "x"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "startY"
         },
         {
           "visibility": "public",
@@ -6536,22 +6653,42 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "dx"
+          "name": "snappedX"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "dx"
+          "name": "25"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "dy"
+          "name": "snappedY"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "dy"
+          "name": "25"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "deltaX"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "startX"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "deltaY"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "startY"
         },
         {
           "visibility": "public",
@@ -6566,12 +6703,17 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "any"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "fx"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "25"
+          "name": "deltaX"
         },
         {
           "visibility": "public",
@@ -6581,7 +6723,7 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "25"
+          "name": "deltaY"
         },
         {
           "visibility": "public",
@@ -6729,14 +6871,14 @@
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "ea4804cc69f04e0ed184e55533ee115d",
-      "contractHash": "28d4a19f0409eaa46e5a4eb8f3de5927",
-      "initialX": -325,
-      "initialY": 600,
+      "verifiedHash": "04a99200f4e82e397615fdfd1c70e53b",
+      "contractHash": "dda29f18000243ad6d2bb3b76e01c7a7",
+      "initialX": -575,
+      "initialY": 0,
       "sectorAngle": 1.4434344624601754,
       "sectorWidth": 1.3585265529036945,
-      "x": -325,
-      "y": 600
+      "x": -575,
+      "y": 0
     },
     "viewer/src/Engine/GalaxyEngine": {
       "id": "viewer/src/Engine/GalaxyEngine",
@@ -7288,12 +7430,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "471fa31b54057482f4e8dd86a4398e92",
       "contractHash": "8567802f0f3c1fb0b034b94d3e1b8887",
-      "initialX": -250,
-      "initialY": 1075,
+      "initialX": -575,
+      "initialY": 125,
       "sectorAngle": 0.8612087969300206,
       "sectorWidth": 0.1940752218433849,
-      "x": -250,
-      "y": 1075
+      "x": -575,
+      "y": 125
     },
     "viewer/src/Renderer/StageRenderer": {
       "id": "viewer/src/Renderer/StageRenderer",
@@ -8585,12 +8727,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "b38ca18f0c51eb024874bfb9b5d26dba",
       "contractHash": "7f769fd70373344e698b67499c58ffe4",
-      "initialX": 125,
-      "initialY": 675,
+      "initialX": -800,
+      "initialY": 125,
       "sectorAngle": 1.0552840187734054,
       "sectorWidth": 0.1940752218433849,
-      "x": 125,
-      "y": 675
+      "x": -800,
+      "y": 125
     },
     "viewer/src/UI/Inspector": {
       "id": "viewer/src/UI/Inspector",
@@ -9222,12 +9364,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "8340bbe7a479fe56df0d452777a582e5",
       "contractHash": "0b728fe4c8b58ce1432bf8c4a3f0b458",
-      "initialX": -500,
-      "initialY": 1050,
+      "initialX": -725,
+      "initialY": 125,
       "sectorAngle": 1.2493592406167904,
       "sectorWidth": 0.1940752218433849,
-      "x": -500,
-      "y": 1050
+      "x": -725,
+      "y": 125
     },
     "viewer/src/UI/Legend": {
       "id": "viewer/src/UI/Legend",
@@ -9583,12 +9725,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "72a540a0f7bc9f1e4baf12c946124f88",
       "contractHash": "e18e632200ec48c87207f4566e0ffbb7",
-      "initialX": -675,
-      "initialY": 950,
+      "initialX": -650,
+      "initialY": 125,
       "sectorAngle": 1.4434344624601754,
       "sectorWidth": 0.1940752218433849,
-      "x": -675,
-      "y": 950
+      "x": -650,
+      "y": 125
     },
     "viewer/src/UI/Toolbar": {
       "id": "viewer/src/UI/Toolbar",
@@ -9869,12 +10011,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "83ba05296ec9ba0b5561fa381f5a29f8",
       "contractHash": "acf625b1f618352335b5b8e70bae8455",
-      "initialX": -50,
-      "initialY": 1000,
+      "initialX": -325,
+      "initialY": 575,
       "sectorAngle": 2.0256601279903306,
       "sectorWidth": 0.1940752218433849,
-      "x": -50,
-      "y": 1000
+      "x": -325,
+      "y": 575
     },
     "viewer/src/Forces/GalaxyPhysics": {
       "id": "viewer/src/Forces/GalaxyPhysics",
@@ -10129,12 +10271,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "6b591f19f63b19ef8cf9371a095202f9",
       "contractHash": "c2031ff9e3fabd0f0feff708a059031b",
-      "initialX": -875,
-      "initialY": 100,
+      "initialX": -575,
+      "initialY": 250,
       "sectorAngle": 3.056684744033313,
       "sectorWidth": 0.1698158191129618,
-      "x": -875,
-      "y": 100
+      "x": -575,
+      "y": 250
     }
   },
   "edges": [

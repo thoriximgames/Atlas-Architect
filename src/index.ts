@@ -160,6 +160,9 @@ async function main() {
             const realityData = await fs.readJson(realityPath);
             const realityNodes = realityData.nodes || {};
             
+            // Inject project name for the UI header
+            data.project = realityData.project || config.project || "Unknown Project";
+            
             data.plannedNodes = data.plannedNodes.map((pn: any) => {
                 const rn = realityNodes[pn.id];
                 return {
@@ -173,7 +176,10 @@ async function main() {
                     file: rn?.file || pn.id,
                     baseClasses: rn?.baseClasses || [],
                     purpose: pn.purpose || rn?.purpose || "",
-                    description: pn.description || rn?.description || ""
+                    description: pn.description || rn?.description || "",
+                    // Fallback to reality/positions if intent doesn't have coordinates
+                    x: pn.x !== undefined ? pn.x : (rn?.x || 0),
+                    y: pn.y !== undefined ? pn.y : (rn?.y || 0)
                 };
             });
             
@@ -182,7 +188,15 @@ async function main() {
             
             if (orphans.length > 0) {
                 if (!plannedIds.has('_UNCONNECTED_')) {
-                    data.plannedNodes.push({ id: '_UNCONNECTED_', name: 'UNCONNECTED', type: 'Unknown', purpose: 'Orphaned Code', x: -1000, y: -1000 });
+                    const uNode = realityNodes['_UNCONNECTED_'] || { x: -1000, y: -1000 };
+                    data.plannedNodes.push({ 
+                        id: '_UNCONNECTED_', 
+                        name: 'UNCONNECTED', 
+                        type: 'Unknown', 
+                        purpose: 'Orphaned Code', 
+                        x: uNode.x, 
+                        y: uNode.y 
+                    });
                 }
                 orphans.forEach((o: any) => {
                     data.plannedNodes.push({ ...o, parentId: '_UNCONNECTED_', status: 'orphan' });
@@ -195,19 +209,48 @@ async function main() {
     // Helper for saving positions
     const savePositions = async (updates: any, isPlanMode: boolean) => {
         const data = await TopologyPlanner.loadBlueprint(isPlanMode);
-        let modified = false;
+        const dataDir = path.join(projectRoot, '.atlas/data');
+        const positionsPath = path.join(dataDir, 'positions.json');
+        const realityPath = path.join(dataDir, 'reality.json');
+
+        // 1. Update Blueprint/Plan if node exists there
+        let intentModified = false;
         for (const id in updates) {
             const node = data.plannedNodes.find((n: any) => n.id === id);
             if (node) {
                 node.x = updates[id].x;
                 node.y = updates[id].y;
-                modified = true;
+                intentModified = true;
             }
         }
-        if (modified) {
-            // Using skipLockCheck=true because UI dragging shouldn't trigger the CLI-level Authority Lock 
-            // if we are explicitly editing the blueprint when unlocked.
+        if (intentModified) {
             await TopologyPlanner.saveBlueprint(data, isPlanMode, true); 
+        }
+        
+        // 2. Update global positions.json (Master source for all physical nodes)
+        let positions: Record<string, { x: number, y: number }> = {};
+        if (await fs.pathExists(positionsPath)) {
+            positions = await fs.readJson(positionsPath);
+        }
+        for (const id in updates) {
+            positions[id] = updates[id];
+        }
+        await fs.outputJson(positionsPath, positions, { spaces: 2 });
+
+        // 3. Patch reality.json on disk so enrichData sees changes immediately
+        if (await fs.pathExists(realityPath)) {
+            const realityData = await fs.readJson(realityPath);
+            if (realityData.nodes) {
+                for (const id in updates) {
+                    if (realityData.nodes[id]) {
+                        realityData.nodes[id].x = updates[id].x;
+                        realityData.nodes[id].y = updates[id].y;
+                        realityData.nodes[id].initialX = updates[id].x;
+                        realityData.nodes[id].initialY = updates[id].y;
+                    }
+                }
+                await fs.outputJson(realityPath, realityData, { spaces: 2 });
+            }
         }
     };
 

@@ -4,20 +4,20 @@
     "y": -200
   },
   "src/Core/Application/HeartbeatService": {
-    "x": -325,
-    "y": 150
+    "x": -300,
+    "y": 250
   },
   "src/Core/Infrastructure/Logging/TelemetryProvider": {
-    "x": 950,
-    "y": -300
+    "x": -550,
+    "y": -200
   },
   "src/Core/Infrastructure/NewService": {
-    "x": 850,
-    "y": -350
+    "x": -1000,
+    "y": 625
   },
   "_UNCONNECTED_": {
-    "x": -425,
-    "y": 300
+    "x": -800,
+    "y": 500
   },
   "src/blueprint": {
     "x": 25,
@@ -25,7 +25,7 @@
   },
   "src/Shared/Protocol": {
     "x": -225,
-    "y": -475
+    "y": -375
   },
   "src/index": {
     "x": -375,
@@ -45,7 +45,7 @@
   },
   "src/Shared/Config": {
     "x": -375,
-    "y": 150
+    "y": 250
   },
   "src/pipeline": {
     "x": -250,
@@ -57,15 +57,15 @@
   },
   "src/Core/Domain/Services/IGraphBuilder": {
     "x": -300,
-    "y": -475
+    "y": -375
   },
   "src/Core/Domain/Services/ILayoutStrategy": {
     "x": -150,
-    "y": -475
+    "y": -375
   },
   "src/Core/Infrastructure/Graph/MetricsCalculator": {
     "x": -375,
-    "y": -475
+    "y": -375
   },
   "src/Core/Domain/Model/SourceFile": {
     "x": -125,
@@ -77,7 +77,7 @@
   },
   "src/Core/Domain/Model/GraphNode": {
     "x": -375,
-    "y": -600
+    "y": -500
   },
   "src/Core/Domain/Services/IParser": {
     "x": 125,
@@ -104,48 +104,48 @@
     "y": -275
   },
   "viewer/src/main": {
-    "x": -325,
-    "y": 600
+    "x": -575,
+    "y": 0
   },
   "viewer/src/Engine/GalaxyEngine": {
-    "x": -250,
-    "y": 1075
+    "x": -575,
+    "y": 125
   },
   "viewer/src/Renderer/StageRenderer": {
-    "x": 125,
-    "y": 675
+    "x": -800,
+    "y": 125
   },
   "viewer/src/UI/Inspector": {
-    "x": -500,
-    "y": 1050
+    "x": -725,
+    "y": 125
   },
   "viewer/src/UI/Legend": {
-    "x": -675,
-    "y": 950
+    "x": -650,
+    "y": 125
   },
   "viewer/src/Protocol/VisualTypes": {
     "x": -800,
     "y": 725
   },
   "viewer/src/Theme/ThemeManager": {
-    "x": -50,
-    "y": 1000
+    "x": -325,
+    "y": 575
   },
   "viewer/src/Forces/GalaxyPhysics": {
-    "x": -875,
-    "y": 100
+    "x": -575,
+    "y": 250
   },
   "src/Core/Infrastructure/Security/SecurityService": {
-    "x": 900,
-    "y": -400
+    "x": -150,
+    "y": 250
   },
   "test-node": {
     "x": 31.774422338253107,
     "y": 82.6134980794581
   },
   "src/Core/Application/Broadcaster": {
-    "x": -275,
-    "y": 150
+    "x": -225,
+    "y": 250
   },
   "viewer/src/UI/Toolbar": {
     "x": -424.18382885883324,
@@ -166,5 +166,9 @@
   "src/Test/FinalTest": {
     "x": 25,
     "y": -75
+  },
+  "src/blueprint-cli": {
+    "x": 25,
+    "y": -275
   }
 }
