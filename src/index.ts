@@ -268,8 +268,49 @@ async function main() {
 
     app.get('/api/blueprint', async (req, res) => {
         const isPlanMode = req.query.mode === 'plan';
-        const data = await TopologyPlanner.loadBlueprint(isPlanMode);
-        res.json(data);
+        const plannedData = await TopologyPlanner.loadBlueprint(isPlanMode);
+        const realityPath = path.join(projectRoot, '.atlas/data/reality.json');
+        
+        if (await fs.pathExists(realityPath)) {
+            const realityData = await fs.readJson(realityPath);
+            const realityNodes = realityData.nodes || {};
+            
+            // Enrich planned nodes with physical metrics
+            plannedData.plannedNodes = plannedData.plannedNodes.map((pn: any) => {
+                const rn = realityNodes[pn.id];
+                return {
+                    ...pn,
+                    status: rn ? 'verified' : 'planned',
+                    language: rn?.language || 'Unknown',
+                    complexity: rn?.complexity || 0,
+                    methods: rn?.methods || [],
+                    fields: rn?.fields || [],
+                    events: rn?.events || [],
+                    file: rn?.file || pn.id,
+                    baseClasses: rn?.baseClasses || [],
+                    purpose: pn.purpose || rn?.purpose || "",
+                    description: pn.description || rn?.description || ""
+                };
+            });
+            
+            // Append UNCONNECTED orphans that exist in code but aren't planned
+            const plannedIds = new Set(plannedData.plannedNodes.map((n:any) => n.id));
+            const orphans = Object.values(realityNodes).filter((rn: any) => !plannedIds.has(rn.id) && rn.id !== '_UNCONNECTED_');
+            
+            if (orphans.length > 0) {
+                if (!plannedIds.has('_UNCONNECTED_')) {
+                    plannedData.plannedNodes.push({ id: '_UNCONNECTED_', name: 'UNCONNECTED', type: 'Unknown', purpose: 'Orphaned Code', x: -1000, y: -1000 });
+                }
+                orphans.forEach((o: any) => {
+                    plannedData.plannedNodes.push({
+                        ...o,
+                        parentId: '_UNCONNECTED_',
+                        status: 'orphan'
+                    });
+                });
+            }
+        }
+        res.json(plannedData);
     });
 
     app.post('/api/plan/merge', async (req, res) => {

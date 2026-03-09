@@ -46,7 +46,9 @@ async function killProjectSession(projectName) {
 
 async function runCommand(cmd, args, options = {}) {
     return new Promise((resolve, reject) => {
-        const proc = spawn(cmd, args, { stdio: 'inherit', shell: true, ...options });
+        // If using shell, ensure arguments with spaces are quoted so they aren't split by the shell
+        const safeArgs = args.map(a => typeof a === 'string' && a.includes(' ') ? `"${a}"` : a);
+        const proc = spawn(cmd, safeArgs, { stdio: 'inherit', shell: true, ...options });
         proc.on('close', (code) => code === 0 ? resolve() : reject(new Error(`Command failed with code ${code}`)));
     });
 }

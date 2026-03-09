@@ -289,23 +289,21 @@
       "y": -375
     },
     {
-      "id": "src/Test/FinalTest",
-      "name": "Final",
-      "type": "Test",
-      "purpose": "Node",
-      "parentId": "Service",
-      "dependencies": [],
-      "description": "",
-      "designIntent": "",
-      "x": 25,
-      "y": -75
-    },
-    {
       "id": "src/Core/Infrastructure/NewService",
       "name": "New",
       "type": "Infrastructure",
       "purpose": "Service",
       "parentId": "Service",
+      "dependencies": [],
+      "description": "",
+      "designIntent": ""
+    },
+    {
+      "id": "src/Core/Infrastructure/DemoService",
+      "name": "Functional Demo Service",
+      "type": "Service",
+      "purpose": "Demonstrating Atlas architectural lifecycle",
+      "parentId": "src/index",
       "dependencies": [],
       "description": "",
       "designIntent": ""

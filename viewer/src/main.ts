@@ -18,13 +18,11 @@ async function bootstrap() {
         console.warn('[Atlas] Auto-sync failed', e);
     }
 
-    const [realityRes, plannedRes, stateRes] = await Promise.all([
-        fetch('/data/reality.json'),
+    const [plannedRes, stateRes] = await Promise.all([
         fetch('/api/blueprint'), // Get initial blueprint
         fetch('/api/topology/state')
     ]);
     
-    let realityData = await realityRes.json();
     let plannedData = await plannedRes.json();
     let stateData = await stateRes.json();
     let currentMode: 'architecture' | 'plan' = 'architecture';
@@ -68,21 +66,18 @@ async function bootstrap() {
 
     updateLockBadge(stateData.locked, currentMode);
 
-    if (realityData.project) {
-        document.title = `Atlas | ${realityData.project}`;
+    if (plannedData.project) {
+        document.title = `Atlas | ${plannedData.project}`;
         const projectLabel = document.getElementById('project-label');
-        if (projectLabel) projectLabel.innerText = `ATLAS | ${realityData.project.toUpperCase()}`;
+        if (projectLabel) projectLabel.innerText = `ATLAS | ${plannedData.project.toUpperCase()}`;
     }
 
     const nodeMap = new Map<string, VisualNode>();
     let activeNodes: VisualNode[] = [];
     let activeLinks: any[] = [];
 
-    const calculateNodes = (pData: any, rData: any) => {
-        const rNodes = Object.values(rData.nodes || {}) as VisualNode[];
+    const calculateNodes = (pData: any) => {
         const pNodesRaw = Array.isArray(pData) ? pData : (pData.plannedNodes || []);
-        const rMap = new Map<string, VisualNode>();
-        rNodes.forEach(n => rMap.set(n.id, n));
 
         const blueprintChildrenMap = new Map<string, number>();
         pNodesRaw.forEach((pn: any) => {
@@ -92,27 +87,14 @@ async function bootstrap() {
         });
 
         return pNodesRaw.map((pn: any) => {
-            const isReal = rMap.has(pn.id);
-            const realNode = rMap.get(pn.id);
             const bChildCount = blueprintChildrenMap.get(pn.id) || 0;
-            const effectiveDescendants = Math.max(realNode?.descendantCount || 0, bChildCount);
+            const effectiveDescendants = Math.max(pn.descendantCount || 0, bChildCount);
             const hasPos = pn.x !== undefined && pn.y !== undefined;
             
             return {
                 ...pn,
-                status: isReal ? 'verified' : 'planned',
-                language: realNode?.language || 'Unknown',
                 descendantCount: effectiveDescendants,
-                complexity: realNode?.complexity || 0,
-                methods: realNode?.methods || [],
-                fields: realNode?.fields || [],
-                events: realNode?.events || [],
-                file: realNode?.file || pn.id,
-                baseClasses: realNode?.baseClasses || [],
-                purpose: pn.purpose || realNode?.purpose || "",
-                description: pn.description || realNode?.description || "",
-                designIntent: pn.designIntent || realNode?.designIntent || "",
-                depth: pn.parentId ? 2 : 1,
+                depth: pn.parentId && pn.parentId !== '_UNCONNECTED_' ? 2 : 1,
                 x: hasPos ? pn.x : 0, y: hasPos ? pn.y : 0, 
                 initialX: hasPos ? pn.x : 0, initialY: hasPos ? pn.y : 0, 
                 radius: 20 + Math.sqrt(effectiveDescendants) * 6,
@@ -121,8 +103,8 @@ async function bootstrap() {
         });
     };
 
-    const rebuildGraphData = (pData: any, rData: any) => {
-        activeNodes = calculateNodes(pData, rData);
+    const rebuildGraphData = (pData: any) => {
+        activeNodes = calculateNodes(pData);
         activeLinks = [];
         activeNodes.forEach(n => {
             if (n.parentId) activeLinks.push({ source: n.parentId, target: n.id, isGravity: true, type: 'inheritance' });
@@ -133,7 +115,7 @@ async function bootstrap() {
         activeNodes.forEach(n => nodeMap.set(n.id, n));
     };
 
-    rebuildGraphData(plannedData, realityData);
+    rebuildGraphData(plannedData);
 
     const inspector = new Inspector();
     const legend = new Legend();
@@ -144,14 +126,12 @@ async function bootstrap() {
     });
 
     const handleSync = async () => {
-        const res = await fetch('/api/topology/sync', { method: 'POST' });
-        const data = await res.json();
-        realityData = data.realityData;
+        await fetch('/api/topology/sync', { method: 'POST' });
         
         const bpRes = await fetch(`/api/blueprint${currentMode === 'plan' ? '?mode=plan' : ''}`);
         plannedData = await bpRes.json();
 
-        rebuildGraphData(plannedData, realityData);
+        rebuildGraphData(plannedData);
         engine.resetData(activeNodes, activeLinks);
         renderer.centerView(activeNodes);
     };
@@ -171,7 +151,7 @@ async function bootstrap() {
         
         updateLockBadge(stateData.locked, page);
         
-        rebuildGraphData(plannedData, realityData);
+        rebuildGraphData(plannedData);
         engine.resetData(activeNodes, activeLinks);
         renderer.centerView(activeNodes);
 

@@ -289,23 +289,101 @@
       "y": -375
     },
     {
-      "id": "src/Test/FinalTest",
-      "name": "Final",
-      "type": "Test",
-      "purpose": "Node",
-      "parentId": "Service",
-      "dependencies": [],
-      "description": "",
-      "designIntent": "",
-      "x": 25,
-      "y": -75
-    },
-    {
       "id": "src/Core/Infrastructure/NewService",
       "name": "New",
       "type": "Infrastructure",
       "purpose": "Service",
       "parentId": "Service",
+      "dependencies": [],
+      "description": "",
+      "designIntent": ""
+    },
+    {
+      "id": "src/blueprint-cli",
+      "name": "Blueprint CLI",
+      "type": "Tool",
+      "purpose": "CLI interface for intentional topology management",
+      "parentId": "src/blueprint",
+      "dependencies": [],
+      "description": "",
+      "designIntent": ""
+    },
+    {
+      "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
+      "name": "Telemetry Provider",
+      "type": "Service",
+      "purpose": "Centralized logging and system metrics collection",
+      "parentId": "src/Core/Application/AtlasEngine",
+      "dependencies": [],
+      "description": "",
+      "designIntent": ""
+    },
+    {
+      "id": "src/Core/Infrastructure/Security/SecurityService",
+      "name": "Security Service",
+      "type": "Service",
+      "purpose": "Internal system integrity and access validation",
+      "parentId": "src/index",
+      "dependencies": [],
+      "description": "",
+      "designIntent": ""
+    },
+    {
+      "id": "viewer/src/main",
+      "name": "Viewer Entry",
+      "type": "System",
+      "purpose": "Composition root and bootstrapper for the visualizer UI",
+      "parentId": "src/index",
+      "dependencies": [],
+      "description": "",
+      "designIntent": ""
+    },
+    {
+      "id": "viewer/src/Engine/GalaxyEngine",
+      "name": "Galaxy Engine",
+      "type": "Engine",
+      "purpose": "Orchestrates data flow and state management for the visualizer",
+      "parentId": "viewer/src/main",
+      "dependencies": [],
+      "description": "",
+      "designIntent": ""
+    },
+    {
+      "id": "viewer/src/Renderer/StageRenderer",
+      "name": "Stage Renderer",
+      "type": "Logic",
+      "purpose": "High-performance D3-based canvas rendering engine",
+      "parentId": "viewer/src/main",
+      "dependencies": [],
+      "description": "",
+      "designIntent": ""
+    },
+    {
+      "id": "viewer/src/UI/Inspector",
+      "name": "Node Inspector",
+      "type": "Component",
+      "purpose": "UI panel for displaying and editing node metadata",
+      "parentId": "viewer/src/main",
+      "dependencies": [],
+      "description": "",
+      "designIntent": ""
+    },
+    {
+      "id": "viewer/src/UI/Legend",
+      "name": "UI Legend",
+      "type": "Component",
+      "purpose": "Visual guide for node types and connection meanings",
+      "parentId": "viewer/src/main",
+      "dependencies": [],
+      "description": "",
+      "designIntent": ""
+    },
+    {
+      "id": "viewer/src/Forces/GalaxyPhysics",
+      "name": "Physics Engine",
+      "type": "Logic",
+      "purpose": "D3 force simulation for topological layout",
+      "parentId": "viewer/src/Engine/GalaxyEngine",
       "dependencies": [],
       "description": "",
       "designIntent": ""

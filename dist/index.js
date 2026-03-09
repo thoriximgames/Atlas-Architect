@@ -245,8 +245,45 @@ async function main() {
     });
     app.get('/api/blueprint', async (req, res) => {
         const isPlanMode = req.query.mode === 'plan';
-        const data = await blueprint_1.TopologyPlanner.loadBlueprint(isPlanMode);
-        res.json(data);
+        const plannedData = await blueprint_1.TopologyPlanner.loadBlueprint(isPlanMode);
+        const realityPath = path_1.default.join(projectRoot, '.atlas/data/reality.json');
+        if (await fs_extra_1.default.pathExists(realityPath)) {
+            const realityData = await fs_extra_1.default.readJson(realityPath);
+            const realityNodes = realityData.nodes || {};
+            // Enrich planned nodes with physical metrics
+            plannedData.plannedNodes = plannedData.plannedNodes.map((pn) => {
+                const rn = realityNodes[pn.id];
+                return {
+                    ...pn,
+                    status: rn ? 'verified' : 'planned',
+                    language: rn?.language || 'Unknown',
+                    complexity: rn?.complexity || 0,
+                    methods: rn?.methods || [],
+                    fields: rn?.fields || [],
+                    events: rn?.events || [],
+                    file: rn?.file || pn.id,
+                    baseClasses: rn?.baseClasses || [],
+                    purpose: pn.purpose || rn?.purpose || "",
+                    description: pn.description || rn?.description || ""
+                };
+            });
+            // Append UNCONNECTED orphans that exist in code but aren't planned
+            const plannedIds = new Set(plannedData.plannedNodes.map((n) => n.id));
+            const orphans = Object.values(realityNodes).filter((rn) => !plannedIds.has(rn.id) && rn.id !== '_UNCONNECTED_');
+            if (orphans.length > 0) {
+                if (!plannedIds.has('_UNCONNECTED_')) {
+                    plannedData.plannedNodes.push({ id: '_UNCONNECTED_', name: 'UNCONNECTED', type: 'Unknown', purpose: 'Orphaned Code', x: -1000, y: -1000 });
+                }
+                orphans.forEach((o) => {
+                    plannedData.plannedNodes.push({
+                        ...o,
+                        parentId: '_UNCONNECTED_',
+                        status: 'orphan'
+                    });
+                });
+            }
+        }
+        res.json(plannedData);
     });
     app.post('/api/plan/merge', async (req, res) => {
         await blueprint_1.TopologyPlanner.promote();
