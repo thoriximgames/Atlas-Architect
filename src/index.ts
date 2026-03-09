@@ -261,13 +261,18 @@ async function main() {
         res.json(data);
     });
 
+    app.get('/api/topology/state', async (req, res) => {
+        const isLocked = await TopologyPlanner.isLocked();
+        res.json({ planningActive: isLocked, locked: isLocked });
+    });
+
     app.get('/api/blueprint', async (req, res) => {
-        const isStaging = req.query.mode === 'stage';
-        const data = await TopologyPlanner.loadBlueprint(isStaging);
+        const isPlanMode = req.query.mode === 'plan';
+        const data = await TopologyPlanner.loadBlueprint(isPlanMode);
         res.json(data);
     });
 
-    app.post('/api/blueprint/promote', async (req, res) => {
+    app.post('/api/plan/merge', async (req, res) => {
         await TopologyPlanner.promote();
         res.json({ success: true });
     });
@@ -308,11 +313,20 @@ async function main() {
 
     // Watcher for automatic updates
     const watchPaths = [
-        ...config.scanPatterns.map((p: string) => path.join(projectRoot, p.replace('**/*', '')))
+        ...config.scanPatterns.map((p: string) => path.join(projectRoot, p.replace('**/*', ''))),
+        path.join(projectRoot, '.atlas/data/plan.json')
     ];
 
-    chokidar.watch(watchPaths, { ignoreInitial: true }).on('all', (event, path) => {
-        if (path.endsWith('.json') || path.endsWith('.md')) return; 
+    chokidar.watch(watchPaths, { ignoreInitial: true }).on('all', (event, p) => {
+        if (p.endsWith('plan.json')) {
+            if (event === 'add' || event === 'unlink') {
+                console.log(`[Atlas] Plan state changed (${event}). Broadcasting lock update.`);
+                broadcaster.broadcast('lock-state-changed');
+            }
+            return;
+        }
+        
+        if (p.endsWith('.json') || p.endsWith('.md')) return; 
         scanAndResolve();
     });
 

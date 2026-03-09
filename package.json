@@ -4,7 +4,8 @@
   "description": "vUniversal: The Architectural Conservator",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build:tsc": "tsc",
+    "build": "node scripts/build.mjs",
     "scan": "node dist/index.js --scan-only",
     "pipeline": "node dist/pipeline.js",
     "start": "node dist/index.js",

@@ -17,23 +17,25 @@ if (path_1.default.basename(cwd) === '.atlas') {
  *
  * DESIGN INTENT:
  * Manages two states of the architecture:
- * 1. Authoritative (planned.json): The verified, current structural mandate.
- * 2. Staging (staging.json): The draft board for planning future refactors.
+ * 1. Authoritative (blueprint.json): The verified, current structural mandate.
+ * 2. Plan (plan.json): The draft board for planning future work.
  *
- * Provides CLI-driven "Promotion" to move staging into the authoritative blueprint.
+ * Provides CLI-driven "Merge" to move plan into the authoritative blueprint.
  */
 class TopologyPlanner {
-    static getBlueprintPath(isStaging = false) {
-        if (isStaging) {
-            return path_1.default.join(projectRoot, '.atlas', 'data', 'staging.json');
+    static getBlueprintPath(isPlanMode = false) {
+        if (isPlanMode) {
+            return path_1.default.join(projectRoot, '.atlas', 'data', 'plan.json');
         }
-        return path_1.default.join(projectRoot, 'docs', 'topology', 'planned.json');
+        return path_1.default.join(projectRoot, 'docs', 'topology', 'blueprint.json');
     }
-    static async loadBlueprint(isStaging = false) {
-        const filePath = this.getBlueprintPath(isStaging);
+    static async isLocked() {
+        return await fs_extra_1.default.pathExists(this.getBlueprintPath(true));
+    }
+    static async loadBlueprint(isPlanMode = false) {
+        const filePath = this.getBlueprintPath(isPlanMode);
         if (!await fs_extra_1.default.pathExists(filePath)) {
-            // If staging is missing, initialize it from authoritative
-            if (isStaging) {
+            if (isPlanMode) {
                 const authPath = this.getBlueprintPath(false);
                 if (await fs_extra_1.default.pathExists(authPath)) {
                     await fs_extra_1.default.copy(authPath, filePath);
@@ -44,26 +46,32 @@ class TopologyPlanner {
         }
         return await fs_extra_1.default.readJson(filePath);
     }
-    static async saveBlueprint(data, isStaging = false) {
-        const filePath = this.getBlueprintPath(isStaging);
+    static async saveBlueprint(data, isPlanMode = false, skipLockCheck = false) {
+        if (!isPlanMode && !skipLockCheck) {
+            if (await this.isLocked()) {
+                throw new Error("AUTHORITY LOCK: The Blueprint is currently locked by an active Plan. Merging the plan or aborting it is required to modify the Blueprint directly.");
+            }
+        }
+        const filePath = this.getBlueprintPath(isPlanMode);
         await fs_extra_1.default.ensureDir(path_1.default.dirname(filePath));
         await fs_extra_1.default.writeJson(filePath, data, { spaces: 2 });
-        console.log(`[PLANNER] Updated ${isStaging ? 'Planning Board' : 'Authoritative Blueprint'}`);
+        console.log(`[PLANNER] Updated ${isPlanMode ? 'Active Plan' : 'Authoritative Blueprint'}`);
     }
     static async promote() {
-        const stagingPath = this.getBlueprintPath(true);
+        const planPath = this.getBlueprintPath(true);
         const authPath = this.getBlueprintPath(false);
-        if (!await fs_extra_1.default.pathExists(stagingPath)) {
-            throw new Error("No staging data found to promote.");
+        if (!await fs_extra_1.default.pathExists(planPath)) {
+            throw new Error("No active plan data found to merge.");
         }
-        await fs_extra_1.default.copy(stagingPath, authPath);
-        console.log(`[PLANNER] SUCCESS: Staging has been promoted to the Authoritative Blueprint.`);
+        await fs_extra_1.default.copy(planPath, authPath);
+        await fs_extra_1.default.remove(planPath); // Release the lock
+        console.log(`[PLANNER] SUCCESS: Plan has been merged into the Authoritative Blueprint. Lock released.`);
     }
-    static async upsertNode(id, name, type, purpose, parentId, isStaging = false) {
-        await this.upsertNodes([{ id, name, type, purpose, parentId }], isStaging);
+    static async upsertNode(id, name, type, purpose, parentId, isPlanMode = false) {
+        await this.upsertNodes([{ id, name, type, purpose, parentId }], isPlanMode);
     }
-    static async upsertNodes(nodes, isStaging = false) {
-        const data = await this.loadBlueprint(isStaging);
+    static async upsertNodes(nodes, isPlanMode = false) {
+        const data = await this.loadBlueprint(isPlanMode);
         for (const input of nodes) {
             let node = data.plannedNodes.find((n) => n.id === input.id);
             if (node) {
@@ -92,13 +100,13 @@ class TopologyPlanner {
                 console.log(`[PLANNER] Added new node: ${input.id}`);
             }
         }
-        await this.saveBlueprint(data, isStaging);
+        await this.saveBlueprint(data, isPlanMode);
     }
-    static async setNodeProperty(id, property, value, isStaging = false) {
-        const data = await this.loadBlueprint(isStaging);
+    static async setNodeProperty(id, property, value, isPlanMode = false) {
+        const data = await this.loadBlueprint(isPlanMode);
         let node = data.plannedNodes.find((n) => n.id === id);
         if (!node)
-            throw new Error(`Node ${id} not found in ${isStaging ? 'staging' : 'authoritative'} blueprint`);
+            throw new Error(`Node ${id} not found in ${isPlanMode ? 'plan' : 'authoritative'} blueprint`);
         switch (property) {
             case 'name':
                 node.name = value;
@@ -127,25 +135,25 @@ class TopologyPlanner {
             default:
                 throw new Error(`Unsupported property '${property}'`);
         }
-        await this.saveBlueprint(data, isStaging);
+        await this.saveBlueprint(data, isPlanMode);
         console.log(`[PLANNER] SUCCESS: Updated ${property} for '${id}'`);
     }
-    static async removeNode(id, isStaging = false) {
-        const data = await this.loadBlueprint(isStaging);
+    static async removeNode(id, isPlanMode = false) {
+        const data = await this.loadBlueprint(isPlanMode);
         data.plannedNodes = data.plannedNodes.filter((n) => n.id !== id);
-        await this.saveBlueprint(data, isStaging);
+        await this.saveBlueprint(data, isPlanMode);
         console.log(`[PLANNER] Removed node: ${id}`);
     }
-    static async getNode(id, isStaging = false) {
-        const data = await this.loadBlueprint(isStaging);
+    static async getNode(id, isPlanMode = false) {
+        const data = await this.loadBlueprint(isPlanMode);
         const node = data.plannedNodes.find((n) => n.id === id);
         if (node)
             console.log(JSON.stringify(node, null, 2));
         else
             console.log(`[QUERY] Node '${id}' not found.`);
     }
-    static async heal(realityNodes, isStaging = false) {
-        const data = await this.loadBlueprint(isStaging);
+    static async heal(realityNodes, isPlanMode = false) {
+        const data = await this.loadBlueprint(isPlanMode);
         let modified = false;
         for (const pn of data.plannedNodes) {
             const rn = realityNodes[pn.id];
@@ -165,7 +173,7 @@ class TopologyPlanner {
             }
         }
         if (modified)
-            await this.saveBlueprint(data, isStaging);
+            await this.saveBlueprint(data, isPlanMode);
         return data;
     }
 }

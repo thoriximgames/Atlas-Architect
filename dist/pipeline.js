@@ -28,7 +28,7 @@ if (path_1.default.basename(cwd) === '.atlas') {
     projectRoot = path_1.default.resolve(cwd, '..');
 }
 const PIPELINE_ROOT = path_1.default.join(projectRoot, 'docs/pipeline');
-const PLANNED_PATH = path_1.default.join(projectRoot, 'docs/topology/planned.json');
+const PLANNED_PATH = path_1.default.join(projectRoot, '.atlas/data/plan.json');
 const STAGES = ['00_backlog', '01_todo', '02_in_progress', '03_review', '04_completed'];
 class PipelineManager {
     static async list() {
@@ -77,14 +77,14 @@ Created: ${new Date().toISOString()}
 - TBD
 
 ## Structural Proof (Atlas)
-- [ ] Registered in planned.json`;
+- [ ] Registered in plan.json`;
         await fs_extra_1.default.ensureDir(path_1.default.join(PIPELINE_ROOT, '00_backlog'));
         await fs_extra_1.default.writeFile(path_1.default.join(PIPELINE_ROOT, '00_backlog', id), content);
         console.log(`Task created: ${id}`);
     }
     static async sync() {
         const realityPath = path_1.default.join(projectRoot, '.atlas/data/reality.json');
-        const plannedData = await blueprint_1.TopologyPlanner.loadBlueprint();
+        const plannedData = await blueprint_1.TopologyPlanner.loadBlueprint(true);
         let verifiedIds = new Set();
         let realityData = {};
         if (await fs_extra_1.default.pathExists(realityPath)) {
@@ -168,7 +168,7 @@ Generated: ${new Date().toISOString()}
 - Implementation must match Atlas ID: \`${node.id}\`.
 
 ## Structural Proof (Atlas)
-- [x] Registered in planned.json
+- [x] Registered in plan.json
 - [ ] Verified by Atlas Scanner`;
                 await fs_extra_1.default.ensureDir(path_1.default.join(PIPELINE_ROOT, '01_todo'));
                 await fs_extra_1.default.writeFile(path_1.default.join(PIPELINE_ROOT, '01_todo', taskId), content);

@@ -26,9 +26,9 @@
     },
     {
       "id": "src/Core/Application/AtlasEngine",
-      "name": "AtlasEngine",
-      "type": "Application",
-      "purpose": "Core orchestration unit responsible for the Scan - - - pipeline.",
+      "name": "Atlas Engine",
+      "type": "Engine",
+      "purpose": "Core orchestration unit responsible for the Scan - Build - Layout pipeline.",
       "parentId": "src/index",
       "dependencies": [],
       "description": "AtlasEngine: The core orchestration unit of the system. DESIGN INTENT: Acts as the \"Brain\" of the Atlas ecosystem. It bridges the gap between raw file system data and high-level architectural models. It implements the drift detection logic by comparing the scanned 'Reality' against the historical 'Registry'. KEY RESPONSIBILITIES: 1. Orchestrates the Scan -> Build -> Layout -> Validate pipeline. 2. Manages Drift Detection: Identifies 'Dirty' nodes where implementation violates verified state. 3. Contract Ripple: Detects changes in public interfaces and invalidates dependents. 4. Architectural Linting: Enforces \"Iron Law\" rules defined in the system config.",
@@ -103,7 +103,7 @@
       "purpose": "Intentional architecture and blueprint manager.",
       "parentId": "src/index",
       "dependencies": [],
-      "description": "TopologyPlanner: Intentional architecture and evolution manager. DESIGN INTENT: Manages two states of the architecture: 1. Authoritative (planned.json): The verified, current structural mandate. 2. Staging (staging.json): The draft board for planning future refactors. Provides CLI-driven \"Promotion\" to move staging into the authoritative blueprint.",
+      "description": "TopologyPlanner: Intentional architecture and evolution manager. DESIGN INTENT: Manages two states of the architecture: 1. Authoritative (blueprint.json): The verified, current structural mandate. 2. Plan (plan.json): The draft board for planning future work. Provides CLI-driven \"Merge\" to move plan into the authoritative blueprint.",
       "x": 25,
       "y": -200,
       "designIntent": "Provides the 'Visions' of the project. It manages the planned.json file, serving as the authoritative source for intentional topology and drift detection."
@@ -287,6 +287,28 @@
       "designIntent": "",
       "x": 400,
       "y": -375
+    },
+    {
+      "id": "src/Test/FinalTest",
+      "name": "Final",
+      "type": "Test",
+      "purpose": "Node",
+      "parentId": "Service",
+      "dependencies": [],
+      "description": "",
+      "designIntent": "",
+      "x": 25,
+      "y": -75
+    },
+    {
+      "id": "src/Core/Infrastructure/NewService",
+      "name": "New",
+      "type": "Infrastructure",
+      "purpose": "Service",
+      "parentId": "Service",
+      "dependencies": [],
+      "description": "",
+      "designIntent": ""
     }
   ]
 }

@@ -163,21 +163,22 @@ async function main() {
             break;
 
         case 'plan':
-            const planCmd = args.slice(1).filter(a => a !== '--target' && a !== args[targetIdx + 1]);
-            await runCommand(runner, [...loaderArgs, pipeScript, ...planCmd, '--target', target]);
+            const planCmdArgs = args.slice(1).filter(a => a !== '--target' && a !== args[targetIdx + 1]);
+            const subCmd = planCmdArgs[0];
+            const plannerCommands = ['start', 'add', 'set', 'remove', 'merge', 'get'];
+            
+            if (plannerCommands.includes(subCmd)) {
+                // Route topology drafting commands to the planner CLI
+                await runCommand(runner, [...loaderArgs, blueprintScript, ...planCmdArgs, '--target', target]);
+            } else {
+                // Route pipeline task commands to the pipeline CLI
+                await runCommand(runner, [...loaderArgs, pipeScript, ...planCmdArgs, '--target', target]);
+            }
             break;
 
         case 'blueprint':
-            const blueprintCmd = args.slice(1).filter(a => a !== '--target' && a !== args[targetIdx + 1]);
-            await runCommand(runner, [...loaderArgs, blueprintScript, ...blueprintCmd, '--target', target]);
-            break;
-
-        case 'build':
-            console.log(`[Atlas] Building Backend...`);
-            await runCommand('npm.cmd', ['run', 'build'], { cwd: __dirname });
-            console.log(`[Atlas] Building Frontend...`);
-            await runCommand('npm.cmd', ['run', 'build'], { cwd: path.join(__dirname, 'viewer') });
-            console.log(`[Atlas] Build complete.`);
+            const blueprintCmdArgs = args.slice(1).filter(a => a !== '--target' && a !== args[targetIdx + 1]);
+            await runCommand(runner, [...loaderArgs, blueprintScript, 'blueprint', ...blueprintCmdArgs, '--target', target]);
             break;
 
         case 'launch':
@@ -285,6 +286,10 @@ async function main() {
             await killProjectSession(config.project);
             break;
 
+        case 'build':
+            await runCommand('npm', ['run', 'build']);
+            break;
+            
         case 'help':
         default:
             console.log(`

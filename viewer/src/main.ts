@@ -18,14 +18,55 @@ async function bootstrap() {
         console.warn('[Atlas] Auto-sync failed', e);
     }
 
-    const [realityRes, plannedRes] = await Promise.all([
+    const [realityRes, plannedRes, stateRes] = await Promise.all([
         fetch('/data/reality.json'),
-        fetch('/api/blueprint') // Get initial blueprint
+        fetch('/api/blueprint'), // Get initial blueprint
+        fetch('/api/topology/state')
     ]);
     
     let realityData = await realityRes.json();
     let plannedData = await plannedRes.json();
-    let currentMode: 'architecture' | 'stage' = 'architecture';
+    let stateData = await stateRes.json();
+    let currentMode: 'architecture' | 'plan' = 'architecture';
+
+    const updateLockBadge = (locked: boolean, mode: string) => {
+        const badge = document.getElementById('lock-badge');
+        const overlay = document.getElementById('blueprint-lock-overlay');
+        const btnArch = document.getElementById('btn-mode-architecture');
+        const btnPlan = document.getElementById('btn-mode-plan');
+        const canvas = document.getElementById('visualizer-canvas');
+
+        console.log(`[Atlas] Updating Lock UI - Locked: ${locked}, Mode: ${mode}`);
+
+        if (locked) {
+            if (btnArch) {
+                btnArch.classList.add('locked-label');
+                btnArch.innerText = "BLUEPRINT (LOCKED)";
+            }
+            if (mode === 'architecture') {
+                if (badge) badge.style.display = 'flex';
+                if (overlay) overlay.style.display = 'block';
+                if (canvas) canvas.style.pointerEvents = 'none'; // Lock Canvas Interaction
+                btnPlan?.classList.add('pulse-planning');
+            } else {
+                if (badge) badge.style.display = 'none';
+                if (overlay) overlay.style.display = 'none';
+                if (canvas) canvas.style.pointerEvents = 'all'; // Restore Canvas Interaction
+                btnPlan?.classList.remove('pulse-planning');
+            }
+        } else {
+            if (badge) badge.style.display = 'none';
+            if (overlay) overlay.style.display = 'none';
+            if (canvas) canvas.style.pointerEvents = 'all'; // Restore Canvas Interaction
+            if (btnArch) {
+                btnArch.classList.remove('locked-label');
+                btnArch.innerText = "BLUEPRINT";
+            }
+            btnPlan?.classList.remove('pulse-planning');
+        }
+    };
+
+    updateLockBadge(stateData.locked, currentMode);
 
     if (realityData.project) {
         document.title = `Atlas | ${realityData.project}`;
@@ -107,7 +148,7 @@ async function bootstrap() {
         const data = await res.json();
         realityData = data.realityData;
         
-        const bpRes = await fetch(`/api/blueprint${currentMode === 'stage' ? '?mode=stage' : ''}`);
+        const bpRes = await fetch(`/api/blueprint${currentMode === 'plan' ? '?mode=plan' : ''}`);
         plannedData = await bpRes.json();
 
         rebuildGraphData(plannedData, realityData);
@@ -117,32 +158,38 @@ async function bootstrap() {
 
     const toolbar = new Toolbar(handleSync);
 
-    const switchPage = async (page: 'architecture' | 'stage') => {
+    const switchPage = async (page: 'architecture' | 'plan') => {
         currentMode = page;
         engine.stopBootstrap(); renderer.reset(); inspector.clear();
 
-        const res = await fetch(`/api/blueprint${page === 'stage' ? '?mode=stage' : ''}`);
+        const [res, stateRes] = await Promise.all([
+            fetch(`/api/blueprint${page === 'plan' ? '?mode=plan' : ''}`),
+            fetch('/api/topology/state')
+        ]);
         plannedData = await res.json();
+        const stateData = await stateRes.json();
+        
+        updateLockBadge(stateData.locked, page);
         
         rebuildGraphData(plannedData, realityData);
         engine.resetData(activeNodes, activeLinks);
         renderer.centerView(activeNodes);
 
         const btnArch = document.getElementById('btn-mode-architecture');
-        const btnStage = document.getElementById('btn-mode-stage');
-        const btnPromote = document.getElementById('btn-promote-stage');
-        const divPromote = document.getElementById('divider-promote');
+        const btnPlan = document.getElementById('btn-mode-plan');
+        const btnMerge = document.getElementById('btn-merge-plan');
+        const divMerge = document.getElementById('divider-merge');
         
         if (page === 'architecture') {
-            btnArch?.classList.add('active'); btnStage?.classList.remove('active');
-            btnPromote?.classList.add('hidden');
-            divPromote?.classList.add('hidden');
+            btnArch?.classList.add('active'); btnPlan?.classList.remove('active');
+            btnMerge?.classList.add('hidden');
+            divMerge?.classList.add('hidden');
             document.body.classList.remove('planning-mode');
             toolbar.setActiveStage("");
         } else {
-            btnStage?.classList.add('active'); btnArch?.classList.remove('active');
-            btnPromote?.classList.remove('hidden');
-            divPromote?.classList.remove('hidden');
+            btnPlan?.classList.add('active'); btnArch?.classList.remove('active');
+            btnMerge?.classList.remove('hidden');
+            divMerge?.classList.remove('hidden');
             document.body.classList.add('planning-mode');
             toolbar.setActiveStage("EVOLUTION");
         }
@@ -150,13 +197,14 @@ async function bootstrap() {
     };
 
     document.getElementById('btn-mode-architecture')?.addEventListener('click', () => switchPage('architecture'));
-    document.getElementById('btn-mode-stage')?.addEventListener('click', () => switchPage('stage'));
+    document.getElementById('btn-mode-plan')?.addEventListener('click', () => switchPage('plan'));
+    document.getElementById('btn-switch-to-plan-now')?.addEventListener('click', () => switchPage('plan'));
     
-    document.getElementById('btn-promote-stage')?.addEventListener('click', async () => {
-        if (confirm("Promote Planning stage to Authoritative Blueprint?")) {
-            const res = await fetch('/api/blueprint/promote', { method: 'POST' });
+    document.getElementById('btn-merge-plan')?.addEventListener('click', async () => {
+        if (confirm("Merge Active Plan into Authoritative Blueprint?")) {
+            const res = await fetch('/api/plan/merge', { method: 'POST' });
             if (res.ok) {
-                alert("Promotion successful!");
+                alert("Merge successful!");
                 switchPage('architecture');
             }
         }
@@ -188,21 +236,45 @@ async function bootstrap() {
         return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
     };
 
+    const resolveAncestryPath = (targetId: string, nodeMap: Map<string, VisualNode>): Set<string> => {
+        const pathIds = new Set<string>();
+        let currentId: string | undefined = targetId;
+
+        while (currentId) {
+            pathIds.add(currentId);
+            const node = nodeMap.get(currentId);
+            currentId = node?.parentId;
+            if (currentId && pathIds.has(currentId)) break; // Prevent infinite loops
+        }
+        return pathIds;
+    };
+
     const onNodeClick = (_: any, node: VisualNode) => {
-        renderer.focus(node.id, new Set([node.id]));
+        const pathIds = resolveAncestryPath(node.id, nodeMap);
+        renderer.focus(node.id, pathIds);
         inspector.render(node);
         document.getElementById('sidebar')?.classList.remove('hidden');
     };
 
     const handleRoute = () => {
         const hash = window.location.hash.replace('#', '') || 'architecture';
-        switchPage(hash === 'stage' ? 'stage' : 'architecture');
+        switchPage(hash === 'plan' ? 'plan' : 'architecture');
     };
 
     window.addEventListener('popstate', handleRoute);
     handleRoute();
 
+    const refreshLockState = async () => {
+        const stateRes = await fetch('/api/topology/state');
+        const stateData = await stateRes.json();
+        updateLockBadge(stateData.locked, currentMode);
+    };
+
     const eventSource = new EventSource('/api/events');
-    eventSource.onmessage = (e) => { if (JSON.parse(e.data).type === 'scan-complete') handleSync(); };
+    eventSource.onmessage = (e) => { 
+        const payload = JSON.parse(e.data);
+        if (payload.type === 'scan-complete') handleSync(); 
+        if (payload.type === 'lock-state-changed') refreshLockState();
+    };
 }
 bootstrap();

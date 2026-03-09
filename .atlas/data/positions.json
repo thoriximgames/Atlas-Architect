@@ -154,5 +154,17 @@
   "src/Shared/NodeTypeConfig": {
     "x": 400,
     "y": -375
+  },
+  "src/Test/SampleNode": {
+    "x": -100,
+    "y": -325
+  },
+  "src/Test/NewNode": {
+    "x": 0,
+    "y": -75
+  },
+  "src/Test/FinalTest": {
+    "x": 25,
+    "y": -75
   }
 }
