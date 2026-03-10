@@ -124,7 +124,15 @@ async function main() {
             if (orphans.length > 0) {
                 if (!plannedIds.has('_UNCONNECTED_')) {
                     const uNode = realityNodes['_UNCONNECTED_'] || { x: -1000, y: -1000 };
-                    data.plannedNodes.push({ id: '_UNCONNECTED_', name: 'UNCONNECTED', type: 'Unknown', purpose: 'Orphaned Code', x: uNode.x, y: uNode.y });
+                    data.plannedNodes.push({
+                        id: '_UNCONNECTED_',
+                        name: 'UNCONNECTED',
+                        type: 'Unknown',
+                        purpose: 'Orphaned Code',
+                        status: 'orphan',
+                        x: uNode.x !== undefined ? uNode.x : (uNode.initialX || -1000),
+                        y: uNode.y !== undefined ? uNode.y : (uNode.initialY || -1000)
+                    });
                 }
                 orphans.forEach((o) => {
                     data.plannedNodes.push({ ...o, parentId: '_UNCONNECTED_', status: 'orphan' });
