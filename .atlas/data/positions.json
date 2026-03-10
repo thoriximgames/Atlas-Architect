@@ -164,8 +164,8 @@
     "y": -75
   },
   "src/Test/FinalTest": {
-    "x": 25,
-    "y": -75
+    "x": -550,
+    "y": -275
   },
   "src/blueprint-cli": {
     "x": 50,
@@ -178,5 +178,9 @@
   "src/Shared/PlannerCore": {
     "x": 225,
     "y": 400
+  },
+  "src/Test/ConnectionTest": {
+    "x": -50,
+    "y": 475
   }
 }

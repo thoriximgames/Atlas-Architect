@@ -14,6 +14,7 @@ async function bootstrap() {
     let plannedData: any = { plannedNodes: [] };
     let currentMode: 'architecture' | 'plan' = 'architecture';
     let isLocked = false;
+    let isUpdating = false;
 
     const nodeMap = new Map<string, VisualNode>();
     let selectedNodeIds = new Set<string>();
@@ -37,7 +38,7 @@ async function bootstrap() {
         const btnMerge = document.getElementById('btn-merge-plan');
         const divMerge = document.getElementById('divider-merge');
 
-        console.log(`[Atlas] Updating Lock UI - Locked: ${locked}, Mode: ${mode}`);
+        console.log(`[Atlas] UI State - Locked: ${locked}, Mode: ${mode}`);
 
         if (locked) {
             if (btnArch) {
@@ -66,15 +67,10 @@ async function bootstrap() {
             btnPlan?.classList.remove('pulse-planning');
         }
 
-        // Mode Switcher Active States
         if (btnArch) btnArch.classList.toggle('active', mode === 'architecture');
         if (btnPlan) btnPlan.classList.toggle('active', mode === 'plan');
-        
-        // Merge tools
         if (btnMerge) btnMerge.classList.toggle('hidden', mode !== 'plan');
         if (divMerge) divMerge.classList.toggle('hidden', mode !== 'plan');
-        
-        toolbar.setActiveStage(mode === 'plan' ? "EVOLUTION" : "");
     };
 
     const calculateNodes = (pData: any) => {
@@ -106,55 +102,65 @@ async function bootstrap() {
     const rebuildGraphData = (pData: any) => {
         activeNodes = calculateNodes(pData);
         activeLinks = [];
+        const activeNodeMap = new Map(activeNodes.map(n => [n.id, n]));
         activeNodes.forEach(n => {
-            if (n.parentId) activeLinks.push({ source: n.parentId, target: n.id, isGravity: true, type: 'inheritance' });
-            if (n.dependencies) n.dependencies.forEach(dep => activeLinks.push({ source: n.id, target: dep, isGravity: false, type: 'dependency' }));
+            if (n.parentId && activeNodeMap.has(n.parentId)) {
+                activeLinks.push({ source: n.parentId, target: n.id, isGravity: true, type: 'inheritance' });
+            }
+            if (n.dependencies) n.dependencies.forEach(dep => {
+                if (activeNodeMap.has(dep)) {
+                    activeLinks.push({ source: n.id, target: dep, isGravity: false, type: 'dependency' });
+                }
+            });
         });
         nodeMap.clear();
         activeNodes.forEach(n => nodeMap.set(n.id, n));
     };
 
     const handleRefresh = async (silent: boolean = false) => {
-        const stateRes = await fetch('/api/topology/state');
-        const stateData = await stateRes.json();
-        isLocked = stateData.locked;
+        if (isUpdating) return;
+        isUpdating = true;
+        try {
+            const stateRes = await fetch('/api/topology/state');
+            const stateData = await stateRes.json();
+            isLocked = stateData.locked;
 
-        // Forced redirection if on plan page but no plan active
-        if (currentMode === 'plan' && !isLocked) {
-            console.warn("[Atlas] No active plan found. Forcing Architecture mode.");
-            currentMode = 'architecture';
-            if (window.location.hash !== '#architecture') window.location.hash = '#architecture';
+            const hash = window.location.hash.replace('#', '') || 'architecture';
+            currentMode = hash === 'plan' ? 'plan' : 'architecture';
+
+            // Automatic Redirection logic
+            if (currentMode === 'plan' && !isLocked) {
+                console.warn("[Atlas] No active plan found. Redirecting...");
+                window.location.hash = '#architecture';
+                isUpdating = false;
+                return; 
+            }
+
+            const endpoint = currentMode === 'plan' ? '/api/plan' : '/api/blueprint';
+            const res = await fetch(endpoint);
+            plannedData = await res.json();
+
+            if (plannedData.project) {
+                const label = document.getElementById('project-label');
+                if (label) label.innerText = `ATLAS | ${plannedData.project.toUpperCase()}`;
+                document.title = `Atlas | ${plannedData.project}`;
+            }
+
+            updateLockUI(isLocked, currentMode);
+            rebuildGraphData(plannedData);
+            engine.setPositionsUrl(`${endpoint}/positions`);
+            engine.resetData(activeNodes, activeLinks);
+            if (!silent) renderer.centerView(activeNodes);
+        } finally {
+            isUpdating = false;
         }
-
-        const endpoint = currentMode === 'plan' ? '/api/plan' : '/api/blueprint';
-        const res = await fetch(endpoint);
-        plannedData = await res.json();
-
-        if (plannedData.project) {
-            document.title = `Atlas | ${plannedData.project}`;
-            const projectLabel = document.getElementById('project-label');
-            if (projectLabel) projectLabel.innerText = `ATLAS | ${plannedData.project.toUpperCase()}`;
-        }
-
-        updateLockUI(isLocked, currentMode);
-        rebuildGraphData(plannedData);
-        engine.setPositionsUrl(`${endpoint}/positions`);
-        engine.resetData(activeNodes, activeLinks);
-        if (!silent) renderer.centerView(activeNodes);
     };
 
-    const handleSync = async () => {
-        await fetch('/api/topology/sync', { method: 'POST' });
-        await handleRefresh();
-    };
+    const toolbar = new Toolbar(handleRefresh);
 
-    const toolbar = new Toolbar(handleRefresh, handleSync);
-
-    const switchPage = async (page: 'architecture' | 'plan') => {
-        currentMode = page;
-        engine.stopBootstrap(); renderer.reset(); inspector.clear();
-        await handleRefresh();
-        if (window.location.hash !== `#${page}`) history.pushState(null, '', `#${page}`);
+    const switchPage = (page: 'architecture' | 'plan') => {
+        // Just update hash - handleRefresh will be triggered by popstate or the subsequent call
+        window.location.hash = `#${page}`;
     };
 
     renderer.onGroupSelect((ids) => { selectedNodeIds = ids; });
@@ -169,12 +175,10 @@ async function bootstrap() {
                 const res = await fetch('/api/plan/merge', { method: 'POST' });
                 if (res.ok) {
                     alert("Merge successful!");
-                    await switchPage('architecture');
+                    switchPage('architecture');
                 } else {
-                    const text = await res.text();
-                    let errorMessage = text;
-                    try { errorMessage = JSON.parse(text).error || text; } catch (e) {}
-                    alert(`MERGE BLOCKED: ${errorMessage}`);
+                    const data = await res.json();
+                    alert(`MERGE BLOCKED: ${data.error}`);
                 }
             } catch (err: any) {
                 alert(`NETWORK ERROR: ${err.message}`);
@@ -235,8 +239,7 @@ async function bootstrap() {
     };
 
     const onNodeClick = (_: any, node: VisualNode) => {
-        const nodeMapObj = new Map(activeNodes.map(n => [n.id, n]));
-        const pathIds = resolveAncestryPath(node.id, nodeMapObj);
+        const pathIds = resolveAncestryPath(node.id, nodeMap);
         selectedNodeIds = new Set([node.id]);
         renderer.focus(node.id, pathIds);
         inspector.render(node);
@@ -255,14 +258,8 @@ async function bootstrap() {
         return pathIds;
     };
 
-    const handleRoute = () => {
-        const hash = window.location.hash.replace('#', '') || 'architecture';
-        currentMode = hash === 'plan' ? 'plan' : 'architecture';
-        handleRefresh();
-    };
-
-    window.addEventListener('popstate', handleRoute);
-    handleRoute();
+    window.addEventListener('popstate', () => handleRefresh());
+    handleRefresh(); // Initial load
 
     const eventSource = new EventSource('/api/events');
     eventSource.onmessage = (e) => { 
@@ -270,5 +267,11 @@ async function bootstrap() {
         if (payload.type === 'scan-complete' || payload.type === 'intent-updated') handleRefresh(true); 
         if (payload.type === 'lock-state-changed') handleRefresh(true);
     };
+    eventSource.onerror = () => {
+        console.warn('[Atlas] SSE connection dropped, attempting to reconnect...');
+    };
+    window.addEventListener('beforeunload', () => {
+        eventSource.close();
+    });
 }
 bootstrap();

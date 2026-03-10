@@ -7,6 +7,7 @@ import { IAtlasRegistry, IPlannedNode } from '../../Shared/Protocol';
 import { HeartbeatService } from './HeartbeatService';
 import { IAtlasConfig } from '../../Shared/Config';
 import { MetricsCalculator } from '../Infrastructure/Graph/MetricsCalculator';
+import { FinalTest } from '../../Test/FinalTest';
 
 /**
  * AtlasEngine: The core orchestration unit of the system.
@@ -24,6 +25,7 @@ import { MetricsCalculator } from '../Infrastructure/Graph/MetricsCalculator';
  */
 export class AtlasEngine {
     private heartbeat = new HeartbeatService();
+    private healthSentinel = new FinalTest();
 
     constructor(
         private scanner: IScanner,

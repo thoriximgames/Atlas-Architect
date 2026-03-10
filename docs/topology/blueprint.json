@@ -419,6 +419,18 @@
       "designIntent": "Self-document the architectural visualization language to ensure that the graph is interpretable by any user.",
       "x": -650,
       "y": 125
+    },
+    {
+      "id": "src/Test/FinalTest",
+      "name": "FinalTest",
+      "type": "Service",
+      "purpose": "Functional sentinel for Atlas Engine health and SSE stability.",
+      "parentId": "src/Core/Application/AtlasEngine",
+      "dependencies": [],
+      "description": "",
+      "designIntent": "",
+      "x": -550,
+      "y": -275
     }
   ]
 }

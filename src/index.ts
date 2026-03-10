@@ -301,6 +301,10 @@ async function main() {
 
     await scanAndResolve();
 
+    if (isCLI) {
+        process.exit(0);
+    }
+
     app.listen(port, () => {
         const url = `http://localhost:${port}/viewer/`;
         console.log(`\n================================================================`);

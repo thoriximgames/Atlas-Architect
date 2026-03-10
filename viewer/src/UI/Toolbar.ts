@@ -1,27 +1,9 @@
 export class Toolbar {
     private btnRefresh: HTMLElement | null = null;
-    private btnSync: HTMLElement | null = null;
-    private activeStageLabel: HTMLElement | null = null;
 
-    constructor(private onRefresh: () => Promise<void>, private onSync: () => Promise<void>) {
+    constructor(private onRefresh: () => Promise<void>) {
         this.btnRefresh = document.getElementById('btn-refresh-view');
-        this.btnSync = document.getElementById('btn-sync-data');
-        this.activeStageLabel = document.getElementById('active-stage-label');
         this.bindEvents();
-    }
-
-    setActiveStage(name: string) {
-        if (!this.activeStageLabel) {
-            console.warn("[Toolbar] Cannot set active stage: label element missing.");
-            return;
-        }
-        
-        if (name) {
-            this.activeStageLabel.innerText = `ACTIVE STAGE: ${name}`;
-            this.activeStageLabel.classList.remove('hidden');
-        } else {
-            this.activeStageLabel.classList.add('hidden');
-        }
     }
 
     private bindEvents() {
@@ -33,20 +15,6 @@ export class Toolbar {
                     await this.onRefresh();
                 } finally {
                     this.setLoading(this.btnRefresh, false);
-                }
-            });
-        }
-
-        if (this.btnSync) {
-            this.btnSync.addEventListener('click', async () => {
-                if (!this.btnSync) return;
-                if (confirm("Perform a full codebase rescan? This may take a few seconds.")) {
-                    this.setLoading(this.btnSync, true);
-                    try {
-                        await this.onSync();
-                    } finally {
-                        this.setLoading(this.btnSync, false);
-                    }
                 }
             });
         }

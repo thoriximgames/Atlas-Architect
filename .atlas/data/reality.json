@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-10T10:41:30.340Z",
+  "lastUpdated": "2026-03-10T11:23:27.999Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -9,7 +9,7 @@
       "file": "",
       "depth": 0,
       "islandId": "island_orphans",
-      "descendantCount": 38,
+      "descendantCount": 39,
       "dependencies": [],
       "baseClasses": [],
       "methods": [],
@@ -150,8 +150,8 @@
       "contractHash": "732016359c82bcbe9f2f7aea755fe013",
       "initialX": 50,
       "initialY": 350,
-      "sectorAngle": 2.232184253866432,
-      "sectorWidth": 0.8267349088394192,
+      "sectorAngle": 2.2555024179619028,
+      "sectorWidth": 0.8055365778435366,
       "x": 50,
       "y": 350
     },
@@ -667,8 +667,8 @@
       "contractHash": "eca436e2c34f01516754bff0de154070",
       "initialX": 25,
       "initialY": -200,
-      "sectorAngle": 2.1288423902615046,
-      "sectorWidth": 0.6200511816295644,
+      "sectorAngle": 2.1548103457314607,
+      "sectorWidth": 0.6041524333826525,
       "x": 25,
       "y": -200
     },
@@ -1038,8 +1038,8 @@
       "contractHash": "935974802313314bf68ae64461a40042",
       "initialX": -225,
       "initialY": -350,
-      "sectorAngle": 2.5422098446812145,
-      "sectorWidth": 0.2066837272098548,
+      "sectorAngle": 2.557578634653229,
+      "sectorWidth": 0.20138414446088415,
       "x": -225,
       "y": -350
     },
@@ -1431,8 +1431,8 @@
       "contractHash": "6640a798f7903d2470796f2a8e64a290",
       "initialX": -250,
       "initialY": -200,
-      "sectorAngle": 1.9738295948541134,
-      "sectorWidth": 0.3100255908147822,
+      "sectorAngle": 2.003772237385798,
+      "sectorWidth": 0.3020762166913262,
       "x": -250,
       "y": -200
     },
@@ -1523,8 +1523,8 @@
       "contractHash": "6f905eae3694648d56ac5280f961e432",
       "initialX": 225,
       "initialY": 400,
-      "sectorAngle": 2.283855185668896,
-      "sectorWidth": 0.3100255908147822,
+      "sectorAngle": 2.3058484540771236,
+      "sectorWidth": 0.3020762166913262,
       "x": 225,
       "y": 400
     },
@@ -1537,7 +1537,7 @@
       "depth": 1,
       "parentId": "_UNCONNECTED_",
       "islandId": "island_orphans",
-      "descendantCount": 21,
+      "descendantCount": 22,
       "dependencies": [
         "express",
         "path",
@@ -2136,19 +2136,19 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 92,
+      "complexity": 93,
       "description": "Atlas Architect Root: The primary entry point and Composition Root for the backend engine.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "0453dc448403e7fc8b9f297f34715b2f",
+      "verifiedHash": "dafb30ba8eae06b93c920840ffd9c97d",
       "contractHash": "d19e6c6c9ef8a5699aa06634f7503b03",
       "initialX": -375,
       "initialY": 0,
-      "sectorAngle": -1.3227758541430708,
-      "sectorWidth": 3.6376335988934447,
+      "sectorAngle": -1.2888585245496587,
+      "sectorWidth": 3.705468258080269,
       "x": -375,
       "y": 0
     },
@@ -2161,7 +2161,7 @@
       "depth": 1,
       "parentId": "src/index",
       "islandId": "island_orphans",
-      "descendantCount": 5,
+      "descendantCount": 6,
       "dependencies": [
         "path",
         "fs-extra",
@@ -2172,6 +2172,7 @@
         "HeartbeatService",
         "Config",
         "MetricsCalculator",
+        "FinalTest",
         "Date"
       ],
       "baseClasses": [],
@@ -2222,6 +2223,11 @@
           "visibility": "private",
           "type": "any",
           "name": "heartbeat"
+        },
+        {
+          "visibility": "private",
+          "type": "any",
+          "name": "healthSentinel"
         },
         {
           "visibility": "public",
@@ -2537,12 +2543,12 @@
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "0e5141e62fa67a55cb8d5af44c29f441",
+      "verifiedHash": "73a10b28bfe300dc539c282c851a2098",
       "contractHash": "b85327a30bb69c3e97a5a4203892f449",
       "initialX": -375,
       "initialY": -200,
-      "sectorAngle": -0.8897242352271847,
-      "sectorWidth": 1.039323885398127,
+      "sectorAngle": -0.8677825861314464,
+      "sectorWidth": 1.1790126275709947,
       "x": -375,
       "y": -200
     },
@@ -2671,8 +2677,8 @@
       "contractHash": "6f813758e9bd1546958801325bf870f8",
       "initialX": -125,
       "initialY": 0,
-      "sectorAngle": -2.2754894157580208,
-      "sectorWidth": 1.732206475663545,
+      "sectorAngle": -2.2994407767533684,
+      "sectorWidth": 1.6843037536728493,
       "x": -125,
       "y": 0
     },
@@ -3039,8 +3045,8 @@
       "contractHash": "4b8b93e9a6faa2c879ac4e3a43bd20a0",
       "initialX": -175,
       "initialY": -200,
-      "sectorAngle": -0.19684164496176668,
-      "sectorWidth": 0.346441295132709,
+      "sectorAngle": -0.10984589697866415,
+      "sectorWidth": 0.3368607507345699,
       "x": -175,
       "y": -200
     },
@@ -3586,8 +3592,8 @@
       "contractHash": "236766084d1bee7e10f8bc4d29557ef8",
       "initialX": -75,
       "initialY": -200,
-      "sectorAngle": 0.06298932638776507,
-      "sectorWidth": 0.1732206475663545,
+      "sectorAngle": 0.14279966607226327,
+      "sectorWidth": 0.16843037536728495,
       "x": -75,
       "y": -200
     },
@@ -3658,8 +3664,8 @@
       "contractHash": "cdb326cfac64d6a8d30b9f37b96dd2e5",
       "initialX": -375,
       "initialY": 150,
-      "sectorAngle": 0.23620997395411958,
-      "sectorWidth": 0.1732206475663545,
+      "sectorAngle": 0.31123004143954824,
+      "sectorWidth": 0.16843037536728495,
       "x": -375,
       "y": 150
     },
@@ -3745,8 +3751,8 @@
       "contractHash": "a115ed8ccad34bab964d124fdb825def",
       "initialX": -275,
       "initialY": 150,
-      "sectorAngle": 0.40943062152047405,
-      "sectorWidth": 0.1732206475663545,
+      "sectorAngle": 0.47966041680683313,
+      "sectorWidth": 0.16843037536728495,
       "x": -275,
       "y": 150
     },
@@ -3777,8 +3783,8 @@
       "contractHash": "b9f8daff52e77ca850a0f4b2868aebad",
       "initialX": -75,
       "initialY": 150,
-      "sectorAngle": -1.3054537893864355,
-      "sectorWidth": 0.20786477707962542,
+      "sectorAngle": -1.359037847619361,
+      "sectorWidth": 0.19650210459516576,
       "x": -75,
       "y": 150
     },
@@ -3822,8 +3828,8 @@
       "contractHash": "16e4ebe0bf7ef3c438aa8de3d3643869",
       "initialX": -300,
       "initialY": -350,
-      "sectorAngle": -1.0975890123068102,
-      "sectorWidth": 0.20786477707962542,
+      "sectorAngle": -1.1625357430241952,
+      "sectorWidth": 0.19650210459516576,
       "x": -300,
       "y": -350
     },
@@ -3860,8 +3866,8 @@
       "contractHash": "17f8a6122a7b2bbc8e6e4aedf5031bfb",
       "initialX": -150,
       "initialY": -350,
-      "sectorAngle": -0.8897242352271848,
-      "sectorWidth": 0.20786477707962542,
+      "sectorAngle": -0.9660336384290292,
+      "sectorWidth": 0.19650210459516576,
       "x": -150,
       "y": -350
     },
@@ -3900,8 +3906,8 @@
       "contractHash": "ad82594e0838cff20bc7475be2052b58",
       "initialX": -325,
       "initialY": 150,
-      "sectorAngle": -0.6818594581475594,
-      "sectorWidth": 0.20786477707962542,
+      "sectorAngle": -0.7695315338338634,
+      "sectorWidth": 0.19650210459516576,
       "x": -325,
       "y": 150
     },
@@ -4030,10 +4036,54 @@
       "contractHash": "45e40aa7d6605c0325778e1bcfcda1f3",
       "initialX": -375,
       "initialY": -350,
-      "sectorAngle": -0.4739946810679341,
-      "sectorWidth": 0.20786477707962542,
+      "sectorAngle": -0.5730294292386976,
+      "sectorWidth": 0.19650210459516576,
       "x": -375,
       "y": -350
+    },
+    "src/Test/FinalTest": {
+      "id": "src/Test/FinalTest",
+      "name": "FinalTest",
+      "type": "Unknown",
+      "file": "src/Test/FinalTest",
+      "language": "TypeScript",
+      "depth": 1,
+      "parentId": "src/Core/Application/AtlasEngine",
+      "islandId": "island_orphans",
+      "descendantCount": 0,
+      "dependencies": [],
+      "baseClasses": [],
+      "methods": [
+        {
+          "visibility": "public",
+          "returnType": "string",
+          "name": "verify",
+          "params": []
+        }
+      ],
+      "fields": [
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "STATUS"
+        }
+      ],
+      "events": [],
+      "complexity": 1,
+      "description": "FinalTest: Functional sentinel for Atlas Engine health and SSE stability. DESIGN INTENT: This module serves as the authoritative verification point for the Atlas Engine. It is architecturally connected to the AtlasEngine to ensure its health is always visible in the core topology. KEY RESPONSIBILITIES: 1. Confirms the real-time SSE feedback loop is operational. 2. Acts as a persistent target for system-wide health checks.",
+      "implementationNotes": "",
+      "lastModifiedBy": "",
+      "violations": [],
+      "status": "orphan",
+      "verificationStatus": "auto",
+      "verifiedHash": "ae028dcca45046b94bf5585414f7fb9d",
+      "contractHash": "fa7818aa82aadccb2709fe6c8aceb3ea",
+      "initialX": -550,
+      "initialY": -275,
+      "sectorAngle": -0.3765273246435319,
+      "sectorWidth": 0.19650210459516576,
+      "x": -550,
+      "y": -275
     },
     "src/Core/Domain/Model/SourceFile": {
       "id": "src/Core/Domain/Model/SourceFile",
@@ -4128,8 +4178,8 @@
       "contractHash": "416f57f18d30c1598da263b1afa76e77",
       "initialX": -125,
       "initialY": 150,
-      "sectorAngle": -1.5056198710186675,
-      "sectorWidth": 0.1924673861848383,
+      "sectorAngle": -1.5508613306765466,
+      "sectorWidth": 0.18714486151920548,
       "x": -125,
       "y": 150
     },
@@ -4187,8 +4237,8 @@
       "contractHash": "e082fb22b6810307ee98f7663df38dfe",
       "initialX": 150,
       "initialY": 0,
-      "sectorAngle": -2.37172310885044,
-      "sectorWidth": 1.5397390894787064,
+      "sectorAngle": -2.393013207512971,
+      "sectorWidth": 1.4971588921536438,
       "x": 150,
       "y": 0
     },
@@ -4395,8 +4445,8 @@
       "contractHash": "4a2f6e99bf4500440c88c942f8218be1",
       "initialX": -375,
       "initialY": -500,
-      "sectorAngle": -0.19684164496176668,
-      "sectorWidth": 0.346441295132709,
+      "sectorAngle": -0.10984589697866415,
+      "sectorWidth": 0.3368607507345699,
       "x": -375,
       "y": -500
     },
@@ -4433,8 +4483,8 @@
       "contractHash": "d89bb1fcb35da1f51aba81a5f54eb63b",
       "initialX": 125,
       "initialY": 150,
-      "sectorAngle": -2.37172310885044,
-      "sectorWidth": 0.21996272706838663,
+      "sectorAngle": -2.393013207512971,
+      "sectorWidth": 0.2138798417362348,
       "x": 125,
       "y": 150
     },
@@ -4812,8 +4862,8 @@
       "contractHash": "9490d1ae516efe6066e8ab5de84ba510",
       "initialX": 400,
       "initialY": -150,
-      "sectorAngle": -2.811648562987213,
-      "sectorWidth": 0.6598881812051599,
+      "sectorAngle": -2.820772890985441,
+      "sectorWidth": 0.6416395252087045,
       "x": 400,
       "y": -150
     },
@@ -5038,8 +5088,8 @@
       "contractHash": "76148b9e04dfd3fdaabf8dbd6800914f",
       "initialX": 400,
       "initialY": -75,
-      "sectorAngle": -2.1517603817820534,
-      "sectorWidth": 0.21996272706838663,
+      "sectorAngle": -2.179133365776736,
+      "sectorWidth": 0.2138798417362348,
       "x": 400,
       "y": -75
     },
@@ -5357,8 +5407,8 @@
       "contractHash": "d6d71db8319269f9338ddb03c87067fd",
       "initialX": 175,
       "initialY": 150,
-      "sectorAngle": -1.9317976547136668,
-      "sectorWidth": 0.21996272706838663,
+      "sectorAngle": -1.9652535240405014,
+      "sectorWidth": 0.2138798417362348,
       "x": 175,
       "y": 150
     },
@@ -5643,8 +5693,8 @@
       "contractHash": "d0d32934923f40f9c707f76740443ceb",
       "initialX": 400,
       "initialY": 0,
-      "sectorAngle": -1.7118349276452802,
-      "sectorWidth": 0.21996272706838663,
+      "sectorAngle": -1.7513736823042665,
+      "sectorWidth": 0.2138798417362348,
       "x": 400,
       "y": 0
     },
@@ -5879,8 +5929,8 @@
       "contractHash": "67c31f56491366642c4fd472bd9766ee",
       "initialX": 400,
       "initialY": -275,
-      "sectorAngle": -2.811648562987213,
-      "sectorWidth": 0.6598881812051599,
+      "sectorAngle": -2.820772890985441,
+      "sectorWidth": 0.6416395252087045,
       "x": 400,
       "y": -275
     },
@@ -5960,10 +6010,64 @@
       "contractHash": "8881a69096f2cc967aeeacfbc1bf97b2",
       "initialX": 400,
       "initialY": -375,
-      "sectorAngle": -2.811648562987213,
-      "sectorWidth": 0.6598881812051599,
+      "sectorAngle": -2.820772890985441,
+      "sectorWidth": 0.6416395252087045,
       "x": 400,
       "y": -375
+    },
+    "src/Core/Infrastructure/Security/SecurityService": {
+      "id": "src/Core/Infrastructure/Security/SecurityService",
+      "name": "SecurityService",
+      "type": "Service",
+      "file": "src/Core/Infrastructure/Security/SecurityService",
+      "language": "TypeScript",
+      "depth": 1,
+      "parentId": "_UNCONNECTED_",
+      "islandId": "island_orphans",
+      "descendantCount": 0,
+      "dependencies": [],
+      "baseClasses": [],
+      "methods": [
+        {
+          "visibility": "public",
+          "returnType": "Promise<boolean>",
+          "name": "authenticate",
+          "params": [
+            "token: string"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "Promise<string>",
+          "name": "encrypt",
+          "params": [
+            "data: string"
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "token"
+        }
+      ],
+      "events": [],
+      "complexity": 1,
+      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
+      "implementationNotes": "",
+      "lastModifiedBy": "",
+      "violations": [],
+      "status": "orphan",
+      "verificationStatus": "auto",
+      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
+      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
+      "initialX": -150,
+      "initialY": 250,
+      "sectorAngle": 2.738824364668025,
+      "sectorWidth": 0.16110731556870733,
+      "x": -150,
+      "y": 250
     },
     "src/Core/Infrastructure/Logging/TelemetryProvider": {
       "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
@@ -6045,64 +6149,10 @@
       "contractHash": "c6f61454d07df0fdc82c5d4d8a033d7e",
       "initialX": -550,
       "initialY": -200,
-      "sectorAngle": 2.728225199170083,
-      "sectorWidth": 0.16534698176788384,
+      "sectorAngle": 2.8999316802367323,
+      "sectorWidth": 0.16110731556870733,
       "x": -550,
       "y": -200
-    },
-    "src/Core/Infrastructure/Security/SecurityService": {
-      "id": "src/Core/Infrastructure/Security/SecurityService",
-      "name": "SecurityService",
-      "type": "Service",
-      "file": "src/Core/Infrastructure/Security/SecurityService",
-      "language": "TypeScript",
-      "depth": 1,
-      "parentId": "_UNCONNECTED_",
-      "islandId": "island_orphans",
-      "descendantCount": 0,
-      "dependencies": [],
-      "baseClasses": [],
-      "methods": [
-        {
-          "visibility": "public",
-          "returnType": "Promise<boolean>",
-          "name": "authenticate",
-          "params": [
-            "token: string"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "Promise<string>",
-          "name": "encrypt",
-          "params": [
-            "data: string"
-          ]
-        }
-      ],
-      "fields": [
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "token"
-        }
-      ],
-      "events": [],
-      "complexity": 1,
-      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
-      "implementationNotes": "",
-      "lastModifiedBy": "",
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
-      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
-      "initialX": -150,
-      "initialY": 250,
-      "sectorAngle": 2.893572180937967,
-      "sectorWidth": 0.16534698176788384,
-      "x": -150,
-      "y": 250
     },
     "viewer/src/main": {
       "id": "viewer/src/main",
@@ -6174,6 +6224,16 @@
           "visibility": "public",
           "type": "any",
           "name": "isLocked"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "false"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isUpdating"
         },
         {
           "visibility": "public",
@@ -6328,11 +6388,6 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "mode"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
           "name": "calculateNodes"
         },
         {
@@ -6393,6 +6448,16 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "activeNodeMap"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "n"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "n"
         },
         {
@@ -6418,6 +6483,21 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "return"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isUpdating"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "true"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "stateRes"
         },
         {
@@ -6438,7 +6518,7 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "currentMode"
+          "name": "hash"
         },
         {
           "visibility": "public",
@@ -6449,6 +6529,31 @@
           "visibility": "public",
           "type": "any",
           "name": "hash"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "currentMode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "hash"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isUpdating"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "false"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "return"
         },
         {
           "visibility": "public",
@@ -6473,12 +6578,7 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "title"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "projectLabel"
+          "name": "label"
         },
         {
           "visibility": "public",
@@ -6488,7 +6588,17 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "handleSync"
+          "name": "title"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isUpdating"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "false"
         },
         {
           "visibility": "public",
@@ -6503,12 +6613,7 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "currentMode"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "page"
+          "name": "hash"
         },
         {
           "visibility": "public",
@@ -6528,27 +6633,7 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "text"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "errorMessage"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "text"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "errorMessage"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "text"
+          "name": "data"
         },
         {
           "visibility": "public",
@@ -6773,16 +6858,6 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "nodeMapObj"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "n"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
           "name": "pathIds"
         },
         {
@@ -6838,26 +6913,6 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "handleRoute"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "hash"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "currentMode"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "hash"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
           "name": "eventSource"
         },
         {
@@ -6869,6 +6924,11 @@
           "visibility": "public",
           "type": "any",
           "name": "payload"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "onerror"
         }
       ],
       "events": [
@@ -6885,18 +6945,18 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 81,
+      "complexity": 79,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "bc31cccccf43a5266b68552b8f016921",
-      "contractHash": "2ed12b411575213a9e521d5ef20d51a8",
+      "verifiedHash": "a4f2723c510f0ab548a31b901b2f5b01",
+      "contractHash": "91895ada86585ecdc0bb230f5fad74db",
       "initialX": -575,
       "initialY": 0,
-      "sectorAngle": 1.157428872375187,
-      "sectorWidth": 1.3227758541430708,
+      "sectorAngle": 1.2083048667653051,
+      "sectorWidth": 1.2888585245496587,
       "x": -575,
       "y": 0
     },
@@ -7452,8 +7512,8 @@
       "contractHash": "8567802f0f3c1fb0b034b94d3e1b8887",
       "initialX": -575,
       "initialY": 125,
-      "sectorAngle": 0.5905249348852997,
-      "sectorWidth": 0.1889679791632958,
+      "sectorAngle": 0.6559369276725943,
+      "sectorWidth": 0.18412264636423695,
       "x": -575,
       "y": 125
     },
@@ -8749,8 +8809,8 @@
       "contractHash": "7f769fd70373344e698b67499c58ffe4",
       "initialX": -800,
       "initialY": 125,
-      "sectorAngle": 0.7794929140485954,
-      "sectorWidth": 0.1889679791632958,
+      "sectorAngle": 0.8400595740368312,
+      "sectorWidth": 0.18412264636423695,
       "x": -800,
       "y": 125
     },
@@ -9386,8 +9446,8 @@
       "contractHash": "0b728fe4c8b58ce1432bf8c4a3f0b458",
       "initialX": -725,
       "initialY": 125,
-      "sectorAngle": 0.9684608932118912,
-      "sectorWidth": 0.1889679791632958,
+      "sectorAngle": 1.0241822204010682,
+      "sectorWidth": 0.18412264636423695,
       "x": -725,
       "y": 125
     },
@@ -9747,8 +9807,8 @@
       "contractHash": "e18e632200ec48c87207f4566e0ffbb7",
       "initialX": -650,
       "initialY": 125,
-      "sectorAngle": 1.1574288723751869,
-      "sectorWidth": 0.1889679791632958,
+      "sectorAngle": 1.2083048667653051,
+      "sectorWidth": 0.18412264636423695,
       "x": -650,
       "y": 125
     },
@@ -9765,14 +9825,6 @@
       "dependencies": [],
       "baseClasses": [],
       "methods": [
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "setActiveStage",
-          "params": [
-            "name: string"
-          ]
-        },
         {
           "visibility": "private",
           "returnType": "any",
@@ -9803,52 +9855,7 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "null"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "null"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "null"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "null"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
           "name": "btnRefresh"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "btnSync"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "activeStageLabel"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "return"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "innerText"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "return"
         },
         {
           "visibility": "public",
@@ -9897,18 +9904,18 @@
         }
       ],
       "events": [],
-      "complexity": 13,
+      "complexity": 7,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "39276c9870d92191f0a331f4c00cdb79",
-      "contractHash": "81886a063db8fe7c3b0b05fd4f23a78e",
+      "verifiedHash": "79e9aa6fd2ecdea3fd110103b6dcb1c2",
+      "contractHash": "37d2d91edfa781ada2cbc79e732314ba",
       "initialX": -550,
       "initialY": 325,
-      "sectorAngle": 1.3463968515384828,
-      "sectorWidth": 0.1889679791632958,
+      "sectorAngle": 1.392427513129542,
+      "sectorWidth": 0.18412264636423695,
       "x": -550,
       "y": 325
     },
@@ -9961,8 +9968,8 @@
       "contractHash": "555b4525d413f0ec9688aea55df50f47",
       "initialX": -700,
       "initialY": 300,
-      "sectorAngle": 1.5353648307017786,
-      "sectorWidth": 0.1889679791632958,
+      "sectorAngle": 1.576550159493779,
+      "sectorWidth": 0.18412264636423695,
       "x": -700,
       "y": 300
     },
@@ -10074,8 +10081,8 @@
       "contractHash": "acf625b1f618352335b5b8e70bae8455",
       "initialX": -475,
       "initialY": 325,
-      "sectorAngle": 1.7243328098650745,
-      "sectorWidth": 0.1889679791632958,
+      "sectorAngle": 1.7606728058580159,
+      "sectorWidth": 0.18412264636423695,
       "x": -475,
       "y": 325
     },
@@ -10334,8 +10341,8 @@
       "contractHash": "c2031ff9e3fabd0f0feff708a059031b",
       "initialX": -575,
       "initialY": 250,
-      "sectorAngle": 3.058919162705851,
-      "sectorWidth": 0.16534698176788384,
+      "sectorAngle": 3.06103899580544,
+      "sectorWidth": 0.16110731556870733,
       "x": -575,
       "y": 250
     }
@@ -10444,6 +10451,12 @@
       "type": "inheritance"
     },
     {
+      "source": "src/Core/Application/AtlasEngine",
+      "target": "src/Test/FinalTest",
+      "isGravity": true,
+      "type": "inheritance"
+    },
+    {
       "source": "src/Core/Infrastructure/FileSystem/FileScanner",
       "target": "src/Core/Domain/Model/SourceFile",
       "isGravity": true,
@@ -10505,13 +10518,13 @@
     },
     {
       "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
+      "target": "src/Core/Infrastructure/Security/SecurityService",
       "isGravity": true,
       "type": "inheritance"
     },
     {
       "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Security/SecurityService",
+      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
       "isGravity": true,
       "type": "inheritance"
     },
