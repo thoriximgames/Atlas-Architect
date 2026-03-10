@@ -131,7 +131,7 @@ class GraphBuilder {
                     violations: [],
                     status: 'orphan',
                     verificationStatus: 'auto',
-                    sectorAngle: 0, sectorWidth: Math.PI * 2,
+                    initialX: 0, initialY: 0, sectorAngle: 0, sectorWidth: Math.PI * 2,
                     parentId: undefined
                 };
                 orphans.forEach(orphanId => {

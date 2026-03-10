@@ -32,8 +32,8 @@ export class GalaxyEngine {
             .distance(d => d.isGravity ? 450 : 300)
             .strength(d => d.isGravity ? 2.0 : 0.05));
             
-        this.simulation.force('x', d3.forceX<VisualNode>(d => d.initialX).strength(0.15));
-        this.simulation.force('y', d3.forceY<VisualNode>(d => d.initialY).strength(0.15));
+        this.simulation.force('x', d3.forceX<VisualNode>(d => d.initialX || 0).strength(d => (d.initialX !== 0 || d.initialY !== 0) ? 0.5 : 0.05));
+        this.simulation.force('y', d3.forceY<VisualNode>(d => d.initialY || 0).strength(d => (d.initialX !== 0 || d.initialY !== 0) ? 0.5 : 0.05));
         
         this.simulation.force('collision', d3.forceCollide<VisualNode>().radius(d => d.radius + 20).strength(0.5));
     }
