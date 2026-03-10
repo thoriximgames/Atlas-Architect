@@ -11,66 +11,9 @@ import './style.css';
 async function bootstrap() {
     await ThemeManager.loadConfig();
     
-    // Auto-sync on load
-    try {
-        await fetch('/api/topology/sync', { method: 'POST' });
-    } catch (e) {
-        console.warn('[Atlas] Auto-sync failed', e);
-    }
-
-    const [plannedRes, stateRes] = await Promise.all([
-        fetch('/api/blueprint'), // Get initial blueprint
-        fetch('/api/topology/state')
-    ]);
-    
-    let plannedData = await plannedRes.json();
-    let stateData = await stateRes.json();
+    let plannedData: any = { plannedNodes: [] };
     let currentMode: 'architecture' | 'plan' = 'architecture';
-
-    const updateLockBadge = (locked: boolean, mode: string) => {
-        const badge = document.getElementById('lock-badge');
-        const overlay = document.getElementById('blueprint-lock-overlay');
-        const btnArch = document.getElementById('btn-mode-architecture');
-        const btnPlan = document.getElementById('btn-mode-plan');
-        const canvas = document.getElementById('visualizer-canvas');
-
-        console.log(`[Atlas] Updating Lock UI - Locked: ${locked}, Mode: ${mode}`);
-
-        if (locked) {
-            if (btnArch) {
-                btnArch.classList.add('locked-label');
-                btnArch.innerText = "BLUEPRINT (LOCKED)";
-            }
-            if (mode === 'architecture') {
-                if (badge) badge.style.display = 'flex';
-                if (overlay) overlay.style.display = 'block';
-                if (canvas) canvas.style.pointerEvents = 'none'; // Lock Canvas Interaction
-                btnPlan?.classList.add('pulse-planning');
-            } else {
-                if (badge) badge.style.display = 'none';
-                if (overlay) overlay.style.display = 'none';
-                if (canvas) canvas.style.pointerEvents = 'all'; // Restore Canvas Interaction
-                btnPlan?.classList.remove('pulse-planning');
-            }
-        } else {
-            if (badge) badge.style.display = 'none';
-            if (overlay) overlay.style.display = 'none';
-            if (canvas) canvas.style.pointerEvents = 'all'; // Restore Canvas Interaction
-            if (btnArch) {
-                btnArch.classList.remove('locked-label');
-                btnArch.innerText = "BLUEPRINT";
-            }
-            btnPlan?.classList.remove('pulse-planning');
-        }
-    };
-
-    updateLockBadge(stateData.locked, currentMode);
-
-    if (plannedData.project) {
-        document.title = `Atlas | ${plannedData.project}`;
-        const projectLabel = document.getElementById('project-label');
-        if (projectLabel) projectLabel.innerText = `ATLAS | ${plannedData.project.toUpperCase()}`;
-    }
+    let isLocked = false;
 
     const nodeMap = new Map<string, VisualNode>();
     let selectedNodeIds = new Set<string>();
@@ -85,117 +28,57 @@ async function bootstrap() {
         document.getElementById('node-toolbox')?.classList.add('hidden');
     });
 
-    renderer.onGroupSelect((ids) => {
-        selectedNodeIds = ids;
-    });
-
-    const handleRefresh = async () => {
-        const endpoint = currentMode === 'plan' ? '/api/plan' : '/api/blueprint';
-        const res = await fetch(endpoint);
-        plannedData = await res.json();
-
-        rebuildGraphData(plannedData);
-        engine.resetData(activeNodes, activeLinks);
-        // Do not recenter view on refresh to avoid jarring camera jumps
-    };
-
-    const handleSync = async () => {
-        await fetch('/api/topology/sync', { method: 'POST' });
-        await handleRefresh();
-        renderer.centerView(activeNodes);
-    };
-
-    const toolbar = new Toolbar(handleRefresh, handleSync);
-
-    const switchPage = async (page: 'architecture' | 'plan') => {
-        const [res, stateRes] = await Promise.all([
-            fetch(page === 'plan' ? '/api/plan' : '/api/blueprint'),
-            fetch('/api/topology/state')
-        ]);
-        const stateData = await stateRes.json();
-
-        // REDIRECTION GATE: If no plan is active, you cannot be on the planning page
-        if (page === 'plan' && !stateData.locked) {
-            console.warn("[Atlas] No active plan found. Redirecting to Architecture.");
-            switchPage('architecture');
-            return;
-        }
-
-        currentMode = page;
-        engine.stopBootstrap(); renderer.reset(); inspector.clear();
-
-        plannedData = await res.json();
-        
-        updateLockBadge(stateData.locked, page);
-        
-        rebuildGraphData(plannedData);
-        engine.setPositionsUrl(`${page === 'plan' ? '/api/plan' : '/api/blueprint'}/positions`);
-        engine.resetData(activeNodes, activeLinks);
-        renderer.centerView(activeNodes);
-
+    const updateLockUI = (locked: boolean, mode: string) => {
+        const badge = document.getElementById('lock-badge');
+        const overlay = document.getElementById('blueprint-lock-overlay');
         const btnArch = document.getElementById('btn-mode-architecture');
         const btnPlan = document.getElementById('btn-mode-plan');
+        const canvas = document.getElementById('visualizer-canvas');
         const btnMerge = document.getElementById('btn-merge-plan');
         const divMerge = document.getElementById('divider-merge');
-        
-        if (page === 'architecture') {
-            btnArch?.classList.add('active'); btnPlan?.classList.remove('active');
-            btnMerge?.classList.add('hidden');
-            divMerge?.classList.add('hidden');
-            document.body.classList.remove('planning-mode');
-            toolbar.setActiveStage("");
-        } else {
-            btnPlan?.classList.add('active'); btnArch?.classList.remove('active');
-            btnMerge?.classList.remove('hidden');
-            divMerge?.classList.remove('hidden');
-            document.body.classList.add('planning-mode');
-            toolbar.setActiveStage("EVOLUTION");
-        }
-        if (window.location.hash !== `#${page}`) history.pushState(null, '', `#${page}`);
-    };
 
-    document.getElementById('btn-mode-architecture')?.addEventListener('click', () => switchPage('architecture'));
-    document.getElementById('btn-mode-plan')?.addEventListener('click', () => switchPage('plan'));
-    document.getElementById('btn-switch-to-plan-now')?.addEventListener('click', () => switchPage('plan'));
-    
-    document.getElementById('btn-merge-plan')?.addEventListener('click', async () => {
-        if (confirm("Merge Active Plan into Authoritative Blueprint?")) {
-            console.log("[Atlas] Initiating merge...");
-            try {
-                const res = await fetch('/api/plan/merge', { method: 'POST' });
-                console.log("[Atlas] Merge response status:", res.status);
-                
-                if (res.ok) {
-                    alert("Merge successful!");
-                    switchPage('architecture');
-                } else {
-                    const text = await res.text();
-                    let errorMessage = text;
-                    try {
-                        const json = JSON.parse(text);
-                        errorMessage = json.error || text;
-                    } catch (e) {
-                        // Not JSON
-                    }
-                    console.error("[Atlas] Merge failed:", errorMessage);
-                    alert(`MERGE BLOCKED: ${errorMessage}`);
-                }
-            } catch (err: any) {
-                console.error("[Atlas] Network error during merge:", err);
-                alert(`NETWORK ERROR: ${err.message}`);
+        console.log(`[Atlas] Updating Lock UI - Locked: ${locked}, Mode: ${mode}`);
+
+        if (locked) {
+            if (btnArch) {
+                btnArch.classList.add('locked-label');
+                btnArch.innerText = "BLUEPRINT (LOCKED)";
             }
+            if (mode === 'architecture') {
+                if (badge) badge.style.display = 'flex';
+                if (overlay) overlay.style.display = 'block';
+                if (canvas) canvas.style.pointerEvents = 'none';
+                btnPlan?.classList.add('pulse-planning');
+            } else {
+                if (badge) badge.style.display = 'none';
+                if (overlay) overlay.style.display = 'none';
+                if (canvas) canvas.style.pointerEvents = 'all';
+                btnPlan?.classList.remove('pulse-planning');
+            }
+        } else {
+            if (badge) badge.style.display = 'none';
+            if (overlay) overlay.style.display = 'none';
+            if (canvas) canvas.style.pointerEvents = 'all';
+            if (btnArch) {
+                btnArch.classList.remove('locked-label');
+                btnArch.innerText = "BLUEPRINT";
+            }
+            btnPlan?.classList.remove('pulse-planning');
         }
-    });
 
-    const btnLegend = document.getElementById('btn-toggle-legend');
-    const btnCloseLegend = document.getElementById('btn-close-legend');
-    const legendPanel = document.getElementById('legend-sidebar');
-    btnLegend?.addEventListener('click', () => { legendPanel?.classList.toggle('hidden'); legend.render(); });
-    btnCloseLegend?.addEventListener('click', () => legendPanel?.classList.add('hidden'));
+        // Mode Switcher Active States
+        if (btnArch) btnArch.classList.toggle('active', mode === 'architecture');
+        if (btnPlan) btnPlan.classList.toggle('active', mode === 'plan');
+        
+        // Merge tools
+        if (btnMerge) btnMerge.classList.toggle('hidden', mode !== 'plan');
+        if (divMerge) divMerge.classList.toggle('hidden', mode !== 'plan');
+        
+        toolbar.setActiveStage(mode === 'plan' ? "EVOLUTION" : "");
+    };
 
     const calculateNodes = (pData: any) => {
         const pNodesRaw = Array.isArray(pData) ? pData : (pData.plannedNodes || []);
-
         const blueprintChildrenMap = new Map<string, number>();
         pNodesRaw.forEach((pn: any) => {
             if (pn.parentId) {
@@ -227,14 +110,85 @@ async function bootstrap() {
             if (n.parentId) activeLinks.push({ source: n.parentId, target: n.id, isGravity: true, type: 'inheritance' });
             if (n.dependencies) n.dependencies.forEach(dep => activeLinks.push({ source: n.id, target: dep, isGravity: false, type: 'dependency' }));
         });
-
         nodeMap.clear();
         activeNodes.forEach(n => nodeMap.set(n.id, n));
     };
 
-    rebuildGraphData(plannedData);
+    const handleRefresh = async (silent: boolean = false) => {
+        const stateRes = await fetch('/api/topology/state');
+        const stateData = await stateRes.json();
+        isLocked = stateData.locked;
 
-    const engine = new GalaxyEngine(activeNodes, activeLinks, () => renderer.ticking(), () => {
+        // Forced redirection if on plan page but no plan active
+        if (currentMode === 'plan' && !isLocked) {
+            console.warn("[Atlas] No active plan found. Forcing Architecture mode.");
+            currentMode = 'architecture';
+            if (window.location.hash !== '#architecture') window.location.hash = '#architecture';
+        }
+
+        const endpoint = currentMode === 'plan' ? '/api/plan' : '/api/blueprint';
+        const res = await fetch(endpoint);
+        plannedData = await res.json();
+
+        if (plannedData.project) {
+            document.title = `Atlas | ${plannedData.project}`;
+            const projectLabel = document.getElementById('project-label');
+            if (projectLabel) projectLabel.innerText = `ATLAS | ${plannedData.project.toUpperCase()}`;
+        }
+
+        updateLockUI(isLocked, currentMode);
+        rebuildGraphData(plannedData);
+        engine.setPositionsUrl(`${endpoint}/positions`);
+        engine.resetData(activeNodes, activeLinks);
+        if (!silent) renderer.centerView(activeNodes);
+    };
+
+    const handleSync = async () => {
+        await fetch('/api/topology/sync', { method: 'POST' });
+        await handleRefresh();
+    };
+
+    const toolbar = new Toolbar(handleRefresh, handleSync);
+
+    const switchPage = async (page: 'architecture' | 'plan') => {
+        currentMode = page;
+        engine.stopBootstrap(); renderer.reset(); inspector.clear();
+        await handleRefresh();
+        if (window.location.hash !== `#${page}`) history.pushState(null, '', `#${page}`);
+    };
+
+    renderer.onGroupSelect((ids) => { selectedNodeIds = ids; });
+
+    document.getElementById('btn-mode-architecture')?.addEventListener('click', () => switchPage('architecture'));
+    document.getElementById('btn-mode-plan')?.addEventListener('click', () => switchPage('plan'));
+    document.getElementById('btn-switch-to-plan-now')?.addEventListener('click', () => switchPage('plan'));
+    
+    document.getElementById('btn-merge-plan')?.addEventListener('click', async () => {
+        if (confirm("Merge Active Plan into Authoritative Blueprint?")) {
+            try {
+                const res = await fetch('/api/plan/merge', { method: 'POST' });
+                if (res.ok) {
+                    alert("Merge successful!");
+                    await switchPage('architecture');
+                } else {
+                    const text = await res.text();
+                    let errorMessage = text;
+                    try { errorMessage = JSON.parse(text).error || text; } catch (e) {}
+                    alert(`MERGE BLOCKED: ${errorMessage}`);
+                }
+            } catch (err: any) {
+                alert(`NETWORK ERROR: ${err.message}`);
+            }
+        }
+    });
+
+    const btnLegend = document.getElementById('btn-toggle-legend');
+    const btnCloseLegend = document.getElementById('btn-close-legend');
+    const legendPanel = document.getElementById('legend-sidebar');
+    btnLegend?.addEventListener('click', () => { legendPanel?.classList.toggle('hidden'); legend.render(); });
+    btnCloseLegend?.addEventListener('click', () => legendPanel?.classList.add('hidden'));
+
+    const engine = new GalaxyEngine([], [], () => renderer.ticking(), () => {
         renderer.draw(engine.state.nodes, engine.state.links, engine.state.weightMap, onNodeClick);
         renderer.enableDrag(drag(d3));
     }, '/api/blueprint/positions');
@@ -242,38 +196,25 @@ async function bootstrap() {
     const drag = (d3: any) => {
         function dragstarted(event: any, d: any) {
             if (!event.active) engine.simulation.alphaTarget(0.3).restart();
-
-            // If dragging a selected node, lock all selected nodes at their current positions
             if (selectedNodeIds.has(d.id)) {
                 selectedNodeIds.forEach(id => {
                     const node = nodeMap.get(id) as any;
                     if (node) {
-                        node.fx = node.x;
-                        node.fy = node.y;
-                        node.startX = node.x; // Record exact starting position
-                        node.startY = node.y;
+                        node.fx = node.x; node.fy = node.y;
+                        node.startX = node.x; node.startY = node.y;
                     }
                 });
-                d.startX = d.x;
-                d.startY = d.y;
+                d.startX = d.x; d.startY = d.y;
             } else {
-                // Otherwise, just lock the single node being dragged
-                d.fx = d.x;
-                d.fy = d.y;
+                d.fx = d.x; d.fy = d.y;
             }
         }
-
         function dragged(event: any, d: any) {
             if (selectedNodeIds.has(d.id)) {
-                // 1. Calculate absolute snapped position for the primary dragged node
                 const snappedX = Math.round(event.x / 25) * 25;
                 const snappedY = Math.round(event.y / 25) * 25;
-
-                // 2. Calculate the exact snapped delta from the start of the drag
                 const deltaX = snappedX - d.startX;
                 const deltaY = snappedY - d.startY;
-
-                // 3. Apply this exact delta to all nodes in the selection
                 selectedNodeIds.forEach(id => {
                     const node = nodeMap.get(id) as any;
                     if (node && node.startX !== undefined && node.startY !== undefined) {
@@ -282,62 +223,52 @@ async function bootstrap() {
                     }
                 });
             } else {
-                // Standard single-node drag
                 d.fx = Math.round(event.x / 25) * 25;
                 d.fy = Math.round(event.y / 25) * 25;
             }
         }
-
         function dragended(event: any, d: any) {
             if (!event.active) engine.simulation.alphaTarget(0);
             engine.savePositions();
         }
         return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
     };
-    const resolveAncestryPath = (targetId: string, nodeMap: Map<string, VisualNode>): Set<string> => {
-        const pathIds = new Set<string>();
-        let currentId: string | undefined = targetId;
-
-        while (currentId) {
-            pathIds.add(currentId);
-            const node = nodeMap.get(currentId);
-            currentId = node?.parentId;
-            if (currentId && pathIds.has(currentId)) break; // Prevent infinite loops
-        }
-        return pathIds;
-    };
 
     const onNodeClick = (_: any, node: VisualNode) => {
-        const pathIds = resolveAncestryPath(node.id, nodeMap);
-        
-        // Single node click also sets it as the 'selection' for dragging
+        const nodeMapObj = new Map(activeNodes.map(n => [n.id, n]));
+        const pathIds = resolveAncestryPath(node.id, nodeMapObj);
         selectedNodeIds = new Set([node.id]);
-        
         renderer.focus(node.id, pathIds);
         inspector.render(node);
         document.getElementById('sidebar')?.classList.remove('hidden');
     };
 
+    const resolveAncestryPath = (targetId: string, map: Map<string, VisualNode>): Set<string> => {
+        const pathIds = new Set<string>();
+        let currentId: string | undefined = targetId;
+        while (currentId) {
+            pathIds.add(currentId);
+            const node = map.get(currentId);
+            currentId = node?.parentId;
+            if (currentId && pathIds.has(currentId)) break;
+        }
+        return pathIds;
+    };
+
     const handleRoute = () => {
         const hash = window.location.hash.replace('#', '') || 'architecture';
-        switchPage(hash === 'plan' ? 'plan' : 'architecture');
+        currentMode = hash === 'plan' ? 'plan' : 'architecture';
+        handleRefresh();
     };
 
     window.addEventListener('popstate', handleRoute);
     handleRoute();
 
-    const refreshLockState = async () => {
-        const stateRes = await fetch('/api/topology/state');
-        const stateData = await stateRes.json();
-        updateLockBadge(stateData.locked, currentMode);
-    };
-
     const eventSource = new EventSource('/api/events');
     eventSource.onmessage = (e) => { 
         const payload = JSON.parse(e.data);
-        if (payload.type === 'scan-complete') handleRefresh(); 
-        if (payload.type === 'intent-updated') handleRefresh();
-        if (payload.type === 'lock-state-changed') refreshLockState();
+        if (payload.type === 'scan-complete' || payload.type === 'intent-updated') handleRefresh(true); 
+        if (payload.type === 'lock-state-changed') handleRefresh(true);
     };
 }
 bootstrap();

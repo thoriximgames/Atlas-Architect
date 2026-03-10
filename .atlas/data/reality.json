@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-10T09:59:44.954Z",
+  "lastUpdated": "2026-03-10T10:41:30.340Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -6124,6 +6124,7 @@
         "VisualTypes",
         "ThemeManager",
         "style.css",
+        "Map",
         "Set",
         "EventSource"
       ],
@@ -6172,12 +6173,52 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "stateData"
+          "name": "isLocked"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "updateLockBadge"
+          "name": "false"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "nodeMap"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "selectedNodeIds"
+        },
+        {
+          "visibility": "public",
+          "type": "VisualNode[]",
+          "name": "activeNodes"
+        },
+        {
+          "visibility": "public",
+          "type": "any[]",
+          "name": "activeLinks"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "inspector"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "legend"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "renderer"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "updateLockUI"
         },
         {
           "visibility": "public",
@@ -6203,6 +6244,16 @@
           "visibility": "public",
           "type": "any",
           "name": "canvas"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "btnMerge"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "divMerge"
         },
         {
           "visibility": "public",
@@ -6267,217 +6318,17 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "title"
+          "name": "mode"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "projectLabel"
+          "name": "mode"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "innerText"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "nodeMap"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "selectedNodeIds"
-        },
-        {
-          "visibility": "public",
-          "type": "VisualNode[]",
-          "name": "activeNodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any[]",
-          "name": "activeLinks"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "inspector"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "legend"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "renderer"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "selectedNodeIds"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "ids"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "handleRefresh"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "endpoint"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "currentMode"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "res"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "plannedData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "handleSync"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "toolbar"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "switchPage"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "page"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "stateData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "page"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "return"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "currentMode"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "page"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "plannedData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "page"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "btnArch"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "btnPlan"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "btnMerge"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "divMerge"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "page"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "res"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "text"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "errorMessage"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "text"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "json"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "errorMessage"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "text"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "btnLegend"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "btnCloseLegend"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "legendPanel"
+          "name": "mode"
         },
         {
           "visibility": "public",
@@ -6553,6 +6404,166 @@
           "visibility": "public",
           "type": "any",
           "name": "n"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "handleRefresh"
+        },
+        {
+          "visibility": "public",
+          "type": "boolean",
+          "name": "silent"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "stateRes"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "stateData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isLocked"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "locked"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "currentMode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "currentMode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "hash"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "endpoint"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "currentMode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "res"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "plannedData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "title"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "projectLabel"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "innerText"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "handleSync"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "toolbar"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "switchPage"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "currentMode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "page"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "selectedNodeIds"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "ids"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "res"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "text"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "errorMessage"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "text"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "errorMessage"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "text"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "btnLegend"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "btnCloseLegend"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "legendPanel"
         },
         {
           "visibility": "public",
@@ -6757,6 +6768,31 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "onNodeClick"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "nodeMapObj"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "n"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "pathIds"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "selectedNodeIds"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "resolveAncestryPath"
         },
         {
@@ -6802,21 +6838,6 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "onNodeClick"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "pathIds"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "selectedNodeIds"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
           "name": "handleRoute"
         },
         {
@@ -6827,22 +6848,12 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "currentMode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "hash"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "refreshLockState"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "stateRes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "stateData"
         },
         {
           "visibility": "public",
@@ -6874,14 +6885,14 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 86,
+      "complexity": 81,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "314f8767471e86ae10cd2ba08ed0981a",
-      "contractHash": "a72beb8b89b1e937a23b1148f83168f5",
+      "verifiedHash": "bc31cccccf43a5266b68552b8f016921",
+      "contractHash": "2ed12b411575213a9e521d5ef20d51a8",
       "initialX": -575,
       "initialY": 0,
       "sectorAngle": 1.157428872375187,
