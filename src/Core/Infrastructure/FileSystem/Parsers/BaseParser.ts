@@ -21,6 +21,14 @@ export abstract class BaseParser implements IParser {
         const ext = path.extname(filePath);
         const name = path.basename(filePath, ext);
         const rel = path.relative(root, filePath).replace(/\\/g, '/');
+        
+        let fileId = rel.replace(ext, '');
+        
+        // Support manual Node ID override via @atlas tag
+        const atlasTagMatch = content.match(/@atlas\s+([\w\-\/\.]+)/i);
+        if (atlasTagMatch) {
+            fileId = atlasTagMatch[1].trim();
+        }
 
         const languageMap: Record<string, string> = {
             '.ts': 'TypeScript',

@@ -32,6 +32,12 @@ Before any implementation, you must draft the intended changes.
 ### Phase 2: Implementation (Reality)
 Implement the logic defined in the Blueprint. Create the physical files corresponding to the planned Node IDs. Atlas will automatically detect new files and updates via the **Real-time SSE Link**, turning your "Ghost Nodes" solid.
 
+> **CRITICAL: The Ghost Node Mapping Rule**
+> By default, Atlas maps physical files to Ghost Nodes using the file's relative path (e.g., `src/Main` maps to `src/Main.ts`).
+> If your planned Node ID does *not* match the file path (e.g., Node ID is `App-Main` but the file is `src/Main.cpp`), you **MUST** inject an `@atlas` tag into the file's comments to override the ID:
+> `// @atlas App-Main`
+> Without this tag, the engine will see them as two separate things, and your merge will be blocked.
+
 ### Phase 3: Convergence (Merge & Verification)
 Once the implementation is complete and verified by the scanner, commit your intended design to the authoritative blueprint.
 1. **Merge Design**: `node ...\atlas.mjs plan merge` (This will block if you have unimplemented Ghost Nodes).

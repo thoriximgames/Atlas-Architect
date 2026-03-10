@@ -19,6 +19,12 @@ class BaseParser {
         const ext = path_1.default.extname(filePath);
         const name = path_1.default.basename(filePath, ext);
         const rel = path_1.default.relative(root, filePath).replace(/\\/g, '/');
+        let fileId = rel.replace(ext, '');
+        // Support manual Node ID override via @atlas tag
+        const atlasTagMatch = content.match(/@atlas\s+([\w\-\/\.]+)/i);
+        if (atlasTagMatch) {
+            fileId = atlasTagMatch[1].trim();
+        }
         const languageMap = {
             '.ts': 'TypeScript',
             '.js': 'JavaScript',
