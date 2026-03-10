@@ -26,15 +26,16 @@ Atlas is a **Centralized Service**. All operations MUST go through the authorita
 Before any implementation, you must draft the intended changes.
 1. **Start Session**: `node ...\atlas.mjs plan start`
 2. **Register Node**: `node ...\atlas.mjs plan add <id> <name> <type> <purpose> [parent]`
+   - *CRITICAL:* The `<id>` MUST exactly match the intended relative file path without the extension (e.g., `src/Network/SocketServer`).
 3. **Draft Context**: `node ...\atlas.mjs plan set <id> <property> <value>`
-4. **Merge Design**: `node ...\atlas.mjs plan merge` (This commits intent to the authoritative blueprint).
 
 ### Phase 2: Implementation (Reality)
-Implement the logic defined in the Blueprint. Atlas will automatically detect new files and updates via the **Real-time SSE Link**.
+Implement the logic defined in the Blueprint. Create the physical files corresponding to the planned Node IDs. Atlas will automatically detect new files and updates via the **Real-time SSE Link**, turning your "Ghost Nodes" solid.
 
-### Phase 3: Convergence (Verification)
-Verify that Implementation (Reality) matches Design (Blueprint).
-- **Manual Scan**: `node ...\atlas.mjs scan` (Forces a full re-scan to solidify nodes).
+### Phase 3: Convergence (Merge & Verification)
+Once the implementation is complete and verified by the scanner, commit your intended design to the authoritative blueprint.
+1. **Merge Design**: `node ...\atlas.mjs plan merge` (This will block if you have unimplemented Ghost Nodes).
+2. **Manual Scan**: `node ...\atlas.mjs scan` (Forces a full re-scan if needed).
 
 ### Phase 4: Slicing (Context Extraction)
 Slice the topology to understand dependencies and extract specific architectural contexts.

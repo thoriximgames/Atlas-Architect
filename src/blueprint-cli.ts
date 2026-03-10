@@ -19,6 +19,13 @@ const run = async () => {
             if (subCmd === 'list') {
                 const data = await TopologyPlanner.loadBlueprint(false);
                 console.log(JSON.stringify(data.plannedNodes, null, 2));
+            } else if (['add', 'remove', 'set', 'branch'].includes(subCmd)) {
+                console.log(`[ERROR] Direct blueprint mutation is forbidden. Use the planning workflow instead:`);
+                console.log(`1. 'node atlas.mjs plan start'`);
+                console.log(`2. 'node atlas.mjs plan ${subCmd} ...'`);
+                console.log(`3. (Implement your code)`);
+                console.log(`4. 'node atlas.mjs plan merge'`);
+                process.exit(1);
             } else {
                 console.log('Usage: blueprint list');
             }

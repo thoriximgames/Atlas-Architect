@@ -50,7 +50,7 @@ export class AtlasEngine {
         console.log(`[AtlasEngine] Found ${files.length} source files.`);
 
         console.log(`[AtlasEngine] Building dependency graph...`);
-        const graph = this.graphBuilder.build(files, config.entryPoints);
+        const graph = this.graphBuilder.build(files, config.entryPoints, config.strict);
 
         // Apply Drift Detection & Preserve Verification Status
         const nodesToInvalidate = new Set<string>();

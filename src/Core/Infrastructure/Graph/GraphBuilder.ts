@@ -24,7 +24,7 @@ export class GraphBuilder implements IGraphBuilder {
     private edges: IAtlasEdge[] = [];
     private nameToId: Map<string, string> = new Map();
 
-    build(files: SourceFile[], entryPointIds: string[]): IGraphResult {
+    build(files: SourceFile[], entryPointIds: string[], strict: boolean = false): IGraphResult {
         this.nodes = {};
         this.edges = [];
         this.nameToId.clear();
@@ -60,9 +60,6 @@ export class GraphBuilder implements IGraphBuilder {
 
                 const raw = rawMap.get(id);
                 if (!raw) continue;
-
-                const existingNode = this.nodes[id]; // This won't work yet because we process files fresh.
-                // We need to pass the "Previous Registry" to GraphBuilder.
                 
                 const node: GraphNode = {
                     id: raw.id,
@@ -118,40 +115,45 @@ export class GraphBuilder implements IGraphBuilder {
         entryPoints.forEach(ep => processFrom(ep.id));
 
         // 2. Identify Orphans (Nodes not reachable from Entry Points)
-        const orphans: string[] = [];
-        for (const file of files) {
-            if (!visited.has(file.id)) {
-                orphans.push(file.id);
+        // If strict mode is ON and we have entry points, we IGNORE everything else.
+        if (strict && entryPoints.length > 0) {
+            console.log(`[GraphBuilder] STRICT MODE: Excluding ${files.length - visited.size} unreachable orphans.`);
+        } else {
+            const orphans: string[] = [];
+            for (const file of files) {
+                if (!visited.has(file.id)) {
+                    orphans.push(file.id);
+                }
             }
-        }
 
-        // 3. Create the "Debris Pile" (Virtual Root for Orphans)
-        if (orphans.length > 0) {
-            const orphanRootId = '_UNCONNECTED_';
-            this.nodes[orphanRootId] = {
-                id: orphanRootId,
-                name: '⚠️ UNCONNECTED',
-                type: 'Unknown',
-                file: '',
-                depth: 0,
-                islandId: 'island_orphans',
-                descendantCount: orphans.length,
-                dependencies: [],
-                baseClasses: [],
-                methods: [],
-                fields: [],
-                events: [],
-                complexity: 0,
-                violations: [],
-                status: 'orphan',
-                verificationStatus: 'auto',
-                initialX: 0, initialY: 0, sectorAngle: 0, sectorWidth: Math.PI * 2,
-                parentId: undefined // Fix: Explicitly undefined
-            };
+            // 3. Create the "Debris Pile" (Virtual Root for Orphans)
+            if (orphans.length > 0) {
+                const orphanRootId = '_UNCONNECTED_';
+                this.nodes[orphanRootId] = {
+                    id: orphanRootId,
+                    name: '⚠️ UNCONNECTED',
+                    type: 'Unknown',
+                    file: '',
+                    depth: 0,
+                    islandId: 'island_orphans',
+                    descendantCount: orphans.length,
+                    dependencies: [],
+                    baseClasses: [],
+                    methods: [],
+                    fields: [],
+                    events: [],
+                    complexity: 0,
+                    violations: [],
+                    status: 'orphan',
+                    verificationStatus: 'auto',
+                    initialX: 0, initialY: 0, sectorAngle: 0, sectorWidth: Math.PI * 2,
+                    parentId: undefined 
+                };
 
-            orphans.forEach(orphanId => {
-                this.processOrphanTree(orphanId, orphanRootId, rawMap, visited);
-            });
+                orphans.forEach(orphanId => {
+                    this.processOrphanTree(orphanId, orphanRootId, rawMap, visited);
+                });
+            }
         }
 
         MetricsCalculator.calculateDescendants(this.nodes, this.edges);

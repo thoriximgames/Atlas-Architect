@@ -8,6 +8,7 @@ const path_1 = __importDefault(require("path"));
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const HeartbeatService_1 = require("./HeartbeatService");
 const MetricsCalculator_1 = require("../Infrastructure/Graph/MetricsCalculator");
+const FinalTest_1 = require("../../Test/FinalTest");
 /**
  * AtlasEngine: The core orchestration unit of the system.
  *
@@ -27,6 +28,7 @@ class AtlasEngine {
     graphBuilder;
     layoutStrategy;
     heartbeat = new HeartbeatService_1.HeartbeatService();
+    healthSentinel = new FinalTest_1.FinalTest();
     constructor(scanner, graphBuilder, layoutStrategy) {
         this.scanner = scanner;
         this.graphBuilder = graphBuilder;
@@ -46,7 +48,7 @@ class AtlasEngine {
         const files = await this.scanner.scan(projectRoot, config.scanPatterns);
         console.log(`[AtlasEngine] Found ${files.length} source files.`);
         console.log(`[AtlasEngine] Building dependency graph...`);
-        const graph = this.graphBuilder.build(files, config.entryPoints);
+        const graph = this.graphBuilder.build(files, config.entryPoints, config.strict);
         // Apply Drift Detection & Preserve Verification Status
         const nodesToInvalidate = new Set();
         for (const id in graph.nodes) {

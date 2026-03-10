@@ -8,5 +8,5 @@ export interface IGraphResult {
 }
 
 export interface IGraphBuilder {
-    build(files: SourceFile[], entryPoints: string[]): IGraphResult;
+    build(files: SourceFile[], entryPoints: string[], strict?: boolean): IGraphResult;
 }

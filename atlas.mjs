@@ -33,11 +33,15 @@ async function killProjectSession(projectName) {
         const { pid, port } = sessions[projectName];
         console.log(`[Atlas] Killing existing session for '${projectName}' (PID: ${pid}, Port: ${port})...`);
         try {
-            process.kill(pid, 'SIGTERM');
+            if (process.platform === 'win32') {
+                execSync(`taskkill /F /T /PID ${pid}`, { stdio: 'ignore' });
+            } else {
+                process.kill(pid, 'SIGKILL');
+            }
             // Give it a moment to release the port
             await new Promise(resolve => setTimeout(resolve, 500));
         } catch (e) {
-            // Already dead
+            // Already dead or permission denied
         }
         delete sessions[projectName];
         await fs.outputJson(REGISTRY_PATH, sessions, { spaces: 2 });
@@ -74,9 +78,16 @@ async function main() {
         const configContent = {
             project: projectName,
             port: defaultPort,
-            scanPatterns: ["src/**/*.ts", "src/**/*.js", "src/**/*.tsx", "src/**/*.jsx"],
+            strict: true,
+            scanPatterns: [
+                "src/**/*.ts", "src/**/*.js", "src/**/*.tsx", "src/**/*.jsx", 
+                "Assets/**/*.cs", "src/**/*.cpp", "src/**/*.h", "src/**/*.py"
+            ],
             entryPoints: [],
-            exclude: []
+            exclude: [
+                "**/node_modules/**", "**/Library/**", "**/obj/**", "**/bin/**", 
+                "**/dist/**", "**/build/**", "**/Vendor/**", "**/.git/**", "**/.vs/**"
+            ]
         };
 
         const atlasDir = path.join(target, '.atlas');

@@ -24,5 +24,6 @@ export interface IAtlasConfig {
     entryPoints: string[];
     exclude: string[];
     port: number;
+    strict?: boolean; // If true, only include nodes reachable from entryPoints
     rules?: IArchitecturalRule[];
 }

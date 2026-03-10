@@ -68,10 +68,11 @@ To turn any directory into an Atlas-managed project:
 
 1.  **`atlas.mjs serve`**: Start the background engine and visualizer.
 2.  **`atlas.mjs plan start`**: Begin an architectural drafting session.
-3.  **`atlas.mjs plan add <id> <name> <type> <purpose> [parent]`**: Register a "Ghost Node" (Intent).
-4.  **`atlas.mjs plan merge`**: Commit your intended design to the authoritative blueprint.
-5.  **Implement Code**: Create the files. Atlas will automatically detect them via SSE.
-6.  **`atlas.mjs scan`**: Force a re-scan to verify that Reality now matches your Topology.
+3.  **`atlas.mjs plan add <id> <name> <type> <purpose> [parent]`**: Register a "Ghost Node" (Intent). 
+    - *Note:* The `<id>` must match the intended relative file path (e.g. `src/Main`).
+4.  **Implement Code**: Create the physical files. Atlas will automatically detect them via SSE and turn the Ghost Nodes solid.
+5.  **`atlas.mjs plan merge`**: Commit your implemented design to the authoritative blueprint (this will block if any Ghost Nodes remain).
+6.  **`atlas.mjs scan`**: Force a final re-scan to ensure perfect alignment.
 
 ---
 
