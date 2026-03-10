@@ -22,6 +22,16 @@ Atlas is a **Centralized Service**. All operations MUST go through the authorita
 
 ## 🔄 The Architectural Loop (The "Iron Loop")
 
+### Phase 0: Node Type Registry (Optional)
+If your architecture requires a new classification (e.g., "Database", "Network"), define it first to enable auto-detection.
+- `node ...\atlas.mjs type add <name> <keywords> <color> <stroke> <shape> <desc>` : Create a new type.
+- `node ...\atlas.mjs type list` : View all defined types.
+- `node ...\atlas.mjs type get <name>` : View detailed config for a type.
+- `node ...\atlas.mjs type remove <name>` : Delete a type.
+- `node ...\atlas.mjs type set <name> <prop> <value>` : Update color, shape, or keywords.
+
+*Example:* `node atlas.mjs type add Database "repo,db,store" "#0000ff" "#000088" hexagon "Persistent data storage"`
+
 ### Phase 1: Planning (Blueprint Intent)
 Before any implementation, you must draft the intended changes.
 1. **Start Session**: `node ...\atlas.mjs plan start`

@@ -90,6 +90,15 @@ async function main() {
             ]
         };
 
+        const defaultTypes = {
+            System: { id: "System", keywords: ["manager", "controller", "engine"], style: { fill: "#1e293b", stroke: "#3b82f6", text: "#ffffff" }, legend: { label: "SYSTEM", desc: "Core orchestration units", shape: "hexagon" } },
+            Logic: { id: "Logic", keywords: ["strategy", "builder", "factory", "calculator"], style: { fill: "#0f172a", stroke: "#8b5cf6", text: "#ffffff" }, legend: { label: "LOGIC", desc: "Pure algorithmic modules", shape: "square" } },
+            Service: { id: "Service", keywords: ["service", "provider", "client"], style: { fill: "#171717", stroke: "#10b981", text: "#ffffff" }, legend: { label: "SERVICE", desc: "External interface or data provider", shape: "circle" } },
+            Component: { id: "Component", keywords: ["component", "ui", "view"], style: { fill: "#262626", stroke: "#f59e0b", text: "#ffffff" }, legend: { label: "COMPONENT", desc: "Pluggable UI or logic unit", shape: "triangle" } },
+            Data: { id: "Data", keywords: ["data", "dto", "model", "params"], style: { fill: "#0a0a0a", stroke: "#6366f1", text: "#ffffff" }, legend: { label: "DATA", desc: "Passive data structures", shape: "diamond" } },
+            Utility: { id: "Utility", keywords: ["helper", "utils", "common"], style: { fill: "#171717", stroke: "#71717a", text: "#ffffff" }, legend: { label: "UTILITY", desc: "Shared helper functions", shape: "circle" } }
+        };
+
         const atlasDir = path.join(target, '.atlas');
         const docsDir = path.join(target, 'docs', 'topology');
         const dataDir = path.join(atlasDir, 'data');
@@ -98,6 +107,7 @@ async function main() {
         await fs.ensureDir(docsDir);
         await fs.outputJson(path.join(target, 'atlas.config.json'), configContent, { spaces: 2 });
         await fs.outputJson(path.join(docsDir, 'planned.json'), { plannedNodes: [] }, { spaces: 2 });
+        await fs.outputJson(path.join(dataDir, 'node_types.json'), defaultTypes, { spaces: 4 });
         
         console.log(`[Atlas] SUCCESS: Footprint created. You can now run 'atlas.mjs scan'.`);
         return;
@@ -276,6 +286,22 @@ async function main() {
 
                     await fs.outputJson(typesPath, typeConfig, { spaces: 4 });
                     console.log(`[Atlas] SUCCESS: Updated ${prop} for '${typeName}'.`);
+                } else if (typeCmd === 'remove') {
+                    const typeName = args[2];
+                    if (!typeConfig[typeName]) {
+                        console.error(`[Atlas] Error: Type '${typeName}' not found.`);
+                        process.exit(1);
+                    }
+                    delete typeConfig[typeName];
+                    await fs.outputJson(typesPath, typeConfig, { spaces: 4 });
+                    console.log(`[Atlas] SUCCESS: Removed node type '${typeName}'.`);
+                } else if (typeCmd === 'get') {
+                    const typeName = args[2];
+                    if (!typeConfig[typeName]) {
+                        console.error(`[Atlas] Error: Type '${typeName}' not found.`);
+                        process.exit(1);
+                    }
+                    console.log(JSON.stringify(typeConfig[typeName], null, 4));
                 } else if (typeCmd === 'shapes') {
                     console.log('\n[Atlas] Supported Node Shapes:');
                     console.log('=============================');
@@ -284,13 +310,15 @@ async function main() {
                 } else if (typeCmd === 'list') {
                     console.log('\n[Atlas] Defined Node Types:');
                     console.log('===========================');
+                    console.log(`${'TYPE'.padEnd(12)} | ${'SHAPE'.padEnd(8)} | ${'COLOR'.padEnd(8)} | KEYWORDS`);
+                    console.log('-'.repeat(60));
                     for (const id in typeConfig) {
                         const t = typeConfig[id];
-                        console.log(`${id.padEnd(12)} | ${t.legend.shape.padEnd(8)} | ${t.style.fill} | ${t.keywords.join(', ')}`);
+                        console.log(`${id.padEnd(12)} | ${t.legend.shape.padEnd(8)} | ${t.style.fill.padEnd(8)} | ${t.keywords.join(', ')}`);
                     }
                     console.log('');
                 } else {
-                    console.log('Commands: add, list, shapes, set');
+                    console.log('Commands: add, list, get, remove, shapes, set');
                 }
             }
             break;
@@ -312,6 +340,7 @@ Commands:
   scan                Perform a topological scan and update reality.json
   serve | start       Kill old instance, scan, build viewer (if needed), and launch
   slice <id> [depth]  Extract a neighborhood around a node
+  type <cmd>          Manage custom node types (add, list, get, remove, set)
   blueprint <cmd>     Manage the intentional architecture (add, branch, guard, etc.)
   plan <cmd>          Manage the architectural pipeline (backlog, todo, etc.)
   kill                Safely terminate the Atlas process for the current project
