@@ -43,7 +43,7 @@ export class GraphBuilder implements IGraphBuilder {
         
         // Strategy: Process known entry points first, then any remaining orphans
         const entryPoints = entryPointIds
-            .map(id => files.find(n => n.id === id))
+            .map(id => files.find(n => n.id === id || n.filePath === id || n.filePath.replace(/\.[^/.]+$/, "") === id))
             .filter(Boolean) as SourceFile[];
 
         let islandCounter = 0;

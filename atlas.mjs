@@ -96,7 +96,7 @@ async function main() {
         
         await fs.ensureDir(dataDir);
         await fs.ensureDir(docsDir);
-        await fs.outputJson(path.join(atlasDir, 'atlas.config.json'), configContent, { spaces: 2 });
+        await fs.outputJson(path.join(target, 'atlas.config.json'), configContent, { spaces: 2 });
         await fs.outputJson(path.join(docsDir, 'planned.json'), { plannedNodes: [] }, { spaces: 2 });
         
         console.log(`[Atlas] SUCCESS: Footprint created. You can now run 'atlas.mjs scan'.`);

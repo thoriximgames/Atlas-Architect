@@ -36,7 +36,7 @@ class GraphBuilder {
         const visited = new Set();
         // Strategy: Process known entry points first, then any remaining orphans
         const entryPoints = entryPointIds
-            .map(id => files.find(n => n.id === id))
+            .map(id => files.find(n => n.id === id || n.filePath === id || n.filePath.replace(/\.[^/.]+$/, "") === id))
             .filter(Boolean);
         let islandCounter = 0;
         const processFrom = (startId) => {

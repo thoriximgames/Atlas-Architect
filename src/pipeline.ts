@@ -72,7 +72,7 @@ Generated: ${new Date().toISOString()}
 - **Purpose:** ${purpose}
 
 ## Structural Proof (Atlas)
-- [ ] Registered in plan.json`;
+- [ ] Registered in Active Blueprint`;
         await fs.ensureDir(path.join(PIPELINE_ROOT, '00_backlog'));
         await fs.writeFile(path.join(PIPELINE_ROOT, '00_backlog', id), content);
         console.log(`Task created: ${id}`);
@@ -179,7 +179,7 @@ This node is registered in the intentional blueprint but has no physical impleme
 Create the corresponding file and implement the logic to satisfy the architectural requirement.
 
 ## Structural Proof (Atlas)
-- [ ] Registered in plan.json
+- [ ] Registered in Active Blueprint
 - [ ] Verified by Atlas Scanner`;
                 await fs.ensureDir(path.join(PIPELINE_ROOT, '01_todo'));
                 await fs.writeFile(path.join(PIPELINE_ROOT, '01_todo', taskId), content);
