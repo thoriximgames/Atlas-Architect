@@ -113,6 +113,20 @@ Generated: ${new Date().toISOString()}
         const nodesToAudit = Object.values(realityData.nodes || {})
             .filter((n) => n.verificationStatus === 'dirty');
         console.log(`[SYNC] Found ${ghostNodes.length} Ghost Nodes and ${nodesToAudit.length} nodes needing audit.`);
+        // Auto-Complete Resolved Ghost Tasks
+        // If a node was previously a ghost (has a task) but is now verified, move it to completed.
+        const allTasksDir = ['00_backlog', '01_todo', '02_in_progress', '03_review'];
+        for (const verifiedId of verifiedIds) {
+            const taskId = 'src_' + verifiedId.replace(/[\/\\]/g, '_').replace(/\./g, '_') + '.md';
+            for (const stage of allTasksDir) {
+                const taskPath = path_1.default.join(PIPELINE_ROOT, stage, taskId);
+                if (await fs_extra_1.default.pathExists(taskPath)) {
+                    console.log(`[SYNC] Auto-completing resolved Ghost Node task: ${taskId}`);
+                    await PipelineManager.move(taskId, '04_completed');
+                    break;
+                }
+            }
+        }
         for (const node of nodesToAudit) {
             const taskId = 'audit_' + node.id.replace(/[\/\\]/g, '_').replace(/\./g, '_') + '.md';
             let exists = false;
