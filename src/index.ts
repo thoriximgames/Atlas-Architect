@@ -245,18 +245,6 @@ async function main() {
                 const registry = await engine.run(projectRoot, config);
                 const dataDir = path.join(projectRoot, '.atlas/data');
                 await fs.ensureDir(dataDir);
-                const positionsPath = path.join(dataDir, 'positions.json');
-                if (await fs.pathExists(positionsPath)) {
-                    const positions = await fs.readJson(positionsPath);
-                    for (const id in registry.nodes) {
-                        if (positions[id]) {
-                            registry.nodes[id].x = positions[id].x;
-                            registry.nodes[id].y = positions[id].y;
-                            registry.nodes[id].initialX = positions[id].x;
-                            registry.nodes[id].initialY = positions[id].y;
-                        }
-                    }
-                }
                 await fs.outputJson(path.join(dataDir, 'reality.json'), registry, { spaces: 2 });
                 console.log(`[Atlas] Scan complete and reality.json updated.`);
                 if (shouldBroadcast) broadcaster.broadcast('scan-complete');

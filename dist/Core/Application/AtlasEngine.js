@@ -36,23 +36,34 @@ class AtlasEngine {
     }
     async run(projectRoot, config) {
         this.heartbeat.pulse();
-        // Load existing registry to detect drift
+        // Load existing registry and positions to detect drift and preserve state
         const dataDir = path_1.default.join(projectRoot, '.atlas/data');
         const atlasPath = path_1.default.join(dataDir, 'atlas.json');
+        const positionsPath = path_1.default.join(dataDir, 'positions.json');
         let oldNodes = {};
         if (await fs_extra_1.default.pathExists(atlasPath)) {
             const oldRegistry = await fs_extra_1.default.readJson(atlasPath);
             oldNodes = oldRegistry.nodes || {};
+        }
+        let savedPositions = {};
+        if (await fs_extra_1.default.pathExists(positionsPath)) {
+            savedPositions = await fs_extra_1.default.readJson(positionsPath);
         }
         console.log(`[AtlasEngine] Scanning ${projectRoot}...`);
         const files = await this.scanner.scan(projectRoot, config.scanPatterns);
         console.log(`[AtlasEngine] Found ${files.length} source files.`);
         console.log(`[AtlasEngine] Building dependency graph...`);
         const graph = this.graphBuilder.build(files, config.entryPoints, config.strict);
-        // Apply Drift Detection & Preserve Verification Status
-        const nodesToInvalidate = new Set();
+        // Apply saved positions and drift detection
         for (const id in graph.nodes) {
             const node = graph.nodes[id];
+            // Apply Manual Positions (MEMORY)
+            if (savedPositions[id]) {
+                node.x = savedPositions[id].x;
+                node.y = savedPositions[id].y;
+                node.initialX = savedPositions[id].x;
+                node.initialY = savedPositions[id].y;
+            }
             const old = oldNodes[id];
             if (old) {
                 // Carry over manual annotations

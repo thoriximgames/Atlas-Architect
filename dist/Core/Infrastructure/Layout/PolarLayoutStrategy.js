@@ -113,10 +113,9 @@ class PolarLayoutStrategy {
             const radius = (child.depth + 0.5) * PolarLayoutStrategy.LAYER_RADIUS;
             child.sectorAngle = childAngle;
             child.sectorWidth = childWedge;
-            // PROJECT: Strictly away from center UNLESS manually positioned
-            if (child.x !== undefined && child.y !== undefined) {
-                child.initialX = child.x;
-                child.initialY = child.y;
+            // PROJECT: Strictly away from center UNLESS manually positioned (MEMORY)
+            if (child.initialX !== undefined && child.initialY !== undefined && child.initialX !== 0 && child.initialY !== 0) {
+                // Keep existing position
             }
             else {
                 child.initialX = Math.cos(childAngle) * radius;
