@@ -60,6 +60,8 @@ export class AtlasEngine {
         const graph = this.graphBuilder.build(files, config.entryPoints, config.strict);
 
         // Apply saved positions and drift detection
+        const nodesToInvalidate = new Set<string>();
+
         for (const id in graph.nodes) {
             const node = graph.nodes[id];
             

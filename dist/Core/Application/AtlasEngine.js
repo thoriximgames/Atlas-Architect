@@ -55,6 +55,7 @@ class AtlasEngine {
         console.log(`[AtlasEngine] Building dependency graph...`);
         const graph = this.graphBuilder.build(files, config.entryPoints, config.strict);
         // Apply saved positions and drift detection
+        const nodesToInvalidate = new Set();
         for (const id in graph.nodes) {
             const node = graph.nodes[id];
             // Apply Manual Positions (MEMORY)
