@@ -34,9 +34,23 @@ Implement the logic defined in the Blueprint. Create the physical files correspo
 
 > **CRITICAL: The Ghost Node Mapping Rule**
 > By default, Atlas maps physical files to Ghost Nodes using the file's relative path (e.g., `src/Main` maps to `src/Main.ts`).
-> If your planned Node ID does *not* match the file path (e.g., Node ID is `App-Main` but the file is `src/Main.cpp`), you **MUST** inject an `@atlas` tag into the file's comments to override the ID:
-> `// @atlas App-Main`
-> Without this tag, the engine will see them as two separate things, and your merge will be blocked.
+> If your planned Node ID does *not* match the file path (e.g., Node ID is `App-Main` but the file is `src/Main.cpp`), you **MUST** inject an `@atlas` tag into the file's comments to override the ID.
+> 
+> **EXACT SYNTAX REQUIREMENT:**
+> You must use the literal string `@atlas` followed by the Node ID.
+> - **DO NOT** include file paths, `.atlas` folder references, or `config.json` in the tag.
+> - **DO NOT** use any other symbol.
+> 
+> **Correct Examples:**
+> ```csharp
+> // @atlas App-Main
+> ```
+> ```typescript
+> /**
+>  * @atlas Network/SocketServer
+>  */
+> ```
+> Without this exact tag, the engine will see the blueprint and the code as two separate things, and your merge will be blocked.
 
 ### Phase 3: Convergence (Merge & Verification)
 Once the implementation is complete and verified by the scanner, commit your intended design to the authoritative blueprint.
