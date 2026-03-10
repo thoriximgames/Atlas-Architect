@@ -20,7 +20,7 @@
             color: #f59e0b !important;
         }
     </style>
-  <script type="module" crossorigin src="/viewer/assets/index-Dhw3YdZD.js"></script>
+  <script type="module" crossorigin src="/viewer/assets/index-CQ16ZT3V.js"></script>
   <link rel="stylesheet" crossorigin href="/viewer/assets/index-u4jrcOcz.css">
 </head>
 <body>
@@ -96,12 +96,25 @@
         <div id="bottom-toolbar" class="atlas-toolbar" style="gap: 15px; padding: 8px 15px; display: flex; align-items: center;">
             <button id="btn-toggle-legend" class="toolbar-btn" title="Show Legend" style="padding: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <!-- Toolbar Tools -->
+            <button id="btn-refresh-view" class="toolbar-btn" title="Refresh View (Fast)" style="padding: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 4v6h-6"></path>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
             </button>
             <div style="width: 1px; height: 20px; background: #444; align-self: center;"></div>
-            <button id="btn-sync-data" class="toolbar-btn" title="Rescan Reality" style="padding: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
+            <button id="btn-sync-data" class="toolbar-btn" title="Rescan Reality (Slow)" style="padding: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="23 4 23 10 17 10"></polyline>
-                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 2v4"></path>
+                    <path d="M12 18v4"></path>
+                    <path d="M4.93 4.93l2.83 2.83"></path>
+                    <path d="M16.24 16.24l2.83 2.83"></path>
+                    <path d="M2 12h4"></path>
+                    <path d="M18 12h4"></path>
+                    <path d="M4.93 19.07l2.83-2.83"></path>
+                    <path d="M16.24 7.76l2.83-2.83"></path>
                 </svg>
             </button>
             <div id="divider-merge" class="hidden" style="width: 1px; height: 20px; background: #444; align-self: center;"></div>

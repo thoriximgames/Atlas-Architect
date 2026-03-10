@@ -1,8 +1,10 @@
 export class Toolbar {
+    private btnRefresh: HTMLElement;
     private btnSync: HTMLElement;
     private activeStageLabel: HTMLElement;
 
-    constructor(private onSync: () => Promise<void>) {
+    constructor(private onRefresh: () => Promise<void>, private onSync: () => Promise<void>) {
+        this.btnRefresh = document.getElementById('btn-refresh-view')!;
         this.btnSync = document.getElementById('btn-sync-data')!;
         this.activeStageLabel = document.getElementById('active-stage-label')!;
         this.bindEvents();
@@ -18,26 +20,37 @@ export class Toolbar {
     }
 
     private bindEvents() {
-        this.btnSync?.addEventListener('click', async () => {
-            this.setLoading(true);
+        this.btnRefresh?.addEventListener('click', async () => {
+            this.setLoading(this.btnRefresh, true);
             try {
-                await this.onSync();
+                await this.onRefresh();
             } finally {
-                this.setLoading(false);
+                this.setLoading(this.btnRefresh, false);
+            }
+        });
+
+        this.btnSync?.addEventListener('click', async () => {
+            if (confirm("Perform a full codebase rescan? This may take a few seconds.")) {
+                this.setLoading(this.btnSync, true);
+                try {
+                    await this.onSync();
+                } finally {
+                    this.setLoading(this.btnSync, false);
+                }
             }
         });
     }
 
-    private setLoading(isLoading: boolean) {
-        if (!this.btnSync) return;
-        const icon = this.btnSync.querySelector('svg');
+    private setLoading(btn: HTMLElement, isLoading: boolean) {
+        if (!btn) return;
+        const icon = btn.querySelector('svg');
         if (isLoading) {
-            this.btnSync.style.opacity = '0.5';
-            this.btnSync.style.pointerEvents = 'none';
+            btn.style.opacity = '0.5';
+            btn.style.pointerEvents = 'none';
             if (icon) icon.style.animation = 'spin 1s linear infinite';
         } else {
-            this.btnSync.style.opacity = '1';
-            this.btnSync.style.pointerEvents = 'auto';
+            btn.style.opacity = '1';
+            btn.style.pointerEvents = 'auto';
             if (icon) icon.style.animation = 'none';
         }
     }

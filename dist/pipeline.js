@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PipelineManager = void 0;
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const path_1 = __importDefault(require("path"));
-const blueprint_1 = require("./blueprint");
+const PlannerCore_1 = require("./Shared/PlannerCore");
 /**
  * PipelineManager: Task lifecycle and synchronization state manager.
  *
@@ -28,7 +28,6 @@ if (path_1.default.basename(cwd) === '.atlas') {
     projectRoot = path_1.default.resolve(cwd, '..');
 }
 const PIPELINE_ROOT = path_1.default.join(projectRoot, 'docs/pipeline');
-const PLANNED_PATH = path_1.default.join(projectRoot, '.atlas/data/plan.json');
 const STAGES = ['00_backlog', '01_todo', '02_in_progress', '03_review', '04_completed'];
 class PipelineManager {
     static async list() {
@@ -53,28 +52,24 @@ class PipelineManager {
             }
         }
         if (!sourceStage)
-            throw new Error(`Task ${taskId} not found in any stage.`);
+            throw new Error(`Task '${taskId}' not found in any pipeline stage.`);
+        if (sourceStage === targetStage)
+            return;
         const sourcePath = path_1.default.join(PIPELINE_ROOT, sourceStage, taskId);
         const targetPath = path_1.default.join(PIPELINE_ROOT, targetStage, taskId);
-        if (targetStage === '02_in_progress') {
-            const inProgressDir = path_1.default.join(PIPELINE_ROOT, '02_in_progress');
-            const activeTasks = await fs_extra_1.default.readdir(inProgressDir);
-            if (activeTasks.length > 0) {
-                throw new Error(`CRITICAL: Pipeline Overload. Task '${activeTasks[0]}' is already in progress. Finish it first.`);
-            }
-        }
+        await fs_extra_1.default.ensureDir(path_1.default.dirname(targetPath));
         await fs_extra_1.default.move(sourcePath, targetPath);
         console.log(`Successfully moved ${taskId} from ${sourceStage} to ${targetStage}`);
     }
-    static async create(title) {
-        const id = title.toLowerCase().replace(/\s+/g, '_') + '.md';
-        const content = `# Task: ${title}
+    static async create(id, name, purpose) {
+        const content = `# Task: Implement Architecture - ${name}
 
-## Status: Backlog
-Created: ${new Date().toISOString()}
+## Status: Todo (Intent Verification)
+Generated: ${new Date().toISOString()}
 
-## Requirements
-- TBD
+## Metadata
+- **Atlas ID:** ${id}
+- **Purpose:** ${purpose}
 
 ## Structural Proof (Atlas)
 - [ ] Registered in plan.json`;
@@ -82,20 +77,39 @@ Created: ${new Date().toISOString()}
         await fs_extra_1.default.writeFile(path_1.default.join(PIPELINE_ROOT, '00_backlog', id), content);
         console.log(`Task created: ${id}`);
     }
+    static async hasActiveTasks() {
+        const stagesToCheck = ['01_todo', '02_in_progress', '03_review'];
+        for (const stage of stagesToCheck) {
+            const dir = path_1.default.join(PIPELINE_ROOT, stage);
+            if (await fs_extra_1.default.pathExists(dir)) {
+                const files = await fs_extra_1.default.readdir(dir);
+                if (files.length > 0)
+                    return true;
+            }
+        }
+        return false;
+    }
+    static async getGhostNodes() {
+        const realityPath = path_1.default.join(projectRoot, '.atlas/data/reality.json');
+        const plannedData = await PlannerCore_1.PlannerCore.loadBlueprint(true);
+        let verifiedIds = new Set();
+        if (await fs_extra_1.default.pathExists(realityPath)) {
+            const realityData = await fs_extra_1.default.readJson(realityPath);
+            verifiedIds = new Set(Object.values(realityData.nodes || {}).map((n) => n.id));
+        }
+        return (plannedData.plannedNodes || []).filter((n) => !verifiedIds.has(n.id));
+    }
     static async sync() {
         const realityPath = path_1.default.join(projectRoot, '.atlas/data/reality.json');
-        const plannedData = await blueprint_1.TopologyPlanner.loadBlueprint(true);
+        const plannedData = await PlannerCore_1.PlannerCore.loadBlueprint(true);
         let verifiedIds = new Set();
         let realityData = {};
         if (await fs_extra_1.default.pathExists(realityPath)) {
             realityData = await fs_extra_1.default.readJson(realityPath);
             verifiedIds = new Set(Object.values(realityData.nodes || {})
-                .map((n) => n.id) // Nodes are considered mapped/verified if they exist in reality and plan
-            );
+                .map((n) => n.id));
         }
         const ghostNodes = (plannedData.plannedNodes || []).filter((n) => !verifiedIds.has(n.id));
-        // nodesToAudit might need a different definition now if reality just outputs orphan nodes.
-        // For now, if a node is in reality but has a 'dirty' verificationStatus, we audit it.
         const nodesToAudit = Object.values(realityData.nodes || {})
             .filter((n) => n.verificationStatus === 'dirty');
         console.log(`[SYNC] Found ${ghostNodes.length} Ghost Nodes and ${nodesToAudit.length} nodes needing audit.`);
@@ -116,29 +130,21 @@ Generated: ${new Date().toISOString()}
 
 ## Metadata
 - **Atlas ID:** ${node.id}
-- **Current Status:** ${node.verificationStatus}
-- **Complexity:** ${node.complexity}
+- **Physical Hash:** ${node.verifiedHash}
 
-## Context
-This node was automatically scanned or has changed since its last verification. 
-
-## Requirements
-- [ ] Review extracted **Methods** in Atlas for accuracy.
-- [ ] Review extracted **Fields/State** for accuracy.
-- [ ] Review identified **Event Flows** (Publish/Subscribe).
-- [ ] Confirm the **Semantic Intent** (Description/Purpose) matches the implementation.
-- [ ] Once confirmed, update the node's \`verificationStatus\` to \`verified\` in \`atlas.json\` and provide your name/signature.
+## Required Action
+A change has been detected in the physical implementation of this node that violates its verified topological state. 
+Please review the changes and either revert them or update the authoritative blueprint.
 
 ## Structural Proof (Atlas)
-- [x] Verified by Atlas Scanner
-- [ ] Audit Completed`;
+- [ ] Verified by Atlas Scanner`;
                 await fs_extra_1.default.ensureDir(path_1.default.join(PIPELINE_ROOT, '01_todo'));
                 await fs_extra_1.default.writeFile(path_1.default.join(PIPELINE_ROOT, '01_todo', taskId), content);
                 console.log(`  + Created Audit: ${taskId}`);
             }
         }
         for (const node of ghostNodes) {
-            const taskId = node.id.replace(/[\/\\]/g, '_').replace(/\./g, '_') + '.md';
+            const taskId = 'src_' + node.id.replace(/[\/\\]/g, '_').replace(/\./g, '_') + '.md';
             let exists = false;
             for (const stage of STAGES) {
                 if (await fs_extra_1.default.pathExists(path_1.default.join(PIPELINE_ROOT, stage, taskId))) {
@@ -147,28 +153,22 @@ This node was automatically scanned or has changed since its last verification.
                 }
             }
             if (!exists) {
-                const lang = node.id.endsWith('.cs') ? 'C#'
-                    : node.id.endsWith('.cpp') || node.id.endsWith('.h') ? 'C++'
-                        : node.id.endsWith('.py') ? 'Python'
-                            : node.id.endsWith('.ts') ? 'TypeScript'
-                                : 'Unknown';
-                const content = `# Task: Implement ${node.name}
+                const content = `# Task: Implement Node - ${node.name}
 
-## Status: Todo (Topology Driven)
+## Status: Todo (Ghost Node)
 Generated: ${new Date().toISOString()}
 
 ## Metadata
 - **Atlas ID:** ${node.id}
-- **Type:** ${node.type}
-- **Language:** ${lang}
+- **Target Parent:** ${node.parentId}
 - **Purpose:** ${node.purpose}
 
-## Requirements
-- Adhere to the ${node.type} standards for ${lang}.
-- Implementation must match Atlas ID: \`${node.id}\`.
+## Required Action
+This node is registered in the intentional blueprint but has no physical implementation in the codebase. 
+Create the corresponding file and implement the logic to satisfy the architectural requirement.
 
 ## Structural Proof (Atlas)
-- [x] Registered in plan.json
+- [ ] Registered in plan.json
 - [ ] Verified by Atlas Scanner`;
                 await fs_extra_1.default.ensureDir(path_1.default.join(PIPELINE_ROOT, '01_todo'));
                 await fs_extra_1.default.writeFile(path_1.default.join(PIPELINE_ROOT, '01_todo', taskId), content);
@@ -178,20 +178,26 @@ Generated: ${new Date().toISOString()}
     }
 }
 exports.PipelineManager = PipelineManager;
-// Simple CLI Interface
-if (typeof require !== 'undefined' && require.main === module) {
-    const [, , cmd, ...args] = process.argv;
-    async function run() {
+/**
+ * Pipeline CLI Entry Point
+ */
+if (process.argv[1].includes('pipeline') || process.argv[1].includes('dist/pipeline.js')) {
+    const run = async () => {
+        const cmd = process.argv[2];
+        const args = process.argv.slice(3);
         try {
             switch (cmd) {
                 case 'list':
                     await PipelineManager.list();
                     break;
-                case 'create':
-                    await PipelineManager.create(args[0]);
-                    break;
                 case 'sync':
                     await PipelineManager.sync();
+                    break;
+                case 'create':
+                    await PipelineManager.create(args[0], args[1], args[2]);
+                    break;
+                case 'todo':
+                    await PipelineManager.move(args[0], '01_todo');
                     break;
                 case 'start':
                     await PipelineManager.move(args[0], '02_in_progress');
@@ -201,9 +207,6 @@ if (typeof require !== 'undefined' && require.main === module) {
                     break;
                 case 'complete':
                     await PipelineManager.move(args[0], '04_completed');
-                    break;
-                case 'todo':
-                    await PipelineManager.move(args[0], '01_todo');
                     break;
                 default:
                     if (cmd) {
@@ -215,6 +218,6 @@ if (typeof require !== 'undefined' && require.main === module) {
             console.error(`[ERROR] ${e.message}`);
             process.exit(1);
         }
-    }
+    };
     run();
 }

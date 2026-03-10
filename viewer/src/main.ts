@@ -89,35 +89,47 @@ async function bootstrap() {
         selectedNodeIds = ids;
     });
 
-    const handleSync = async () => {
-        await fetch('/api/topology/sync', { method: 'POST' });
-        
-        const bpRes = await fetch(`/api/blueprint${currentMode === 'plan' ? '?mode=plan' : ''}`);
-        plannedData = await bpRes.json();
+    const handleRefresh = async () => {
+        const endpoint = currentMode === 'plan' ? '/api/plan' : '/api/blueprint';
+        const res = await fetch(endpoint);
+        plannedData = await res.json();
 
         rebuildGraphData(plannedData);
         engine.resetData(activeNodes, activeLinks);
+        // Do not recenter view on refresh to avoid jarring camera jumps
+    };
+
+    const handleSync = async () => {
+        await fetch('/api/topology/sync', { method: 'POST' });
+        await handleRefresh();
         renderer.centerView(activeNodes);
     };
 
-    const toolbar = new Toolbar(handleSync);
+    const toolbar = new Toolbar(handleRefresh, handleSync);
 
     const switchPage = async (page: 'architecture' | 'plan') => {
+        const [res, stateRes] = await Promise.all([
+            fetch(page === 'plan' ? '/api/plan' : '/api/blueprint'),
+            fetch('/api/topology/state')
+        ]);
+        const stateData = await stateRes.json();
+
+        // REDIRECTION GATE: If no plan is active, you cannot be on the planning page
+        if (page === 'plan' && !stateData.locked) {
+            console.warn("[Atlas] No active plan found. Redirecting to Architecture.");
+            switchPage('architecture');
+            return;
+        }
+
         currentMode = page;
         engine.stopBootstrap(); renderer.reset(); inspector.clear();
 
-        const endpoint = page === 'plan' ? '/api/plan' : '/api/blueprint';
-        const [res, stateRes] = await Promise.all([
-            fetch(endpoint),
-            fetch('/api/topology/state')
-        ]);
         plannedData = await res.json();
-        const stateData = await stateRes.json();
         
         updateLockBadge(stateData.locked, page);
         
         rebuildGraphData(plannedData);
-        engine.setPositionsUrl(`${endpoint}/positions`);
+        engine.setPositionsUrl(`${page === 'plan' ? '/api/plan' : '/api/blueprint'}/positions`);
         engine.resetData(activeNodes, activeLinks);
         renderer.centerView(activeNodes);
 
@@ -148,10 +160,29 @@ async function bootstrap() {
     
     document.getElementById('btn-merge-plan')?.addEventListener('click', async () => {
         if (confirm("Merge Active Plan into Authoritative Blueprint?")) {
-            const res = await fetch('/api/plan/merge', { method: 'POST' });
-            if (res.ok) {
-                alert("Merge successful!");
-                switchPage('architecture');
+            console.log("[Atlas] Initiating merge...");
+            try {
+                const res = await fetch('/api/plan/merge', { method: 'POST' });
+                console.log("[Atlas] Merge response status:", res.status);
+                
+                if (res.ok) {
+                    alert("Merge successful!");
+                    switchPage('architecture');
+                } else {
+                    const text = await res.text();
+                    let errorMessage = text;
+                    try {
+                        const json = JSON.parse(text);
+                        errorMessage = json.error || text;
+                    } catch (e) {
+                        // Not JSON
+                    }
+                    console.error("[Atlas] Merge failed:", errorMessage);
+                    alert(`MERGE BLOCKED: ${errorMessage}`);
+                }
+            } catch (err: any) {
+                console.error("[Atlas] Network error during merge:", err);
+                alert(`NETWORK ERROR: ${err.message}`);
             }
         }
     });
@@ -206,7 +237,7 @@ async function bootstrap() {
     const engine = new GalaxyEngine(activeNodes, activeLinks, () => renderer.ticking(), () => {
         renderer.draw(engine.state.nodes, engine.state.links, engine.state.weightMap, onNodeClick);
         renderer.enableDrag(drag(d3));
-    });
+    }, '/api/blueprint/positions');
 
     const drag = (d3: any) => {
         function dragstarted(event: any, d: any) {
@@ -304,7 +335,8 @@ async function bootstrap() {
     const eventSource = new EventSource('/api/events');
     eventSource.onmessage = (e) => { 
         const payload = JSON.parse(e.data);
-        if (payload.type === 'scan-complete') handleSync(); 
+        if (payload.type === 'scan-complete') handleRefresh(); 
+        if (payload.type === 'intent-updated') handleRefresh();
         if (payload.type === 'lock-state-changed') refreshLockState();
     };
 }

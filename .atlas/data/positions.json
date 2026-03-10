@@ -4,20 +4,20 @@
     "y": -200
   },
   "src/Core/Application/HeartbeatService": {
-    "x": -300,
-    "y": 250
+    "x": -325,
+    "y": 150
   },
   "src/Core/Infrastructure/Logging/TelemetryProvider": {
     "x": -550,
     "y": -200
   },
   "src/Core/Infrastructure/NewService": {
-    "x": -1000,
-    "y": 625
+    "x": 25,
+    "y": -25
   },
   "_UNCONNECTED_": {
-    "x": -800,
-    "y": 500
+    "x": 75,
+    "y": 475
   },
   "src/blueprint": {
     "x": 25,
@@ -25,7 +25,7 @@
   },
   "src/Shared/Protocol": {
     "x": -225,
-    "y": -375
+    "y": -350
   },
   "src/index": {
     "x": -375,
@@ -45,7 +45,7 @@
   },
   "src/Shared/Config": {
     "x": -375,
-    "y": 250
+    "y": 150
   },
   "src/pipeline": {
     "x": -250,
@@ -57,22 +57,22 @@
   },
   "src/Core/Domain/Services/IGraphBuilder": {
     "x": -300,
-    "y": -375
+    "y": -350
   },
   "src/Core/Domain/Services/ILayoutStrategy": {
     "x": -150,
-    "y": -375
+    "y": -350
   },
   "src/Core/Infrastructure/Graph/MetricsCalculator": {
     "x": -375,
-    "y": -375
+    "y": -350
   },
   "src/Core/Domain/Model/SourceFile": {
     "x": -125,
     "y": 150
   },
   "src/Core/Infrastructure/FileSystem/Parsers/ParserFactory": {
-    "x": 125,
+    "x": 150,
     "y": 0
   },
   "src/Core/Domain/Model/GraphNode": {
@@ -124,12 +124,12 @@
     "y": 125
   },
   "viewer/src/Protocol/VisualTypes": {
-    "x": -800,
-    "y": 725
+    "x": -700,
+    "y": 300
   },
   "viewer/src/Theme/ThemeManager": {
-    "x": -325,
-    "y": 575
+    "x": -475,
+    "y": 325
   },
   "viewer/src/Forces/GalaxyPhysics": {
     "x": -575,
@@ -144,12 +144,12 @@
     "y": 82.6134980794581
   },
   "src/Core/Application/Broadcaster": {
-    "x": -225,
-    "y": 250
+    "x": -275,
+    "y": 150
   },
   "viewer/src/UI/Toolbar": {
-    "x": -424.18382885883324,
-    "y": 1094.0669616988223
+    "x": -550,
+    "y": 325
   },
   "src/Shared/NodeTypeConfig": {
     "x": 400,
@@ -168,7 +168,11 @@
     "y": -75
   },
   "src/blueprint-cli": {
+    "x": 50,
+    "y": 350
+  },
+  "src/Core/Infrastructure/DemoService": {
     "x": 25,
-    "y": -275
+    "y": -25
   }
 }

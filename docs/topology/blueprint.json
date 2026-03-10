@@ -127,7 +127,7 @@
       "parentId": "src/Core/Infrastructure/FileSystem/FileScanner",
       "dependencies": [],
       "description": "",
-      "x": 125,
+      "x": 150,
       "y": 0
     },
     {
@@ -217,7 +217,7 @@
       "dependencies": [],
       "description": "",
       "x": -300,
-      "y": -475
+      "y": -350
     },
     {
       "id": "src/Core/Domain/Services/ILayoutStrategy",
@@ -228,7 +228,7 @@
       "dependencies": [],
       "description": "",
       "x": -150,
-      "y": -475
+      "y": -350
     },
     {
       "id": "src/Core/Infrastructure/Graph/MetricsCalculator",
@@ -239,7 +239,7 @@
       "dependencies": [],
       "description": "",
       "x": -375,
-      "y": -475
+      "y": -350
     },
     {
       "id": "src/Shared/Protocol",
@@ -250,7 +250,7 @@
       "dependencies": [],
       "description": "",
       "x": -225,
-      "y": -475
+      "y": -350
     },
     {
       "id": "src/Core/Domain/Model/GraphNode",
@@ -262,7 +262,7 @@
       "description": "",
       "designIntent": "",
       "x": -375,
-      "y": -600
+      "y": -500
     },
     {
       "id": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
@@ -289,24 +289,136 @@
       "y": -375
     },
     {
-      "id": "src/Core/Infrastructure/NewService",
-      "name": "New",
-      "type": "Infrastructure",
-      "purpose": "Service",
-      "parentId": "Service",
-      "dependencies": [],
-      "description": "",
-      "designIntent": ""
-    },
-    {
-      "id": "src/Core/Infrastructure/DemoService",
-      "name": "Functional Demo Service",
-      "type": "Service",
-      "purpose": "Demonstrating Atlas architectural lifecycle",
+      "id": "viewer/src/main",
+      "name": "Viewer Entry",
+      "type": "System",
+      "purpose": "Frontend Composition Root and bootstrapper",
       "parentId": "src/index",
       "dependencies": [],
-      "description": "",
-      "designIntent": ""
+      "description": "Viewer Main: The primary entry point and Composition Root for the frontend visualizer. It orchestrates the lifecycle of the D3 engine, renderer, and UI components.",
+      "designIntent": "Act as the central hub for the visualizer, managing state transitions and wiring up components while providing a clean separation between the data layer and the UI layer.",
+      "x": -575,
+      "y": 0
+    },
+    {
+      "id": "viewer/src/UI/Toolbar",
+      "name": "UI Toolbar",
+      "type": "Component",
+      "purpose": "Global toolkit for sync, legend, and mode switching",
+      "parentId": "viewer/src/main",
+      "dependencies": [],
+      "description": "Toolbar: The global toolkit for the visualizer. It provides buttons for syncing reality, toggling the legend, and switching between Blueprint and Planning modes.",
+      "designIntent": "Provide a consolidated and easily accessible interface for all visualizer-level actions, following a consistent UI pattern.",
+      "x": -550,
+      "y": 325
+    },
+    {
+      "id": "viewer/src/Theme/ThemeManager",
+      "name": "Theme Manager",
+      "type": "Service",
+      "purpose": "Central authority for visual styles and geometric definitions",
+      "parentId": "viewer/src/main",
+      "dependencies": [],
+      "description": "ThemeManager: The central authority for visual styles and geometric definitions. it defines colors, shapes, and animations for the visualizer.",
+      "designIntent": "Decouple visual styling from the rendering logic, allowing for easy theme changes and consistent look-and-feel across all components.",
+      "x": -475,
+      "y": 325
+    },
+    {
+      "id": "viewer/src/Protocol/VisualTypes",
+      "name": "Visual Protocol",
+      "type": "Interface",
+      "purpose": "Shared types and interfaces for the visualizer engine",
+      "parentId": "viewer/src/main",
+      "dependencies": [],
+      "description": "VisualProtocol: Defines the shared types and interfaces used by the visualizer engine, ensuring type safety between the backend data and frontend components.",
+      "designIntent": "Standardize the data contract for visual nodes and links to facilitate seamless communication between the engine, renderer, and UI components.",
+      "x": -700,
+      "y": 300
+    },
+    {
+      "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
+      "name": "System Telemetry",
+      "type": "Service",
+      "purpose": "Centralized logging and metrics provider",
+      "parentId": "src/Core/Application/AtlasEngine",
+      "dependencies": [],
+      "description": "TelemetryProvider: Centralized logging and telemetry service. It collects system-wide metrics and logs for analysis.",
+      "designIntent": "Provide a single point of entry for all logging and metric collection to ensure consistent data format and easy integration with external monitoring tools.",
+      "x": -550,
+      "y": -200
+    },
+    {
+      "id": "src/Core/Infrastructure/Security/SecurityService",
+      "name": "Security Service",
+      "type": "Service",
+      "purpose": "Integrity and access validation service",
+      "parentId": "src/index",
+      "dependencies": [],
+      "description": "SecurityService: Responsible for system integrity and access validation. It ensures that only authorized operations are performed.",
+      "designIntent": "Protect the system's core data structures and ensure that architectural constraints are enforced at the operation level.",
+      "x": -150,
+      "y": 250
+    },
+    {
+      "id": "viewer/src/Engine/GalaxyEngine",
+      "name": "Galaxy Engine",
+      "type": "Engine",
+      "purpose": "Data flow and simulation orchestrator",
+      "parentId": "viewer/src/main",
+      "dependencies": [],
+      "description": "GalaxyEngine: Orchestrates the visualizer's data flow and the D3 force simulation. It manages node spawning and position updates.",
+      "designIntent": "Centralize the D3 simulation lifecycle and data management to ensure a high-performance and reactive graph experience.",
+      "x": -575,
+      "y": 125
+    },
+    {
+      "id": "viewer/src/Forces/GalaxyPhysics",
+      "name": "Physics Engine",
+      "type": "Logic",
+      "purpose": "D3 force configurations for layout",
+      "parentId": "viewer/src/Engine/GalaxyEngine",
+      "dependencies": [],
+      "description": "GalaxyPhysics: Contains the mathematical configurations for D3 forces (gravity, collision, links). It defines the spatial behavior of the graph.",
+      "designIntent": "Encapsulate physics parameters to allow for easy fine-tuning of the topological layout without affecting the core engine logic.",
+      "x": -575,
+      "y": 250
+    },
+    {
+      "id": "viewer/src/Renderer/StageRenderer",
+      "name": "Stage Renderer",
+      "type": "Logic",
+      "purpose": "D3 canvas rendering engine",
+      "parentId": "viewer/src/main",
+      "dependencies": [],
+      "description": "StageRenderer: The D3-based canvas rendering engine. it draws nodes, links, and manages user camera interactions (pan/zoom).",
+      "designIntent": "Provide a robust and scalable canvas implementation that handles complex geometric rendering and provides smooth interactive feedback.",
+      "x": -800,
+      "y": 125
+    },
+    {
+      "id": "viewer/src/UI/Inspector",
+      "name": "Node Inspector",
+      "type": "Component",
+      "purpose": "Sidebar for node metadata editing",
+      "parentId": "viewer/src/main",
+      "dependencies": [],
+      "description": "Inspector: A UI component that renders detailed metadata for the currently selected node, allowing for real-time attribute editing.",
+      "designIntent": "Enable deep-tissue inspection and editing of architectural intent directly from the visualizer.",
+      "x": -725,
+      "y": 125
+    },
+    {
+      "id": "viewer/src/UI/Legend",
+      "name": "UI Legend",
+      "type": "Component",
+      "purpose": "Legend for node types and connections",
+      "parentId": "viewer/src/main",
+      "dependencies": [],
+      "description": "Legend: Displays a visual guide for the user, mapping geometric shapes and colors to specific node types and connection rules.",
+      "designIntent": "Self-document the architectural visualization language to ensure that the graph is interpretable by any user.",
+      "x": -650,
+      "y": 125
     }
   ]
 }

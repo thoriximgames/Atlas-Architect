@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-09T17:03:37.400Z",
+  "lastUpdated": "2026-03-10T09:25:36.609Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -9,7 +9,7 @@
       "file": "",
       "depth": 0,
       "islandId": "island_orphans",
-      "descendantCount": 37,
+      "descendantCount": 38,
       "dependencies": [],
       "baseClasses": [],
       "methods": [],
@@ -19,12 +19,12 @@
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "initialX": -800,
-      "initialY": 500,
+      "initialX": 75,
+      "initialY": 475,
       "sectorAngle": 0,
       "sectorWidth": 6.283185307179586,
-      "x": -800,
-      "y": 500
+      "x": 75,
+      "y": 475
     },
     "src/blueprint-cli": {
       "id": "src/blueprint-cli",
@@ -35,7 +35,7 @@
       "depth": 1,
       "parentId": "_UNCONNECTED_",
       "islandId": "island_orphans",
-      "descendantCount": 2,
+      "descendantCount": 4,
       "dependencies": [
         "blueprint",
         "Protocol"
@@ -148,12 +148,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "443da8f027559a0881cf1474a21fb4c5",
       "contractHash": "732016359c82bcbe9f2f7aea755fe013",
-      "initialX": 25,
-      "initialY": -275,
-      "sectorAngle": 2.3774214675814656,
-      "sectorWidth": 0.5094474573388854,
-      "x": 25,
-      "y": -275
+      "initialX": 50,
+      "initialY": 350,
+      "sectorAngle": 2.232184253866432,
+      "sectorWidth": 0.8267349088394192,
+      "x": 50,
+      "y": 350
     },
     "src/blueprint": {
       "id": "src/blueprint",
@@ -164,23 +164,17 @@
       "depth": 1,
       "parentId": "src/blueprint-cli",
       "islandId": "island_orphans",
-      "descendantCount": 0,
+      "descendantCount": 2,
       "dependencies": [
         "fs-extra",
         "path",
         "Protocol",
+        "pipeline",
+        "PlannerCore",
         "Error"
       ],
       "baseClasses": [],
       "methods": [
-        {
-          "visibility": "public",
-          "returnType": "string",
-          "name": "getBlueprintPath",
-          "params": [
-            "isPlanMode: boolean = false"
-          ]
-        },
         {
           "visibility": "public",
           "returnType": "Promise<boolean>",
@@ -312,21 +306,6 @@
         },
         {
           "visibility": "public",
-          "type": "any",
-          "name": "filePath"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "authPath"
-        },
-        {
-          "visibility": "public",
-          "type": "boolean",
-          "name": "isPlanMode"
-        },
-        {
-          "visibility": "public",
           "type": "boolean",
           "name": "skipLockCheck"
         },
@@ -344,6 +323,16 @@
           "visibility": "public",
           "type": "any",
           "name": "authPath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "ghostNodes"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "hasActiveTasks"
         },
         {
           "visibility": "public",
@@ -667,19 +656,19 @@
         }
       ],
       "events": [],
-      "complexity": 43,
-      "description": "TopologyPlanner: Intentional architecture and evolution manager. DESIGN INTENT: Manages two states of the architecture: 1. Authoritative (blueprint.json): The verified, current structural mandate. 2. Plan (plan.json): The draft board for planning future work. Provides CLI-driven \"Merge\" to move plan into the authoritative blueprint.",
+      "complexity": 41,
+      "description": "TopologyPlanner: Intentional architecture and evolution manager.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "491befbc7957a90eb2917ae94380aa6d",
-      "contractHash": "dcfbe0eeb199c0f816bc6e36478dd700",
+      "verifiedHash": "7544745349a2145d911252322fa272a7",
+      "contractHash": "eca436e2c34f01516754bff0de154070",
       "initialX": 25,
       "initialY": -200,
-      "sectorAngle": 2.250059603246744,
-      "sectorWidth": 0.2547237286694427,
+      "sectorAngle": 2.1288423902615046,
+      "sectorWidth": 0.6200511816295644,
       "x": 25,
       "y": -200
     },
@@ -1048,11 +1037,494 @@
       "verifiedHash": "4f05c6672aa6ba82dd478e8f9716d018",
       "contractHash": "935974802313314bf68ae64461a40042",
       "initialX": -225,
-      "initialY": -375,
-      "sectorAngle": 2.5047833319161867,
-      "sectorWidth": 0.2547237286694427,
+      "initialY": -350,
+      "sectorAngle": 2.5422098446812145,
+      "sectorWidth": 0.2066837272098548,
       "x": -225,
-      "y": -375
+      "y": -350
+    },
+    "src/pipeline": {
+      "id": "src/pipeline",
+      "name": "pipeline",
+      "type": "Tool",
+      "file": "src/pipeline",
+      "language": "TypeScript",
+      "depth": 1,
+      "parentId": "src/blueprint",
+      "islandId": "island_orphans",
+      "descendantCount": 0,
+      "dependencies": [
+        "fs-extra",
+        "path",
+        "PlannerCore",
+        "Error",
+        "Date",
+        "Set"
+      ],
+      "baseClasses": [],
+      "methods": [
+        {
+          "visibility": "public",
+          "returnType": "any",
+          "name": "list",
+          "params": []
+        },
+        {
+          "visibility": "public",
+          "returnType": "any",
+          "name": "move",
+          "params": [
+            "taskId: string",
+            "targetStage: string"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "any",
+          "name": "create",
+          "params": [
+            "id: string",
+            "name: string",
+            "purpose: string"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "Promise<boolean>",
+          "name": "hasActiveTasks",
+          "params": []
+        },
+        {
+          "visibility": "public",
+          "returnType": "any",
+          "name": "getGhostNodes",
+          "params": []
+        },
+        {
+          "visibility": "public",
+          "returnType": "any",
+          "name": "sync",
+          "params": []
+        }
+      ],
+      "fields": [
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "cwd"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "projectRoot"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "cwd"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "projectRoot"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "PIPELINE_ROOT"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "STAGES"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "dir"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "continue"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "files"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "f"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "sourceStage"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "sourceStage"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "stage"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "sourceStage"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "return"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "sourcePath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "targetPath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "content"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "stagesToCheck"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "dir"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "files"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "true"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "false"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityPath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "plannedData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "verifiedIds"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "verifiedIds"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityPath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "plannedData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "verifiedIds"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "verifiedIds"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "ghostNodes"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "nodesToAudit"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "verificationStatus"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "taskId"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "exists"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "false"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "exists"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "true"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "content"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "taskId"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "exists"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "false"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "exists"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "true"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "content"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "run"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "cmd"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "args"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        }
+      ],
+      "events": [],
+      "complexity": 37,
+      "description": "PipelineManager: Task lifecycle and synchronization state manager. DESIGN INTENT: Provides the \"Muscles\" of the project management layer. It automates the synchronization between the scanned 'Reality' and the 'Planned' blueprint by generating actionable Markdown tasks for architectural drift or missing implementations. KEY RESPONSIBILITIES: 1. Generates 'Ghost Node' tasks for nodes planned in the blueprint but missing in code. 2. Generates 'Audit' tasks for implementation changes that violate previous verifications. 3. Manages the 5-stage task lifecycle (Backlog -> Todo -> In Progress -> Review -> Completed). 4. Ensures only 1 active task is in progress per the Iron Law.",
+      "implementationNotes": "",
+      "lastModifiedBy": "",
+      "violations": [],
+      "status": "orphan",
+      "verificationStatus": "auto",
+      "verifiedHash": "7c1f8bf963db87d044e98468f4e43e85",
+      "contractHash": "6640a798f7903d2470796f2a8e64a290",
+      "initialX": -250,
+      "initialY": -200,
+      "sectorAngle": 1.9738295948541134,
+      "sectorWidth": 0.3100255908147822,
+      "x": -250,
+      "y": -200
+    },
+    "src/Shared/PlannerCore": {
+      "id": "src/Shared/PlannerCore",
+      "name": "PlannerCore",
+      "type": "Utility",
+      "file": "src/Shared/PlannerCore",
+      "language": "TypeScript",
+      "depth": 1,
+      "parentId": "src/blueprint",
+      "islandId": "island_orphans",
+      "descendantCount": 0,
+      "dependencies": [
+        "fs-extra",
+        "path"
+      ],
+      "baseClasses": [],
+      "methods": [
+        {
+          "visibility": "public",
+          "returnType": "string",
+          "name": "getBlueprintPath",
+          "params": [
+            "isPlanMode: boolean = false"
+          ]
+        },
+        {
+          "visibility": "public",
+          "returnType": "Promise<boolean>",
+          "name": "isLocked",
+          "params": []
+        },
+        {
+          "visibility": "public",
+          "returnType": "any",
+          "name": "loadBlueprint",
+          "params": [
+            "isPlanMode: boolean = false"
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "cwd"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "projectRoot"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "cwd"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "projectRoot"
+        },
+        {
+          "visibility": "public",
+          "type": "boolean",
+          "name": "isPlanMode"
+        },
+        {
+          "visibility": "public",
+          "type": "boolean",
+          "name": "isPlanMode"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "filePath"
+        }
+      ],
+      "events": [],
+      "complexity": 4,
+      "implementationNotes": "",
+      "lastModifiedBy": "",
+      "violations": [],
+      "status": "orphan",
+      "verificationStatus": "auto",
+      "verifiedHash": "523ccf4f7b6c00911b9b37f230067f19",
+      "contractHash": "6f905eae3694648d56ac5280f961e432",
+      "initialX": -784.9805278570357,
+      "initialY": 907.6373564840143,
+      "sectorAngle": 2.283855185668896,
+      "sectorWidth": 0.3100255908147822
     },
     "src/index": {
       "id": "src/index",
@@ -1063,7 +1535,7 @@
       "depth": 1,
       "parentId": "_UNCONNECTED_",
       "islandId": "island_orphans",
-      "descendantCount": 22,
+      "descendantCount": 21,
       "dependencies": [
         "express",
         "path",
@@ -1253,21 +1725,6 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "realityPath"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "realityData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "isLocked"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
           "name": "enrichData"
         },
         {
@@ -1448,12 +1905,37 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "realityPath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "realityData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "isLocked"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "data"
         },
         {
           "visibility": "public",
           "type": "any",
           "name": "data"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "typesPath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "types"
         },
         {
           "visibility": "public",
@@ -1583,101 +2065,6 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "data"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "isLocked"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "isPlanMode"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "mode"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "plannedData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "realityPath"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "realityData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "realityNodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "plannedNodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "rn"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "plannedIds"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "orphans"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "typesPath"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "types"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "sliceIndex"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "targetId"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "depth"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "registry"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "sliced"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
           "name": "watchPaths"
         },
         {
@@ -1693,7 +2080,17 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "return"
+          "name": "event"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "event"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "event"
         },
         {
           "visibility": "public",
@@ -1703,92 +2100,7 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "body"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "registry"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
           "name": "return"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "outgoingEdges"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "source"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "id"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "depIds"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "body"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "registry"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "return"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "plannedData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "existingIds"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "payload"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "realityNode"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "newPlannedData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "registry"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "return"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "healedPlannedData"
         },
         {
           "visibility": "public",
@@ -1822,19 +2134,19 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 134,
-      "description": "Atlas Architect Root: The primary entry point and Composition Root for the backend engine. DESIGN INTENT: This module orchestrates the entire lifecycle of the Atlas service. It is responsible for: 1. System Bootstrapping: Initializing configuration, session management, and the shared registry. 2. Composition Root: Assembling the core engine (FileScanner, GraphBuilder, LayoutStrategy). 3. API Gateway: Serving the REST API for topology data, node management, and visualizer assets. 4. Codebase Watcher: Monitoring the target project for source changes to trigger automated rescans. 5. Broadcast Hub: Managing real-time Server-Sent Events (SSE) to keep connected clients synchronized. All topological data flows through this root before being persisted to .atlas data.",
+      "complexity": 92,
+      "description": "Atlas Architect Root: The primary entry point and Composition Root for the backend engine.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "504a6aeb7d3e725c3c3ff748ca92ca49",
-      "contractHash": "9a85417d81b5b36d1a71a3c667e107bc",
+      "verifiedHash": "0453dc448403e7fc8b9f297f34715b2f",
+      "contractHash": "d19e6c6c9ef8a5699aa06634f7503b03",
       "initialX": -375,
       "initialY": 0,
-      "sectorAngle": -1.1887107337907326,
-      "sectorWidth": 3.905763839598121,
+      "sectorAngle": -1.3227758541430708,
+      "sectorWidth": 3.6376335988934447,
       "x": -375,
       "y": 0
     },
@@ -2227,8 +2539,8 @@
       "contractHash": "b85327a30bb69c3e97a5a4203892f449",
       "initialX": -375,
       "initialY": -200,
-      "sectorAngle": -0.833641293827267,
-      "sectorWidth": 1.0652083198903965,
+      "sectorAngle": -0.8897242352271847,
+      "sectorWidth": 1.039323885398127,
       "x": -375,
       "y": -200
     },
@@ -2357,8 +2669,8 @@
       "contractHash": "6f813758e9bd1546958801325bf870f8",
       "initialX": -125,
       "initialY": 0,
-      "sectorAngle": -2.253919053681129,
-      "sectorWidth": 1.7753471998173278,
+      "sectorAngle": -2.2754894157580208,
+      "sectorWidth": 1.732206475663545,
       "x": -125,
       "y": 0
     },
@@ -2725,8 +3037,8 @@
       "contractHash": "4b8b93e9a6faa2c879ac4e3a43bd20a0",
       "initialX": -175,
       "initialY": -200,
-      "sectorAngle": -0.12350241390033598,
-      "sectorWidth": 0.35506943996346557,
+      "sectorAngle": -0.19684164496176668,
+      "sectorWidth": 0.346441295132709,
       "x": -175,
       "y": -200
     },
@@ -3272,8 +3584,8 @@
       "contractHash": "236766084d1bee7e10f8bc4d29557ef8",
       "initialX": -75,
       "initialY": -200,
-      "sectorAngle": 0.1427996660722632,
-      "sectorWidth": 0.17753471998173279,
+      "sectorAngle": 0.06298932638776507,
+      "sectorWidth": 0.1732206475663545,
       "x": -75,
       "y": -200
     },
@@ -3343,361 +3655,11 @@
       "verifiedHash": "580042349f758d9118f9769599489b7a",
       "contractHash": "cdb326cfac64d6a8d30b9f37b96dd2e5",
       "initialX": -375,
-      "initialY": 250,
-      "sectorAngle": 0.320334386053996,
-      "sectorWidth": 0.17753471998173279,
+      "initialY": 150,
+      "sectorAngle": 0.23620997395411958,
+      "sectorWidth": 0.1732206475663545,
       "x": -375,
-      "y": 250
-    },
-    "src/pipeline": {
-      "id": "src/pipeline",
-      "name": "pipeline",
-      "type": "Tool",
-      "file": "src/pipeline",
-      "language": "TypeScript",
-      "depth": 1,
-      "parentId": "src/index",
-      "islandId": "island_orphans",
-      "descendantCount": 0,
-      "dependencies": [
-        "fs-extra",
-        "path",
-        "blueprint",
-        "Error",
-        "Date",
-        "Set"
-      ],
-      "baseClasses": [],
-      "methods": [
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "list",
-          "params": []
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "move",
-          "params": [
-            "taskId: string",
-            "targetStage: string"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "create",
-          "params": [
-            "title: string"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "sync",
-          "params": []
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "run",
-          "params": []
-        }
-      ],
-      "fields": [
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "cwd"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "projectRoot"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "cwd"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "projectRoot"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "PIPELINE_ROOT"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "PLANNED_PATH"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "STAGES"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "dir"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "continue"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "files"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "f"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "sourceStage"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "sourceStage"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "stage"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "sourcePath"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "targetPath"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "targetStage"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "inProgressDir"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "activeTasks"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "id"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "content"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "realityPath"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "plannedData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "verifiedIds"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "realityData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "realityData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "verifiedIds"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "ghostNodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "nodesToAudit"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "verificationStatus"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "taskId"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "exists"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "false"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "exists"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "true"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "content"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "taskId"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "exists"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "false"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "exists"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "true"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "lang"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "content"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "main"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "argv"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        }
-      ],
-      "events": [],
-      "complexity": 37,
-      "description": "PipelineManager: Task lifecycle and synchronization state manager. DESIGN INTENT: Provides the \"Muscles\" of the project management layer. It automates the synchronization between the scanned 'Reality' and the 'Planned' blueprint by generating actionable Markdown tasks for architectural drift or missing implementations. KEY RESPONSIBILITIES: 1. Generates 'Ghost Node' tasks for nodes planned in the blueprint but missing in code. 2. Generates 'Audit' tasks for implementation changes that violate previous verifications. 3. Manages the 5-stage task lifecycle (Backlog -> Todo -> In Progress -> Review -> Completed). 4. Ensures only 1 active task is in progress per the Iron Law.",
-      "implementationNotes": "",
-      "lastModifiedBy": "",
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "verifiedHash": "7438b55e07dea18868d14c259e50a06e",
-      "contractHash": "e0a8698ccb76b2fe64aa0f8a7508fa3b",
-      "initialX": -250,
-      "initialY": -200,
-      "sectorAngle": 0.49786910603572876,
-      "sectorWidth": 0.17753471998173279,
-      "x": -250,
-      "y": -200
+      "y": 150
     },
     "src/Core/Application/Broadcaster": {
       "id": "src/Core/Application/Broadcaster",
@@ -3779,12 +3741,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "3b0275efc50e4941efd3c9f85de5979c",
       "contractHash": "a115ed8ccad34bab964d124fdb825def",
-      "initialX": -225,
-      "initialY": 250,
-      "sectorAngle": 0.6754038260174615,
-      "sectorWidth": 0.17753471998173279,
-      "x": -225,
-      "y": 250
+      "initialX": -275,
+      "initialY": 150,
+      "sectorAngle": 0.40943062152047405,
+      "sectorWidth": 0.1732206475663545,
+      "x": -275,
+      "y": 150
     },
     "src/Core/Domain/Services/IScanner": {
       "id": "src/Core/Domain/Services/IScanner",
@@ -3813,8 +3775,8 @@
       "contractHash": "b9f8daff52e77ca850a0f4b2868aebad",
       "initialX": -75,
       "initialY": 150,
-      "sectorAngle": -1.2597246217834257,
-      "sectorWidth": 0.21304166397807933,
+      "sectorAngle": -1.3054537893864355,
+      "sectorWidth": 0.20786477707962542,
       "x": -75,
       "y": 150
     },
@@ -3857,11 +3819,11 @@
       "verifiedHash": "3483e5e08ec27fccc60b61bd504456fd",
       "contractHash": "16e4ebe0bf7ef3c438aa8de3d3643869",
       "initialX": -300,
-      "initialY": -375,
-      "sectorAngle": -1.0466829578053463,
-      "sectorWidth": 0.21304166397807933,
+      "initialY": -350,
+      "sectorAngle": -1.0975890123068102,
+      "sectorWidth": 0.20786477707962542,
       "x": -300,
-      "y": -375
+      "y": -350
     },
     "src/Core/Domain/Services/ILayoutStrategy": {
       "id": "src/Core/Domain/Services/ILayoutStrategy",
@@ -3895,11 +3857,11 @@
       "verifiedHash": "7bc6f0356758353c0c574263c0677088",
       "contractHash": "17f8a6122a7b2bbc8e6e4aedf5031bfb",
       "initialX": -150,
-      "initialY": -375,
-      "sectorAngle": -0.8336412938272668,
-      "sectorWidth": 0.21304166397807933,
+      "initialY": -350,
+      "sectorAngle": -0.8897242352271848,
+      "sectorWidth": 0.20786477707962542,
       "x": -150,
-      "y": -375
+      "y": -350
     },
     "src/Core/Application/HeartbeatService": {
       "id": "src/Core/Application/HeartbeatService",
@@ -3934,12 +3896,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "b824ee54006050472a5d5751bb306afa",
       "contractHash": "ad82594e0838cff20bc7475be2052b58",
-      "initialX": -300,
-      "initialY": 250,
-      "sectorAngle": -0.6205996298491876,
-      "sectorWidth": 0.21304166397807933,
-      "x": -300,
-      "y": 250
+      "initialX": -325,
+      "initialY": 150,
+      "sectorAngle": -0.6818594581475594,
+      "sectorWidth": 0.20786477707962542,
+      "x": -325,
+      "y": 150
     },
     "src/Core/Infrastructure/Graph/MetricsCalculator": {
       "id": "src/Core/Infrastructure/Graph/MetricsCalculator",
@@ -4065,11 +4027,11 @@
       "verifiedHash": "642062433d68226c7d2adc08f77fbf0c",
       "contractHash": "45e40aa7d6605c0325778e1bcfcda1f3",
       "initialX": -375,
-      "initialY": -375,
-      "sectorAngle": -0.4075579658711082,
-      "sectorWidth": 0.21304166397807933,
+      "initialY": -350,
+      "sectorAngle": -0.4739946810679341,
+      "sectorWidth": 0.20786477707962542,
       "x": -375,
-      "y": -375
+      "y": -350
     },
     "src/Core/Domain/Model/SourceFile": {
       "id": "src/Core/Domain/Model/SourceFile",
@@ -4164,8 +4126,8 @@
       "contractHash": "416f57f18d30c1598da263b1afa76e77",
       "initialX": -125,
       "initialY": 150,
-      "sectorAngle": -1.464875853762317,
-      "sectorWidth": 0.19726079997970308,
+      "sectorAngle": -1.5056198710186675,
+      "sectorWidth": 0.1924673861848383,
       "x": -125,
       "y": 150
     },
@@ -4221,11 +4183,11 @@
       "verificationStatus": "auto",
       "verifiedHash": "f73ba9264ac9435243259eca5812e3f7",
       "contractHash": "e082fb22b6810307ee98f7663df38dfe",
-      "initialX": 125,
+      "initialX": 150,
       "initialY": 0,
-      "sectorAngle": -2.3525494536709806,
-      "sectorWidth": 1.5780863998376247,
-      "x": 125,
+      "sectorAngle": -2.37172310885044,
+      "sectorWidth": 1.5397390894787064,
+      "x": 150,
       "y": 0
     },
     "src/Core/Domain/Model/GraphNode": {
@@ -4431,8 +4393,8 @@
       "contractHash": "4a2f6e99bf4500440c88c942f8218be1",
       "initialX": -375,
       "initialY": -500,
-      "sectorAngle": -0.12350241390033598,
-      "sectorWidth": 0.35506943996346557,
+      "sectorAngle": -0.19684164496176668,
+      "sectorWidth": 0.346441295132709,
       "x": -375,
       "y": -500
     },
@@ -4469,8 +4431,8 @@
       "contractHash": "d89bb1fcb35da1f51aba81a5f54eb63b",
       "initialX": 125,
       "initialY": 150,
-      "sectorAngle": -2.3525494536709806,
-      "sectorWidth": 0.2254409142625178,
+      "sectorAngle": -2.37172310885044,
+      "sectorWidth": 0.21996272706838663,
       "x": 125,
       "y": 150
     },
@@ -4848,8 +4810,8 @@
       "contractHash": "9490d1ae516efe6066e8ab5de84ba510",
       "initialX": 400,
       "initialY": -150,
-      "sectorAngle": -2.8034312821960166,
-      "sectorWidth": 0.6763227427875534,
+      "sectorAngle": -2.811648562987213,
+      "sectorWidth": 0.6598881812051599,
       "x": 400,
       "y": -150
     },
@@ -5074,8 +5036,8 @@
       "contractHash": "76148b9e04dfd3fdaabf8dbd6800914f",
       "initialX": 400,
       "initialY": -75,
-      "sectorAngle": -2.1271085394084626,
-      "sectorWidth": 0.2254409142625178,
+      "sectorAngle": -2.1517603817820534,
+      "sectorWidth": 0.21996272706838663,
       "x": 400,
       "y": -75
     },
@@ -5393,8 +5355,8 @@
       "contractHash": "d6d71db8319269f9338ddb03c87067fd",
       "initialX": 175,
       "initialY": 150,
-      "sectorAngle": -1.9016676251459446,
-      "sectorWidth": 0.2254409142625178,
+      "sectorAngle": -1.9317976547136668,
+      "sectorWidth": 0.21996272706838663,
       "x": 175,
       "y": 150
     },
@@ -5679,8 +5641,8 @@
       "contractHash": "d0d32934923f40f9c707f76740443ceb",
       "initialX": 400,
       "initialY": 0,
-      "sectorAngle": -1.6762267108834268,
-      "sectorWidth": 0.2254409142625178,
+      "sectorAngle": -1.7118349276452802,
+      "sectorWidth": 0.21996272706838663,
       "x": 400,
       "y": 0
     },
@@ -5915,8 +5877,8 @@
       "contractHash": "67c31f56491366642c4fd472bd9766ee",
       "initialX": 400,
       "initialY": -275,
-      "sectorAngle": -2.8034312821960166,
-      "sectorWidth": 0.6763227427875534,
+      "sectorAngle": -2.811648562987213,
+      "sectorWidth": 0.6598881812051599,
       "x": 400,
       "y": -275
     },
@@ -5996,8 +5958,8 @@
       "contractHash": "8881a69096f2cc967aeeacfbc1bf97b2",
       "initialX": 400,
       "initialY": -375,
-      "sectorAngle": -2.8034312821960166,
-      "sectorWidth": 0.6763227427875534,
+      "sectorAngle": -2.811648562987213,
+      "sectorWidth": 0.6598881812051599,
       "x": 400,
       "y": -375
     },
@@ -6081,8 +6043,8 @@
       "contractHash": "c6f61454d07df0fdc82c5d4d8a033d7e",
       "initialX": -550,
       "initialY": -200,
-      "sectorAngle": 2.7170531058073895,
-      "sectorWidth": 0.1698158191129618,
+      "sectorAngle": 2.728225199170083,
+      "sectorWidth": 0.16534698176788384,
       "x": -550,
       "y": -200
     },
@@ -6135,8 +6097,8 @@
       "contractHash": "13b73708a3a265e048005aa895a3f6d7",
       "initialX": -150,
       "initialY": 250,
-      "sectorAngle": 2.886868924920351,
-      "sectorWidth": 0.1698158191129618,
+      "sectorAngle": 2.893572180937967,
+      "sectorWidth": 0.16534698176788384,
       "x": -150,
       "y": 250
     },
@@ -6363,12 +6325,12 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "handleSync"
+          "name": "handleRefresh"
         },
         {
           "visibility": "public",
           "type": "any",
-          "name": "bpRes"
+          "name": "endpoint"
         },
         {
           "visibility": "public",
@@ -6378,12 +6340,17 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "mode"
+          "name": "res"
         },
         {
           "visibility": "public",
           "type": "any",
           "name": "plannedData"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "handleSync"
         },
         {
           "visibility": "public",
@@ -6398,7 +6365,12 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "currentMode"
+          "name": "page"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "stateData"
         },
         {
           "visibility": "public",
@@ -6408,7 +6380,12 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "endpoint"
+          "name": "return"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "currentMode"
         },
         {
           "visibility": "public",
@@ -6423,7 +6400,7 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "stateData"
+          "name": "page"
         },
         {
           "visibility": "public",
@@ -6454,6 +6431,36 @@
           "visibility": "public",
           "type": "any",
           "name": "res"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "text"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "errorMessage"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "text"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "json"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "errorMessage"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "text"
         },
         {
           "visibility": "public",
@@ -6865,18 +6872,18 @@
           "flow": "subscribe"
         }
       ],
-      "complexity": 80,
+      "complexity": 86,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "04a99200f4e82e397615fdfd1c70e53b",
-      "contractHash": "dda29f18000243ad6d2bb3b76e01c7a7",
+      "verifiedHash": "314f8767471e86ae10cd2ba08ed0981a",
+      "contractHash": "a72beb8b89b1e937a23b1148f83168f5",
       "initialX": -575,
       "initialY": 0,
-      "sectorAngle": 1.4434344624601754,
-      "sectorWidth": 1.3585265529036945,
+      "sectorAngle": 1.157428872375187,
+      "sectorWidth": 1.3227758541430708,
       "x": -575,
       "y": 0
     },
@@ -7432,8 +7439,8 @@
       "contractHash": "8567802f0f3c1fb0b034b94d3e1b8887",
       "initialX": -575,
       "initialY": 125,
-      "sectorAngle": 0.8612087969300206,
-      "sectorWidth": 0.1940752218433849,
+      "sectorAngle": 0.5905249348852997,
+      "sectorWidth": 0.1889679791632958,
       "x": -575,
       "y": 125
     },
@@ -8729,8 +8736,8 @@
       "contractHash": "7f769fd70373344e698b67499c58ffe4",
       "initialX": -800,
       "initialY": 125,
-      "sectorAngle": 1.0552840187734054,
-      "sectorWidth": 0.1940752218433849,
+      "sectorAngle": 0.7794929140485954,
+      "sectorWidth": 0.1889679791632958,
       "x": -800,
       "y": 125
     },
@@ -9366,8 +9373,8 @@
       "contractHash": "0b728fe4c8b58ce1432bf8c4a3f0b458",
       "initialX": -725,
       "initialY": 125,
-      "sectorAngle": 1.2493592406167904,
-      "sectorWidth": 0.1940752218433849,
+      "sectorAngle": 0.9684608932118912,
+      "sectorWidth": 0.1889679791632958,
       "x": -725,
       "y": 125
     },
@@ -9727,8 +9734,8 @@
       "contractHash": "e18e632200ec48c87207f4566e0ffbb7",
       "initialX": -650,
       "initialY": 125,
-      "sectorAngle": 1.4434344624601754,
-      "sectorWidth": 0.1940752218433849,
+      "sectorAngle": 1.1574288723751869,
+      "sectorWidth": 0.1889679791632958,
       "x": -650,
       "y": 125
     },
@@ -9764,11 +9771,17 @@
           "returnType": "any",
           "name": "setLoading",
           "params": [
+            "btn: HTMLElement",
             "isLoading: boolean"
           ]
         }
       ],
       "fields": [
+        {
+          "visibility": "private",
+          "type": "HTMLElement",
+          "name": "btnRefresh"
+        },
         {
           "visibility": "private",
           "type": "HTMLElement",
@@ -9778,6 +9791,11 @@
           "visibility": "private",
           "type": "HTMLElement",
           "name": "activeStageLabel"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "btnRefresh"
         },
         {
           "visibility": "public",
@@ -9836,20 +9854,20 @@
         }
       ],
       "events": [],
-      "complexity": 7,
+      "complexity": 10,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "7cc98a26f8b29d29d14569e26328d7ca",
-      "contractHash": "ff4dd30370a768f33df0329d24b49f05",
-      "initialX": -424.18382885883324,
-      "initialY": 1094.0669616988223,
-      "sectorAngle": 1.6375096843035604,
-      "sectorWidth": 0.1940752218433849,
-      "x": -424.18382885883324,
-      "y": 1094.0669616988223
+      "verifiedHash": "a1f59ab7cb0d79bf37703d7e1f15cf14",
+      "contractHash": "cff10e90d0bcf3357fe4f42812724a3c",
+      "initialX": -550,
+      "initialY": 325,
+      "sectorAngle": 1.3463968515384828,
+      "sectorWidth": 0.1889679791632958,
+      "x": -550,
+      "y": 325
     },
     "viewer/src/Protocol/VisualTypes": {
       "id": "viewer/src/Protocol/VisualTypes",
@@ -9898,12 +9916,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "c6514f37d0397fcea606656902bf5ada",
       "contractHash": "555b4525d413f0ec9688aea55df50f47",
-      "initialX": -800,
-      "initialY": 725,
-      "sectorAngle": 1.8315849061469454,
-      "sectorWidth": 0.1940752218433849,
-      "x": -800,
-      "y": 725
+      "initialX": -700,
+      "initialY": 300,
+      "sectorAngle": 1.5353648307017786,
+      "sectorWidth": 0.1889679791632958,
+      "x": -700,
+      "y": 300
     },
     "viewer/src/Theme/ThemeManager": {
       "id": "viewer/src/Theme/ThemeManager",
@@ -10011,12 +10029,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "83ba05296ec9ba0b5561fa381f5a29f8",
       "contractHash": "acf625b1f618352335b5b8e70bae8455",
-      "initialX": -325,
-      "initialY": 575,
-      "sectorAngle": 2.0256601279903306,
-      "sectorWidth": 0.1940752218433849,
-      "x": -325,
-      "y": 575
+      "initialX": -475,
+      "initialY": 325,
+      "sectorAngle": 1.7243328098650745,
+      "sectorWidth": 0.1889679791632958,
+      "x": -475,
+      "y": 325
     },
     "viewer/src/Forces/GalaxyPhysics": {
       "id": "viewer/src/Forces/GalaxyPhysics",
@@ -10273,8 +10291,8 @@
       "contractHash": "c2031ff9e3fabd0f0feff708a059031b",
       "initialX": -575,
       "initialY": 250,
-      "sectorAngle": 3.056684744033313,
-      "sectorWidth": 0.1698158191129618,
+      "sectorAngle": 3.058919162705851,
+      "sectorWidth": 0.16534698176788384,
       "x": -575,
       "y": 250
     }
@@ -10295,6 +10313,18 @@
     {
       "source": "src/blueprint-cli",
       "target": "src/Shared/Protocol",
+      "isGravity": true,
+      "type": "inheritance"
+    },
+    {
+      "source": "src/blueprint",
+      "target": "src/pipeline",
+      "isGravity": true,
+      "type": "inheritance"
+    },
+    {
+      "source": "src/blueprint",
+      "target": "src/Shared/PlannerCore",
       "isGravity": true,
       "type": "inheritance"
     },
@@ -10331,12 +10361,6 @@
     {
       "source": "src/index",
       "target": "src/Shared/Config",
-      "isGravity": true,
-      "type": "inheritance"
-    },
-    {
-      "source": "src/index",
-      "target": "src/pipeline",
       "isGravity": true,
       "type": "inheritance"
     },
@@ -10509,6 +10533,18 @@
       "type": "dependency"
     },
     {
+      "source": "src/pipeline",
+      "target": "src/Shared/PlannerCore",
+      "isGravity": false,
+      "type": "dependency"
+    },
+    {
+      "source": "src/index",
+      "target": "src/pipeline",
+      "isGravity": false,
+      "type": "dependency"
+    },
+    {
       "source": "src/index",
       "target": "src/blueprint",
       "isGravity": false,
@@ -10565,12 +10601,6 @@
     {
       "source": "src/Core/Infrastructure/Layout/PolarLayoutStrategy",
       "target": "src/Core/Domain/Model/GraphNode",
-      "isGravity": false,
-      "type": "dependency"
-    },
-    {
-      "source": "src/pipeline",
-      "target": "src/blueprint",
       "isGravity": false,
       "type": "dependency"
     },

@@ -1,6 +1,8 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { NodeType, GuardState } from './Shared/Protocol';
+import { PipelineManager } from './pipeline';
+import { PlannerCore } from './Shared/PlannerCore';
 
 // Context Detection
 const cwd = process.cwd();
@@ -11,39 +13,14 @@ if (path.basename(cwd) === '.atlas') {
 
 /**
  * TopologyPlanner: Intentional architecture and evolution manager.
- * 
- * DESIGN INTENT:
- * Manages two states of the architecture:
- * 1. Authoritative (blueprint.json): The verified, current structural mandate.
- * 2. Plan (plan.json): The draft board for planning future work.
- * 
- * Provides CLI-driven "Merge" to move plan into the authoritative blueprint.
  */
 export class TopologyPlanner {
-    static getBlueprintPath(isPlanMode: boolean = false): string {
-        if (isPlanMode) {
-            return path.join(projectRoot, '.atlas', 'data', 'plan.json');
-        }
-        return path.join(projectRoot, 'docs', 'topology', 'blueprint.json');
-    }
-
     static async isLocked(): Promise<boolean> {
-        return await fs.pathExists(this.getBlueprintPath(true));
+        return await PlannerCore.isLocked();
     }
 
     static async loadBlueprint(isPlanMode: boolean = false) {
-        const filePath = this.getBlueprintPath(isPlanMode);
-        if (!await fs.pathExists(filePath)) {
-            if (isPlanMode) {
-                const authPath = this.getBlueprintPath(false);
-                if (await fs.pathExists(authPath)) {
-                    await fs.copy(authPath, filePath);
-                    return await fs.readJson(filePath);
-                }
-            }
-            return { plannedNodes: [] };
-        }
-        return await fs.readJson(filePath);
+        return await PlannerCore.loadBlueprint(isPlanMode);
     }
 
     static async saveBlueprint(data: any, isPlanMode: boolean = false, skipLockCheck: boolean = false) {
@@ -52,18 +29,30 @@ export class TopologyPlanner {
                 throw new Error("AUTHORITY LOCK: The Blueprint is currently locked by an active Plan. Merging the plan or aborting it is required to modify the Blueprint directly.");
             }
         }
-        const filePath = this.getBlueprintPath(isPlanMode);
+        const filePath = PlannerCore.getBlueprintPath(isPlanMode);
         await fs.ensureDir(path.dirname(filePath));
         await fs.writeJson(filePath, data, { spaces: 2 });
         console.log(`[PLANNER] Updated ${isPlanMode ? 'Active Plan' : 'Authoritative Blueprint'}`);
     }
 
     static async promote() {
-        const planPath = this.getBlueprintPath(true);
-        const authPath = this.getBlueprintPath(false);
+        const planPath = PlannerCore.getBlueprintPath(true);
+        const authPath = PlannerCore.getBlueprintPath(false);
         if (!await fs.pathExists(planPath)) {
             throw new Error("No active plan data found to merge.");
         }
+
+        console.log(`[PLANNER] Running verification pre-merge...`);
+        const ghostNodes = await PipelineManager.getGhostNodes();
+        if (ghostNodes.length > 0) {
+            throw new Error(`MERGE BLOCKED: There are ${ghostNodes.length} Ghost Nodes in the plan that have not been implemented yet. Finish coding them first.`);
+        }
+
+        const hasActiveTasks = await PipelineManager.hasActiveTasks();
+        if (hasActiveTasks) {
+            throw new Error(`MERGE BLOCKED: There are incomplete tasks in the pipeline. All implementation and audit tasks must be moved to '04_completed' before merging.`);
+        }
+
         await fs.copy(planPath, authPath);
         await fs.remove(planPath); // Release the lock
         console.log(`[PLANNER] SUCCESS: Plan has been merged into the Authoritative Blueprint. Lock released.`);
@@ -75,10 +64,8 @@ export class TopologyPlanner {
 
     static async upsertNodes(nodes: { id: string, name: string, type: NodeType, purpose: string, parentId?: string, description?: string, designIntent?: string }[], isPlanMode: boolean = false) {
         const data = await this.loadBlueprint(isPlanMode);
-        
         for (const input of nodes) {
             let node = data.plannedNodes.find((n: any) => n.id === input.id);
-            
             if (node) {
                 node.name = input.name;
                 node.type = input.type;
@@ -121,7 +108,6 @@ export class TopologyPlanner {
             default:
                 throw new Error(`Unsupported property '${property}'`);
         }
-
         await this.saveBlueprint(data, isPlanMode);
         console.log(`[PLANNER] SUCCESS: Updated ${property} for '${id}'`);
     }

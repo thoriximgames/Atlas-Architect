@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TopologyPlanner = void 0;
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const path_1 = __importDefault(require("path"));
+const pipeline_1 = require("./pipeline");
+const PlannerCore_1 = require("./Shared/PlannerCore");
 // Context Detection
 const cwd = process.cwd();
 let projectRoot = cwd;
@@ -14,37 +16,13 @@ if (path_1.default.basename(cwd) === '.atlas') {
 }
 /**
  * TopologyPlanner: Intentional architecture and evolution manager.
- *
- * DESIGN INTENT:
- * Manages two states of the architecture:
- * 1. Authoritative (blueprint.json): The verified, current structural mandate.
- * 2. Plan (plan.json): The draft board for planning future work.
- *
- * Provides CLI-driven "Merge" to move plan into the authoritative blueprint.
  */
 class TopologyPlanner {
-    static getBlueprintPath(isPlanMode = false) {
-        if (isPlanMode) {
-            return path_1.default.join(projectRoot, '.atlas', 'data', 'plan.json');
-        }
-        return path_1.default.join(projectRoot, 'docs', 'topology', 'blueprint.json');
-    }
     static async isLocked() {
-        return await fs_extra_1.default.pathExists(this.getBlueprintPath(true));
+        return await PlannerCore_1.PlannerCore.isLocked();
     }
     static async loadBlueprint(isPlanMode = false) {
-        const filePath = this.getBlueprintPath(isPlanMode);
-        if (!await fs_extra_1.default.pathExists(filePath)) {
-            if (isPlanMode) {
-                const authPath = this.getBlueprintPath(false);
-                if (await fs_extra_1.default.pathExists(authPath)) {
-                    await fs_extra_1.default.copy(authPath, filePath);
-                    return await fs_extra_1.default.readJson(filePath);
-                }
-            }
-            return { plannedNodes: [] };
-        }
-        return await fs_extra_1.default.readJson(filePath);
+        return await PlannerCore_1.PlannerCore.loadBlueprint(isPlanMode);
     }
     static async saveBlueprint(data, isPlanMode = false, skipLockCheck = false) {
         if (!isPlanMode && !skipLockCheck) {
@@ -52,16 +30,25 @@ class TopologyPlanner {
                 throw new Error("AUTHORITY LOCK: The Blueprint is currently locked by an active Plan. Merging the plan or aborting it is required to modify the Blueprint directly.");
             }
         }
-        const filePath = this.getBlueprintPath(isPlanMode);
+        const filePath = PlannerCore_1.PlannerCore.getBlueprintPath(isPlanMode);
         await fs_extra_1.default.ensureDir(path_1.default.dirname(filePath));
         await fs_extra_1.default.writeJson(filePath, data, { spaces: 2 });
         console.log(`[PLANNER] Updated ${isPlanMode ? 'Active Plan' : 'Authoritative Blueprint'}`);
     }
     static async promote() {
-        const planPath = this.getBlueprintPath(true);
-        const authPath = this.getBlueprintPath(false);
+        const planPath = PlannerCore_1.PlannerCore.getBlueprintPath(true);
+        const authPath = PlannerCore_1.PlannerCore.getBlueprintPath(false);
         if (!await fs_extra_1.default.pathExists(planPath)) {
             throw new Error("No active plan data found to merge.");
+        }
+        console.log(`[PLANNER] Running verification pre-merge...`);
+        const ghostNodes = await pipeline_1.PipelineManager.getGhostNodes();
+        if (ghostNodes.length > 0) {
+            throw new Error(`MERGE BLOCKED: There are ${ghostNodes.length} Ghost Nodes in the plan that have not been implemented yet. Finish coding them first.`);
+        }
+        const hasActiveTasks = await pipeline_1.PipelineManager.hasActiveTasks();
+        if (hasActiveTasks) {
+            throw new Error(`MERGE BLOCKED: There are incomplete tasks in the pipeline. All implementation and audit tasks must be moved to '04_completed' before merging.`);
         }
         await fs_extra_1.default.copy(planPath, authPath);
         await fs_extra_1.default.remove(planPath); // Release the lock
