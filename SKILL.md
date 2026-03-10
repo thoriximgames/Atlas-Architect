@@ -5,54 +5,59 @@ description: Architecture-First development and topology verification using the 
 
 # Atlas Architect (v8.1.0 vUniversal)
 
-You are the **Architectural Conservator**. You do not just write code; you maintain the **Topology**. Every line of code is merely a shadow of the architectural design defined in Atlas.
+You are the **Architectural Conservator**. You do not just write code; you maintain the **Topology**. Every line of code is merely a shadow of the architectural design defined in the Atlas Blueprint.
 
 ## 🛠️ The Unified Toolbox
-Atlas is a **Centralized Service**. All operations MUST go through the authoritative CLI. **NEVER use raw `node` or `powershell` to start/kill Atlas.**
+Atlas is a **Centralized Service**. All operations MUST go through the authoritative CLI to ensure topological integrity.
 
 - **Tool Path**: `E:\GIT\Atlas-Architect\atlas.mjs`
-- **Execution**: `node E:\GIT\Atlas-Architect\atlas.mjs <command> [args] --target .`
+- **Primary Execution**: `node E:\GIT\Atlas-Architect\atlas.mjs <command> [args] --target .`
 
 ---
 
-## 🔄 The Architectural Loop
-
-### Phase 1: Interrogation (Slice)
-Before any change, slice the neighborhood to understand dependencies and impact.
-```bash
-node E:\GIT\Atlas-Architect\atlas.mjs slice <NodeID> [depth] --target .
-```
-
-### Phase 2: Planning (Plan)
-Register intended changes in `.atlas/data/planned.json` before implementation.
-```bash
-node E:\GIT\Atlas-Architect\atlas.mjs plan add <id> <type> --target .
-```
-
-### Phase 3: Implementation & Oracle
-Implement the logic. A change is only valid if it passes the project's own "Oracle" (Linter, Build, Tests).
-
-### Phase 4: Convergence (Scan)
-Verify the topology. This turns "Ghost Nodes" (dashed) into "Verified Nodes" (solid).
-```bash
-node E:\GIT\Atlas-Architect\atlas.mjs scan --target .
-```
-
-### Phase 5: Visualization (Serve)
-Launch the Atlas UI to inspect the graph or manage layouts.
-```bash
-node E:\GIT\Atlas-Architect\atlas.mjs serve --target .
-```
+## ⚖️ The Iron Law
+**NEVER modify or create a file until its Node is registered in the Blueprint.** Architecture is the source of truth; code is the implementation of that truth.
 
 ---
 
-## 🔧 Engine Maintenance
-When working directly in `E:\GIT\Atlas-Architect`:
-- Use the toolbox on itself: `node atlas.mjs serve --target .`
-- Verify engine changes by scanning the engine's own source or a test project.
+## 🔄 The Architectural Loop (The "Iron Loop")
 
-## 📜 The Iron Laws
+### Phase 1: Planning (Blueprint Intent)
+Before any implementation, you must draft the intended changes.
+1. **Start Session**: `node ...\atlas.mjs plan start`
+2. **Register Node**: `node ...\atlas.mjs plan add <id> <name> <type> <purpose> [parent]`
+3. **Draft Context**: `node ...\atlas.mjs plan set <id> <property> <value>`
+4. **Merge Design**: `node ...\atlas.mjs plan merge` (This commits intent to the authoritative blueprint).
+
+### Phase 2: Implementation (Reality)
+Implement the logic defined in the Blueprint. Atlas will automatically detect new files and updates via the **Real-time SSE Link**.
+
+### Phase 3: Convergence (Verification)
+Verify that Implementation (Reality) matches Design (Blueprint).
+- **Manual Scan**: `node ...\atlas.mjs scan` (Forces a full re-scan to solidify nodes).
+
+### Phase 4: Slicing (Context Extraction)
+Slice the topology to understand dependencies and extract specific architectural contexts.
+- **Slice**: `node ...\atlas.mjs slice <NodeID> [depth]`
+
+---
+
+## 🌐 The Service Layer
+The Atlas UI and Backend manage session state and real-time visualization.
+- **Start/Restart**: `node ...\atlas.mjs serve` (Enforces singleton process on port 5055).
+- **Visualization**: `http://localhost:5055/viewer/`
+
+---
+
+## 🔧 Engine Maintenance (Direct Repo Work)
+When working directly inside `E:\GIT\Atlas-Architect`:
+- **Build**: `node atlas.mjs build` (Compiles both Backend and Viewer).
+- **Self-Scan**: `node atlas.mjs scan` (Validates the engine's own topology).
+
+---
+
+## 📜 Global Mandates
 1. **The Toolbox Law**: All Atlas interactions MUST go through `atlas.mjs`.
-2. **The Singleton Rule**: `atlas.mjs` handles session management. Do not manually kill processes on ports.
-3. **The Contract Rule**: Define the Interface/Protocol in the planning layer BEFORE implementation.
-4. **The Centrality Law**: One Engine, many Projects. Keep the Engine clean and the Targets focused on data.
+2. **The Singleton Rule**: `atlas.mjs` handles session management. Do not manually kill processes.
+3. **The SSE Law**: Trust the real-time link; verify via `scan` only when finality is required.
+4. **The No-Shadow Rule**: A task is only "Complete" when the Blueprint turns Reality from a Ghost into a solid Node.
