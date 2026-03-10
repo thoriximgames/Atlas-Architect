@@ -115,8 +115,8 @@ export class GraphBuilder implements IGraphBuilder {
         entryPoints.forEach(ep => processFrom(ep.id));
 
         // 2. Identify Orphans (Nodes not reachable from Entry Points)
-        // If strict mode is ON and we have entry points, we IGNORE everything else.
-        if (strict && entryPoints.length > 0) {
+        // If strict mode is ON, we IGNORE everything that isn't explicitly connected to an entry point.
+        if (strict) {
             console.log(`[GraphBuilder] STRICT MODE: Excluding ${files.length - visited.size} unreachable orphans.`);
         } else {
             const orphans: string[] = [];
