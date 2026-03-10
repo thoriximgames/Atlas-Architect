@@ -174,5 +174,9 @@
   "src/Core/Infrastructure/DemoService": {
     "x": 25,
     "y": -25
+  },
+  "src/Shared/PlannerCore": {
+    "x": 225,
+    "y": 400
   }
 }

@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-10T09:25:36.609Z",
+  "lastUpdated": "2026-03-10T09:59:44.954Z",
   "nodes": {
     "_UNCONNECTED_": {
       "id": "_UNCONNECTED_",
@@ -1521,10 +1521,12 @@
       "verificationStatus": "auto",
       "verifiedHash": "523ccf4f7b6c00911b9b37f230067f19",
       "contractHash": "6f905eae3694648d56ac5280f961e432",
-      "initialX": -784.9805278570357,
-      "initialY": 907.6373564840143,
+      "initialX": 225,
+      "initialY": 400,
       "sectorAngle": 2.283855185668896,
-      "sectorWidth": 0.3100255908147822
+      "sectorWidth": 0.3100255908147822,
+      "x": 225,
+      "y": 400
     },
     "src/index": {
       "id": "src/index",
@@ -9771,26 +9773,41 @@
           "returnType": "any",
           "name": "setLoading",
           "params": [
-            "btn: HTMLElement",
+            "btn: HTMLElement | null",
             "isLoading: boolean"
           ]
         }
       ],
       "fields": [
         {
-          "visibility": "private",
-          "type": "HTMLElement",
-          "name": "btnRefresh"
+          "visibility": "public",
+          "type": "any",
+          "name": "null"
         },
         {
-          "visibility": "private",
-          "type": "HTMLElement",
-          "name": "btnSync"
+          "visibility": "public",
+          "type": "any",
+          "name": "null"
         },
         {
-          "visibility": "private",
-          "type": "HTMLElement",
-          "name": "activeStageLabel"
+          "visibility": "public",
+          "type": "any",
+          "name": "null"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "null"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "null"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "null"
         },
         {
           "visibility": "public",
@@ -9806,11 +9823,26 @@
           "visibility": "public",
           "type": "any",
           "name": "activeStageLabel"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "return"
         },
         {
           "visibility": "public",
           "type": "any",
           "name": "innerText"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "return"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "return"
         },
         {
           "visibility": "public",
@@ -9854,14 +9886,14 @@
         }
       ],
       "events": [],
-      "complexity": 10,
+      "complexity": 13,
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "orphan",
       "verificationStatus": "auto",
-      "verifiedHash": "a1f59ab7cb0d79bf37703d7e1f15cf14",
-      "contractHash": "cff10e90d0bcf3357fe4f42812724a3c",
+      "verifiedHash": "39276c9870d92191f0a331f4c00cdb79",
+      "contractHash": "81886a063db8fe7c3b0b05fd4f23a78e",
       "initialX": -550,
       "initialY": 325,
       "sectorAngle": 1.3463968515384828,
