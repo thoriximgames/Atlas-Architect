@@ -110,7 +110,7 @@ async function main() {
                 return {
                     ...pn,
                     status: rn ? 'verified' : 'planned',
-                    type: rn?.type || pn.type || 'Unknown',
+                    type: (rn && rn.type !== 'Unknown' ? rn.type : pn.type) || 'Unknown',
                     language: rn?.language || 'Unknown',
                     complexity: rn?.complexity || 0,
                     methods: rn?.methods || [],

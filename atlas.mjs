@@ -109,8 +109,13 @@ async function main() {
         await fs.outputJson(path.join(docsDir, 'planned.json'), { plannedNodes: [] }, { spaces: 2 });
         
         const typesPath = path.join(dataDir, 'node_types.json');
+        const masterTypesPath = path.join(__dirname, '.atlas', 'data', 'node_types.json');
         if (!await fs.pathExists(typesPath)) {
-            await fs.outputJson(typesPath, defaultTypes, { spaces: 4 });
+            if (await fs.pathExists(masterTypesPath)) {
+                await fs.copy(masterTypesPath, typesPath);
+            } else {
+                await fs.outputJson(typesPath, defaultTypes, { spaces: 4 });
+            }
         }
         
         console.log(`[Atlas] SUCCESS: Footprint created. You can now run 'atlas.mjs scan'.`);
@@ -123,6 +128,15 @@ async function main() {
         console.error(`[Atlas] Error: Not an Atlas project (missing atlas.config.json in ${target})`);
         console.error(`[Atlas] Run 'node atlas.mjs init --target <path>' first.`);
         process.exit(1);
+    }
+
+    if (config) {
+        const typesPath = path.join(target, '.atlas', 'data', 'node_types.json');
+        const masterTypesPath = path.join(__dirname, '.atlas', 'data', 'node_types.json');
+        if (!await fs.pathExists(typesPath) && await fs.pathExists(masterTypesPath)) {
+            await fs.ensureDir(path.dirname(typesPath));
+            await fs.copy(masterTypesPath, typesPath);
+        }
     }
 
     const enginePath = path.join(__dirname, 'src', 'index.ts');
