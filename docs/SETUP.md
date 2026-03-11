@@ -4,56 +4,29 @@ Welcome to **Atlas Architect (vUniversal)**. This guide covers the initial setup
 
 ---
 
-## 🚀 1. Atlas Engine Setup
+## 🚀 1. Atlas Installation
 
 ### Prerequisites
 - **Node.js**: v18.0.0 or higher.
 - **Git**: For version control integration.
 
-### Installation
+### Quick Setup
+We have provided automated scripts that will install all backend and frontend dependencies, compile the engine, and automatically synchronize the `atlas-architect` skill with your global Gemini CLI environment.
+
 1.  **Clone the Repository**:
-    ```powershell
-    git clone https://github.com/thoriximgames/Atlas-Architect.git E:\GIT\Atlas-Architect
+    ```bash
+    git clone https://github.com/thoriximgames/Atlas-Architect.git
+    cd Atlas-Architect
     ```
-2.  **Install Dependencies**:
-    ```powershell
-    cd E:\GIT\Atlas-Architect
-    npm install
-    cd viewer
-    npm install
-    ```
-3.  **Perform Initial Build**:
-    ```powershell
-    cd E:\GIT\Atlas-Architect
-    node atlas.mjs build
-    ```
+2.  **Run the Installer**:
+    - **Windows**: Double-click `install.bat` or run it in the terminal.
+    - **Mac/Linux**: Run `./install.sh` (you may need to run `chmod +x install.sh` first).
+
+*That's it!* The engine is built and the Gemini skill is now active on your machine.
 
 ---
 
-## 🤖 2. Gemini CLI Skill Setup
-
-To enable the specialized **`atlas-architect`** skill in your Gemini CLI, follow these steps:
-
-### Step 1: Create the Skill Directory
-Gemini looks for skills in your user profile. Create the following folder:
-```powershell
-mkdir "$HOME\.gemini\skills\atlas-architect"
-```
-
-### Step 2: Link the Skill File
-Copy (or symlink) the `SKILL.md` from the Atlas repository to the Gemini skills folder:
-```powershell
-copy "E:\GIT\Atlas-Architect\SKILL.md" "$HOME\.gemini\skills\atlas-architect\SKILL.md"
-```
-
-### Step 3: Activation
-In any Gemini CLI session, you can now activate the skill by typing:
-> "activate atlas-architect skill"
-
----
-
-## 🛠️ 3. Initializing a New Project
-
+## 🛠️ 2. Initializing a New Project
 To turn any directory into an Atlas-managed project:
 1.  Navigate to your project root.
 2.  Run the initialization command:
