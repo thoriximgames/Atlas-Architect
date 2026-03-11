@@ -122,6 +122,7 @@ async function main() {
                     file: rn?.file || pn.id,
                     baseClasses: rn?.baseClasses || [],
                     purpose: pn.purpose || rn?.purpose || "",
+                    designIntent: pn.designIntent || rn?.designIntent || "",
                     description: pn.description || rn?.description || "",
                     x: pn.x !== undefined ? pn.x : (rn?.x || 0),
                     y: pn.y !== undefined ? pn.y : (rn?.y || 0)

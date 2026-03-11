@@ -289,7 +289,7 @@ export class StageRenderer {
             const isUnconnected = !hasParentInGraph && d.parentId !== "" && d.id !== 'src/index'; 
             
             const isCritical = isOrphan || isUnconnected;
-            const isMissingData = !d.purpose || !d.description || d.purpose === 'Auto-discovered dependency' || d.purpose === 'The';
+            const isMissingData = !d.purpose || !d.description || !d.designIntent || d.purpose === 'Auto-discovered dependency' || d.purpose === 'The';
             const hasDescendants = (d.descendantCount || 0) > 0;
 
             const iconY = -(r + 14);

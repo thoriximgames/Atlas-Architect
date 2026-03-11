@@ -11,7 +11,7 @@ class BaseParser {
     nodeTypesConfig = null;
     async parse(filePath, root) {
         // Always reload config per file to ensure latest CLI updates are applied during scan
-        const configPath = path_1.default.join(root, '.atlas', 'data', 'node_types.json');
+        const configPath = path_1.default.resolve(__dirname, '../../../../../.atlas/data/node_types.json');
         if (await fs_extra_1.default.pathExists(configPath)) {
             this.nodeTypesConfig = await fs_extra_1.default.readJson(configPath);
         }
