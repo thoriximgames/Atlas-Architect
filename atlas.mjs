@@ -107,7 +107,11 @@ async function main() {
         await fs.ensureDir(docsDir);
         await fs.outputJson(path.join(target, 'atlas.config.json'), configContent, { spaces: 2 });
         await fs.outputJson(path.join(docsDir, 'planned.json'), { plannedNodes: [] }, { spaces: 2 });
-        await fs.outputJson(path.join(dataDir, 'node_types.json'), defaultTypes, { spaces: 4 });
+        
+        const typesPath = path.join(dataDir, 'node_types.json');
+        if (!await fs.pathExists(typesPath)) {
+            await fs.outputJson(typesPath, defaultTypes, { spaces: 4 });
+        }
         
         console.log(`[Atlas] SUCCESS: Footprint created. You can now run 'atlas.mjs scan'.`);
         return;
@@ -150,7 +154,9 @@ async function main() {
                         console.log(`[Atlas] Scan triggered successfully on running server.`);
                         return;
                     } catch (e) {
-                        console.log(`[Atlas] Server not responding, falling back to local scan...`);
+                        console.log(`[WARNING] Server not responding. Falling back to local scan.`);
+                        console.log(`          The reality.json file will be updated, but the visualizer UI will NOT update`);
+                        console.log(`          until the service is restarted with 'node atlas.mjs serve'.`);
                     }
                 }
             }

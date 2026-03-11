@@ -1,6 +1,6 @@
 {
   "project": "Atlas-Architect",
-  "lastUpdated": "2026-03-10T13:11:14.314Z",
+  "lastUpdated": "2026-03-11T09:10:49.157Z",
   "nodes": {
     "src/index": {
       "id": "src/index",
@@ -455,56 +455,6 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "positionsPath"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "positions"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "x"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "x"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "initialX"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "x"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "initialY"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
           "name": "registry"
         },
         {
@@ -580,6 +530,11 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "server"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "url"
         },
         {
@@ -601,27 +556,36 @@
           "visibility": "public",
           "type": "any",
           "name": "platform"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "code"
         }
       ],
       "events": [
         {
           "name": "all",
           "flow": "subscribe"
+        },
+        {
+          "name": "error",
+          "flow": "subscribe"
         }
       ],
-      "complexity": 93,
+      "complexity": 98,
       "description": "Atlas Architect Root: The primary entry point and Composition Root for the backend engine.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "verified",
       "verificationStatus": "auto",
-      "verifiedHash": "805a6b759c2b1c657dca9d2ccb68c4f1",
-      "contractHash": "ee0b37680d1fe08154f33e7d859bc93c",
+      "verifiedHash": "a2376888bcea0b608daadac951b2e604",
+      "contractHash": "9efd8a5a7184cc59f45e47350735d12c",
       "initialX": -375,
       "initialY": 0,
-      "sectorAngle": 2.1205750411731104,
-      "sectorWidth": 4.241150082346221,
+      "sectorAngle": 2.4947941660860122,
+      "sectorWidth": 4.9895883321720245,
       "x": -375,
       "y": 0
     },
@@ -715,12 +679,22 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "positionsPath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "oldRegistry"
         },
         {
           "visibility": "public",
           "type": "any",
           "name": "oldNodes"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "savedPositions"
         },
         {
           "visibility": "public",
@@ -741,6 +715,46 @@
           "visibility": "public",
           "type": "any",
           "name": "node"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "x"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "x"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "y"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "y"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "initialX"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "x"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "initialY"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "y"
         },
         {
           "visibility": "public",
@@ -1009,19 +1023,19 @@
         }
       ],
       "events": [],
-      "complexity": 36,
+      "complexity": 38,
       "description": "AtlasEngine: The core orchestration unit of the system. DESIGN INTENT: Acts as the \"Brain\" of the Atlas ecosystem. It bridges the gap between raw file system data and high-level architectural models. It implements the drift detection logic by comparing the scanned 'Reality' against the historical 'Registry'. KEY RESPONSIBILITIES: 1. Orchestrates the Scan -> Build -> Layout -> Validate pipeline. 2. Manages Drift Detection: Identifies 'Dirty' nodes where implementation violates verified state. 3. Contract Ripple: Detects changes in public interfaces and invalidates dependents. 4. Architectural Linting: Enforces \"Iron Law\" rules defined in the system config.",
       "implementationNotes": "\n[SYSTEM] Marked dirty due to contract change in dependency.",
       "lastModifiedBy": "",
       "violations": [],
       "status": "verified",
       "verificationStatus": "auto",
-      "verifiedHash": "2564f518b6aa60af0a5da54259636f9f",
-      "contractHash": "b85327a30bb69c3e97a5a4203892f449",
+      "verifiedHash": "f010fe420c3825b8958c4f9d98b9261e",
+      "contractHash": "f73d513f6d9fe2a28cc3191c1bae8760",
       "initialX": -375,
       "initialY": -200,
-      "sectorAngle": 2.2836961981864268,
-      "sectorWidth": 1.3049692561065296,
+      "sectorAngle": 2.68670140963109,
+      "sectorWidth": 1.535257948360623,
       "x": -375,
       "y": -200
     },
@@ -1148,10 +1162,10 @@
       "verificationStatus": "auto",
       "verifiedHash": "2e95eab20488449cf54a8761e70576fd",
       "contractHash": "6f813758e9bd1546958801325bf870f8",
-      "initialX": -125,
-      "initialY": 0,
-      "sectorAngle": 0.815605785066581,
-      "sectorWidth": 1.631211570133162,
+      "initialX": 688.6798210888473,
+      "initialY": 982.7105901663181,
+      "sectorAngle": 0.9595362177253893,
+      "sectorWidth": 1.9190724354507787,
       "x": -125,
       "y": 0
     },
@@ -1338,6 +1352,16 @@
         },
         {
           "visibility": "public",
+          "type": "any",
+          "name": "numExcluded"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "size"
+        },
+        {
+          "visibility": "public",
           "type": "string[]",
           "name": "orphans"
         },
@@ -1513,19 +1537,19 @@
         }
       ],
       "events": [],
-      "complexity": 54,
+      "complexity": 55,
       "description": "GraphBuilder: Topological relationship resolver and graph architect. DESIGN INTENT: Serves as the \"Skeleton\" constructor for the system. It takes the flat list of scanned source files and transforms them into a directed hierarchical graph. It is responsible for resolving string-based dependencies into concrete node relationships and identifying architectural orphans. KEY RESPONSIBILITIES: 1. Build the primary hierarchy based on entry points and gravity-based relationships. 2. Resolve 'Interstellar' dependencies (cross-module imports). 3. Event Bridge: Implicitly connects publishers and subscribers based on event names. 4. Orphan Identification: Groups all unreachable nodes into the virtual '_UNCONNECTED_' root.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "verified",
       "verificationStatus": "auto",
-      "verifiedHash": "8530cd10c6e30f9fb458bd2ac9be076a",
-      "contractHash": "7c3b5f07cb9bdbfa475571dc44a015b3",
+      "verifiedHash": "08259072b67c107bb2b619c8e637bff4",
+      "contractHash": "4f43b79e4512d9c01fcf30e72a0d774e",
       "initialX": -175,
       "initialY": -200,
-      "sectorAngle": 3.0993019832530075,
-      "sectorWidth": 0.3262423140266324,
+      "sectorAngle": 3.64623762735648,
+      "sectorWidth": 0.38381448709015575,
       "x": -175,
       "y": -200
     },
@@ -2021,26 +2045,6 @@
         {
           "visibility": "public",
           "type": "any",
-          "name": "x"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "initialY"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "initialX"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
           "name": "radius"
         },
         {
@@ -2060,19 +2064,19 @@
         }
       ],
       "events": [],
-      "complexity": 16,
+      "complexity": 18,
       "description": "PolarLayoutStrategy: Mathematical projection and spatial positioning engine. DESIGN INTENT: Implements the visual \"Soul\" of the Atlas project. It translates the abstract tree-like hierarchy of the graph into concrete 2D coordinates using a polar coordinate system. By distributing nodes in wedges around their parents, it ensures a non-overlapping, expansive layout that emphasizes hierarchy and 'Mass'. KEY RESPONSIBILITIES: 1. Calculates node coordinates using a Wedge-based distribution algorithm. 2. Manages radial depth based on the topological distance from roots. 3. Supports manual coordinate overrides for persistent layouts. 4. Ensures hierarchical stability by sorting nodes by 'Mass' (descendant count).",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "verified",
       "verificationStatus": "auto",
-      "verifiedHash": "177004576aaac93d82199b32fa9dd488",
-      "contractHash": "236766084d1bee7e10f8bc4d29557ef8",
+      "verifiedHash": "0a25fdc1b7b62dfd0218d914f0136c95",
+      "contractHash": "2a97b6abfaf8f8d7ee971a521d5be418",
       "initialX": -75,
       "initialY": -200,
-      "sectorAngle": 3.6702260327996146,
-      "sectorWidth": 0.1631211570133162,
+      "sectorAngle": 4.317912979764253,
+      "sectorWidth": 0.19190724354507788,
       "x": -75,
       "y": -200
     },
@@ -2148,8 +2152,8 @@
       "contractHash": "63a35388ed292ab07a16211cfcc1a9ff",
       "initialX": -375,
       "initialY": 150,
-      "sectorAngle": 3.8333471898129305,
-      "sectorWidth": 0.1631211570133162,
+      "sectorAngle": 4.5098202233093305,
+      "sectorWidth": 0.19190724354507788,
       "x": -375,
       "y": 150
     },
@@ -2411,6 +2415,26 @@
         {
           "visibility": "public",
           "type": "any",
+          "name": "allTasksDir"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "taskId"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "taskPath"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
+          "name": "break"
+        },
+        {
+          "visibility": "public",
+          "type": "any",
           "name": "taskId"
         },
         {
@@ -2530,19 +2554,19 @@
         }
       ],
       "events": [],
-      "complexity": 37,
+      "complexity": 40,
       "description": "PipelineManager: Task lifecycle and synchronization state manager. DESIGN INTENT: Provides the \"Muscles\" of the project management layer. It automates the synchronization between the scanned 'Reality' and the 'Planned' blueprint by generating actionable Markdown tasks for architectural drift or missing implementations. KEY RESPONSIBILITIES: 1. Generates 'Ghost Node' tasks for nodes planned in the blueprint but missing in code. 2. Generates 'Audit' tasks for implementation changes that violate previous verifications. 3. Manages the 5-stage task lifecycle (Backlog -> Todo -> In Progress -> Review -> Completed). 4. Ensures only 1 active task is in progress per the Iron Law.",
       "implementationNotes": "",
       "lastModifiedBy": "",
       "violations": [],
       "status": "verified",
       "verificationStatus": "auto",
-      "verifiedHash": "3f8982026fa5818abc54dcb011fdd9e4",
-      "contractHash": "6640a798f7903d2470796f2a8e64a290",
+      "verifiedHash": "cd5bc2c9cb60b8b20065ddf219632484",
+      "contractHash": "6db895b01595aeee539f6de03c75e132",
       "initialX": -250,
       "initialY": -200,
-      "sectorAngle": 3.4255442972796404,
-      "sectorWidth": 0.3262423140266324,
+      "sectorAngle": 4.030052114446636,
+      "sectorWidth": 0.38381448709015575,
       "x": -250,
       "y": -200
     },
@@ -3058,8 +3082,8 @@
       "contractHash": "eca436e2c34f01516754bff0de154070",
       "initialX": 25,
       "initialY": -200,
-      "sectorAngle": 3.996468346826247,
-      "sectorWidth": 0.1631211570133162,
+      "sectorAngle": 4.7017274668544085,
+      "sectorWidth": 0.19190724354507788,
       "x": 25,
       "y": -200
     },
@@ -3145,8 +3169,8 @@
       "contractHash": "a115ed8ccad34bab964d124fdb825def",
       "initialX": -275,
       "initialY": 150,
-      "sectorAngle": 4.159589503839563,
-      "sectorWidth": 0.1631211570133162,
+      "sectorAngle": 4.893634710399486,
+      "sectorWidth": 0.19190724354507788,
       "x": -275,
       "y": 150
     },
@@ -3177,8 +3201,8 @@
       "contractHash": "b9f8daff52e77ca850a0f4b2868aebad",
       "initialX": -75,
       "initialY": 150,
-      "sectorAngle": 1.7244236598550569,
-      "sectorWidth": 0.18642417944378992,
+      "sectorAngle": 2.0287337174765376,
+      "sectorWidth": 0.21932256405151757,
       "x": -75,
       "y": 150
     },
@@ -3222,8 +3246,8 @@
       "contractHash": "16e4ebe0bf7ef3c438aa8de3d3643869",
       "initialX": -300,
       "initialY": -350,
-      "sectorAngle": 1.9108478392988468,
-      "sectorWidth": 0.18642417944378992,
+      "sectorAngle": 2.248056281528055,
+      "sectorWidth": 0.21932256405151757,
       "x": -300,
       "y": -350
     },
@@ -3260,8 +3284,8 @@
       "contractHash": "17f8a6122a7b2bbc8e6e4aedf5031bfb",
       "initialX": -150,
       "initialY": -350,
-      "sectorAngle": 2.097272018742637,
-      "sectorWidth": 0.18642417944378992,
+      "sectorAngle": 2.4673788455795727,
+      "sectorWidth": 0.21932256405151757,
       "x": -150,
       "y": -350
     },
@@ -3631,8 +3655,8 @@
       "contractHash": "935974802313314bf68ae64461a40042",
       "initialX": -225,
       "initialY": -350,
-      "sectorAngle": 2.2836961981864268,
-      "sectorWidth": 0.18642417944378992,
+      "sectorAngle": 2.68670140963109,
+      "sectorWidth": 0.21932256405151757,
       "x": -225,
       "y": -350
     },
@@ -3671,8 +3695,8 @@
       "contractHash": "ad82594e0838cff20bc7475be2052b58",
       "initialX": -325,
       "initialY": 150,
-      "sectorAngle": 2.4701203776302165,
-      "sectorWidth": 0.18642417944378992,
+      "sectorAngle": 2.9060239736826077,
+      "sectorWidth": 0.21932256405151757,
       "x": -325,
       "y": 150
     },
@@ -3801,8 +3825,8 @@
       "contractHash": "45e40aa7d6605c0325778e1bcfcda1f3",
       "initialX": -375,
       "initialY": -350,
-      "sectorAngle": 2.6565445570740063,
-      "sectorWidth": 0.18642417944378992,
+      "sectorAngle": 3.125346537734125,
+      "sectorWidth": 0.21932256405151757,
       "x": -375,
       "y": -350
     },
@@ -3845,8 +3869,8 @@
       "contractHash": "fa7818aa82aadccb2709fe6c8aceb3ea",
       "initialX": -550,
       "initialY": -275,
-      "sectorAngle": 2.842968736517796,
-      "sectorWidth": 0.18642417944378992,
+      "sectorAngle": 3.3446691017856427,
+      "sectorWidth": 0.21932256405151757,
       "x": -550,
       "y": -275
     },
@@ -3943,8 +3967,8 @@
       "contractHash": "416f57f18d30c1598da263b1afa76e77",
       "initialX": -125,
       "initialY": 150,
-      "sectorAngle": 1.540588705125764,
-      "sectorWidth": 0.18124573001479577,
+      "sectorAngle": 1.8124573001479576,
+      "sectorWidth": 0.21323027060564206,
       "x": -125,
       "y": 150
     },
@@ -4000,10 +4024,10 @@
       "verificationStatus": "auto",
       "verifiedHash": "f73ba9264ac9435243259eca5812e3f7",
       "contractHash": "e082fb22b6810307ee98f7663df38dfe",
-      "initialX": 150,
-      "initialY": 0,
-      "sectorAngle": 0.7249829200591831,
-      "sectorWidth": 1.4499658401183662,
+      "initialX": 1315.5715625909986,
+      "initialY": 1506.4101246678736,
+      "sectorAngle": 0.8529210824225683,
+      "sectorWidth": 1.7058421648451365,
       "x": 150,
       "y": 0
     },
@@ -4210,8 +4234,8 @@
       "contractHash": "4a2f6e99bf4500440c88c942f8218be1",
       "initialX": -375,
       "initialY": -500,
-      "sectorAngle": 3.0993019832530075,
-      "sectorWidth": 0.3262423140266324,
+      "sectorAngle": 3.64623762735648,
+      "sectorWidth": 0.38381448709015575,
       "x": -375,
       "y": -500
     },
@@ -4302,8 +4326,8 @@
       "contractHash": "6f905eae3694648d56ac5280f961e432",
       "initialX": 225,
       "initialY": 400,
-      "sectorAngle": 3.4255442972796404,
-      "sectorWidth": 0.3262423140266324,
+      "sectorAngle": 4.030052114446636,
+      "sectorWidth": 0.38381448709015575,
       "x": 225,
       "y": 400
     },
@@ -4340,8 +4364,8 @@
       "contractHash": "d89bb1fcb35da1f51aba81a5f54eb63b",
       "initialX": 125,
       "initialY": 150,
-      "sectorAngle": 0.7249829200591831,
-      "sectorWidth": 0.2071379771597666,
+      "sectorAngle": 0.8529210824225681,
+      "sectorWidth": 0.2436917378350195,
       "x": 125,
       "y": 150
     },
@@ -4719,8 +4743,8 @@
       "contractHash": "9490d1ae516efe6066e8ab5de84ba510",
       "initialX": 400,
       "initialY": -150,
-      "sectorAngle": 0.3107069657396499,
-      "sectorWidth": 0.6214139314792998,
+      "sectorAngle": 0.3655376067525292,
+      "sectorWidth": 0.7310752135050584,
       "x": 400,
       "y": -150
     },
@@ -4945,8 +4969,8 @@
       "contractHash": "76148b9e04dfd3fdaabf8dbd6800914f",
       "initialX": 400,
       "initialY": -75,
-      "sectorAngle": 0.9321208972189496,
-      "sectorWidth": 0.2071379771597666,
+      "sectorAngle": 1.0966128202575878,
+      "sectorWidth": 0.2436917378350195,
       "x": 400,
       "y": -75
     },
@@ -5264,8 +5288,8 @@
       "contractHash": "d6d71db8319269f9338ddb03c87067fd",
       "initialX": 175,
       "initialY": 150,
-      "sectorAngle": 1.1392588743787164,
-      "sectorWidth": 0.2071379771597666,
+      "sectorAngle": 1.3403045580926072,
+      "sectorWidth": 0.2436917378350195,
       "x": 175,
       "y": 150
     },
@@ -5548,18 +5572,18 @@
       "verificationStatus": "auto",
       "verifiedHash": "12ac266c49ec27b63d971a3cb1b41048",
       "contractHash": "d0d32934923f40f9c707f76740443ceb",
-      "initialX": 400,
-      "initialY": 0,
-      "sectorAngle": 1.346396851538483,
-      "sectorWidth": 0.2071379771597666,
+      "initialX": -36.95884027012413,
+      "initialY": 2799.7560686827496,
+      "sectorAngle": 1.5839962959276266,
+      "sectorWidth": 0.2436917378350195,
       "x": 400,
       "y": 0
     },
-    "src/Core/Infrastructure/FileSystem/Parsers/BaseParser": {
-      "id": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+    "tag": {
+      "id": "tag",
       "name": "BaseParser",
       "type": "Interface",
-      "file": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "file": "tag",
       "language": "TypeScript",
       "depth": 4,
       "parentId": "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
@@ -5797,14 +5821,12 @@
       "violations": [],
       "status": "verified",
       "verificationStatus": "auto",
-      "verifiedHash": "fe344d060fd6791fee622c005a417129",
+      "verifiedHash": "0200333d78b2e54ef15fe0164814ecae",
       "contractHash": "b932ce7109178e6d95ae1451f6021f5a",
-      "initialX": 400,
-      "initialY": -275,
-      "sectorAngle": 0.3107069657396499,
-      "sectorWidth": 0.6214139314792998,
-      "x": 400,
-      "y": -275
+      "initialX": 3362.154220195911,
+      "initialY": 1286.825162801391,
+      "sectorAngle": 0.3655376067525292,
+      "sectorWidth": 0.7310752135050584
     },
     "src/Shared/NodeTypeConfig": {
       "id": "src/Shared/NodeTypeConfig",
@@ -5813,7 +5835,7 @@
       "file": "src/Shared/NodeTypeConfig",
       "language": "TypeScript",
       "depth": 5,
-      "parentId": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "parentId": "tag",
       "islandId": "island_0",
       "descendantCount": 0,
       "dependencies": [],
@@ -5882,8 +5904,8 @@
       "contractHash": "8881a69096f2cc967aeeacfbc1bf97b2",
       "initialX": 400,
       "initialY": -375,
-      "sectorAngle": 0.3107069657396499,
-      "sectorWidth": 0.6214139314792998,
+      "sectorAngle": 0.3655376067525292,
+      "sectorWidth": 0.7310752135050584,
       "x": 400,
       "y": -375
     },
@@ -6687,8 +6709,8 @@
       "contractHash": "91895ada86585ecdc0bb230f5fad74db",
       "initialX": -575,
       "initialY": 0,
-      "sectorAngle": 4.790928796724435,
-      "sectorWidth": 1.0995574287564276,
+      "sectorAngle": 5.636386819675805,
+      "sectorWidth": 1.2935969750075618,
       "x": -575,
       "y": 0
     },
@@ -7984,8 +8006,8 @@
       "contractHash": "7f769fd70373344e698b67499c58ffe4",
       "initialX": -800,
       "initialY": 125,
-      "sectorAngle": 4.3327798680759235,
-      "sectorWidth": 0.18325957145940458,
+      "sectorAngle": 5.097388080089321,
+      "sectorWidth": 0.21559949583459362,
       "x": -800,
       "y": 125
     },
@@ -8621,8 +8643,8 @@
       "contractHash": "0b728fe4c8b58ce1432bf8c4a3f0b458",
       "initialX": -725,
       "initialY": 125,
-      "sectorAngle": 4.516039439535328,
-      "sectorWidth": 0.18325957145940458,
+      "sectorAngle": 5.312987575923915,
+      "sectorWidth": 0.21559949583459362,
       "x": -725,
       "y": 125
     },
@@ -8982,8 +9004,8 @@
       "contractHash": "e18e632200ec48c87207f4566e0ffbb7",
       "initialX": -650,
       "initialY": 125,
-      "sectorAngle": 4.699299010994733,
-      "sectorWidth": 0.18325957145940458,
+      "sectorAngle": 5.528587071758509,
+      "sectorWidth": 0.21559949583459362,
       "x": -650,
       "y": 125
     },
@@ -9089,8 +9111,8 @@
       "contractHash": "37d2d91edfa781ada2cbc79e732314ba",
       "initialX": -550,
       "initialY": 325,
-      "sectorAngle": 4.882558582454138,
-      "sectorWidth": 0.18325957145940458,
+      "sectorAngle": 5.744186567593103,
+      "sectorWidth": 0.21559949583459362,
       "x": -550,
       "y": 325
     },
@@ -9143,8 +9165,8 @@
       "contractHash": "555b4525d413f0ec9688aea55df50f47",
       "initialX": -700,
       "initialY": 300,
-      "sectorAngle": 5.0658181539135425,
-      "sectorWidth": 0.18325957145940458,
+      "sectorAngle": 5.959786063427697,
+      "sectorWidth": 0.21559949583459362,
       "x": -700,
       "y": 300
     },
@@ -9256,1119 +9278,10 @@
       "contractHash": "acf625b1f618352335b5b8e70bae8455",
       "initialX": -475,
       "initialY": 325,
-      "sectorAngle": 5.249077725372947,
-      "sectorWidth": 0.18325957145940458,
+      "sectorAngle": 6.175385559262291,
+      "sectorWidth": 0.21559949583459362,
       "x": -475,
       "y": 325
-    },
-    "_UNCONNECTED_": {
-      "id": "_UNCONNECTED_",
-      "name": "⚠️ UNCONNECTED",
-      "type": "Unknown",
-      "file": "",
-      "depth": 0,
-      "islandId": "island_orphans",
-      "descendantCount": 5,
-      "dependencies": [],
-      "baseClasses": [],
-      "methods": [],
-      "fields": [],
-      "events": [],
-      "complexity": 0,
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "initialX": 75,
-      "initialY": 475,
-      "sectorAngle": 5.811946409141117,
-      "sectorWidth": 0.9424777960769379,
-      "x": 75,
-      "y": 475
-    },
-    "src/blueprint-cli": {
-      "id": "src/blueprint-cli",
-      "name": "blueprint-cli",
-      "type": "Tool",
-      "file": "src/blueprint-cli",
-      "language": "TypeScript",
-      "depth": 1,
-      "parentId": "_UNCONNECTED_",
-      "islandId": "island_orphans",
-      "descendantCount": 0,
-      "dependencies": [
-        "blueprint",
-        "Protocol"
-      ],
-      "baseClasses": [],
-      "methods": [],
-      "fields": [
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "run"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "rawArgs"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "targetIdx"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "cmd"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "args"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "cmd"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "subCmd"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "subCmd"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "data"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "return"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "isPlanMode"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "true"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "authData"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "break"
-        }
-      ],
-      "events": [],
-      "complexity": 14,
-      "implementationNotes": "",
-      "lastModifiedBy": "",
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "verifiedHash": "6c34a9cf8089e9463c813e5995f5ef2e",
-      "contractHash": "732016359c82bcbe9f2f7aea755fe013",
-      "initialX": 50,
-      "initialY": 350,
-      "sectorAngle": 5.4349552907103424,
-      "sectorWidth": 0.1884955592153876,
-      "x": 50,
-      "y": 350
-    },
-    "src/Core/Infrastructure/Logging/TelemetryProvider": {
-      "id": "src/Core/Infrastructure/Logging/TelemetryProvider",
-      "name": "TelemetryProvider",
-      "type": "Service",
-      "file": "src/Core/Infrastructure/Logging/TelemetryProvider",
-      "language": "TypeScript",
-      "depth": 1,
-      "parentId": "_UNCONNECTED_",
-      "islandId": "island_orphans",
-      "descendantCount": 0,
-      "dependencies": [
-        "fs-extra",
-        "path",
-        "Date"
-      ],
-      "baseClasses": [],
-      "methods": [
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "constructor",
-          "params": [
-            "projectRoot: string"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "Promise<void>",
-          "name": "log",
-          "params": [
-            "message: string",
-            "context: string = 'SYSTEM'"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "Promise<void>",
-          "name": "heartbeat",
-          "params": []
-        }
-      ],
-      "fields": [
-        {
-          "visibility": "private",
-          "type": "string",
-          "name": "logPath"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "logPath"
-        },
-        {
-          "visibility": "public",
-          "type": "string",
-          "name": "context"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "timestamp"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "entry"
-        }
-      ],
-      "events": [],
-      "complexity": 2,
-      "description": "TelemetryProvider: Centralized logging and telemetry service. Registered Atlas ID: src Core Infrastructure Logging TelemetryProvider",
-      "implementationNotes": "",
-      "lastModifiedBy": "",
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "verifiedHash": "6ceee2360ef51f6e6b465848b7964720",
-      "contractHash": "c6f61454d07df0fdc82c5d4d8a033d7e",
-      "initialX": -550,
-      "initialY": -200,
-      "sectorAngle": 5.62345084992573,
-      "sectorWidth": 0.1884955592153876,
-      "x": -550,
-      "y": -200
-    },
-    "src/Core/Infrastructure/Security/SecurityService": {
-      "id": "src/Core/Infrastructure/Security/SecurityService",
-      "name": "SecurityService",
-      "type": "Service",
-      "file": "src/Core/Infrastructure/Security/SecurityService",
-      "language": "TypeScript",
-      "depth": 1,
-      "parentId": "_UNCONNECTED_",
-      "islandId": "island_orphans",
-      "descendantCount": 0,
-      "dependencies": [],
-      "baseClasses": [],
-      "methods": [
-        {
-          "visibility": "public",
-          "returnType": "Promise<boolean>",
-          "name": "authenticate",
-          "params": [
-            "token: string"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "Promise<string>",
-          "name": "encrypt",
-          "params": [
-            "data: string"
-          ]
-        }
-      ],
-      "fields": [
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "token"
-        }
-      ],
-      "events": [],
-      "complexity": 1,
-      "description": "SecurityService: Responsible for authentication and data encryption. Registered Atlas ID: src Core Infrastructure Security SecurityService",
-      "implementationNotes": "",
-      "lastModifiedBy": "",
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "verifiedHash": "af73b05777a4b18fb23aed35e04ac387",
-      "contractHash": "13b73708a3a265e048005aa895a3f6d7",
-      "initialX": -150,
-      "initialY": 250,
-      "sectorAngle": 5.811946409141117,
-      "sectorWidth": 0.1884955592153876,
-      "x": -150,
-      "y": 250
-    },
-    "viewer/src/Engine/GalaxyEngine": {
-      "id": "viewer/src/Engine/GalaxyEngine",
-      "name": "GalaxyEngine",
-      "type": "System",
-      "file": "viewer/src/Engine/GalaxyEngine",
-      "language": "TypeScript",
-      "depth": 1,
-      "parentId": "_UNCONNECTED_",
-      "islandId": "island_orphans",
-      "descendantCount": 0,
-      "dependencies": [
-        "d3",
-        "VisualTypes",
-        "Map",
-        "Set"
-      ],
-      "baseClasses": [],
-      "methods": [
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "setPositionsUrl",
-          "params": [
-            "url: string"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "bootstrap",
-          "params": []
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "savePositions",
-          "params": []
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "forEach",
-          "params": [
-            "node => {\r\n            if (node.x !== undefined && node.y !== undefined"
-          ]
-        },
-        {
-          "visibility": "private",
-          "returnType": "any",
-          "name": "syncLinks",
-          "params": []
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "stopBootstrap",
-          "params": []
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "resetData",
-          "params": [
-            "nodes: VisualNode[]",
-            "links: VisualLink[]"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "state",
-          "params": []
-        }
-      ],
-      "fields": [
-        {
-          "visibility": "private",
-          "type": "VisualNode[]",
-          "name": "activeNodes"
-        },
-        {
-          "visibility": "private",
-          "type": "VisualLink[]",
-          "name": "activeLinks"
-        },
-        {
-          "visibility": "private",
-          "type": "VisualNode[]",
-          "name": "allNodes"
-        },
-        {
-          "visibility": "private",
-          "type": "VisualLink[]",
-          "name": "allLinks"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "void"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "void"
-        },
-        {
-          "visibility": "private",
-          "type": "any",
-          "name": "spawnTimer"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "null"
-        },
-        {
-          "visibility": "private",
-          "type": "string",
-          "name": "positionsUrl"
-        },
-        {
-          "visibility": "public",
-          "type": "string",
-          "name": "positionsUrl"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "allNodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "nodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "allLinks"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "links"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "onUpdate"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "onUpdate"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "onDataChange"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "onDataChange"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "positionsUrl"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "positionsUrl"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "simulation"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "d"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "d"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "d"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "d"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "d"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "d"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "positionsUrl"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "url"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "length"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "0"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "length"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "0"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "depth"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "0"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "max"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "d"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "0"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "spawn"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "return"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "newNodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "n"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "depth"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "node"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "parent"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "an"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "id"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "px"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "initialX"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "py"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "initialY"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "x"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "x"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "initialX"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "initialY"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "fx"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "x"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "fy"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "y"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "spawnTimer"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "node"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "res"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "ids"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "n"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "validLinks"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "l"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "s"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "source"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "t"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "target"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "length"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "0"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "spawnTimer"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "null"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "validNodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "n"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "n"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "nodeIds"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "n"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "length"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "0"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "validLinks"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "l"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "s"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "source"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "t"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "target"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "l"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "length"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "0"
-        }
-      ],
-      "events": [
-        {
-          "name": "tick",
-          "flow": "subscribe"
-        }
-      ],
-      "complexity": 28,
-      "implementationNotes": "",
-      "lastModifiedBy": "",
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "verifiedHash": "471fa31b54057482f4e8dd86a4398e92",
-      "contractHash": "8567802f0f3c1fb0b034b94d3e1b8887",
-      "initialX": -575,
-      "initialY": 125,
-      "sectorAngle": 6.000441968356505,
-      "sectorWidth": 0.1884955592153876,
-      "x": -575,
-      "y": 125
-    },
-    "viewer/src/Forces/GalaxyPhysics": {
-      "id": "viewer/src/Forces/GalaxyPhysics",
-      "name": "GalaxyPhysics",
-      "type": "Unknown",
-      "file": "viewer/src/Forces/GalaxyPhysics",
-      "language": "TypeScript",
-      "depth": 1,
-      "parentId": "_UNCONNECTED_",
-      "islandId": "island_orphans",
-      "descendantCount": 0,
-      "dependencies": [
-        "VisualTypes"
-      ],
-      "baseClasses": [],
-      "methods": [
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "centrifugal",
-          "params": [
-            "cx: number",
-            "cy: number",
-            "strength: number = 5.0"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "force",
-          "params": [
-            "alpha: number"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "sector",
-          "params": [
-            "cx: number",
-            "cy: number",
-            "strength: number = 3.0"
-          ]
-        },
-        {
-          "visibility": "public",
-          "returnType": "any",
-          "name": "force",
-          "params": [
-            "alpha: number"
-          ]
-        }
-      ],
-      "fields": [
-        {
-          "visibility": "public",
-          "type": "number",
-          "name": "strength"
-        },
-        {
-          "visibility": "public",
-          "type": "VisualNode[]",
-          "name": "nodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "a"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "strength"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "depth"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "continue"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "dx"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "cx"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "dy"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "cy"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "dist"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "1"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "a"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "a"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "initialize"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "nodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "_nodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "force"
-        },
-        {
-          "visibility": "public",
-          "type": "number",
-          "name": "strength"
-        },
-        {
-          "visibility": "public",
-          "type": "VisualNode[]",
-          "name": "nodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "a"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "strength"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "sectorWidth"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "continue"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "dx"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "cx"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "dy"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "cy"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "angle"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "diff"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "target"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "dist"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "a"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "a"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "initialize"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "nodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "_nodes"
-        },
-        {
-          "visibility": "public",
-          "type": "any",
-          "name": "force"
-        }
-      ],
-      "events": [],
-      "complexity": 8,
-      "implementationNotes": "",
-      "lastModifiedBy": "",
-      "violations": [],
-      "status": "orphan",
-      "verificationStatus": "auto",
-      "verifiedHash": "6b591f19f63b19ef8cf9371a095202f9",
-      "contractHash": "c2031ff9e3fabd0f0feff708a059031b",
-      "initialX": -575,
-      "initialY": 250,
-      "sectorAngle": 6.188937527571892,
-      "sectorWidth": 0.1884955592153876,
-      "x": -575,
-      "y": 250
     }
   },
   "edges": [
@@ -10518,12 +9431,12 @@
     },
     {
       "source": "src/Core/Infrastructure/FileSystem/Parsers/CSharpParser",
-      "target": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "target": "tag",
       "isGravity": true,
       "type": "inheritance"
     },
     {
-      "source": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "source": "tag",
       "target": "src/Shared/NodeTypeConfig",
       "isGravity": true,
       "type": "inheritance"
@@ -10561,36 +9474,6 @@
     {
       "source": "viewer/src/main",
       "target": "viewer/src/Theme/ThemeManager",
-      "isGravity": true,
-      "type": "inheritance"
-    },
-    {
-      "source": "_UNCONNECTED_",
-      "target": "src/blueprint-cli",
-      "isGravity": true,
-      "type": "inheritance"
-    },
-    {
-      "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Logging/TelemetryProvider",
-      "isGravity": true,
-      "type": "inheritance"
-    },
-    {
-      "source": "_UNCONNECTED_",
-      "target": "src/Core/Infrastructure/Security/SecurityService",
-      "isGravity": true,
-      "type": "inheritance"
-    },
-    {
-      "source": "_UNCONNECTED_",
-      "target": "viewer/src/Engine/GalaxyEngine",
-      "isGravity": true,
-      "type": "inheritance"
-    },
-    {
-      "source": "_UNCONNECTED_",
-      "target": "viewer/src/Forces/GalaxyPhysics",
       "isGravity": true,
       "type": "inheritance"
     },
@@ -10728,7 +9611,7 @@
     },
     {
       "source": "src/Core/Infrastructure/FileSystem/Parsers/CppParser",
-      "target": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "target": "tag",
       "isGravity": false,
       "type": "dependency"
     },
@@ -10740,7 +9623,7 @@
     },
     {
       "source": "src/Core/Infrastructure/FileSystem/Parsers/TsParser",
-      "target": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "target": "tag",
       "isGravity": false,
       "type": "dependency"
     },
@@ -10752,7 +9635,7 @@
     },
     {
       "source": "src/Core/Infrastructure/FileSystem/Parsers/PythonParser",
-      "target": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "target": "tag",
       "isGravity": false,
       "type": "dependency"
     },
@@ -10763,26 +9646,20 @@
       "type": "dependency"
     },
     {
-      "source": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "source": "tag",
       "target": "src/Core/Domain/Services/IParser",
       "isGravity": false,
       "type": "dependency"
     },
     {
-      "source": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "source": "tag",
       "target": "src/Core/Domain/Model/SourceFile",
       "isGravity": false,
       "type": "dependency"
     },
     {
-      "source": "src/Core/Infrastructure/FileSystem/Parsers/BaseParser",
+      "source": "tag",
       "target": "src/Shared/Protocol",
-      "isGravity": false,
-      "type": "dependency"
-    },
-    {
-      "source": "viewer/src/main",
-      "target": "viewer/src/Engine/GalaxyEngine",
       "isGravity": false,
       "type": "dependency"
     },
@@ -10831,30 +9708,6 @@
     {
       "source": "viewer/src/Theme/ThemeManager",
       "target": "src/Shared/NodeTypeConfig",
-      "isGravity": false,
-      "type": "dependency"
-    },
-    {
-      "source": "src/blueprint-cli",
-      "target": "src/blueprint",
-      "isGravity": false,
-      "type": "dependency"
-    },
-    {
-      "source": "src/blueprint-cli",
-      "target": "src/Shared/Protocol",
-      "isGravity": false,
-      "type": "dependency"
-    },
-    {
-      "source": "viewer/src/Engine/GalaxyEngine",
-      "target": "viewer/src/Protocol/VisualTypes",
-      "isGravity": false,
-      "type": "dependency"
-    },
-    {
-      "source": "viewer/src/Forces/GalaxyPhysics",
-      "target": "viewer/src/Protocol/VisualTypes",
       "isGravity": false,
       "type": "dependency"
     }

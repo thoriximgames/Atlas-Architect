@@ -117,7 +117,12 @@ export class GraphBuilder implements IGraphBuilder {
         // 2. Identify Orphans (Nodes not reachable from Entry Points)
         // If strict mode is ON, we IGNORE everything that isn't explicitly connected to an entry point.
         if (strict) {
-            console.log(`[GraphBuilder] STRICT MODE: Excluding ${files.length - visited.size} unreachable orphans.`);
+            const numExcluded = files.length - visited.size;
+            if (numExcluded > 0) {
+                console.log(`[WARNING] Strict Mode: Excluded ${numExcluded} unreachable orphans.`);
+                console.log(`          These files are not connected to any entryPoint defined in atlas.config.json.`);
+                console.log(`          They will not appear in the verified graph until imported.`);
+            }
         } else {
             const orphans: string[] = [];
             for (const file of files) {

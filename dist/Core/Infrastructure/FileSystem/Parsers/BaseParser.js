@@ -51,7 +51,7 @@ class BaseParser {
             events: events
         });
         return {
-            id: rel.replace(ext, ''),
+            id: fileId,
             name,
             filePath: rel,
             language: languageMap[ext.toLowerCase()] || 'Plain Text',

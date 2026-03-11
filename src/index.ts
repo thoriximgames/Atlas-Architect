@@ -73,7 +73,9 @@ async function main() {
             }
         }
         const takenPorts = new Set(Object.values(sessions).map(s => s.port));
-        while (takenPorts.has(port)) port++;
+        if (takenPorts.has(port)) {
+            console.error(`[Atlas] Warning: Port ${port} is registered in a previous session. It may be in TIME_WAIT.`);
+        }
         sessions[config.project] = { port, pid: process.pid, project: config.project, path: projectRoot };
         await fs.outputJson(registryPath, sessions, { spaces: 2 });
     }
@@ -108,6 +110,7 @@ async function main() {
                 return {
                     ...pn,
                     status: rn ? 'verified' : 'planned',
+                    type: rn?.type || pn.type || 'Unknown',
                     language: rn?.language || 'Unknown',
                     complexity: rn?.complexity || 0,
                     methods: rn?.methods || [],
@@ -304,7 +307,7 @@ async function main() {
         process.exit(0);
     }
 
-    app.listen(port, () => {
+    const server = app.listen(port, () => {
         const url = `http://localhost:${port}/viewer/`;
         console.log(`\n================================================================`);
         console.log(`Atlas v8.0 [${config.project}]`);
@@ -314,6 +317,19 @@ async function main() {
         if (!isCLI) {
             const start = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
             exec(`${start} ${url}`);
+        }
+    });
+
+    server.on('error', (e: any) => {
+        if (e.code === 'EADDRINUSE') {
+            console.error(`\n[FATAL] Port ${port} is already in use.`);
+            console.error(`        The Atlas service enforces a Singleton Rule. Do NOT use taskkill.`);
+            console.error(`        If a zombie process exists, wait for TIME_WAIT to resolve or run:`);
+            console.error(`        node atlas.mjs kill`);
+            process.exit(1);
+        } else {
+            console.error(`[FATAL] Server error:`, e);
+            process.exit(1);
         }
     });
 }

@@ -59,7 +59,7 @@ export abstract class BaseParser implements IParser {
         });
 
         return {
-            id: rel.replace(ext, ''),
+            id: fileId,
             name,
             filePath: rel,
             language: languageMap[ext.toLowerCase()] || 'Plain Text',

@@ -89,6 +89,7 @@ When working directly inside `E:\GIT\Atlas-Architect`:
 
 ## 📜 Global Mandates
 1. **The Toolbox Law**: All Atlas interactions MUST go through `atlas.mjs`.
-2. **The Singleton Rule**: `atlas.mjs` handles session management. Do not manually kill processes.
-3. **The SSE Law**: Trust the real-time link; verify via `scan` only when finality is required.
-4. **The No-Shadow Rule**: A task is only "Complete" when the Blueprint turns Reality from a Ghost into a solid Node.
+2. **The Singleton Rule (CRITICAL)**: `atlas.mjs` handles session management. **NEVER use `taskkill` or manually kill the node process.** This causes Zombie Sessions (TIME_WAIT) and desyncs the UI. If you need to stop the server, use `node atlas.mjs kill`. If the service hangs, use `node atlas.mjs serve` to safely restart it.
+3. **Strict Mode & Missing Nodes**: If a node you created does not appear in the scan, it is likely an **Unreachable Orphan** excluded by Strict Mode. Ensure the file is either in the `atlas.config.json` `entryPoints` list, or is imported by a file that traces back to an entryPoint. Do NOT assume the server is hung if a node is missing.
+4. **The SSE Law**: Trust the real-time link; verify via `scan` only when finality is required.
+5. **The No-Shadow Rule**: A task is only "Complete" when the Blueprint turns Reality from a Ghost into a solid Node.
