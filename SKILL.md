@@ -75,8 +75,8 @@ Slice the topology to understand dependencies and extract specific architectural
 
 ## 🌐 The Service Layer
 The Atlas UI and Backend manage session state and real-time visualization.
-- **Start/Restart**: `node ...\atlas.mjs serve` (Enforces singleton process on port 5055).
-- **Visualization**: `http://localhost:5055/viewer/`
+- **Start/Restart**: `node ...\atlas.mjs serve` (Automatically assigns an available port and launches the visualizer).
+- **Visualization**: The CLI will print the dynamically assigned URL (e.g. `http://localhost:5055/viewer/`) upon startup.
 
 ---
 
@@ -89,7 +89,10 @@ When working directly inside `E:\GIT\Atlas-Architect`:
 
 ## 📜 Global Mandates
 1. **The Toolbox Law**: All Atlas interactions MUST go through `atlas.mjs`.
-2. **The Singleton Rule (CRITICAL)**: `atlas.mjs` handles session management. **NEVER use `taskkill` or manually kill the node process.** This causes Zombie Sessions (TIME_WAIT) and desyncs the UI. If you need to stop the server, use `node atlas.mjs kill`. If the service hangs, use `node atlas.mjs serve` to safely restart it.
-3. **Strict Mode & Missing Nodes**: If a node you created does not appear in the scan, it is likely an **Unreachable Orphan** excluded by Strict Mode. Ensure the file is either in the `atlas.config.json` `entryPoints` list, or is imported by a file that traces back to an entryPoint. Do NOT assume the server is hung if a node is missing.
-4. **The SSE Law**: Trust the real-time link; verify via `scan` only when finality is required.
-5. **The No-Shadow Rule**: A task is only "Complete" when the Blueprint turns Reality from a Ghost into a solid Node.
+2. **The Singleton Rule (CRITICAL)**: `atlas.mjs` handles session management. **NEVER use `taskkill` or manually kill the node process.**
+   - **To Quit**: Use `node atlas.mjs kill`.
+   - **To Restart**: Use `node atlas.mjs serve`. This automatically kills any old session.
+3. **Global Node Types**: Node types are **Strictly Global**. When you add a type via `node atlas.mjs type add`, it becomes available to ALL projects on this machine. You do not need to copy files between projects.
+4. **Strict Mode & Missing Nodes**: If a node you created does not appear in the scan, it is likely an **Unreachable Orphan** excluded by Strict Mode. Ensure the file is either in the `atlas.config.json` `entryPoints` list, or is imported by a file that traces back to an entryPoint.
+5. **The SSE Law**: Trust the real-time link; verify via `scan` only when finality is required.
+6. **The No-Shadow Rule**: A task is only "Complete" when the Blueprint turns Reality from a Ghost into a solid Node.

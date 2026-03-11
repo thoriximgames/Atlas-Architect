@@ -77,16 +77,15 @@ async function main() {
         
         const configContent = {
             project: projectName,
-            port: defaultPort,
             strict: true,
             scanPatterns: [
-                "src/**/*.ts", "src/**/*.js", "src/**/*.tsx", "src/**/*.jsx", 
+                "src/**/*.ts", "src/**/*.js", "src/**/*.tsx", "src/**/*.jsx",
                 "Assets/**/*.cs", "src/**/*.cpp", "src/**/*.h", "src/**/*.py"
             ],
             entryPoints: [],
             exclude: [
-                "**/node_modules/**", "**/Library/**", "**/obj/**", "**/bin/**", 
-                "**/dist/**", "**/build/**", "**/Vendor/**", "**/.git/**", "**/.vs/**"
+                "**/node_modules/**", "**/Library/**", "**/obj/**", "**/bin/**",
+                "**/dist/**", "**/build/**", "**/.git/**"
             ]
         };
 

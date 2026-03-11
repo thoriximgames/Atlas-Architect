@@ -55,7 +55,7 @@ async function main() {
     const registryPath = path.join(registryDir, 'atlas_sessions.json');
     await fs.ensureDir(registryDir);
     
-    let port = process.env.ATLAS_PORT ? parseInt(process.env.ATLAS_PORT, 10) : (config.port || 5055);
+    let port = process.env.ATLAS_PORT ? parseInt(process.env.ATLAS_PORT, 10) : 5055;
     const sessions: Record<string, { port: number, pid: number, project: string, path?: string }> = (await fs.pathExists(registryPath)) 
         ? await fs.readJson(registryPath) : {};
 
@@ -64,7 +64,7 @@ async function main() {
             try {
                 process.kill(sessions[key].pid, 0); 
                 if (sessions[key].project === config.project || key === config.project) {
-                    console.log(`[Atlas] Killing existing ghost instance for project: ${config.project} (PID: ${sessions[key].pid}, Port: ${sessions[key].port})`);
+                    console.log(`[Atlas] Killing existing instance for project: ${config.project} (PID: ${sessions[key].pid}, Port: ${sessions[key].port})`);
                     process.kill(sessions[key].pid);
                     delete sessions[key];
                 }
@@ -72,10 +72,12 @@ async function main() {
                 delete sessions[key];
             }
         }
+        
         const takenPorts = new Set(Object.values(sessions).map(s => s.port));
-        if (takenPorts.has(port)) {
-            console.error(`[Atlas] Warning: Port ${port} is registered in a previous session. It may be in TIME_WAIT.`);
+        while (takenPorts.has(port)) {
+            port++;
         }
+
         sessions[config.project] = { port, pid: process.pid, project: config.project, path: projectRoot };
         await fs.outputJson(registryPath, sessions, { spaces: 2 });
     }
