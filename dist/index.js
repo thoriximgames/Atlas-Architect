@@ -83,6 +83,7 @@ async function main() {
     const graphBuilder = new GraphBuilder_1.GraphBuilder();
     const layoutStrategy = new PolarLayoutStrategy_1.PolarLayoutStrategy();
     const engine = new AtlasEngine_1.AtlasEngine(scanner, graphBuilder, layoutStrategy);
+    const engineRoot = path_1.default.resolve(__dirname, '..');
     app.use(express_1.default.json());
     app.use((req, res, next) => {
         if (!req.url.includes('/api/events'))
@@ -98,9 +99,14 @@ async function main() {
     });
     const enrichData = async (data) => {
         const realityPath = path_1.default.join(projectRoot, '.atlas/data/reality.json');
+        const positionsPath = path_1.default.join(projectRoot, '.atlas/data/positions.json');
         if (await fs_extra_1.default.pathExists(realityPath)) {
             const realityData = await fs_extra_1.default.readJson(realityPath);
             const realityNodes = realityData.nodes || {};
+            let positions = {};
+            if (await fs_extra_1.default.pathExists(positionsPath)) {
+                positions = await fs_extra_1.default.readJson(positionsPath);
+            }
             data.project = realityData.project || config.project || "Unknown Project";
             data.plannedNodes = data.plannedNodes.map((pn) => {
                 const rn = realityNodes[pn.id];
@@ -125,19 +131,29 @@ async function main() {
             const orphans = Object.values(realityNodes).filter((rn) => !plannedIds.has(rn.id) && rn.id !== '_UNCONNECTED_');
             if (orphans.length > 0) {
                 if (!plannedIds.has('_UNCONNECTED_')) {
-                    const uNode = realityNodes['_UNCONNECTED_'] || { x: -1000, y: -1000 };
+                    const savedU = positions['_UNCONNECTED_'];
+                    const rU = realityNodes['_UNCONNECTED_'];
+                    const uNodeX = savedU ? savedU.x : (rU?.x !== undefined ? rU.x : (rU?.initialX !== undefined ? rU.initialX : -1000));
+                    const uNodeY = savedU ? savedU.y : (rU?.y !== undefined ? rU.y : (rU?.initialY !== undefined ? rU.initialY : -1000));
                     data.plannedNodes.push({
                         id: '_UNCONNECTED_',
                         name: 'UNCONNECTED',
                         type: 'Unknown',
                         purpose: 'Orphaned Code',
                         status: 'orphan',
-                        x: uNode.x !== undefined ? uNode.x : (uNode.initialX || -1000),
-                        y: uNode.y !== undefined ? uNode.y : (uNode.initialY || -1000)
+                        x: uNodeX,
+                        y: uNodeY
                     });
                 }
                 orphans.forEach((o) => {
-                    data.plannedNodes.push({ ...o, parentId: '_UNCONNECTED_', status: 'orphan' });
+                    const savedO = positions[o.id];
+                    data.plannedNodes.push({
+                        ...o,
+                        parentId: '_UNCONNECTED_',
+                        status: 'orphan',
+                        x: savedO ? savedO.x : (o.x !== undefined ? o.x : (o.initialX || 0)),
+                        y: savedO ? savedO.y : (o.y !== undefined ? o.y : (o.initialY || 0))
+                    });
                 });
             }
         }
@@ -232,13 +248,13 @@ async function main() {
         }
     });
     app.get('/api/config/node-types', async (req, res) => {
-        const typesPath = path_1.default.join(projectRoot, '.atlas', 'data', 'node_types.json');
+        const typesPath = path_1.default.join(engineRoot, '.atlas', 'data', 'node_types.json');
         if (await fs_extra_1.default.pathExists(typesPath)) {
             const types = await fs_extra_1.default.readJson(typesPath);
             res.json(types);
         }
         else {
-            res.status(404).json({ error: 'Node types config not found' });
+            res.status(404).json({ error: 'Master node types config not found' });
         }
     });
     let scanPromise = null;
@@ -264,7 +280,6 @@ async function main() {
         })();
         return scanPromise;
     };
-    const engineRoot = path_1.default.resolve(__dirname, '..');
     const viewerDist = path_1.default.join(engineRoot, 'viewer/dist');
     const realityFile = path_1.default.join(projectRoot, '.atlas/data/reality.json');
     app.use((req, res, next) => {
