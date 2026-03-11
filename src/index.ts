@@ -84,6 +84,7 @@ async function main() {
     const graphBuilder = new GraphBuilder();
     const layoutStrategy = new PolarLayoutStrategy();
     const engine = new AtlasEngine(scanner, graphBuilder, layoutStrategy);
+    const engineRoot = path.resolve(__dirname, '..');
 
     app.use(express.json());
     app.use((req, res, next) => {
@@ -268,7 +269,6 @@ async function main() {
         return scanPromise;
     };
 
-    const engineRoot = path.resolve(__dirname, '..');
     const viewerDist = path.join(engineRoot, 'viewer/dist');
     const realityFile = path.join(projectRoot, '.atlas/data/reality.json');
 
