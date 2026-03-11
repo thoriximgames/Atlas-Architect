@@ -12,7 +12,7 @@ export abstract class BaseParser implements IParser {
 
     async parse(filePath: string, root: string): Promise<SourceFile> {
         // Always reload config per file to ensure latest CLI updates are applied during scan
-        const configPath = path.join(root, '.atlas', 'data', 'node_types.json');
+        const configPath = path.resolve(__dirname, '../../../../../.atlas/data/node_types.json');
         if (await fs.pathExists(configPath)) {
             this.nodeTypesConfig = await fs.readJson(configPath);
         }

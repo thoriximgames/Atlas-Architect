@@ -108,16 +108,6 @@ async function main() {
         await fs.outputJson(path.join(target, 'atlas.config.json'), configContent, { spaces: 2 });
         await fs.outputJson(path.join(docsDir, 'planned.json'), { plannedNodes: [] }, { spaces: 2 });
         
-        const typesPath = path.join(dataDir, 'node_types.json');
-        const masterTypesPath = path.join(__dirname, '.atlas', 'data', 'node_types.json');
-        if (!await fs.pathExists(typesPath)) {
-            if (await fs.pathExists(masterTypesPath)) {
-                await fs.copy(masterTypesPath, typesPath);
-            } else {
-                await fs.outputJson(typesPath, defaultTypes, { spaces: 4 });
-            }
-        }
-        
         console.log(`[Atlas] SUCCESS: Footprint created. You can now run 'atlas.mjs scan'.`);
         return;
     }
@@ -128,15 +118,6 @@ async function main() {
         console.error(`[Atlas] Error: Not an Atlas project (missing atlas.config.json in ${target})`);
         console.error(`[Atlas] Run 'node atlas.mjs init --target <path>' first.`);
         process.exit(1);
-    }
-
-    if (config) {
-        const typesPath = path.join(target, '.atlas', 'data', 'node_types.json');
-        const masterTypesPath = path.join(__dirname, '.atlas', 'data', 'node_types.json');
-        if (!await fs.pathExists(typesPath) && await fs.pathExists(masterTypesPath)) {
-            await fs.ensureDir(path.dirname(typesPath));
-            await fs.copy(masterTypesPath, typesPath);
-        }
     }
 
     const enginePath = path.join(__dirname, 'src', 'index.ts');
@@ -239,11 +220,11 @@ async function main() {
         case 'type':
             {
                 const typeCmd = args[1];
-                const typesPath = path.join(target, '.atlas', 'data', 'node_types.json');
+                const typesPath = path.join(__dirname, '.atlas', 'data', 'node_types.json');
                 const SHAPES = ['circle', 'square', 'hexagon', 'octagon', 'diamond', 'triangle', 'pentagon'];
                 
                 if (!await fs.pathExists(typesPath)) {
-                    console.error(`[Atlas] Error: node_types.json not found in ${target}/.atlas/data/`);
+                    console.error(`[Atlas] Error: Master node_types.json not found in ${__dirname}/.atlas/data/`);
                     process.exit(1);
                 }
                 

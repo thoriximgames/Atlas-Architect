@@ -237,12 +237,12 @@ async function main() {
     });
 
     app.get('/api/config/node-types', async (req, res) => {
-        const typesPath = path.join(projectRoot, '.atlas', 'data', 'node_types.json');
+        const typesPath = path.join(engineRoot, '.atlas', 'data', 'node_types.json');
         if (await fs.pathExists(typesPath)) {
             const types = await fs.readJson(typesPath);
             res.json(types);
         } else {
-            res.status(404).json({ error: 'Node types config not found' });
+            res.status(404).json({ error: 'Master node types config not found' });
         }
     });
 
